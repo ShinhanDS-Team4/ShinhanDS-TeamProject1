@@ -1,0 +1,313 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>상품 상세 페이지</title>
+<%-- css --%>
+<link rel="stylesheet" href="${path}/resources/css/product_detail.css">
+<%-- 헤더,푸터 css --%>
+<link rel="stylesheet" href="${path}/resources/css/header_footer.css">
+<%-- jquery 연결 --%>
+<script src="${path}/resources/js/jquery-3.7.1.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+	$(function() {
+		//배송 안내 정보 토글
+		$('.toggle-button').click(function() {
+			$('.toggle-content').slideToggle();
+			$('.arrow').toggleClass('open');
+		});
+
+		//상품 상세 정보, 리뷰 버튼 조작  (수정필요...리뷰버튼 클릭하고 상품정보버튼 클릭하면 상품정보내용이 안나타남)
+		$('.detailbtn_wrap button').click(function() {
+			// 버튼에 active 클래스 적용
+			$('.detailbtn_wrap button').removeClass('this');
+			$(this).addClass('this');
+
+			// 관련된 컨텐츠 표시
+			var tabId = $(this).data('tab');
+			$('.container-detail, .container-review').removeClass('active');
+			$('#' + tabId).addClass('active');
+		});
+
+		//상품 문의 팝업창 열고 닫기 
+		$('.qnaBtn').on('click', function() {
+			$('#myModal').show();
+		});
+
+		$('.close').on('click', function() {
+			$('#myModal').hide();
+		});
+
+		$(window).on('click', function(event) {
+			if ($(event.target).is('#myModal')) {
+				$('#myModal').hide();
+			}
+		});
+
+	});
+</script>
+</head>
+<body>
+	<div id="myModal" class="modal">
+		<div class="modal-content">
+			<span class="close">&times;</span>
+			<div class="modal-header">
+				<h1>상품문의</h1>
+			</div>
+			<div class="modal-body">
+				<label for="qnaTitle">문의 제목: </label><input type="text"
+					name="qnaTitle" placeholder="문의 제목">
+				<p>상품과 관련 없는 내용, 비방, 광고, 불건전한 내용의 글은 사전 동의 없이 삭제될 수 있습니다.</p>
+				<textarea
+					placeholder="문의 내용을 입력해주세요. 특수문자 &#87, &#47, &#60, &#62 는 사용할 수 없습니다."></textarea>
+				<br> <input type="text" placeholder="이름">
+			</div>
+			<div class="modal-footer">
+				<button type="button">등록</button>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="inner">
+			<p>home > 의류 > 바람</p>
+			<div class="product-detail_wrap">
+				<div class="product-image">
+					<img src="./images/product1.png" alt="상품">
+				</div>
+				<div class="product-details">
+					<p class="free">무료배송</p>
+					<h1>NIKE</h1>
+					<h2>나이키 드라이핏 스우시 반팔티</h2>
+					<div class="price_wrap">
+						<p>
+							<del>100,000원</del>
+						</p>
+						<p>
+							<span class="discount">60%</span> 43,820원
+						</p>
+					</div>
+					<p class="rate">
+						★ 4.5 <span><a href="#void">리뷰 8건</a></span>
+					</p>
+					<div class="choose_wrap">
+						<p>선택</p>
+						<div class="select_choose">
+							<select id="product-size" name="product-size">
+								<option value="L" selected>상의 (L)</option>
+								<option value="M">상의 (M)</option>
+								<option value="S">상의 (S)</option>
+							</select> <select id="product-color" name="product-color">
+								<option value="RED" selected>색상 (BLACK)</option>
+								<option value="RED">색상 (RED)</option>
+								<option value="RED">색상 (GREEN)</option>
+							</select>
+						</div>
+					</div>
+					<div class="quantity-price">
+						<div class="quantity_wrap">
+							<p>수량 선택 :</p>
+							<input type="number" id="quantity" class="quantity"
+								name="quantity" value="1" min="1">
+						</div>
+						<p class="total">43,820원</p>
+					</div>
+					<div class="button-group">
+						<button type="button" class="white_button">장바구니</button>
+						<button type="button" class="button">바로 구매</button>
+					</div>
+					<button type="button" class="noRent_btn">대여불가상품</button>
+				</div>
+			</div>
+			<%-- 상품정보, 리뷰 버튼 --%>
+			<div id="detailbtn_wrap" class="detailbtn_wrap">
+				<button type="button" class="this" data-tab="container-detail">상품
+					정보</button>
+				<button type="button" data-tab="container-review">리뷰</button>
+			</div>
+			<%-- 상세정보 --%>
+			<div class="container-detail active">
+				<div>
+					<h1 style="text-align: center;">상품 정보 이미지 등록할 부분</h1>
+				</div>
+			</div>
+			<%-- 리뷰 목록 --%>
+			<div id="container-review" class="container-review inner">
+				<h1>상품 리뷰</h1>
+				<ul class="review_order">
+					<li>최근 등록 순</li>
+					<li>평점 높은 순</li>
+					<li>평점 낮은 순</li>
+				</ul>
+				<div class="review-list">
+					<div class="review-scroll">
+						<div class="review">
+							<div class="left">
+								<img src="path/to/image.jpg" alt="review image">
+							</div>
+							<div class="right">
+								<div class="rating">
+									<span>★★★★★</span>
+								</div>
+								<h3>색상: 검정색 / 사이즈: L</h3>
+								<p>생각보다 엄청 밝아요!</p>
+								<p class="date">2024.05.18</p>
+							</div>
+						</div>
+						<div class="review">
+							<div class="left">
+								<img src="path/to/image.jpg" alt="review image">
+							</div>
+							<div class="right">
+								<div class="rating">
+									<span>★★★★★</span>
+								</div>
+								<h3>색상: 검정색 / 사이즈: L</h3>
+								<p>생각보다 엄청 밝아요!</p>
+								<p class="date">2024.05.18</p>
+							</div>
+						</div>
+						<div class="review">
+							<div class="left">
+								<img src="path/to/image.jpg" alt="review image">
+							</div>
+							<div class="right">
+								<div class="rating">
+									<span>★★★★★</span>
+								</div>
+								<h3>색상: 검정색 / 사이즈: L</h3>
+								<p>생각보다 엄청 밝아요!</p>
+								<p class="date">2024.05.18</p>
+							</div>
+						</div>
+						<div class="review">
+							<div class="left">
+								<img src="path/to/image.jpg" alt="review image">
+							</div>
+							<div class="right">
+								<div class="rating">
+									<span>★★★★★</span>
+								</div>
+								<h3>색상: 검정색 / 사이즈: L</h3>
+								<p>생각보다 엄청 밝아요!</p>
+								<p class="date">2024.05.18</p>
+							</div>
+						</div>
+						<div class="review">
+							<div class="left">
+								<img src="path/to/image.jpg" alt="review image">
+							</div>
+							<div class="right">
+								<div class="rating">
+									<span>★★★★★</span>
+								</div>
+								<h3>색상: 검정색 / 사이즈: L</h3>
+								<p>생각보다 엄청 밝아요!</p>
+								<p class="date">2024.05.18</p>
+							</div>
+						</div>
+						<div class="review">
+							<div class="left">
+								<img src="path/to/image.jpg" alt="review image">
+							</div>
+							<div class="right">
+								<div class="rating">
+									<span>★★★★★</span>
+								</div>
+								<h3>색상: 검정색 / 사이즈: L</h3>
+								<p>생각보다 엄청 밝아요!</p>
+								<p class="date">2024.05.18</p>
+							</div>
+						</div>
+						<div class="review">
+							<div class="left">
+								<img src="path/to/image.jpg" alt="review image">
+							</div>
+							<div class="right">
+								<div class="rating">
+									<span>★★★★★</span>
+								</div>
+								<h3>색상: 검정색 / 사이즈: L</h3>
+								<p>생각보다 엄청 밝아요!</p>
+								<p class="date">2024.05.18</p>
+							</div>
+						</div>
+						<div class="review">
+							<div class="left">
+								<img src="path/to/image.jpg" alt="review image">
+							</div>
+							<div class="right">
+								<div class="rating">
+									<span>★★★★★</span>
+								</div>
+								<h3>색상: 검정색 / 사이즈: L</h3>
+								<p>생각보다 엄청 밝아요!</p>
+								<p class="date">2024.05.18</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<button class="button-write">리뷰 작성하기</button>
+			</div>
+
+			<div class="qa-section inner">
+				<h2>상품 Q&A</h2>
+				<div class="qa-section_txt">
+					<p>등록된 상품 Q&A가 없습니다.</p>
+					<button class="button-write qnaBtn">상품 문의하기</button>
+				</div>
+			</div>
+
+			<%-- 배송 정보 안내 --%>
+			<div class="toggle-button inner">
+				<h2>배송/교환/반품 안내</h2>
+				<span class="arrow">▼</span>
+			</div>
+			<div class="toggle-content inner">
+				<h3>배송안내</h3>
+				<table>
+					<tr>
+						<td>일반 택배</td>
+						<td>
+							<p>전제품 국내산지에서 직접 배송하는 상품입니다.</p>
+							<p>일반 택배: 전제품 국내산지에서 3일 이내 배송 (토,일,공휴일 제외)</p>
+						</td>
+					</tr>
+					<tr>
+						<td>교환/반품비용</td>
+						<td>교환/반품 배송비: 2,500원 (CJ대한통운 교환/반품 수거 비용)</td>
+					</tr>
+					<tr>
+						<td>교환/반품</td>
+						<td>
+							<p>1. 마이페이지에서 교환 신청 (단순 변심인 경우, 교환은 원하는 옵션 선택 후 교환신청)</p>
+							<p>2. 교환 요청한 제품 회수하기 위해 반송비가 부과되는 경우 결제 완료 교환 선수</p>
+							<p>3. 1~3일 내 반품 제품 수거 (택배 선택 검토 필요)</p>
+							<p>4. 회수 제품 확인 후 상품 배송 (반품/교환 신청된 제품 외 교환/반품 배송)</p>
+						</td>
+					</tr>
+					<tr>
+						<td>안내사항</td>
+						<td>
+							<p>교환 기간: 교환은 제품을 받은 후 7일 내 가능합니다.</p>
+							<p>반품 기간: 반품은 제품을 받은 후 7일 내 가능합니다.</p>
+							<p>단순 변심일 경우 최초 배송한 상품의 상태와 다를 시 (세탁 또는 착용 후 외형 변형) 교환 및 반품이
+								불가합니다.</p>
+							<p>교환/반품 배송비: 2,500원 (CJ대한통운 교환/반품 수거 비용)</p>
+						</td>
+					</tr>
+					<tr>
+						<td>고객 A/S 안내</td>
+						<td>이 상품은 입점사상품으로, 입점사의 A/S 정책에 따라 서비스가 제공됩니다. 상세한 문의사항은
+							상품정보고객센터 및 A/S센터가 갖춘 정보를 확인해주세요.</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>
