@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>판매자 목록</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            background-color: #343a40;
+            color: #fff;
+            padding-top: 20px;
+        }
+        .sidebar a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            padding: 10px 20px;
+        }
+        .sidebar a:hover {
+            background-color: #495057;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2 class="text-center">NiceAdmin</h2>
+        <a href="index.html">Dashboard</a>
+        <a href="seller_list.html">판매자 목록</a>
+        <a href="seller_register.html">판매자 등록</a>
+        <a href="seller_detail.html">판매자 상세</a>
+    </div>
+
+    <div class="content">
+        <div class="container-fluid">
+            <h1>판매자 목록</h1>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Brand</th>
+                            <th>Ext.</th>
+                            <th>City</th>
+                            <th>Status</th>
+                            <th>Start Date</th>
+                            <th>수정/삭제</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Unity Pugh</td>
+                            <td>adidas</td>
+                            <td>9958</td>
+                            <td>Curicó</td>
+                            <td>access</td>
+                            <td>2005/02/11</td>
+                            <td><button class="btn btn-sm btn-primary" onclick="window.location.href='seller_detail.html'">수정</button> <button class="btn btn-sm btn-danger">삭제</button></td>
+                        </tr>
+                        <tr>
+                            <td>Theodore Duran</td>
+                            <td>nike</td>
+                            <td>8971</td>
+                            <td>Dhanbad</td>
+                            <td>deny</td>
+                            <td>1999/04/07</td>
+                            <td><button class="btn btn-sm btn-primary" onclick="window.location.href='seller_detail.html'">수정</button> <button class="btn btn-sm btn-danger">삭제</button></td>
+                        </tr>
+                        <tr>
+                            <td>Kylie Bishop</td>
+                            <td>newbalance</td>
+                            <td>3147</td>
+                            <td>Norman</td>
+                            <td>access</td>
+                            <td>2005/09/08</td>
+                            <td><button class="btn btn-sm btn-primary" onclick="window.location.href='seller_detail.html'">수정</button> <button class="btn btn-sm btn-danger">삭제</button></td>
+                        </tr>
+                        <tr>
+                            <td>Willow Gilliam</td>
+                            <td>apple</td>
+                            <td>2847</td>
+                            <td>Amqui</td>
+                            <td>deny</td>
+                            <td>2009/09/11</td>
+                            <td><button class="btn btn-sm btn-primary" onclick="window.location.href='seller_detail.html'">수정</button> <button class="btn btn-sm btn-danger">삭제</button></td>
+                        </tr>
+                        <tr>
+                            <td>Blossom Dickerson</td>
+                            <td>polo</td>
+                            <td>5018</td>
+                            <td>Kempton</td>
+                            <td>access</td>
+                            <td>2006/11/09</td>
+                            <td><button class="btn btn-sm btn-primary" onclick="window.location.href='seller_detail.html'">수정</button> <button class="btn btn-sm btn-danger">삭제</button></td>
+                        </tr>
+                        <tr>
+                            <td>Elliott Snyder</td>
+                            <td>discovery</td>
+                            <td>3925</td>
+                            <td>Erines</td>
+                            <td>deny</td>
+                            <td>2006/03/08</td>
+                            <td><button class="btn btn-sm btn-primary" onclick="window.location.href='seller_detail.html'">수정</button> <button class="btn btn-sm btn-danger">삭제</button></td>
+                        </tr>
+                        <tr>
+                            <td>Castor Pugh</td>
+                            <td>samsung</td>
+                            <td>9488</td>
+                            <td>Neath</td>
+                            <td>access</td>
+                            <td>2014/23/12</td>
+                            <td><button class="btn btn-sm btn-primary" onclick="window.location.href='seller_detail.html'">수정</button> <button class="btn btn-sm btn-danger">삭제</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
