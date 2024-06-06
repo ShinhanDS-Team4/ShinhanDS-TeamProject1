@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>판매자 로그인</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            background-color: #fff;
+            width: 100%;
+            padding: 10px 0;
+            text-align: center;
+            border-bottom: 1px solid #ccc;
+        }
+        header .logo {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        nav.navbar {
+            background-color: #fff;
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        nav.navbar a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #333;
+        }
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .tab {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .tab div {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        .tab .active {
+            border-bottom: 2px solid #000;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="checkbox"] {
+            margin-right: 5px;
+        }
+        label {
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+        .btn {
+            padding: 10px 20px;
+            text-decoration: none;
+            color: #fff;
+            background-color: #000;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            border: none;
+        }
+        .btn:hover {
+            background-color: #333;
+        }
+        .links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .links a {
+            color: #333;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            width: 100%;
+            margin-top: 50px;
+        }
+        footer .footer-line {
+            border-top: 1px solid #555;
+            margin: 10px 0;
+        }
+        footer .footer-text {
+            margin: 5px 0;
+        }
+        footer .footer-logo {
+            font-size: 2em;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        footer .footer-links {
+            margin-top: 10px;
+        }
+        footer .footer-links a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">saren</div>
+    </header>
+
+    <nav class="navbar">
+        <a href="#">여성</a>
+        <a href="#">남성</a>
+        <a href="#">키즈</a>
+        <a href="#">악세서리</a>
+        <a href="#">기타</a>
+    </nav>
+
+    <div class="container">
+        <h1>로그인</h1>
+        <div class="tab">
+            <div><a href="customer_login.html">고객</a></div>
+            <div class="active">판매자</div>
+        </div>
+        <form>
+            <input type="text" placeholder="아이디">
+            <input type="password" placeholder="비밀번호">
+            <label>
+                <input type="checkbox"> 아이디 저장
+            </label>
+            <button type="submit" class="btn">로그인</button>
+        </form>
+        <div class="links">
+            <a href="#">아이디 찾기</a>
+            <a href="#">비밀번호 찾기</a>
+            <a href="#">회원가입</a>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-text">회사소개 이용약관 개인정보처리방침 이메일무단수집거부 단체주문 제휴문의 입점신청 멤버쉽 안내</div>
+        <div class="footer-line"></div>
+        <div class="footer-text">회사소개 이용약관 개인정보처리방침 이메일무단수집거부 단체주문 제휴문의 입점신청 멤버쉽 안내</div>
+        <div class="footer-logo">saren</div>
+        <div class="footer-links">
+            <a href="#">고객센터</a>
+            <a href="#">공지사항</a>
+            <a href="#">매장찾기</a>
+        </div>
+        <div class="footer-text">
+            서울특별시 강남구 남부순환로 2806 (도곡동) 대표 : 김태한 사업자등록번호: 101-85-43800 사업자정보확인 통신판매업신고: 2015-서울강남-02894
+        </div>
+        <div class="footer-text">
+            호스팅서비스: 삼성물산(주)패션부문 KG이니시스 구매안전서비스 이용확인 서비스가입사실확인
+        </div>
+        <div class="footer-text">
+            대표전화 1599-0007(유료) 080-700-1472(무료)
+        </div>
+        <div class="footer-text">
+            Copyright ⓒ 2003 Samsung C&T Corporation. All rights reserved
+        </div>
+    </footer>
+
+</body>
+</html>

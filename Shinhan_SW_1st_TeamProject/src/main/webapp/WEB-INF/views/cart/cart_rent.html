@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>장바구니</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            background-color: #fff;
+            width: 100%;
+            padding: 10px 0;
+            text-align: center;
+            border-bottom: 1px solid #ccc;
+        }
+        header .logo {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        nav.navbar {
+            background-color: #fff;
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        nav.navbar a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 2px solid #000;
+            padding-bottom: 10px;
+        }
+        .cart-header div {
+            font-weight: bold;
+        }
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        .checkbox-container input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 0;
+            border-bottom: 1px solid #ccc;
+        }
+        .cart-item img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+        .cart-item-details {
+            flex-grow: 1;
+            margin-left: 20px;
+        }
+        .cart-item-details div {
+            margin-bottom: 10px;
+        }
+        .cart-item-price, .cart-item-quantity, .cart-item-total {
+            text-align: center;
+            width: 100px;
+        }
+        .item-options {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .btn-option {
+            background-color: #fff;
+            color: #000;
+            padding: 5px 10px;
+            border: 1px solid #000;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 5px 0;
+        }
+        .btn-option:hover {
+            background-color: #f5f5f5;
+        }
+        .cart-item-remove {
+            text-align: center;
+            width: 50px;
+            cursor: pointer;
+        }
+        .cart-summary {
+            margin-top: 20px;
+            text-align: right;
+        }
+        .cart-summary-details {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
+        .summary-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .summary-item div {
+            margin: 5px 0;
+        }
+        .summary-total {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .btn-purchase {
+            background-color: #6c63ff;
+            color: #fff;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2em;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .btn-purchase:hover {
+            background-color: #5555ff;
+        }
+        .note {
+            font-size: 0.8em;
+            color: #666;
+            margin-top: 10px;
+            text-align: left;
+        }
+        footer {
+            background-color: #fff;
+            color: #666;
+            text-align: center;
+            padding: 20px 0;
+            width: 100%;
+            border-top: 1px solid #ccc;
+            margin-top: 50px;
+        }
+        footer .footer-line {
+            border-top: 1px solid #555;
+            margin: 10px 0;
+        }
+        footer .footer-text {
+            margin: 5px 0;
+        }
+        footer .footer-logo {
+            font-size: 2em;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        footer .footer-links {
+            margin-top: 10px;
+        }
+        footer .footer-links a {
+            color: #666;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">saren</div>
+    </header>
+
+    <nav class="navbar">
+        <a href="#">여성</a>
+        <a href="#">남성</a>
+        <a href="#">키즈</a>
+        <a href="#">악세서리</a>
+        <a href="#">기타</a>
+    </nav>
+
+    <div class="container">
+        <h1>장바구니</h1>
+        <div class="cart-header">
+            <div>구매(개수)</div>
+            <div>대여(개수)</div>
+        </div>
+        <div class="checkbox-container">
+            <input type="checkbox" checked>
+            <span>전체선택</span>
+        </div>
+        <div class="cart-item">
+            <div class="checkbox-container">
+                <input type="checkbox">
+            </div>
+            <div class="cart-item-details">
+                <div><strong>상품명:</strong> ROA01S</div>
+                <div><strong>옵션:</strong> 색상: 블랙 / 사이즈: M</div>
+            </div>
+            <div class="cart-item-price">120,000원</div>
+            <div class="item-options">
+                <button class="btn-option">옵션 변경</button>
+                <button class="btn-option">바로구매</button>
+            </div>
+            <div class="cart-item-remove">X</div>
+        </div>
+        <div class="cart-item">
+            <div class="checkbox-container">
+                <input type="checkbox">
+            </div>
+            <div class="cart-item-details">
+                <div><strong>상품명:</strong> EXAMPLE MEN</div>
+                <div><strong>옵션:</strong> 색상: 화이트 / 사이즈: L</div>
+            </div>
+            <div class="cart-item-price">339,000원</div>
+            <div class="item-options">
+                <button class="btn-option">옵션 변경</button>
+                <button class="btn-option">바로구매</button>
+            </div>
+            <div class="cart-item-remove">X</div>
+        </div>
+        <div class="cart-summary">
+            <div class="cart-summary-details">
+                <div class="summary-item">
+                    <div>결제 예정 금액</div>
+                    <div>총 2건</div>
+                </div>
+                <div class="summary-item">
+                    <div>468,000원</div>
+                    <div>+</div>
+                    <div>0원</div>
+                    <div>=</div>
+                    <div class="summary-total">468,000원</div>
+                </div>
+            </div>
+            <button class="btn-purchase">대여하기</button>
+            <div class="note">
+                대여를 한 시점에서 일주일 간 대여 가능
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-text">회사소개 이용약관 개인정보처리방침 이메일무단수집거부 단체주문 제휴문의 입점신청 멤버쉽 안내</div>
+        <div class="footer-line"></div>
+        <div class="footer-text">회사소개 이용약관 개인정보처리방침 이메일무단수집거부 단체주문 제휴문의 입점신청 멤버쉽 안내</div>
+        <div class="footer-logo">saren</div>
+        <div class="footer-links">
+            <a href="#">고객센터</a>
+            <a href="#">공지사항</a>
+            <a href="#">매장찾기</a>
+        </div>
+        <div class="footer-text">
+            서울특별시 강남구 남부순환로 2806 (도곡동) 대표 : 김태한 사업자등록번호: 101-85-43800 사업자정보확인 통신판매업신
