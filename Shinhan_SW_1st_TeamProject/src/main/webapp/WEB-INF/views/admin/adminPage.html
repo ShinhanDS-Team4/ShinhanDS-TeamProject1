@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 페이지</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            background-color: #343a40;
+            color: #fff;
+            padding-top: 20px;
+        }
+        .sidebar a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            padding: 10px 20px;
+        }
+        .sidebar a:hover {
+            background-color: #495057;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+        .chart-container {
+            position: relative;
+            height: 200px;
+        }
+        .table-container {
+            margin-top: 20px;
+        }
+        .btn {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2 class="text-center">NiceAdmin</h2>
+        <a href="#">Dashboard</a>
+        <a href="#">Components</a>
+        <a href="#">Forms</a>
+        <a href="#">Tables</a>
+        <a href="#">Charts</a>
+        <a href="#">Icons</a>
+        <a href="#">Pages</a>
+        <a href="#">Profile</a>
+        <a href="#">F.A.Q</a>
+        <a href="#">Contact</a>
+        <a href="#">Register</a>
+        <a href="#">Login</a>
+        <a href="#">Error 404</a>
+    </div>
+
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">판매자 수</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">145</h6>
+                            <p class="card-text">12% increase</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">판매자 수</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">$3,264</h6>
+                            <p class="card-text">8% increase</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">고객수</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">1244</h6>
+                            <p class="card-text">12% decrease</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">접속자 수</h5>
+                    <div class="chart-container">
+                        <canvas id="visitorsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <h5 class="mb-4">판매자 목록</h5>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>판매자명</th>
+                            <th>Ext.</th>
+                            <th>City</th>
+                            <th>Status</th>
+                            <th>Start Date</th>
+                            <th>수정/삭제</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Unity Pugh</td>
+                            <td>9958</td>
+                            <td>Curicó</td>
+                            <td>access</td>
+                            <td>2009/01/17</td>
+                            <td><button class="btn btn-sm">수정</button> <button class="btn btn-sm">삭제</button></td>
+                        </tr>
+                        <tr>
+                            <td>Theodore Duran</td>
+                            <td>8971</td>
+                            <td>Dhanbad</td>
+                            <td>deny</td>
+                            <td>1999/04/27</td>
+                            <td><button class="btn btn-sm">수정</button> <button class="btn btn-sm">삭제</button></td>
+                        </tr>
+                        <tr>
+                            <td>Kylie Bishop</td>
+                            <td>3147</td>
+                            <td>Norman</td>
+                            <td>access</td>
+                            <td>2005/09/08</td>
+                            <td><button class="btn btn-sm">수정</button> <button class="btn btn-sm">삭제</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">판매 순위</h5>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Preview</th>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Sold</th>
+                                <th>Revenue</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><img src="product1.jpg" alt="Product 1" style="width: 50px;"></td>
+                                <td>Ut inventore ipsa voluptas nulla</td>
+                                <td>$64</td>
+                                <td>124</td>
+                                <td>$5,828</td>
+                            </tr>
+                            <tr>
+                                <td><img src="product2.jpg" alt="Product 2" style="width: 50px;"></td>
+                                <td>Exercitationem similique doloremque</td>
+                                <td>$46</td>
+                                <td>98</td>
+                                <td>$4,508</td>
+                            </tr>
+                            <tr>
+                                <td><img src="product3.jpg" alt="Product 3" style="width: 50px;"></td>
+                                <td>Doloribus nisi exercitationem</td>
+                                <td>$59</td>
+                                <td>74</td>
+                                <td>$4,366</td>
+                            </tr>
+                            <tr>
+                                <td><img src="product4.jpg" alt="Product 4" style="width: 50px;"></td>
+                                <td>Officiis quaerat sint rerum error</td>
+                                <td>$32</td>
+                                <td>63</td>
+                                <td>$2,016</td>
+                            </tr>
+                            <tr>
+                                <td><img src="product5.jpg" alt="Product 5" style="width: 50px;"></td>
+                                <td>Sit unde debitis delectus repellendus</td>
+                                <td>$79</td>
+                                <td>41</td>
+                                <td>$3,239</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('visitorsChart').getContext('2d');
+        var visitorsChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00'],
+                datasets: [{
+                    label: 'Sales',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    data: [12, 19, 3, 5, 2, 3, 7]
+                }, {
+                    label: 'Revenue',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    data: [2, 3, 20, 5, 1, 4, 10]
+                }, {
+                    label: 'Customers',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    data: [3, 10, 13, 15, 22, 30, 45]
+                }]
+            },
+            options: {}
+        });
+    </script>
+</body>
+</html>
