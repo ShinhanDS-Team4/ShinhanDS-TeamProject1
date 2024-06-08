@@ -1,0 +1,160 @@
+/* 기존의 스타일 코드와 추가된 스타일 코드 */
+
+main {
+  width: 80%;
+  margin: 20px auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+main h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.order-summary,
+.delivery-info,
+.coupon-info {
+  margin-bottom: 30px;
+}
+
+.order-summary .product-info {
+  display: flex;
+  gap: 20px;
+}
+
+.order-summary .product-info img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.order-summary .product-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.delivery-info h2,
+.coupon-info h2,
+.terms-and-payment h2 {
+  border-bottom: 2px solid #000;
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+}
+
+.form-group label {
+  width: 200px;
+  font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group select {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.form-group input[type="checkbox"] {
+  width: auto;
+}
+
+.form-group .address-button,
+.form-group .coupon-button,
+.submit-button,
+.payment-button {
+  background-color: black;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-group .address-button {
+  margin-left: 10px;
+}
+
+.form-group .coupon-button {
+  margin-left: 10px;
+}
+
+.submit-button {
+  align-self: flex-end;
+}
+
+.payment-summary {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.terms-and-payment form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.terms-and-payment form .form-group {
+  display: flex;
+  align-items: center;
+}
+
+.terms-and-payment form .form-group label {
+  flex: 1;
+}
+
+.payment-button {
+  background-color: #6200ea;
+  color: white;
+  padding: 15px;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  align-self: center;
+  width: 200px;
+}
+
+footer {
+  background-color: #fff;
+  padding: 20px;
+  border-top: 1px solid #ddd;
+  text-align: center;
+}
+
+footer ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  padding: 0;
+}
+
+footer ul li {
+  display: inline;
+}
+
+footer ul li a {
+  text-decoration: none;
+  color: #000;
+  font-size: 16px;
+}
