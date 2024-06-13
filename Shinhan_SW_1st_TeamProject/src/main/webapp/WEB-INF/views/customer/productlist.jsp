@@ -4,7 +4,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="ko">
-<head>
+<head>   
+	<link rel="stylesheet" type="text/css" href="../resources/css/header_footer.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>신상품</title>
@@ -13,17 +14,20 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: white;
+            background-color: #ffffff; 
+            flex-direction: column;
+            min-height: 100vh;
+        }  
+
+        .container { 
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 20px; 
         }
 
-        .container {
-            width: 80%;
-            background-color: #fff; 
+        .inner {
+            max-width: 1300px;
+            margin: 0 auto;
         }
 
         .title {
@@ -128,159 +132,162 @@
         }
     </style>
 </head>
-<body>
+<script>
+    /* 한 페이지에 보여줄 상품수 */
+    const productsPerPage = 12;  
+    let currentPage = 1;
+    const products = [
+        {img: "bracelet.png", brand: "브랜드명", name: "상품이름", description: "상세설명상세설명", price: "20,000원"},
+        {img: "shirt.png", brand: "브랜드명", name: "상품이름", description: "상세설명상세설명", price: "20,000원"},
+        {img: "shirt.png", brand: "브랜드명", name: "상품이름", description: "상세설명상세설명", price: "20,000원"},
+        {img: "shirt.png", brand: "브랜드명", name: "상품이름", description: "상세설명상세설명", price: "20,000원"},
+        {img: "shirt.png", brand: "브랜드명", name: "상품이름", description: "상세설명상세설명", price: "20,000원"},
+        // 추가 상품 데이터를 여기에 삽입
+    ];
+
+    function renderProducts() {
+        const productList = document.getElementById('product-list');
+        productList.innerHTML = '';
+        const start = (currentPage - 1) * productsPerPage;
+        const end = start + productsPerPage;
+        const paginatedProducts = products.slice(start, end);
+
+        paginatedProducts.forEach(product => {
+            const productDiv = document.createElement('div');
+            productDiv.classList.add('product');
+            productDiv.innerHTML = `
+                <img src="${product.img}" alt="상품 이미지">
+                <p>${product.brand}</p>
+                <p>${product.name}</p>
+                <p>${product.description}</p>
+                <p>${product.price}</p>
+                <button>❤</button>
+            `;
+            productList.appendChild(productDiv);
+        });
+    }
+
+    function renderPagination() {
+        const pagination = document.getElementById('pagination');
+        pagination.innerHTML = '';
+        const totalPages = Math.ceil(products.length / productsPerPage);
+
+        const firstButton = document.createElement('button');
+        firstButton.innerHTML = '&lt;&lt;';
+        firstButton.classList.add('arrow');
+        firstButton.disabled = currentPage === 1;
+        firstButton.addEventListener('click', () => {
+            if (currentPage !== 1) {
+                currentPage = 1;
+                renderProducts();
+                renderPagination();
+            }
+        });
+        pagination.appendChild(firstButton);
+
+        const prevButton = document.createElement('button');
+        prevButton.innerHTML = '&lt;';
+        prevButton.classList.add('arrow');
+        prevButton.disabled = currentPage === 1;
+        prevButton.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderProducts();
+                renderPagination();
+            }
+        });
+        pagination.appendChild(prevButton);
+
+        for (let i = 1; i <= totalPages; i++) {
+            const button = document.createElement('button');
+            button.innerText = i;
+            if (i === currentPage) {
+                button.classList.add('active');
+            }
+            button.addEventListener('click', () => {
+                currentPage = i;
+                renderProducts();
+                renderPagination();
+            });
+            pagination.appendChild(button);
+        }
+
+        const nextButton = document.createElement('button');
+        nextButton.innerHTML = '&gt;';
+        nextButton.classList.add('arrow');
+        nextButton.disabled = currentPage === totalPages;
+        nextButton.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderProducts();
+                renderPagination();
+            }
+        });
+        pagination.appendChild(nextButton);
+
+        const lastButton = document.createElement('button');
+        lastButton.innerHTML = '&gt;&gt;';
+        lastButton.classList.add('arrow');
+        lastButton.disabled = currentPage === totalPages;
+        lastButton.addEventListener('click', () => {
+            if (currentPage !== totalPages) {
+                currentPage = totalPages;
+                renderProducts();
+                renderPagination();
+            }
+        });
+        pagination.appendChild(lastButton);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        renderProducts();
+        renderPagination();
+    });
+</script>
+<body> 
+	<%@ include file="../../common/header.jsp"%>
     <div class="container">
-        <div class="title">
-            <h1>신상품 <span>10,106개 상품</span></h1>
-        </div>
-        <div class="separator"></div>
-        <nav>
-            <ul>
-                <li><a href="#">전체</a></li>
-                <li><a href="#">아우터</a></li>
-                <li><a href="#">정장</a></li>
-                <li><a href="#">팬츠</a></li>
-                <li><a href="#">재킷/베스트</a></li>
-                <li><a href="#">셔츠</a></li>
-                <li><a href="#">니트</a></li>
-                <li><a href="#">티셔츠</a></li>
-            </ul>
-        </nav>
-        <div class="filters">
-            <select>
-                <option>브랜드</option>
-            </select>
-            <select>
-                <option>가격</option>
-            </select>
-            <select>
-                <option>사이즈</option>
-            </select>
-            <select>
-                <option>색상</option>
-            </select>
-        </div>
-        
-        <section class="products" id="product-list">
-            <!-- Products will be dynamically inserted here -->
-        </section>
-        
-        <div class="pagination" id="pagination">
-            <!-- Pagination buttons will be dynamically inserted here -->
+        <div class="main-content inner">
+            <div class="title">
+                <h1>신상품 <span>10,106개 상품</span></h1>
+            </div>
+            <div class="separator"></div>
+            <nav>
+                <ul>
+                    <li><a href="#">전체</a></li>
+                    <li><a href="#">아우터</a></li>
+                    <li><a href="#">정장</a></li>
+                    <li><a href="#">팬츠</a></li>
+                    <li><a href="#">재킷/베스트</a></li>
+                    <li><a href="#">셔츠</a></li>
+                    <li><a href="#">니트</a></li>
+                    <li><a href="#">티셔츠</a></li>
+                </ul>
+            </nav>
+            <div class="filters">
+                <select>
+                    <option>브랜드</option>
+                </select>
+                <select>
+                    <option>가격</option>
+                </select>
+                <select>
+                    <option>사이즈</option>
+                </select>
+                <select>
+                    <option>색상</option>
+                </select>
+            </div>
+            
+            <section class="products" id="product-list">
+                <!-- Products will be dynamically inserted here -->
+            </section>
+            
+            <div class="pagination" id="pagination">
+                <!-- Pagination buttons will be dynamically inserted here -->
+            </div>
         </div>
     </div>
-
-    <script>
-    /* 한 페이지에 보여줄 상품수 */
-        const productsPerPage = 12;  
-        let currentPage = 1;
-        const products = [
-            {img: "bracelet.png", brand: "브랜드명", name: "상품이름", description: "상세설명상세설명", price: "20,000원"},
-            {img: "shirt.png", brand: "브랜드명", name: "상품이름", description: "상세설명상세설명", price: "20,000원"},
-            {img: "shirt.png", brand: "브랜드명", name: "상품이름", description: "상세설명상세설명", price: "20,000원"},
-            {img: "shirt.png", brand: "브랜드명", name: "상품이름", description: "상세설명상세설명", price: "20,000원"},
-            {img: "shirt.png", brand: "브랜드명", name: "상품이름", description: "상세설명상세설명", price: "20,000원"},
-            // 추가 상품 데이터를 여기에 삽입
-        ];
-
-        function renderProducts() {
-            const productList = document.getElementById('product-list');
-            productList.innerHTML = '';
-            const start = (currentPage - 1) * productsPerPage;
-            const end = start + productsPerPage;
-            const paginatedProducts = products.slice(start, end);
-
-            paginatedProducts.forEach(product => {
-                const productDiv = document.createElement('div');
-                productDiv.classList.add('product');
-                productDiv.innerHTML = `
-                    <img src="${product.img}" alt="상품 이미지">
-                    <p>${product.brand}</p>
-                    <p>${product.name}</p>
-                    <p>${product.description}</p>
-                    <p>${product.price}</p>
-                    <button>❤</button>
-                `;
-                productList.appendChild(productDiv);
-            });
-        }
-
-        function renderPagination() {
-            const pagination = document.getElementById('pagination');
-            pagination.innerHTML = '';
-            const totalPages = Math.ceil(products.length / productsPerPage);
-
-            const firstButton = document.createElement('button');
-            firstButton.innerHTML = '&lt;&lt;';
-            firstButton.classList.add('arrow');
-            firstButton.disabled = currentPage === 1;
-            firstButton.addEventListener('click', () => {
-                if (currentPage !== 1) {
-                    currentPage = 1;
-                    renderProducts();
-                    renderPagination();
-                }
-            });
-            pagination.appendChild(firstButton);
-
-            const prevButton = document.createElement('button');
-            prevButton.innerHTML = '&lt;';
-            prevButton.classList.add('arrow');
-            prevButton.disabled = currentPage === 1;
-            prevButton.addEventListener('click', () => {
-                if (currentPage > 1) {
-                    currentPage--;
-                    renderProducts();
-                    renderPagination();
-                }
-            });
-            pagination.appendChild(prevButton);
-
-            for (let i = 1; i <= totalPages; i++) {
-                const button = document.createElement('button');
-                button.innerText = i;
-                if (i === currentPage) {
-                    button.classList.add('active');
-                }
-                button.addEventListener('click', () => {
-                    currentPage = i;
-                    renderProducts();
-                    renderPagination();
-                });
-                pagination.appendChild(button);
-            }
-
-            const nextButton = document.createElement('button');
-            nextButton.innerHTML = '&gt;';
-            nextButton.classList.add('arrow');
-            nextButton.disabled = currentPage === totalPages;
-            nextButton.addEventListener('click', () => {
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    renderProducts();
-                    renderPagination();
-                }
-            });
-            pagination.appendChild(nextButton);
-
-            const lastButton = document.createElement('button');
-            lastButton.innerHTML = '&gt;&gt;';
-            lastButton.classList.add('arrow');
-            lastButton.disabled = currentPage === totalPages;
-            lastButton.addEventListener('click', () => {
-                if (currentPage !== totalPages) {
-                    currentPage = totalPages;
-                    renderProducts();
-                    renderPagination();
-                }
-            });
-            pagination.appendChild(lastButton);
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            renderProducts();
-            renderPagination();
-        });
-    </script>
+    <%@ include file="../common/footer.html"%>
 </body>
 </html>

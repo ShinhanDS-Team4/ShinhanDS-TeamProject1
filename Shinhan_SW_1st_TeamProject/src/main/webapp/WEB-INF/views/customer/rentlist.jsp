@@ -5,7 +5,8 @@
 <!DOCTYPE html>
 <html>
 
-<head>
+<head>   
+    <link rel="stylesheet" type="text/css" href="../resources/css/header_footer.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <meta charset="UTF-8">
     <title>대여내역</title>
@@ -19,43 +20,11 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #ffffff;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-        }
-
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 10px 0;
-            text-align: center;
-        }
-
-        nav ul {
-            list-style-type: none;
-            padding: 0;
-            text-align: center;
-            background-color: #444;
-            margin: 0;
-        }
-
-        nav ul li {
-            display: inline;
-            margin-right: 10px;
-        }
-
-        nav ul li a {
-            text-decoration: none;
-            color: #fff;
-            background-color: #555;
-            padding: 5px 10px;
-            border-radius: 3px;
-        }
-
-        nav ul li a:hover {
-            background-color: #666;
-        }
+        } 
 
         .container {
             display: flex;
@@ -109,14 +78,7 @@
 
         section h3 {
             margin-top: 0;
-        }
-
-        footer {
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            padding: 10px 0;
-        }
+        } 
 
         .order-text {
             display: flex;
@@ -299,29 +261,44 @@
         }
     </style>
 </head>
+<script>
+    $(document).ready(function() {
+        // Function to show the return popup
+        function showReturnPopup() {
+            $('#return-popup').css('display', 'flex');
+        }
 
+        // Function to hide the return popup
+        function hideReturnPopup() {
+            $('#return-popup').hide();
+        }
+
+        // Add event listeners to return buttons
+        $('.return-button').on('click', showReturnPopup);
+
+        $('#return-no-button').on('click', hideReturnPopup);
+    });
+</script>
 <body>
-    <!-- Header Section -->
-    <header>
-        <h1>Web Test</h1>
-    </header>
-    <!-- Navigation Section -->
-    <nav>
-        <ul>
-            <li><a href="women.jsp">여성</a></li>
-            <li><a href="men.jsp">남성</a></li>
-            <li><a href="kids.jsp">키즈</a></li>
-            <li><a href="luxury.jsp">럭셔리</a></li>
-            <li><a href="sports.jsp">스포츠</a></li>
-            <li><a href="bags.jsp">가방&신발</a></li>
-            <li><a href="accessories.jsp">악세사리</a></li>
-            <li><a href="ai-recommend.jsp">AI추천코디</a></li>
-            <li><a href="rental.jsp">옷대여</a></li>
-            <li><a href="notice.jsp">공지사항</a></li>
-            <li><a href="qa.jsp">Q&A</a></li>
-        </ul>
-    </nav>
 
+    <!-- 반납신청알림 -->
+    <div id="return-popup" class="popup">
+        <div class="popup-content">
+            <div class="popup-header">
+                <span class="popup-icon">!</span>
+            </div>
+            <div class="popup-body">
+                <p>반납 신청하시겠습니까?</p>
+            </div>
+            <div class="popup-footer">
+                <button class="popup-button" id="return-yes-button">예</button>
+                <button class="popup-button" id="return-no-button">아니오</button>
+            </div>
+        </div>
+    </div>
+
+
+    <%@ include file="../../common/header.jsp"%>
     <!-- 컨테이너 -->
     <div class="container">
         <!-- 메인 컨텐츠 -->
@@ -367,157 +344,4 @@
                         <div class="order-details">
                             <img src="tshirt.jpg" alt="티셔츠 이미지">
                             <div class="product-info">
-                                <h3>티셔츠</h3>
-                                <p>브랜드: ABC</p>
-                                <p>상품명: 티셔츠</p>
-                                <p>옵션: 블루, L</p>
-                                <p>가격: $20</p>
-                            </div>
-                        </div>
-
-                    </div>
-            </section>
-
-            <!-- Divider Between Sections -->
-            <div class="divider-between-sections"></div>
-
-            <section class="rent-date">
-                <div class="total-section">
-                    <p class="total-amount">대여 일자 <span>2024.03.14</span></p>
-                    <p class="accumulated-points">반납 예정일 <span>2024.03.21</span></p>
-                </div>
-            </section>
-            <!-- Divider Between Sections -->
-            <div class="divider-between-sections"></div>
-
-            <section class="order-price">
-                <div class="total-section">
-                    <p class="total-amount">총 주문금액 <span>78,000원</span></p>
-                    <p class="accumulated-points">적립 포인트 <span>780p</span></p>
-                </div>
-            </section>
-
-            <div class="divider-between-orders"></div>
-
-            <!-- 두번째 대여내역 -->
-            <section class="order">
-                <div class="order-group">
-
-                    <div class="order">
-
-
-                        <div class="order-text">
-                            <p class="order-date">대여일: 2024.03.14</p>
-                            <div class="order-status-wrapper">
-                                <span class="order-status">대여중</span>
-                                <button class="return-button">반납하기</button>
-                            </div>
-                        </div>
-                        <div class="order-details">
-                            <img src="tshirt.jpg" alt="티셔츠 이미지">
-                            <div class="product-info">
-                                <h3>티셔츠</h3>
-                                <p>브랜드: ABC</p>
-                                <p>상품명: 티셔츠</p>
-                                <p>옵션: 블루, L</p>
-                                <p>가격: $20</p>
-                            </div>
-                        </div>
-                        <div class="order-details">
-                            <img src="tshirt.jpg" alt="티셔츠 이미지">
-                            <div class="product-info">
-                                <h3>티셔츠</h3>
-                                <p>브랜드: ABC</p>
-                                <p>상품명: 티셔츠</p>
-                                <p>옵션: 블루, L</p>
-                                <p>가격: $20</p>
-                            </div>
-                        </div>
-                        <div class="order-details">
-                            <img src="tshirt.jpg" alt="티셔츠 이미지">
-                            <div class="product-info">
-                                <h3>티셔츠</h3>
-                                <p>브랜드: ABC</p>
-                                <p>상품명: 티셔츠</p>
-                                <p>옵션: 블루, L</p>
-                                <p>가격: $20</p>
-                            </div>
-                        </div>
-
-                    </div>
-            </section>
-
-            <!-- Divider Between Sections -->
-            <div class="divider-between-sections"></div>
-
-            <section class="rent-date">
-                <div class="total-section">
-                    <p class="total-amount">대여 일자 <span>2024.03.14</span></p>
-                    <p class="accumulated-points">반납 예정일 <span>2024.03.21</span></p>
-                </div>
-            </section>
-            <!-- Divider Between Sections -->
-            <div class="divider-between-sections"></div>
-
-            <section class="order-price">
-                <div class="total-section">
-                    <p class="total-amount">총 주문금액 <span>78,000원</span></p>
-                    <p class="accumulated-points">적립 포인트 <span>780p</span></p>
-                </div>
-            </section>
-    </div>
-
-    <!-- 반납신청알림 -->
-    <div id="return-popup" class="popup">
-        <div class="popup-content">
-            <div class="popup-header">
-                <span class="popup-icon">!</span>
-            </div>
-            <div class="popup-body">
-                <p>반납 신청하시겠습니까?</p>
-            </div>
-            <div class="popup-footer">
-                <button class="popup-button" id="return-yes-button">예</button>
-                <button class="popup-button" id="return-no-button">아니오</button>
-            </div>
-        </div>
-    </div>
-
-    </div>
-
-
-    </section>
-
-
-
-    </div>
-
-
-    </main>
-    </div>
-    <script>
-        /* Function to show the return popup */
-        function showReturnPopup() {
-            document.getElementById('return-popup').style.display = 'flex';
-        }
-
-        /* Function to hide the return popup */
-        function hideReturnPopup() {
-            document.getElementById('return-popup').style.display = 'none';
-        }
-
-        /* Add event listeners to return buttons */
-        document.querySelectorAll('.return-button').forEach(button => {
-            button.addEventListener('click', showReturnPopup);
-        });
-
-        document.getElementById('return-yes-button').addEventListener('click', function () {
-            Handle the return logic here
-            hideReturnPopup();
-        });
-
-        document.getElementById('return-no-button').addEventListener('click', hideReturnPopup);
-    </script>
-</body>
-
-</html>
+                               
