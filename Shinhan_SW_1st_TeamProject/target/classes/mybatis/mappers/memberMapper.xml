@@ -2,6 +2,42 @@
 <!DOCTYPE mapper
       PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.team4.memeber">
-    
+<mapper namespace="com.saren.member">
+
+	<select id="selectById" parameterType="string"
+		resultType="memberVO">
+		SELECT *
+		FROM MEMBER
+		WHERE "member_id" = #{member_id}
+	</select>
+
+	<select id="selectAll" resultType="memberVO">
+		SELECT *
+		FROM MEMBER
+	</select>
+
+	<insert id="memberInsert" parameterType="memberVO">
+		INSERT
+		INTO MEMBER("member_id", "member_pw", "member_name", "email", "phone",
+					"brand", "birth_date", "last_access", "member_type", "gender")
+		VALUES(#{member_id}, #{member_pw}, #{member_name}, #{email}, #{phone},
+			   #{brand}, #{birth_date}, #{last_access}, #{member_type}, #{gender})
+	</insert>
+
+	<update id="memberUpdate" parameterType="memberVO">
+		UPDATE MEMBER
+		SET
+		"member_pw" = #{member_pw}, "member_name" = #{member_name}, "email" = #{email},
+		"phone" = #{phone}, "brand" = #{brand}, "birth_date" = #{birth_date},
+		"last_access" = #{last_access}, "member_type" = #{member_type}, 
+		"gender" = #{gender}
+		WHERE "member_id" = #{member_id}
+	</update>
+
+	<delete id="memberDelete" parameterType="string">
+		DELETE
+		FROM MEMBER
+		WHERE "member_id" = #{member_id}
+	</delete>
+	
 </mapper>

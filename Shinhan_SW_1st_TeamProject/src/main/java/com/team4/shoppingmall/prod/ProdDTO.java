@@ -1,4 +1,4 @@
-package com.team4.shoppingmall.member;
+package com.team4.shoppingmall.prod;
 
 import java.sql.Date;
 
@@ -12,15 +12,12 @@ import lombok.ToString;
 @Getter@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberDTO {
+public class ProdDTO {
+	Integer prod_id;
+	String prod_name;
+	String prod_desc;
+	Integer prod_price;
+	Date prod_added_date;
+	Integer category_id;
 	String member_id;
-	String member_pw;
-	String member_name;
-	String email;
-	String phone;
-	String brand;
-	Date birth_date;
-	Date last_access;
-	Integer member_type;
-	char gender;
 }
