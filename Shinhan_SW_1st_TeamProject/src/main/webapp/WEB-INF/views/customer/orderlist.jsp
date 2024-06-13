@@ -5,7 +5,8 @@
 <!DOCTYPE html>
 <html>
 
-<head>
+<head>   
+    <link rel="stylesheet" type="text/css" href="../resources/css/header_footer.css">
     <meta charset="UTF-8">
     <title>주문내역</title>
     <style>
@@ -18,43 +19,11 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #ffffff;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-        }
-
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 10px 0;
-            text-align: center;
-        }
-
-        nav ul {
-            list-style-type: none;
-            padding: 0;
-            text-align: center;
-            background-color: #444;
-            margin: 0;
-        }
-
-        nav ul li {
-            display: inline;
-            margin-right: 10px;
-        }
-
-        nav ul li a {
-            text-decoration: none;
-            color: #fff;
-            background-color: #555;
-            padding: 5px 10px;
-            border-radius: 3px;
-        }
-
-        nav ul li a:hover {
-            background-color: #666;
-        }
+        }  
 
         .container {
             display: flex;
@@ -308,28 +277,71 @@
             border: 1px solid #000000;
         }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Function to show the refund popup
+            function showRefundPopup() {
+                $('#refund-popup').css('display', 'flex');
+            }
+
+            // Function to hide the refund popup
+            function hideRefundPopup() {
+                $('#refund-popup').hide();
+            }
+
+            // Function to show the single item refund popup
+            function showSingleItemRefundPopup() {
+                $('#single-item-refund-popup').css('display', 'flex');
+            }
+
+            // Function to hide the single item refund popup
+            function hideSingleItemRefundPopup() {
+                $('#single-item-refund-popup').hide();
+            }
+
+            // Function to show the single item exchange popup
+            function showSingleItemExchangePopup() {
+                $('#single-item-exchange-popup').css('display', 'flex');
+            }
+
+            // Function to hide the single item exchange popup
+            function hideSingleItemExchangePopup() {
+                $('#single-item-exchange-popup').hide();
+            }
+
+            // Add event listeners to refund buttons
+            $('.refund-button').on('click', showRefundPopup);
+
+            $('#yes-button').on('click', function() { 
+                hideRefundPopup();
+            });
+
+            $('#no-button').on('click', hideRefundPopup);
+
+            // Add event listeners to single item refund buttons
+            $('.single-item-refund-button').on('click', showSingleItemRefundPopup);
+
+            $('#single-item-refund-yes-button').on('click', function() { 
+                hideSingleItemRefundPopup();
+            });
+
+            $('#single-item-refund-no-button').on('click', hideSingleItemRefundPopup);
+
+            // Add event listeners to single item exchange buttons
+            $('.single-item-exchange-button').on('click', showSingleItemExchangePopup);
+
+            $('#single-item-exchange-yes-button').on('click', function() { 
+                hideSingleItemExchangePopup();
+            });
+
+            $('#single-item-exchange-no-button').on('click', hideSingleItemExchangePopup);
+        });
+    </script>
 </head>
 
 <body>
-    <header>
-        <h1>주문내역</h1>
-    </header>
-    <nav>
-        <ul>
-            <li><a href="women.jsp">여성</a></li>
-            <li><a href="men.jsp">남성</a></li>
-            <li><a href="kids.jsp">키즈</a></li>
-            <li><a href="luxury.jsp">럭셔리</a></li>
-            <li><a href="sports.jsp">스포츠</a></li>
-            <li><a href="bags.jsp">가방&신발</a></li>
-            <li><a href="accessories.jsp">악세사리</a></li>
-            <li><a href="ai-recommend.jsp">AI추천코디</a></li>
-            <li><a href="rental.jsp">옷대여</a></li>
-            <li><a href="notice.jsp">공지사항</a></li>
-            <li><a href="qa.jsp">Q&A</a></li>
-        </ul>
-    </nav>
-
+    <%@ include file="../../common/header.jsp"%>
     <!-- Container Section -->
     <div class="container">
         <!-- Main Content Section -->
@@ -597,65 +609,9 @@
 
 
     </main>
+    <%@ include file="../common/footer.html"%>
     </div>
-    <script> 
-        function showRefundPopup() {
-            document.getElementById('refund-popup').style.display = 'flex';
-        }
- 
-        function hideRefundPopup() {
-            document.getElementById('refund-popup').style.display = 'none';
-        }
-
- 
-        function showSingleItemRefundPopup() {
-            document.getElementById('single-item-refund-popup').style.display = 'flex';
-        }
- 
-        function hideSingleItemRefundPopup() {
-            document.getElementById('single-item-refund-popup').style.display = 'none';
-        }
-
- 
-        function showSingleItemExchangePopup() {
-            document.getElementById('single-item-exchange-popup').style.display = 'flex';
-        }
- 
-        function hideSingleItemExchangePopup() {
-            document.getElementById('single-item-exchange-popup').style.display = 'none';
-        }
-
- 
-        document.querySelectorAll('.refund-button').forEach(button => {
-            button.addEventListener('click', showRefundPopup);
-        });
-
-        document.getElementById('yes-button').addEventListener('click', function () { 
-            hideRefundPopup();
-        });
-
-        document.getElementById('no-button').addEventListener('click', hideRefundPopup);
- 
-        document.querySelectorAll('.single-item-refund-button').forEach(button => {
-            button.addEventListener('click', showSingleItemRefundPopup);
-        });
-
-        document.getElementById('single-item-refund-yes-button').addEventListener('click', function () { 
-            hideSingleItemRefundPopup();
-        });
-
-        document.getElementById('single-item-refund-no-button').addEventListener('click', hideSingleItemRefundPopup);
- 
-        document.querySelectorAll('.single-item-exchange-button').forEach(button => {
-            button.addEventListener('click', showSingleItemExchangePopup);
-        });
-
-        document.getElementById('single-item-exchange-yes-button').addEventListener('click', function () { 
-            hideSingleItemExchangePopup();
-        });
-
-        document.getElementById('single-item-exchange-no-button').addEventListener('click', hideSingleItemExchangePopup);
-    </script>
+    
 </body>
 
 </html>
