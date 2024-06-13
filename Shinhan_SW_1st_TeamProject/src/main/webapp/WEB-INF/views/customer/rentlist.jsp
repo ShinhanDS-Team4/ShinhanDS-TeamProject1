@@ -298,7 +298,7 @@
     </div>
 
 
-    <%@ include file="../../common/header.jsp"%>
+    <%@ include file="../common/header.jsp"%>
     <!-- 컨테이너 -->
     <div class="container">
         <!-- 메인 컨텐츠 -->

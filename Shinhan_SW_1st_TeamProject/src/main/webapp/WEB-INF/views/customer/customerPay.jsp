@@ -26,7 +26,7 @@
     <script src="${path}/resources/slick/slick.min.js"></script>
 </head>
 <body>
-	<%@ include file="../../common/header.jsp" %>
+	<%@ include file=../common/header.jsp" %>
 	<main>
       <h1>주문/결제</h1>
       <div class="order-summary">

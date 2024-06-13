@@ -341,7 +341,7 @@
 </head>
 
 <body>
-    <%@ include file="../../common/header.jsp"%>
+    <%@ include file="../common/header.jsp"%>
     <!-- Container Section -->
     <div class="container">
         <!-- Main Content Section -->

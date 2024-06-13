@@ -89,7 +89,7 @@
 	}
 	</script>
 
-	<%@ include file="../../common/header.jsp"%>
+	<%@ include file="../common/header.jsp"%>
 	<main>
 		<aside>
 			<ul>

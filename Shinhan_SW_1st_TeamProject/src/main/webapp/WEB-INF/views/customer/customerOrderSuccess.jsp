@@ -30,7 +30,7 @@
 <script src="${path}/resources/slick/slick.min.js"></script>
 </head>
 <body>
-	<%@ include file="../../common/header.jsp"%>
+	<%@ include file="../common/header.jsp"%>
 	<main>
 		<div class="container">
 			<h1>주문이 완료되었습니다!</h1>

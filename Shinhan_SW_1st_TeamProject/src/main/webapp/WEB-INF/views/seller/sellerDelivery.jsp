@@ -30,7 +30,7 @@
 <script src="${path}/resources/slick/slick.min.js"></script>
 </head>
 <body>
-	<%@ include file="../../common/header.jsp"%>
+	<%@ include file="../common/header.jsp"%>
 	<main>
 
 		<aside>
