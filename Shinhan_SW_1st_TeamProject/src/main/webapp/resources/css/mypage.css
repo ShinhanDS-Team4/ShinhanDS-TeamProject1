@@ -6,7 +6,7 @@
     display: flex;
     justify-self: center;
 }
-/* 마이페이지 : 메뉴 */
+/* 마이페이지 메뉴 */
 .myinfo>nav{
     width: 10%;
     /* background-color: antiquewhite; */
@@ -104,7 +104,7 @@
 
 
 
-/* 마이페이지 메인 : 주문 내역, 대여 내역  */
+/* 留덉씠�럹�씠吏� 硫붿씤 : 二쇰Ц �궡�뿭, ���뿬 �궡�뿭  */
 
 .order_table {
     width: 100%;
@@ -127,9 +127,9 @@
 }
 
 
-/* 5.회원 정보 수정 메뉴  */
+/* 5.�쉶�썝 �젙蹂� �닔�젙 硫붾돱  */
 
-/* STEP-1 회원 정보 수정 처음 페이지 */
+/* STEP-1 �쉶�썝 �젙蹂� �닔�젙 泥섏쓬 �럹�씠吏� */
 .mypage_here{
     width: 100%;
 }
@@ -177,8 +177,11 @@
     padding: 20px;
     margin-bottom: 10px;
     position: relative;
+    cursor: pointer;
 }
-
+.address-box:hover{
+   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
+}
 .address-box .label {
     display: inline-block;
     background-color: var(--accent-color);
@@ -207,7 +210,7 @@
     text-align: center;
 }
 
-/* STEP-2 비밀번호 확인 */
+/* STEP-2 鍮꾨�踰덊샇 �솗�씤 */
 .cancel{
     display: inline-block;
     padding: 12px 40px;
@@ -233,7 +236,7 @@
     margin: 0 0 20px;
 }
 
-/* STEP-3 회원 정보 수정 입력 */
+/* STEP-3 �쉶�썝 �젙蹂� �닔�젙 �엯�젰 */
 .infoForm_wrap {
     width: 500px;
     padding: 20px;
@@ -278,7 +281,7 @@
     background-color: var(--accent-color);
 }
 
-/* 회월탈퇴 */
+/* �쉶�썡�깉�눜 */
 .member_cancel::before{
     content: "";
     background: url(../images/icon-waste.png) no-repeat;

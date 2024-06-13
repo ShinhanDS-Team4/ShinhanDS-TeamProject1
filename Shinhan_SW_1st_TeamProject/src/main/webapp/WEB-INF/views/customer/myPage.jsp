@@ -1,11 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="path" value="${pageContext.servletContext.contextPath}" />
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>고객 마이페이지</title>
+<title>고객 마이페이지-프로필</title>
 <%-- css --%>
 <link rel="stylesheet" href="${path}/resources/css/mypage.css">
 <%-- 헤더,푸터 css --%>
@@ -15,47 +15,50 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
+<style>
+.hidden{
+	display: none;
+}
+</style>
 <body>
-	<c:set var="path" value="${pageContext.servletContext.contextPath}" />
 
-	<%-- 헤더 연결하기 --%>
+	<%@ include file="../common/header.jsp" %>
 	<%-- 마이페이지 : 메인 --%>
 	<div class="mypage_wrap">
 		<div class="myinfo inner">
 			<nav>
-				<%-- 마이페이지 메뉴탭 --%>
 				<ul>
 					<li>
 						<h3>
-							<a href="#">나의주문</a>
+							<a href="${path}/customer/orderlist">나의주문</a>
 						</h3>
 					</li>
 					<li>
 						<h3>
-							<a href="#">나의대여</a>
+							<a href="${path}/customer/rentlist">나의대여</a>
 						</h3>
 					</li>
 					<li>
 						<h3>
-							<a href="#">장바구니</a>
+							<a href="${path}/cart/cart">장바구니</a>
 						</h3>
 					</li>
 					<li>
 						<h3>
-							<a href="#">나의글</a>
+							<a href="${path}/board/reviewjsp">나의글</a>
 						</h3>
 						<ul class="myinfo_submenu">
-							<li><a href="#">문의글</a></li>
-							<li><a href="#">리뷰</a></li>
+							<li><a href="javascript:#void">문의글</a></li>
+							<li><a href="${path}/board/reviewjsp">리뷰</a></li>
 						</ul>
 					</li>
 					<li>
 						<h3>
-							<a href="#">회원정보</a>
+							<a href="javascript:#void">회원정보</a>
 						</h3>
 						<ul class="myinfo_submenu">
-							<li><a href="#">정보수정</a></li>
-							<li><a href="#">회원탈퇴</a></li>
+							<li><a href="${path}/customer/myInfoUpdate.do">정보수정</a></li>
+							<li><a href="${path}/customer/memberDelete.do">회원탈퇴</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -83,11 +86,12 @@
 									<button class="detail_btn">자세히 보기</button>
 								</div>
 								<p>
-									<a href="#" class="go_review">작성한 리뷰 보기</a>
+									<a href="${path}/board/reviewjsp" class="go_review">작성한 리뷰 보기</a>
 								</p>
 								<div class="links">
-									<a href="#">주문내역 <span>1 건</span></a> <a href="#">대여내역 <span>1
-											건</span></a> <a href="#">문의내역 <span>1 건</span></a>
+									<a href="#">주문내역 <span>1 건</span></a> 
+									<a href="#">대여내역 <span>1 건</span></a> 
+									<a href="#">문의내역 <span>1 건</span></a>
 								</div>
 							</div>
 						</div>
