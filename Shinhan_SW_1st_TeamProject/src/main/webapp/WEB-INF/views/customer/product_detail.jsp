@@ -21,7 +21,7 @@
 			$('.arrow').toggleClass('open');
 		});
 
-		//상품 상세 정보, 리뷰 버튼 조작  (수정필요...리뷰버튼 클릭하고 상품정보버튼 클릭하면 상품정보내용이 안나타남)
+		//상품 상세 정보, 리뷰 버튼 조작  (수정필요! 리뷰버튼 클릭하고 상품정보버튼 클릭하면 상품정보내용이 안나타남)
 		$('.detailbtn_wrap button').click(function() {
 			// 버튼에 active 클래스 적용
 			$('.detailbtn_wrap button').removeClass('this');
@@ -59,12 +59,14 @@
 				<h1>상품문의</h1>
 			</div>
 			<div class="modal-body">
-				<label for="qnaTitle">문의 제목: </label><input type="text"
-					name="qnaTitle" placeholder="문의 제목">
+				<label for="qnaTitle">문의 제목: </label>
+				<input type="text" name="qnaTitle" placeholder="문의 제목" />
 				<p>상품과 관련 없는 내용, 비방, 광고, 불건전한 내용의 글은 사전 동의 없이 삭제될 수 있습니다.</p>
 				<textarea
-					placeholder="문의 내용을 입력해주세요. 특수문자 &#87, &#47, &#60, &#62 는 사용할 수 없습니다."></textarea>
-				<br> <input type="text" placeholder="이름">
+					placeholder="문의 내용을 입력해주세요. 특수문자 &#87, &#47, &#60, &#62 는 사용할 수 없습니다.">
+				</textarea>
+				<br> 
+				<input type="text" placeholder="이름" />
 			</div>
 			<div class="modal-footer">
 				<button type="button">등록</button>

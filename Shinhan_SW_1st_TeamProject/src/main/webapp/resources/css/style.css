@@ -1,5 +1,7 @@
 @import url(./common.css);
 
+/* 메인페이지 */
+
 /* 메인 배너 */
 .banner_wrap{
     display: flex;
