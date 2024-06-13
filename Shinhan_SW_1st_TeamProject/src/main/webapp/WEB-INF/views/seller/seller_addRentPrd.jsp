@@ -30,14 +30,15 @@
 <script src="${path}/resources/slick/slick.min.js"></script>
 </head>
 <body>
+	<%@ include file="../../common/header.jsp"%>
 	<main>
+
 		<aside>
 			<ul>
-				<li><a href="#">통계</a></li>
-				<li><a href="#">판매 상품 목록</a></li>
-				<li><a href="#">대여 상품 목록</a></li>
-				<li><a href="#">주문/배송</a></li>
-				<li><a href="#">문의 목록</a></li>
+				<li><a onclick="location.href='${path}/seller/MainPage.do'">통계</a></li>
+				<li><a onclick="location.href='${path}/seller/PrdList.do'">판매/대여 상품 목록</a></li>
+				<li><a onclick="location.href='${path}/seller/DeliveryList.do'">주문/배송</a></li>
+				<li><a onclick="location.href='${path}/seller/Q&AList.do'">문의 목록</a></li>
 			</ul>
 		</aside>
 		<section>
@@ -154,18 +155,33 @@
 					<button type="button">등록하기</button>
 				</div>
 			</div>
-			</div>
 		</section>
 		<aside class="notifications">
-			<div class="icon">
-				<span>15</span>
-			</div>
-			<div class="popup">
-				<p>예약한 공용공간에서 대기 중입니다.</p>
-				<p>공용공간 3층 카운터에서 확인하세요.</p>
-				<p>문의사항은 전화로 연락 바랍니다. 02-0000-0000</p>
+			<div class="notify_icon">
+				<img src="${path}/resources/images/bell.png" alt="알림"
+					class="bell_icon" />
+				<div class="icon">
+					<span>15</span>
+				</div>
+				<div class="popup">
+					<p>결제 완료 주문 : 5건</p>
+					<p>결제 대기 주문 : 23건</p>
+				</div>
 			</div>
 		</aside>
 	</main>
+	<script>
+		document.querySelector(".notifications .bell_icon").addEventListener(
+				"click",
+				function() {
+					document.querySelector(".notifications .popup").classList
+							.toggle("show");
+				});
+	</script>
+	<style>
+.notifications .popup.show {
+	display: block;
+}
+</style>
 </body>
 </html>

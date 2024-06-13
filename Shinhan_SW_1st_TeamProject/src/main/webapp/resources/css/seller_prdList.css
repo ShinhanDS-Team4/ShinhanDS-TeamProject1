@@ -74,21 +74,9 @@ section {
 }
 
 .notifications {
-  position: relative;
   margin-left: auto;
   padding: 20px;
   background-color: #fff;
-}
-
-.notifications .icon {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background-color: red;
-  color: #fff;
-  padding: 5px 10px;
-  border-radius: 50%;
-  cursor: pointer;
 }
 
 .notifications .icon span {
@@ -124,4 +112,25 @@ button {
   font-weight: bold;
   color: white;
   background-color: black;
+}
+
+.bell {
+  width: 64x;
+}
+
+.bell_icon {
+  width: 64px;
+}
+
+.notify_icon {
+  display: flex;
+}
+
+span {
+  top: 0;
+  right: 0;
+  background-color: red;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 50%;
 }

@@ -9,7 +9,7 @@ main {
 }
 
 aside {
-  width: 200px;
+  width: 10%;
   background-color: #f8f8f8;
   padding: 20px;
 }
@@ -74,21 +74,9 @@ section {
 }
 
 .notifications {
-  position: relative;
   margin-left: auto;
   padding: 20px;
   background-color: #fff;
-}
-
-.notifications .icon {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background-color: red;
-  color: #fff;
-  padding: 5px 10px;
-  border-radius: 50%;
-  cursor: pointer;
 }
 
 .notifications .icon span {
@@ -135,4 +123,25 @@ table,
 th,
 td {
   border-style: hidden;
+}
+
+.bell {
+  width: 64x;
+}
+
+.bell_icon {
+  width: 64px;
+}
+
+.notify_icon {
+  display: flex;
+}
+
+span {
+  top: 0;
+  right: 0;
+  background-color: red;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 50%;
 }

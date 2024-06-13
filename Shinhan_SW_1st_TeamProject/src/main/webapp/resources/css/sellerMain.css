@@ -7,7 +7,7 @@ body {
   display: flex;
 }
 .sidebar {
-  width: 200px;
+  width: 15%;
   background-color: #f4f4f4;
   padding: 20px;
   border-right: 1px solid #ccc;
@@ -29,15 +29,7 @@ body {
 .main .stats {
   margin-bottom: 20px;
 }
-.notification {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  background-color: #ffdddd;
-  border: 1px solid #ff8888;
-  padding: 10px;
-  border-radius: 5px;
-}
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -49,7 +41,7 @@ main {
 }
 
 aside {
-  width: 200px;
+  width: 10%;
   background-color: #f8f8f8;
   padding: 20px;
 }
@@ -115,21 +107,9 @@ section {
 }
 
 .notifications {
-  position: relative;
   margin-left: auto;
   padding: 20px;
   background-color: #fff;
-}
-
-.notifications .icon {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background-color: red;
-  color: #fff;
-  padding: 5px 10px;
-  border-radius: 50%;
-  cursor: pointer;
 }
 
 .notifications .icon span {
@@ -149,4 +129,25 @@ section {
 
 .notifications .popup p {
   margin: 0;
+}
+
+.bell {
+  width: 64x;
+}
+
+.bell_icon {
+  width: 64px;
+}
+
+.notify_icon {
+  display: flex;
+}
+
+span {
+  top: 0;
+  right: 0;
+  background-color: red;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 50%;
 }

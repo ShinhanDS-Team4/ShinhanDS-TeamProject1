@@ -6,7 +6,14 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>관리자 문의 작성</title>
+<title>판매자 문의</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+	function closePopUp() {
+		window.close();
+	}
+</script>
 <style>
 body {
 	font-family: Arial, sans-serif;
@@ -32,8 +39,6 @@ h1 {
 
 .info label {
 	font-weight: bold;
-	display: inline-block;
-	width: 100px;
 }
 
 .info input {
@@ -78,30 +83,29 @@ h1 {
 </head>
 <body>
 	<div class="container">
-		<h1>관리자 문의 작성</h1>
+		<h1>관리자 문의 결과</h1>
 		<div class="info">
 			<div>
-				<label>판매자ID</label>
-				<input type="text" value="${aqa.member_id}" /> 
+				<label>문의ID</label> <input type="number" value="${aqa.admin_inq_id}" />
 			</div>
 			<div>
-				<label>판매자명</label>
-				<input type="text" value="${aqa.member_name}" />
-			</div>
-			<div>
-				<label>전화번호</label>
-				<input type="text" value="${aqa.phone}" />
+				<label>문의일자</label> <input type="date" value="${aqa.admin_inq_date}" />
 			</div>
 		</div>
 		<div class="input-group">
-			<label for="subject">제목</label> <input type="text" id="subject" />
+			<label for="subject">제목</label>
+			<input type="text" id="subject" readonly="readonly"
+				value="${aqa.adimin_inq_id}" />
 		</div>
 		<div class="input-group">
-			<label for="content">내용작성</label>
-			<textarea id="content" rows="10"></textarea>
+			<label for="inquiry">문의내용</label>
+			<textarea id="inquiry" readonly="readonly" rows="5"></textarea>
+		</div>
+		<div class="input-group">
+			<label for="response">답변</label>
+			<textarea id="response" readonly="readonly" rows="5"></textarea>
 		</div>
 		<div class="buttons">
-			<button type="button">등록</button>
 			<button type="button" onclick="closePopUp()">닫기</button>
 		</div>
 	</div>
