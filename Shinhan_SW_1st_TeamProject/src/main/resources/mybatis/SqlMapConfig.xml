@@ -3,9 +3,14 @@
 "http://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
-<settings>
-  <setting name="logImpl" value="LOG4J"/>
-  <setting name="jdbcTypeForNull" value="NULL"/>
-</settings>
-   
+	<settings>
+		<setting name="logImpl" value="LOG4J" />
+		<setting name="jdbcTypeForNull" value="NULL" />
+	</settings>
+	
+	<typeAliases>
+		<typeAlias type="com.team4.shoppingmall.member.MemberDTO" alias="memberVO" />
+		<typeAlias type="com.team4.shoppingmall.prod.ProdDTO" alias="prodVO" />
+	</typeAliases>
+
 </configuration>
