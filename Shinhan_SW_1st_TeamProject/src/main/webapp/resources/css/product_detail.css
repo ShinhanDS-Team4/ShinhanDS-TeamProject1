@@ -43,7 +43,7 @@
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 5px;
-    resize: none; /* 크기 조절 비활성화 */
+    resize: none; 
 }
 .modal-body input[type="text"],
 .modal-body input[type="email"] {
@@ -85,7 +85,7 @@
     cursor: pointer;
 }
 
-/* 상품 상세 페이지 */
+/* �긽�뭹 �긽�꽭 �럹�씠吏� */
 .button {
     display: inline-block;
     padding: 12px 40px;
@@ -122,7 +122,7 @@
 .container{
     margin: 50px 0;
 }
-/* 배송정보안내 */
+/* 諛곗넚�젙蹂댁븞�궡 */
 .toggle-button {
     display: flex;
     justify-content: space-between;
@@ -141,7 +141,7 @@
 .arrow.open {
     transform: rotate(180deg);
 }
-/* 상품정보, 리뷰 버튼 */
+/* �긽�뭹�젙蹂�, 由щ럭 踰꾪듉 */
 .detailbtn_wrap{
     text-align: center;
     width: 100%;
@@ -160,7 +160,7 @@
     font-weight: bold;
 }
 
-/* 상품 상세 옵션 탭 */
+/* �긽�뭹 �긽�꽭 �샃�뀡 �꺆 */
 
 .product-detail_wrap{
     display: flex;
@@ -277,14 +277,14 @@
     font-weight: bold;
 }
 
-/* 상품 상세 정보 */
+/* �긽�뭹 �긽�꽭 �젙蹂� */
 .container-detail{
     border: 1px solid red;
     height: 100vh;
 }
 
 
-/* 상품 리뷰 목록 */
+/* �긽�뭹 由щ럭 紐⑸줉 */
 .container-review{
     height: 800px;
     position: relative;
