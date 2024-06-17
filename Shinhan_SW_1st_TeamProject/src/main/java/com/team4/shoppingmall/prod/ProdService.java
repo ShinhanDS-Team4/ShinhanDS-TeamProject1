@@ -11,8 +11,12 @@ public class ProdService {
 	@Autowired
 	ProdDAOInterface prodDAO;
 	
-	public ProdDTO selectById(Integer prod_id) {
-		return prodDAO.selectById(prod_id);
+	public ProdDTO selectByProdId(Integer prod_id) {
+		return prodDAO.selectByProdId(prod_id);
+	}
+	
+	public ProdDTO selectByMemberId(String member_id) {
+		return prodDAO.selectByMemberId(member_id);
 	}
 	
 	public List<ProdDTO> selectAll() {

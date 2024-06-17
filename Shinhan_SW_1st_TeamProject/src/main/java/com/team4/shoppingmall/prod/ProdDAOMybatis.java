@@ -15,8 +15,13 @@ public class ProdDAOMybatis implements ProdDAOInterface {
 	String namespace = "com.saren.prod.";
 	
 	@Override
-	public ProdDTO selectById(Integer prod_id) {
-		return sqlSession.selectOne(namespace+"selectById", prod_id);
+	public ProdDTO selectByProdId(Integer prod_id) {
+		return sqlSession.selectOne(namespace+"selectByProdId", prod_id);
+	}
+	
+	@Override
+	public ProdDTO selectByMemberId(String member_id) {
+		return sqlSession.selectOne(namespace+"selectByMemberId", member_id);
 	}
 
 	@Override
