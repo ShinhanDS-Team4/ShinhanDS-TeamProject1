@@ -10,7 +10,7 @@ public class ?DAOMybatis implements ?DAOInterface {
 	@Autowired
 	SqlSession sqlSession;
 	
-	String namespace = "com.shoppingmall.?.";
+	String namespace = "com.saren.?.";
 	
 	@Override
 	public ?DTO selectBy?(?) {
