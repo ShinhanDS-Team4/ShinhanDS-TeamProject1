@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -32,33 +35,28 @@
             margin-left: 250px;
             padding: 20px;
         }
-        .table-container {
-            margin-top: 20px;
-        }
-        .btn {
-            background-color: #007bff;
-            color: white;
-        }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
-        <h2 class="text-center">NiceAdmin</h2>
-        <a href="index.html">Dashboard</a>
-        <a href="seller_list.html">판매자 목록</a>
-        <a href="seller_register.html">판매자 등록</a>
-        <a href="seller_detail.html">판매자 상세</a>
+        <h2 class="text-center"><a href="adminpage">NiceAdmin</a></h2>
+        <a href="adminpage">Dashboard</a>
+        <a href="admin_seller_list">판매자 목록</a>
+        <a href="admin_seller_register">판매자 등록</a>
+        <a href="admin_seller_detail">판매자 상세</a>
+        <a href="admin_faq">F.A.Q</a>
     </div>
 
     <div class="content">
         <div class="container-fluid">
             <h1>판매자 목록</h1>
-            <div class="table-container">
+            <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>판매자명</th>
+                            <th>Name</th>
+                            <th>Brand</th>
                             <th>Ext.</th>
                             <th>City</th>
                             <th>Status</th>
@@ -68,29 +66,14 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Unity Pugh</td>
+                            <td><a href="admin_seller_detail?userid">Unity Pugh</a></td>
+                            <td>adidas</td>
                             <td>9958</td>
                             <td>Curicó</td>
                             <td>access</td>
-                            <td>2009/01/17</td>
-                            <td><button class="btn btn-sm" onclick="window.location.href='seller_detail.html'">수정</button> <button class="btn btn-sm">삭제</button></td>
-                        </tr>
-                        <tr>
-                            <td>Theodore Duran</td>
-                            <td>8971</td>
-                            <td>Dhanbad</td>
-                            <td>deny</td>
-                            <td>1999/04/27</td>
-                            <td><button class="btn btn-sm" onclick="window.location.href='seller_detail.html'">수정</button> <button class="btn btn-sm">삭제</button></td>
-                        </tr>
-                        <tr>
-                            <td>Kylie Bishop</td>
-                            <td>3147</td>
-                            <td>Norman</td>
-                            <td>access</td>
-                            <td>2005/09/08</td>
-                            <td><button class="btn btn-sm" onclick="window.location.href='seller_detail.html'">수정</button> <button class="btn btn-sm">삭제</button></td>
-                        </tr>
+                            <td>2005/02/11</td>
+                            <td><button class="btn btn-sm btn-primary" onclick="window.location.href='seller_detail.html'">수정</button> <button class="btn btn-sm btn-danger">삭제</button></td>
+                        </tr>              
                     </tbody>
                 </table>
             </div>
@@ -99,3 +82,4 @@
 
 </body>
 </html>
+
