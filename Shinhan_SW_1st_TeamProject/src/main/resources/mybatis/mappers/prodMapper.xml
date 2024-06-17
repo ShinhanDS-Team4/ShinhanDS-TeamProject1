@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.saren.prod">
+
+	<select id="selectByProdId" parameterType="int"
+		resultType="prodVO">
+		SELECT * 
+		FROM PROD 
+		WHERE "prod_id" = #{prod_id}
+	</select>
+	
+	<select id="selectByMemberId" parameterType="string"
+		resultType="prodVO">
+		SELECT * 
+		FROM PROD 
+		WHERE "member_id" = #{member_id}
+	</select>
+
+	<select id="selectAll" resultType="prodVO">
+		SELECT *
+		FROM PROD
+	</select>
+
+	<insert id="prodInsert" parameterType="prodVO">
+		INSERT 
+		INTO PROD("prod_id", "prod_name", "prod_desc", "prod_price", 
+				  "prod_added_date", "category_id", "member_id") 
+		VALUES(#{prod_id}, #{prod_name}, #{prod_desc}, #{prod_price}, 
+			   #{prod_added_date}, #{category_id}, #{member_id})
+	</insert>
+
+	<update id="prodUpdate" parameterType="prodVO">
+		UPDATE PROD
+		SET
+		"prod_name" = #{prod_name}, "prod_desc" = #{prod_desc}, 
+		"prod_price" = #{prod_price}, "prod_added_date" = #{prod_added_date}, 
+		"category_id" = #{category_id}, "member_id" = #{member_id}
+		WHERE "prod_id" = #{prod_id}
+	</update>
+
+	<delete id="prodDelete" parameterType="int">
+		DELETE
+		FROM PROD
+		WHERE "prod_id" = #{prod_id}
+	</delete>
+	
+</mapper>
