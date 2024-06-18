@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AdminService {
 	@Autowired
-	nDAOMybatis adminDAOMybatis;
+	AdminDAOMybatis adminDAOMybatis;
 	
 	public AdminDTO loginChk(String admin_id, String admin_pw) {
 		return adminDAOMybatis.loginChk(admin_id,admin_pw);

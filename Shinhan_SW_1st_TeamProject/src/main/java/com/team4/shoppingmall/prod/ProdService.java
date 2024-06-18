@@ -15,7 +15,7 @@ public class ProdService {
 		return prodDAO.selectByProdId(prod_id);
 	}
 	
-	public List<ProdDTO> selectByMemberId(String member_id) {
+	public ProdDTO selectByMemberId(String member_id) {
 		return prodDAO.selectByMemberId(member_id);
 	}
 	
