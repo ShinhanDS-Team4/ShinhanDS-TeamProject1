@@ -9,9 +9,28 @@
 	</settings>
 	
 	<typeAliases>
-		<typeAlias type="com.team4.shoppingmall.member.MemberDTO" alias="memberVO" />
-		<typeAlias type="com.team4.shoppingmall.prod.ProdDTO" alias="prodVO" />
+		<typeAlias type="com.team4.shoppingmall.addr_list.Addr_ListDTO" alias="addr_listVO" />
 		<typeAlias type="com.team4.shoppingmall.admin.AdminDTO" alias="adminVO" />
+		<typeAlias type="com.team4.shoppingmall.admin_inq.Admin_InqDTO" alias="admin_inqVO" />
+		<typeAlias type="com.team4.shoppingmall.buyer_inq.Buyer_InqDTO" alias="buyer_inqVO" />
+		<typeAlias type="com.team4.shoppingmall.cart.CartDTO" alias="cartVO" />
+		<typeAlias type="com.team4.shoppingmall.category.CategoryDTO" alias="categoryVO" />
+		<typeAlias type="com.team4.shoppingmall.coupon.CouponDTO" alias="couponVO" />
+		<typeAlias type="com.team4.shoppingmall.customer.CustomerDTO" alias="customerVO" />
+		<typeAlias type="com.team4.shoppingmall.event.EventDTO" alias="eventVO" />
+		<typeAlias type="com.team4.shoppingmall.member.MemberDTO" alias="memberVO" />
+		<typeAlias type="com.team4.shoppingmall.notice.NoticeDTO" alias="noticeVO" />
+		<typeAlias type="com.team4.shoppingmall.order_detail.Order_DetailDTO" alias="order_detailVO" />
+		<typeAlias type="com.team4.shoppingmall.order_prod.OrderProdDTO" alias="order_prodVO" />
+		<typeAlias type="com.team4.shoppingmall.prod.ProdDTO" alias="prodVO" />
+		<typeAlias type="com.team4.shoppingmall.prod_image.Prod_ImageDTO" alias="prod_imageVO" />
+		<typeAlias type="com.team4.shoppingmall.prod_option.Prod_OptionDTO" alias="prod_optionVO" />
+		<typeAlias type="com.team4.shoppingmall.rent.RentDTO" alias="rentVO" />
+		<typeAlias type="com.team4.shoppingmall.rent_detail.RentDetailDTO" alias="rent_detailVO" />
+		<typeAlias type="com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO" alias="rent_prod_stockVO" />
+		<typeAlias type="com.team4.shoppingmall.reviews.ReviewsDTO" alias="reviewsVO" />
+		<typeAlias type="com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockDTO" alias="seller_prod_stockVO" />
+		<typeAlias type="com.team4.shoppingmall.wish_list.Wish_ListDTO" alias="wish_listVO" />
 	</typeAliases>
 
 </configuration>
