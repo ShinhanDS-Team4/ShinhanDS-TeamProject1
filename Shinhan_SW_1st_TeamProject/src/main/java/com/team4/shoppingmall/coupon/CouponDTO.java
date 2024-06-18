@@ -1,4 +1,6 @@
-package com.team4.shoppingmall.category;
+package com.team4.shoppingmall.coupon;
+
+import java.sql.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,9 +12,10 @@ import lombok.ToString;
 @Getter@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryDTO {
-	Integer category_id;
-	String category_name;
-	Integer category_depth;
-	Integer parent_category_id;
+public class CouponDTO {
+	String coupon_id;
+	String member_id;
+	String coupon_name;
+	Double discount_rate;
+	Integer quantity;
 }

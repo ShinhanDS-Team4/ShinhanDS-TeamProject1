@@ -41,3 +41,4 @@ public class AdminDAOMybatis {
 		logger.info(admin_pw);
 		return admin_pw;
 	}
+}

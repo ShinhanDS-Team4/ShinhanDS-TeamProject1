@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.saren.rent_detail">
+
+<!-- 대여상세 상세 -->
+	<select id="selectById" parameterType="string"
+		resultType="com.team4.shoppingmall.rent_detail.RentDetailDTO">
+		SELECT *
+		FROM RENT_DETAIL
+		WHERE "rentdetail_id" = #{rentdetail_id}
+	</select>
+
+<!-- 대여상세 목록 -->
+	<select id="selectAll" resultType="com.team4.shoppingmall.rent_detail.RentDetailDTO">
+		SELECT *
+		FROM RENT_DETAIL
+	</select>
+
+<!-- 대여상세 생성 -->
+	<insert id="rentDetailInsert" parameterType="com.team4.shoppingmall.rent_detail.RentDetailDTO">
+		INSERT
+		INTO RENT_DETAIL("rent_product_price", "rent_num", "stock_id", "rental_code")
+		VALUES(#{rent_product_price}, #{rent_num}, #{stock_id}, #{rental_code})
+	</insert>
+
+<!-- 대여상세 수정 -->
+	<update id="rentDetailUpdate" parameterType="com.team4.shoppingmall.rent_detail.RentDetailDTO">
+		UPDATE RENT_DETAIL
+		SET
+		"rent_product_price" = #{rent_product_price}, "rent_num" = #{rent_num}
+		WHERE "rentdetail_id" = #{rentdetail_id}
+	</update>
+ 
+	
+</mapper>
