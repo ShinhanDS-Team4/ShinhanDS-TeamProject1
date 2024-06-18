@@ -12,226 +12,38 @@
      <!-- 헤더,푸터 css -->
     <link rel="stylesheet" href="${path}/resources/css/header_footer.css">
     <!-- jquery 연결 -->
-    <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="${path}/resources/js/jquery-3.7.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Slick 불러오기 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
+    <!-- Slick 직접 연결 -->
+    <link rel="stylesheet" href="${path}/resources/slick/slick-theme.css">
+    <link rel="stylesheet" href="${path}/resources/slick/slick.css">
     <!-- 페이지용 css -->
     <link rel="stylesheet" href="${path}/resources/css/customerPay.css" />
-	<!-- PortOne 이니시스 결제 -->
-	<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
-
-	<script>
-		$().ready(function(){
-			var IMP = window.IMP;
-            IMP.init('imp31438144'); // 가맹점 식별코드 입력
-			
-			$("#orderBtn").on("click", function(){
-				alert("구매버튼");
-				var userid= "bih63879";
-				var username = "백인혁";
-				var phone="01075528293";
-				
-				var merchant_uid = "O" + new Date().getTime();//DB에 주문ID로 저장될, 고유한 주문 ID
-				var amount = 1;//결제 금액
-				
-				$.ajax({
-					type:"POST",
-					url:"/shoppingmall/customer/preparePayment",
-					data:{
-						"merchantUid":merchant_uid,
-						"amount":amount	
-					},
-					success: function(response){
-						if(response==="Payment amount registered successfully"){
-							alert("결제금액 사전 등록 완료");
-							//여기에서 이니시스 결제
-							IMP.request_pay({
-			                	pg: "html5_inicis",           // 등록된 pg사 (적용된 pg사는 KG이니시스)
-			                	pay_method: "card",
-			                	merchant_uid: merchant_uid, // 주문 고유 번호
-			                	name: "노르웨이 회전 의자",
-			                	amount: 1,
-			                	buyer_email: "beakinhyeok998@gmail.com",
-			                	buyer_name: "백인혁",
-			                	buyer_tel: "010-4242-4242",
-			                	buyer_addr: "서울특별시 강남구 신사동",
-			                	buyer_postcode: "01181",
-			            	}, function(response){
-			            		if (response.success){
-			                    	$.ajax({
-			                    		type:"POST",
-			                    		url:"/shoppingmall/customer/verifyPayment",
-			                    		data:{
-			                    			 "imp_uid":response.imp_uid,
-			                                 "merchant_uid":response.merchant_uid
-			                    		},
-			                    		success : function(verificationResult){
-			                    			if(verificationResult === "success"){
-			                    				alert("검증에서 이상 없음. 결제 완료");	
-			                    				window.location.href = "/shoppingmall/customer/orderSuccess";
-			           
-			                    			}else{
-			                    				alert("검증에서 이상 발생. 결제 취소");
-			                    			}
-			                    		},
-			                    		error: function(jqXHR, textStatus, errorThrown) {
-	                                        alert("결제 검증 요청 실패: " + errorThrown);
-	                                    }
-			                    	});
-			                	} else {
-			                		alert("결제에 실패하였습니다. 에러: " + response.error_msg);
-			                	}
-			            	});
-						}else{
-							alert("사전결제 등록 실패")
-						}
-					},
-					error: function(jqXHR, textStatus, errorThrown) {
-	                    alert("결제 금액 사전 등록 요청 실패: " + errorThrown);
-	                }
-				});
-			});
-		});
-	</script>
+    <script src="${path}/resources/slick/slick.min.js"></script>
 </head>
 <body>
-	<%@ include file="../common/header.jsp"%>
+	<%@ include file=../common/header.jsp" %>
 	<main>
-		<h1>주문/결제</h1>
-      	<div id="orderList" class="orderList-table">
-      		<table id="orderTable">
-      			<thead>
-      				<tr>
-      					<th></th>
-      					<th>상품정보</th>
-      					<th>할인쿠폰</th>
-      					<th>배송비</th>
-      					<th>최종가</th>
-      				</tr>
-      			</thead>
-      			<tbody>
-      				<tr>
-      					<td>
-      						<img class="productIMG" src="product1.jpg" alt="제품 이미지">
-      					</td>
-      					<td>
-      						<div class="product-details">
-      							<div class="info">
-      								<div class="left">
-      									<p>브랜드명</p>
-      								</div>
-      								<div class="right">
-      									<input type="text" placeholder="나이키">
-      								</div>
-      							</div>
-      							<div class="info">
-      								<div class="left">
-      									<p>상품명</p>
-      								</div>
-      								<div class="right">
-      									<input type="text" placeholder="덩크로우">
-      								</div>
-      							</div>
-      							<div class="info">
-      								<div class="left">
-      									<p>옵션</p>
-      								</div>
-      								<div class="right">
-      									<input type="text" placeholder="270_Black">
-      								</div>
-      							</div>
-      							<div class="info">
-      								<div class="left">
-      									<p>가격</p>
-      								</div>
-      								<div class="right">
-      									<input type="text" placeholder="150000">
-      								</div>
-      							</div>
-                			</div>
-                		</td>
-                		<td>
-                			<div class="coupon">
-                    			<select>
-                        			<option>쿠폰 선택창</option>
-                        			<option>쿠폰1</option>
-                        			<option>쿠폰2</option>
-                        			<option>쿠폰3</option>
-                    			</select>
-                			</div>
-                		</td>
-                		<td>
-                			<p>3000</p>
-                		</td>
-                		<td>
-                			<p>153000</p>
-                		</td>
-                	</tr>
-                	
-                	<tr>
-      					<td>
-      						<img class="productIMG" src="product1.jpg" alt="제품 이미지">
-      					</td>
-      					<td>
-      						<div class="product-details">
-      							<div class="info">
-      								<div class="left">
-      									<p>브랜드명</p>
-      								</div>
-      								<div class="right">
-      									<input type="text" placeholder="나이키">
-      								</div>
-      							</div>
-      							<div class="info">
-      								<div class="left">
-      									<p>상품명</p>
-      								</div>
-      								<div class="right">
-      									<input type="text" placeholder="덩크로우">
-      								</div>
-      							</div>
-      							<div class="info">
-      								<div class="left">
-      									<p>옵션</p>
-      								</div>
-      								<div class="right">
-      									<input type="text" placeholder="270_Black">
-      								</div>
-      							</div>
-      							<div class="info">
-      								<div class="left">
-      									<p>가격</p>
-      								</div>
-      								<div class="right">
-      									<input type="text" placeholder="150000">
-      								</div>
-      							</div>
-                			</div>
-                		</td>
-                		<td>
-                			<div class="coupon">
-                    			<select>
-                        			<option>쿠폰 선택창</option>
-                        			<option>쿠폰1</option>
-                        			<option>쿠폰2</option>
-                        			<option>쿠폰3</option>
-                    			</select>
-                			</div>
-                		</td>
-                		<td>
-                			<p>3000</p>
-                		</td>
-                		<td>
-                			<p>153000</p>
-                		</td>
-                	</tr>
-      			
-      			</tbody>
-        
-      		</table>
-     	</div>
-        
-        
-       
+      <h1>주문/결제</h1>
+      <div class="order-summary">
+        <div class="product-info">
+          <img src="product_image.png" alt="상품 이미지" />
+          <div class="product-details">
+            <p>브랜드명</p>
+            <p>상품명: 하이퀄리티남자데님셔츠</p>
+            <p>색상: 네이비, 크기: L</p>
+            <p>가격: 39,200원</p>
+            <p>할인쿠폰(5%): 1장</p>
+            <p>배송비: 무료배송</p>
+            <p>총 주문액: 744,800원</p>
+          </div>
+        </div>
+      </div>
+
       <div class="delivery-info">
         <h2>배송지 정보</h2>
         <form>
@@ -260,15 +72,40 @@
         </form>
       </div>
 
+      <div class="coupon-info">
+        <h2>쿠폰적용</h2>
+        <div class="form-group">
+          <label for="coupon-number">쿠폰번호</label>
+          <input type="text" id="coupon-number" name="coupon-number" />
+          <button type="button" class="coupon-button">쿠폰확인</button>
+        </div>
+        <div class="form-group">
+          <label for="discount">할인쿠폰</label>
+          <input
+            type="text"
+            id="discount"
+            name="discount"
+            value="사용가능 5장"
+            readonly
+          />
+        </div>
+        <div class="form-group">
+          <label for="shipping-coupon">배송비쿠폰</label>
+          <input
+            type="text"
+            id="shipping-coupon"
+            name="shipping-coupon"
+            value="사용가능 0장"
+            readonly
+          />
+        </div>
+      </div>
 
-      <div class="order-total">
-            <p>총 상품금액:&nbsp;&nbsp;784,000원</p>
-            <p>&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;&nbsp;</p>
-            <p>총 배송비:&nbsp;0원</p>
-            <p>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;</p>
-            <p>총 할인금액:&nbsp;&nbsp;39,200원</p>
-            <p>&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;&nbsp;</p>
-            <p>총 주문금액:&nbsp;&nbsp;744,800원</p>
+      <div class="payment-summary">
+        <p>
+          784,000원 (총 상품금액) + 0원 (총 배송비) - 39,200원 (총 할인액) =
+          744,800원 (총 주문액)
+        </p>
       </div>
 
       <div class="terms-and-payment">
@@ -302,9 +139,8 @@
             <input type="checkbox" id="agree5" name="agree5" />
             <label for="agree5">구매확인서 <a href="#">약관보기</a></label>
           </div>
-          
+          <button type="submit" class="payment-button">결제하기</button>
         </form>
-        <button class="payment-button" id="orderBtn">결제하기</button>
       </div>
     </main>
 </body>
