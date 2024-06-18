@@ -1,4 +1,4 @@
-package com.team4.shoppingmall.category;
+package com.team4.shoppingmall.rent_detail; 
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,9 +10,10 @@ import lombok.ToString;
 @Getter@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryDTO {
-	Integer category_id;
-	String category_name;
-	Integer category_depth;
-	Integer parent_category_id;
+public class RentDetailDTO {
+	Integer rentdetail_id;
+	Integer rent_product_price;
+	Integer rent_num;
+	Integer stock_id;
+	Integer rental_code;
 }
