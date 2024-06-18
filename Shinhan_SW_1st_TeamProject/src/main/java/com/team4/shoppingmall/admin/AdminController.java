@@ -17,31 +17,31 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/admin")
 public class AdminController {
 	
-	//@Autowired
+	@Autowired
 	AdminService aService;
 	
 	Logger logger = LoggerFactory.getLogger(AdminController.class);
 	
-	@GetMapping("/adminpage")
+	@GetMapping("admin_page")
 	public String productlist() {
-		return "admin/adminpage";
+		return "admin/admin_page";
 	}
 	
-	@GetMapping("/admin_seller_list")
+	@GetMapping("admin_seller_list")
 	public String adminsellerlist() {
 		return "admin/admin_seller_list";
 	}
 	
-	@GetMapping("/admin_seller_register")
+	@GetMapping("admin_seller_register")
 	public String adminsellerregister() {
 		return "admin/admin_seller_register";
 	}
 	
-	@GetMapping("/admin_faq")
+	@GetMapping("admin_faq")
 	public String adminsellerfaq() {
 		return "admin/admin_faq";
 	}
-	@GetMapping("/admin_login")
+	@GetMapping("admin_login")
 	public void adminlogindispaly() {
 		logger.debug("login요청(debug)");
 		logger.info("login요청(info)");
@@ -49,16 +49,16 @@ public class AdminController {
 		logger.error("login요청(error)");	
 	}
 	
-	@GetMapping("/admin_logout")
+	@GetMapping("admin_logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "redirect:admin_login";		
 	}
 	
-	@PostMapping("/admin_login")
+	@PostMapping("admin_login")
 	public String loginCheck(@RequestParam("admin_id") String admin_id, @RequestParam("admin_pw") String admin_pw, HttpSession session, HttpServletRequest request) {
 		AdminDTO aDto = aService.loginChk(admin_id,admin_pw);
-		
+		System.out.println(aDto);
 		if(aDto == null) {
 			session.setAttribute("loginResult", "존재하지 않는 ID입니다.");
 			return "redirect:admin_login";
@@ -70,10 +70,10 @@ public class AdminController {
 			session.setAttribute("aDto", aDto);
 			
 			String lastRequest = (String)session.getAttribute("lastRequest");
-			
+			System.out.println(lastRequest);
 			String goPage;
-			if(lastRequest == null) {
-				goPage = "adminpage";
+			if(lastRequest == null || lastRequest.endsWith("admin_findid") || lastRequest.endsWith("admin_findpw")) {
+				goPage = "admin_page";
 			} else {
 				int length = request.getContextPath().length();
 				goPage = lastRequest.substring(length);
@@ -84,12 +84,12 @@ public class AdminController {
 		}
 	}
 	
-	@GetMapping("/admin_findid")
+	@GetMapping("admin_findid")
 	public String findIdForm() {
 		return "admin/admin_findid";		
 	}
 	
-	@PostMapping("/admin_findid")
+	@PostMapping("admin_findid")
 	public String findId(@RequestParam("admin_email") String admin_email, @RequestParam("admin_name") String admin_name, Model model) {
 		String admin_id = aService.findById(admin_email, admin_name);
 		
@@ -101,12 +101,12 @@ public class AdminController {
 		return "admin/admin_findid_result";
 	}
 	
-	@GetMapping("/admin_findpw")
+	@GetMapping("admin_findpw")
 	public String findPwForm() {
 		return "admin/admin_findpw";		
 	}
 	
-	@PostMapping("/admin_findpw")
+	@PostMapping("admin_findpw")
 	public String findPw(@RequestParam("admin_id") String admin_id, @RequestParam("admin_name") String admin_name, @RequestParam("admin_phone") String admin_phone, Model model) {
 		String admin_pw = aService.findByPw(admin_id, admin_name, admin_phone);
 		

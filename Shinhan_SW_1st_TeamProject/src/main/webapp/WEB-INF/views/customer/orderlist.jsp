@@ -494,7 +494,7 @@
                     <p class="order-date">주문일: 2024.03.14
                         <button class="refund-button">환불신청</button>
                     </p>
-                    <span class="order-status">${order_status}</span>
+                    <span class="order-status">배송완료</span>
                 </div>
                 <div class="order-details">
                     <img src="tshirt.jpg" alt="티셔츠 이미지">
