@@ -35,28 +35,28 @@ public class CustomerController {
 
 	@Autowired
 	private PaymentService paymentService;
-	
-	// ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+
+	// »óÇ°°áÁ¦ÆäÀÌÁö
 	@GetMapping("/orderPay")
 	public String orderPayPage() {
 		return "customer/customerPay";
 	}
 
-	// ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	// »óÇ° °áÁ¦ ¿Ï·áÆäÀÌÁö
 	@GetMapping("/orderSuccess")
 	public String orderSuccessPage() {
 		return "customer/customerOrderSuccess";
 	}
-	
 
-	//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½İ¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+
+	//°áÁ¦ Àü »çÀü °ËÁõÀ» À§ÇÑ °áÁ¦±İ¾× »çÀüµî·Ï
 	@PostMapping("/preparePayment")
 	@ResponseBody
 	public String preparePayment(@RequestParam String merchantUid, @RequestParam int amount) {
 		return paymentService.registerPaymentAmount(merchantUid, amount);
 	}
-	
-	//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ë¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+
+	//°áÁ¦ ³»¿ë¿¡ ´ëÇÑ °ËÁõ
 	@PostMapping("/verifyPayment")
 	@ResponseBody
 	public String verifyPayment(@RequestParam("imp_uid") String impUid,

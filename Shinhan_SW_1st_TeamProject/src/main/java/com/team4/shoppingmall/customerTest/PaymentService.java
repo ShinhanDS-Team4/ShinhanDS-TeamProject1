@@ -23,13 +23,12 @@ public class PaymentService {
     
     @Value("${imp.api.key}")
     private String apiKey;
-    
+
     @Value("${imp.api.secretkey}")
     private String apiSecret;
     
     
 	private String getAccessToken() {
-        // Access Token �߱��� ���� API ȣ��
 		
 		
         HttpHeaders headers = new HttpHeaders();
@@ -51,7 +50,7 @@ public class PaymentService {
     public String registerPaymentAmount(String merchantUid, int amount) {
         String accessToken = getAccessToken();
 
-        // ���� �ݾ� ���� ����� ���� API ȣ��
+        // 占쏙옙占쏙옙 占쌥억옙 占쏙옙占쏙옙 占쏙옙占쏙옙占� 占쏙옙占쏙옙 API 호占쏙옙
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
         headers.set("Authorization", accessToken);
@@ -75,7 +74,7 @@ public class PaymentService {
     public String verifyPayment(String impUid, String merchantUid) {
         String accessToken = getAccessToken();
 
-        // ���� ���� ��ȸ�� ���� API ȣ��
+        // 占쏙옙占쏙옙 占쏙옙占쏙옙 占쏙옙회占쏙옙 占쏙옙占쏙옙 API 호占쏙옙
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", accessToken);
 
@@ -85,9 +84,9 @@ public class PaymentService {
 
         Map<String, Object> paymentInfo = (Map<String, Object>) response.getBody().get("response");
 
-        int actualAmount = (int) paymentInfo.get("amount");//�̴Ͻý��� ���ؼ� ������ ������ �ݾ�
+        int actualAmount = (int) paymentInfo.get("amount");//占싱니시쏙옙占쏙옙 占쏙옙占쌔쇽옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쌥억옙
 
-        //��������� ���� �ݾ� ��������
+        //占쏙옙占쏙옙占쏙옙占쏙옙占� 占쏙옙占쏙옙 占쌥억옙 占쏙옙占쏙옙占쏙옙占쏙옙
         ResponseEntity<Map> prePaymentResponse = restTemplate.exchange(
                 "https://api.iamport.kr/payments/prepare/" + merchantUid, HttpMethod.GET, entity, Map.class);
         
@@ -97,10 +96,10 @@ public class PaymentService {
         if (actualAmount == preRegisteredAmount) {
             return "success";
         } else {
-            // ���� �ݾ��� ��ġ���� ���� ��� ���� ���
+            // 占쏙옙占쏙옙 占쌥억옙占쏙옙 占쏙옙치占쏙옙占쏙옙 占쏙옙占쏙옙 占쏙옙占� 占쏙옙占쏙옙 占쏙옙占�
             Map<String, String> body = new HashMap<>();
             body.put("merchant_uid", merchantUid);
-            body.put("reason", "���� �ݾ� ����ġ");
+            body.put("reason", "占쏙옙占쏙옙 占쌥억옙 占쏙옙占쏙옙치");
 
             headers = new HttpHeaders();
             headers.set("Content-Type", "application/json");
