@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.saren.reviews">
+
+	<select id="selectById" parameterType="int"
+		resultType="reviewsVO">
+		SELECT *
+		FROM REVIEWS
+		WHERE "review_id" = #{review_id}
+	</select>
+
+	<select id="selectAll" resultType="reviewsVO">
+		SELECT *
+		FROM REVIEWS
+	</select>
+
+	<insert id="reviewsInsert" parameterType="reviewsVO">
+		INSERT
+		INTO REVIEWS("review_id", "rate", "review_date", 
+					 "review_img", "review_content", "orderdetail_id")
+		VALUES(#{review_id}, #{rate}, #{review_date}, 
+			   #{review_img}, #{review_content}, #{orderdetail_id})
+	</insert>
+
+	<update id="reviewsUpdate" parameterType="reviewsVO">
+		UPDATE REVIEWS
+		SET
+		"rate" = #{rate}, "review_date" = #{review_date},
+		"review_img" = #{review_img}, "review_content" = #{review_content},
+		"orderdetail_id" = #{orderdetail_id}
+		WHERE "review_id" = #{review_id}
+	</update>
+
+	<delete id="reviewsDelete" parameterType="int">
+		DELETE
+		FROM REVIEWS
+		WHERE "review_id" = #{review_id}
+	</delete>
+	
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.saren.notice">
+
+	<select id="selectById" parameterType="int"
+		resultType="noticeVO">
+		SELECT *
+		FROM NOTICE
+		WHERE "not_id" = #{not_id}
+	</select>
+
+	<select id="selectAll" resultType="noticeVO">
+		SELECT *
+		FROM NOTICE
+	</select>
+
+	<insert id="noticeInsert" parameterType="noticeVO">
+		INSERT
+		INTO NOTICE("not_id", "not_title", "not_content", "not_date")
+		VALUES(#{not_id}, #{not_title}, #{not_content}, #{not_date})
+	</insert>
+
+	<update id="noticeUpdate" parameterType="noticeVO">
+		UPDATE NOTICE
+		SET
+		"not_title" = #{not_title}, "not_content" = #{not_content}, "not_date" = #{not_date}
+		WHERE "not_id" = #{not_id}
+	</update>
+
+	<delete id="noticeDelete" parameterType="int">
+		DELETE
+		FROM NOTICE
+		WHERE "not_id" = #{not_id}
+	</delete>
+	
+</mapper>
