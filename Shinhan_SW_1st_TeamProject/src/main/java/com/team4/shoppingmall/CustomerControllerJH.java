@@ -1,6 +1,8 @@
 package com.team4.shoppingmall;
 
-import javax.servlet.http.HttpSession;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,9 +12,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.team4.shoppingmall.addr_list.AddrService;
+import com.team4.shoppingmall.addr_list.Addr_ListDTO;
+import com.team4.shoppingmall.member.MemberService;
+
 @Controller
 @RequestMapping("/customer")
 public class CustomerControllerJH {
+	
+	@Autowired
+	AddrService addrService;
 	
 	/*헤더 메뉴 - 상품 목록 조회 */
 	@GetMapping("/productlist")
@@ -46,10 +55,17 @@ public class CustomerControllerJH {
 		return "customer/rentlist";
 	}
 
+	
 	/* 회원정보수정 */
 	//step1
 	@GetMapping("/myInfoUpdate.do")
-	public String myInfoUpdate() {
+	public String myInfoUpdate(Model model) {
+		
+		//배송지 목록 조회 테스트 중
+		List<Addr_ListDTO> addrlist = addrService.selectAll();
+		model.addAttribute("addrlist", addrlist);
+		
+		System.out.println("--나의 배송지 조회" + addrlist);
 		
 		return "customer/myInfoUpdate";
 	}
@@ -65,6 +81,7 @@ public class CustomerControllerJH {
 	//비밀번호 체크 후 다음 스텝(step3)
 	@GetMapping("/myInfoUpdatePwCheck.do")
 	public String myInfoUpdatePwCheck(@RequestParam("password") String password) {
+		//로그인 회원 비밀번호 체크
 		if(password.equals("aaa")) {
 			return "customer/myInfoUpdate_step3";
 		}else {
@@ -75,11 +92,13 @@ public class CustomerControllerJH {
 	}
 	
 	//step3 - 수정할 회원 정보 입력창	
-//	@PostMapping("/myInfoUpdateForm.do")
-//	public String myInfoUpdateForm() {
-//
-//		return "";
-//	}
+	@PostMapping("/myInfoUpdateForm.do")
+	public String myInfoUpdateForm() {
+		System.out.println("배송지 조회");
+		
+		return "customer/myPage";
+	}
+	
 	
 	/* 회원 탈퇴 */
 	@GetMapping("/memberDelete.do")
@@ -90,8 +109,8 @@ public class CustomerControllerJH {
 	//비밀번호 체크 후 회원 탈퇴
 	@GetMapping("/memberDeletePwCheck.do")
 	public String memberDeletePwCheck(@RequestParam("password") String password) {
+		//로그인 회원 비밀번호 체크
 		if(password.equals("aaa")) {
-			//System.out.println(password);
 			return "customer/myPage";
 		}else {
 			System.out.println("회월 탈퇴 실패");

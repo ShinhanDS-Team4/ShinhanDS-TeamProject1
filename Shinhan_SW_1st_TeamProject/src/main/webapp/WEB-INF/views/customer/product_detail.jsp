@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="path" value="${pageContext.servletContext.contextPath}" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,11 +49,47 @@
 				$('#myModal').hide();
 			}
 		});
-
+		
+		
+		//버튼 클릭 - 옵션 값 저장
+	 	function prodOption(){
+		   var param = $("#prodOptionFrom").serialize();
+		   //location.href : Get요청
+		   location.href= "${path}/customer/productOption?" + param;
+	  	}
+	 	
+		//장바구니 버튼 선택 시 나타나는 팝업창 
+		$('#cartButton').on('click', function() {
+			$('.popup-background').show();
+		});
+		//계속 쇼핑 선택시
+		$('.no-button').on('click', function() {
+			$('.popup-background').hide();
+		});
+		//계속 쇼핑 선택시
+		$('.yes-button').on('click', function() {
+			location.href= "${path}/cart/cart"; //장바구니 페이지 이동(수정중)
+		});
 	});
 </script>
 </head>
 <body>
+	<%@ include file="../common/header.jsp" %>
+	
+	<%-- 팝업 배경 --%>
+	<div class="popup-background" id="popupBackground">
+	    <%-- 팝업 컨테이너 --%>
+	    <div class="popup-container">
+	        <%-- 팝업 아이콘 --%>
+	        <div class="popup-icon">!</div>
+	        <%-- 팝업 메시지 --%>
+	        <p>계속 쇼핑하시겠습니까?</p>
+	        <!-- 팝업 버튼 -->
+	        <button class="popup-button no-button">네</button>
+	        <button class="popup-button yes-button">장바구니로 이동</button>
+	    </div>
+	</div>
+	
 	<div id="myModal" class="modal">
 		<div class="modal-content">
 			<span class="close">&times;</span>
@@ -73,12 +111,13 @@
 			</div>
 		</div>
 	</div>
+	
 	<div class="container">
 		<div class="inner">
 			<p>home > 의류 > 바람</p>
 			<div class="product-detail_wrap">
 				<div class="product-image">
-					<img src="./images/product1.png" alt="상품">
+					<img src="${path}/resources/images/product1.png" alt="상품">
 				</div>
 				<div class="product-details">
 					<p class="free">무료배송</p>
@@ -97,17 +136,22 @@
 					</p>
 					<div class="choose_wrap">
 						<p>선택</p>
-						<div class="select_choose">
-							<select id="product-size" name="product-size">
-								<option value="L" selected>상의 (L)</option>
-								<option value="M">상의 (M)</option>
-								<option value="S">상의 (S)</option>
-							</select> <select id="product-color" name="product-color">
-								<option value="RED" selected>색상 (BLACK)</option>
-								<option value="RED">색상 (RED)</option>
-								<option value="RED">색상 (GREEN)</option>
-							</select>
-						</div>
+						<form id="prodOptionFrom">
+							<div class="select_choose">
+								<select id="product-size" name="product-size">
+									<option value="0" selected="selected">선택</option>
+									<option value="L" selected>상의 (L)</option>
+									<option value="M">상의 (M)</option>
+									<option value="S">상의 (S)</option>
+								</select> 
+								<select id="product-color" name="product-color">
+									<option value="0" selected="selected">선택</option>
+									<option value="RED" selected>색상 (BLACK)</option>
+									<option value="RED">색상 (RED)</option>
+									<option value="RED">색상 (GREEN)</option>
+								</select>
+							</div>
+						</form>
 					</div>
 					<div class="quantity-price">
 						<div class="quantity_wrap">
@@ -118,7 +162,7 @@
 						<p class="total">43,820원</p>
 					</div>
 					<div class="button-group">
-						<button type="button" class="white_button">장바구니</button>
+						<button id="cartButton" type="button" class="white_button" onclick="prodOption()">장바구니</button>
 						<button type="button" class="button">바로 구매</button>
 					</div>
 					<button type="button" class="noRent_btn">대여불가상품</button>
@@ -140,10 +184,11 @@
 			<div id="container-review" class="container-review inner">
 				<h1>상품 리뷰</h1>
 				<ul class="review_order">
-					<li>최근 등록 순</li>
-					<li>평점 높은 순</li>
-					<li>평점 낮은 순</li>
+					<li><a href="javascript:#void">최근 등록 순</a></li>
+					<li><a href="javascript:#void">평점 높은 순</a></li>
+					<li><a href="javascript:#void">평점 낮은 순</a></li>
 				</ul>
+				<p class="no-review hidden">작성된 리뷰가 없습니다.</p>
 				<div class="review-list">
 					<div class="review-scroll">
 						<div class="review">
@@ -259,6 +304,9 @@
 				<h2>상품 Q&A</h2>
 				<div class="qa-section_txt">
 					<p>등록된 상품 Q&A가 없습니다.</p>
+					
+					<%-- 상품 문의 있을 경우 테이블 생성 --%>
+					
 					<button class="button-write qnaBtn">상품 문의하기</button>
 				</div>
 			</div>
@@ -304,12 +352,13 @@
 					<tr>
 						<td>고객 A/S 안내</td>
 						<td>이 상품은 입점사상품으로, 입점사의 A/S 정책에 따라 서비스가 제공됩니다. 상세한 문의사항은
-							상품정보고객센터 및 A/S센터가 갖춘 정보를 확인해주세요.</td>
+							상품정보고객센터 및 A/S센터가 갖춘 정보를 확인해주세요.
+						</td>
 					</tr>
 				</table>
 			</div>
 		</div>
 	</div>
-
+	<%@ include file="../common/footer.jsp" %>
 </body>
 </html>

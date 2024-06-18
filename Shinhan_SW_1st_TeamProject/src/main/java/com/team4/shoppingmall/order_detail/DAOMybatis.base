@@ -1,0 +1,39 @@
+import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class ?DAOMybatis implements ?DAOInterface {
+
+	@Autowired
+	SqlSession sqlSession;
+	
+	String namespace = "com.saren.?.";
+	
+	@Override
+	public ?DTO selectBy?(?) {
+		return sqlSession.selectOne(namespace+"selectBy?", ?);
+	}
+
+	@Override
+	public List<?DTO> selectAll() {
+		return sqlSession.selectList(namespace+"selectAll");
+	}
+
+	@Override
+	public int ?Insert(?DTO ?) {
+		return sqlSession.insert(namespace+"?Insert", ?);
+	}
+
+	@Override
+	public int ?Update(?DTO ?) {
+		return sqlSession.update(namespace+"?Update", ?);
+	}
+
+	@Override
+	public int ?Delete(?) {
+		return sqlSession.delete(namespace+"?Delete", ?);
+	}
+}
