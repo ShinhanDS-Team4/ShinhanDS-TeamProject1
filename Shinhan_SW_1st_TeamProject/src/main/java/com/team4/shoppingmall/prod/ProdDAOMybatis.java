@@ -20,8 +20,8 @@ public class ProdDAOMybatis implements ProdDAOInterface {
 	}
 	
 	@Override
-	public ProdDTO selectByMemberId(String member_id) {
-		return sqlSession.selectOne(namespace+"selectByMemberId", member_id);
+	public List<ProdDTO> selectByMemberId(String member_id) {
+		return sqlSession.selectList(namespace+"selectByMemberId", member_id);
 	}
 
 	@Override
