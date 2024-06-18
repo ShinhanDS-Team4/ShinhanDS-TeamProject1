@@ -12,27 +12,70 @@
 <!-- 헤더,푸터 css -->
 <link rel="stylesheet" href="${path}/resources/css/header_footer.css">
 <!-- jquery 연결 -->
-<script src="${path}/resources/js/jquery-3.7.1.min.js"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<!-- Slick 불러오기 -->
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
-<!-- Slick 직접 연결 -->
-<link rel="stylesheet" href="${path}/resources/slick/slick-theme.css">
-<link rel="stylesheet" href="${path}/resources/slick/slick.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!-- 페이지용 css -->
 <link rel="stylesheet" href="${path}/resources/css/prdAdd.css" />
-<script src="${path}/resources/slick/slick.min.js"></script>
+
+
+<script>
+	let optionCount = 0;//기존 옵션 개수
+	
+	function addOption(){
+		if (optionCount >= 5) {
+            alert("옵션은 최대 5개까지 추가할 수 있습니다.");
+            return;
+        }
+		
+		// 새로운 옵션 항목 생성
+        const optionItem = document.createElement('div');
+        optionItem.className = 'option-item';
+
+        // 옵션명 입력 필드 생성
+        const optionName = document.createElement('input');
+        optionName.type = 'text';
+        optionName.id = 'option-name'
+        optionName.placeholder = '옵션명 ' + optionCount;
+
+        // 옵션값 입력 필드 생성
+        const optionValue = document.createElement('input');
+        optionValue.type = 'text';
+        optionValue.placeholder = '옵션값 ' + optionCount;
+
+        // 삭제 버튼 생성
+        const removeButton = document.createElement('button');
+        removeButton.type = 'button';
+        removeButton.innerText = '삭제';
+        removeButton.onclick = function() {
+            removeOption(this);
+        };
+
+        // 옵션 항목에 추가
+        optionItem.appendChild(optionName);
+        optionItem.appendChild(optionValue);
+        optionItem.appendChild(removeButton);
+
+        // 옵션 컨테이너에 추가
+        document.getElementById('optionsContainer').appendChild(optionItem);
+        
+        optionCount = getOptionItemCount();
+	}
+	
+	function removeOption(button) {
+        // 부모 요소(option-item) 제거
+        button.parentNode.remove();
+        
+        optionCount = getOptionItemCount();
+    }
+	
+	function getOptionItemCount() {
+        return document.querySelectorAll('#optionsContainer .option-item').length;
+    }
+</script>
+
 </head>
 <body>
 	<%@ include file="../common/header.jsp"%>
 	<main>
-
 		<aside>
 			<ul>
 				<li><a onclick="location.href='${path}/seller/MainPage.do'">통계</a></li>
@@ -125,28 +168,12 @@
 
 				<div class="form-group options">
 					<div class="form-option-title">
-						<label>옵션선택</label>
+						<label>옵션</label>
 						<button type="button" onclick="addOption()">옵션 추가</button>
 					</div>
-
 					<div id="optionsContainer">
-						<div class="option-item">
-							<input type="text" id="option-name" placeholder="옵션명 1">
-							<input type="text" placeholder="옵션값 1">
-							<button type="button" onclick="removeOption(this)">-</button>
-						</div>
-						<div class="option-item">
-							<input type="text" id="option-name" placeholder="옵션명 2">
-							<input type="text" placeholder="옵션값 2">
-							<button type="button" onclick="removeOption(this)">-</button>
-						</div>
-						<div class="option-item">
-							<input type="text" id="option-name" placeholder="옵션명 3">
-							<input type="text" placeholder="옵션값 3">
-							<button type="button" onclick="removeOption(this)">-</button>
-						</div>
+						
 					</div>
-					<div class="add-option"></div>
 				</div>
 				<div class="form-group">
 					<label>재고량</label> <input type="text">

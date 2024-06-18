@@ -43,10 +43,10 @@ public class AdminController {
 	}
 	@GetMapping("admin_login")
 	public void adminlogindispaly() {
-		logger.debug("loginìš”ì²­(debug)");
-		logger.info("loginìš”ì²­(info)");
-		logger.warn("loginìš”ì²­(warn)");
-		logger.error("loginìš”ì²­(error)");	
+		logger.debug("login¿äÃ»(debug)");
+		logger.info("login¿äÃ»(info)");
+		logger.warn("login¿äÃ»(warn)");
+		logger.error("login¿äÃ»(error)");	
 	}
 	
 	@GetMapping("admin_logout")
@@ -60,13 +60,13 @@ public class AdminController {
 		AdminDTO aDto = aService.loginChk(admin_id,admin_pw);
 		System.out.println(aDto);
 		if(aDto == null) {
-			session.setAttribute("loginResult", "ì¡´ì¬í•˜ì§€ ì•ŠëŠ” IDì…ë‹ˆë‹¤.");
+			session.setAttribute("loginResult", "Á¸ÀçÇÏÁö ¾Ê´Â IDÀÔ´Ï´Ù.");
 			return "redirect:admin_login";
 		} else if(!aDto.getAdmin_pw().equals(admin_pw)) {
-			session.setAttribute("loginResult", "ì¡´ì¬í•˜ì§€ ì•ŠëŠ” PWì…ë‹ˆë‹¤.");
+			session.setAttribute("loginResult", "Á¸ÀçÇÏÁö ¾Ê´Â PWÀÔ´Ï´Ù.");
 			return "redirect:admin_login";
 		} else {
-			session.setAttribute("loginResult", "loginì„±ê³µ");
+			session.setAttribute("loginResult", "login¼º°ø");
 			session.setAttribute("aDto", aDto);
 			
 			String lastRequest = (String)session.getAttribute("lastRequest");
@@ -94,9 +94,9 @@ public class AdminController {
 		String admin_id = aService.findById(admin_email, admin_name);
 		
 		if(admin_id == null) {
-            model.addAttribute("findIdResult", "í•´ë‹¹í•˜ëŠ” ì´ë©”ì¼ê³¼ ì´ë¦„ì— í•´ë‹¹í•˜ëŠ” IDê°€ ì—†ìŠµë‹ˆë‹¤.");
+            model.addAttribute("findIdResult", "ÇØ´çÇÏ´Â ÀÌ¸ŞÀÏ°ú ÀÌ¸§¿¡ ÇØ´çÇÏ´Â ID°¡ ¾ø½À´Ï´Ù.");
         } else {
-            model.addAttribute("findIdResult", "í•´ë‹¹ ì•„ì´ë””ëŠ”: " + admin_id + " ì…ë‹ˆë‹¤.");
+            model.addAttribute("findIdResult", "ÇØ´ç ¾ÆÀÌµğ´Â: " + admin_id + " ÀÔ´Ï´Ù.");
         }
 		return "admin/admin_findid_result";
 	}
@@ -111,9 +111,9 @@ public class AdminController {
 		String admin_pw = aService.findByPw(admin_id, admin_name, admin_phone);
 		
 		if(admin_pw == null) {
-            model.addAttribute("findPwResult", "í•´ë‹¹ ì •ë³´ì— í•´ë‹¹í•˜ëŠ” ì•„ì´ë””, ì´ë¦„, ì—°ë½ì²˜ê°€ ì—†ìŠµë‹ˆë‹¤.");
+            model.addAttribute("findPwResult", "ÇØ´ç Á¤º¸¿¡ ÇØ´çÇÏ´Â ¾ÆÀÌµğ, ÀÌ¸§, ¿¬¶ôÃ³°¡ ¾ø½À´Ï´Ù.");
         } else {
-            model.addAttribute("findPwResult", "ìš”ì²­í•˜ì‹  ë¹„ë°€ë²ˆí˜¸ëŠ”: " + admin_pw + " ì…ë‹ˆë‹¤.");
+            model.addAttribute("findPwResult", "¿äÃ»ÇÏ½Å ºñ¹Ğ¹øÈ£´Â: " + admin_pw + " ÀÔ´Ï´Ù.");
         }
 		
 		return "admin/admin_findpw_result";

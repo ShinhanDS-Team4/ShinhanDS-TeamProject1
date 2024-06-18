@@ -11,23 +11,14 @@
 <link rel="stylesheet" href="${path}/resources/css/style.css">
 <!-- 헤더,푸터 css -->
 <link rel="stylesheet" href="${path}/resources/css/header_footer.css">
+
 <!-- jquery 연결 -->
-<script src="${path}/resources/js/jquery-3.7.1.min.js"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<!-- Slick 불러오기 -->
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
-<!-- Slick 직접 연결 -->
-<link rel="stylesheet" href="${path}/resources/slick/slick-theme.css">
-<link rel="stylesheet" href="${path}/resources/slick/slick.css">
+    <script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 <!-- 페이지용 css -->
 <link rel="stylesheet" href="${path}/resources/css/seller_prdList.css" />
-<script src="${path}/resources/slick/slick.min.js"></script>
+
 </head>
 <body>
 	<%@ include file="../common/header.jsp"%>
@@ -118,8 +109,7 @@
 				</table>
 				<div class="actions">
 					<button>선택 상품 삭제</button>
-					<button onclick="location.href='${path}/seller/AddProduct.do'">상품
-						등록</button>
+					
 				</div>
 			</div>
 			<div class="product-list">
@@ -189,10 +179,11 @@
 				</table>
 				<div class="actions">
 					<button>선택 상품 삭제</button>
-					<button onclick="location.href='${path}/seller/AddProduct.do'">상품
-						등록</button>
+					
 				</div>
 			</div>
+			<button onclick="location.href='${path}/seller/AddProduct.do'">상품
+						등록</button>
 		</section>
 		<aside class="notifications">
 			<div class="notify_icon">
