@@ -11,6 +11,7 @@
 	<typeAliases>
 		<typeAlias type="com.team4.shoppingmall.member.MemberDTO" alias="memberVO" />
 		<typeAlias type="com.team4.shoppingmall.prod.ProdDTO" alias="prodVO" />
+		<typeAlias type="com.team4.shoppingmall.admin.AdminDTO" alias="adminVO" />
 	</typeAliases>
 
 </configuration>

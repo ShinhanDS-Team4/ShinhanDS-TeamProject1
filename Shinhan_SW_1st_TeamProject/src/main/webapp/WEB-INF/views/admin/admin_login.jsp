@@ -6,25 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>관리자 로그인</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/admin_login.css" rel="stylesheet">
 </head>
 <body>
 
     <div class="login-background">
         <div class="login-popup">
             <h2>관리자 로그인</h2>
-            <form action="adminpage" method="post">
+            <form id="loginForm" action="admin_login" method="post">
                 <div class="form-group">
                     <label for="admin_id">사용자 이름</label>
-                    <input type="text" class="form-control" id="admin_id" name="admin_id" required>
+                    <input type="text" class="form-control" id="admin_id" name="admin_id" value="admin" required>
                 </div>
                 <div class="form-group">
                     <label for="admin_pw">비밀번호</label>
-                    <input type="password" class="form-control" id="admin_pw" name="admin_pw" required>
+                    <input type="password" class="form-control" id="admin_pw" name="admin_pw" value="admin" required>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">로그인</button>
                 <div class="form-find">
-                    <input type="reset" value="초기화" class="btn btn-secondary">
+                    <a href="#" onclick="resetForm()">초기화</a>
                     <a href="#" onclick="openFindIdPopup()">아이디 찾기</a>
                     <a href="#" onclick="openFindPwPopup()">비밀번호 찾기</a>
                 </div>
@@ -89,6 +88,10 @@
 
         function closeFindPwPopup() {
             document.getElementById("findPwPopup").style.display = "none";
+        }
+
+        function resetForm() {
+            document.getElementById("loginForm").reset();
         }
     </script>
 
@@ -196,6 +199,7 @@
         .form-find a {
             color: #007bff;
             text-decoration: none;
+            cursor: pointer;
         }
 
         .form-find a:hover {
