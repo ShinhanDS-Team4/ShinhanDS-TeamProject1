@@ -1,0 +1,31 @@
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class ?Service {
+	
+	@Autowired
+	?DAOInterface ?DAO;
+	
+	public ?DTO selectBy?(?) {
+		return ?DAO.selectBy?(?);
+	}
+	
+	public List<?DTO> selectAll() {
+		return ?DAO.selectAll();
+	}
+	
+	public int ?Insert(?DTO ?) {
+		return ?DAO.?Insert(?);
+	}
+	
+	public int ?Update(?DTO ?) {
+		return ?DAO.?Update(?);
+	}
+	
+	public int ?Delete(?) {
+		return ?DAO.?Delete(?);
+	}
+}
