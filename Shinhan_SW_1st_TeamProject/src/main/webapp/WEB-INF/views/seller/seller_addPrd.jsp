@@ -70,6 +70,16 @@
 	function getOptionItemCount() {
         return document.querySelectorAll('#optionsContainer .option-item').length;
     }
+	
+	
+	//URL 파라미터에서 메시지 가져오기
+	const urlParams = new URLParams(window.location.search);
+	const message = urlParams.get('PrdRegisterResult');
+	
+	if(message){
+		alert(message);
+	}
+	
 </script>
 
 </head>
@@ -96,33 +106,37 @@
 				<div class="header">
 					<h1>상품 등록</h1>
 				</div>
-				<div class="form-group">
-					<label>구분</label> <label><input type="radio"
-						name="category" value="판매"> 판매</label> <label><input
-						type="radio" name="category" value="대여"> 대여</label>
-				</div>
-				<div class="form-group">
-					<label>상품명</label> <input type="text">
-				</div>
-				<div class="form-group">
-					<label>가격</label> <input type="text">
-				</div>
-				<div class="form-group">
-					<label>카테고리</label> <select>
-						<option value="">선택</option>
-						<option value="category1">카테고리 1</option>
-						<option value="category2">카테고리 2</option>
-					</select>
-				</div>
-				<div class="form-group">
-					<label>메인사진</label> <input type="file">
-				</div>
+				<form method="post" action="/shoppingmall/seller/uploadPrd"  enctype="multipart/form-data">
+					<div class="form-group">
+						<label>구분</label>
+						<label><input type="radio" name="category" value="판매">판매</label> 
+						<label><input type="radio" name="category" value="대여">대여</label>
+					</div>
+					<div class="form-group">
+						<label>상품명</label> <input type="text">
+					</div>
+					<div class="form-group">
+						<label>가격</label> <input type="text">
+					</div>
+					<div class="form-group">
+						<label>카테고리</label>
+						<select>
+							<option value="">선택</option>
+							<option value="category1">카테고리 1</option>
+							<option value="category2">카테고리 2</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label>메인사진</label>
+						<input type="file" name="file" accept=".jpg,.jpeg,.png">
+					</div>
 				
-				<!-- 오늘 할 일 : branch 테스트, 사진 파일 DB 업로드 사전작업(이미지를 BLOB 형식으로 변환해서 DB에 저장됨) -->
-				<div class="form-group">
-					<label>사진 등록</label> <input type="file">
-				</div>
-				<div class="form-group file-list">
+					<!-- 오늘 할 일 : branch 테스트, 사진 파일 DB 업로드 사전작업(이미지를 BLOB 형식으로 변환해서 DB에 저장됨) -->
+					<div class="form-group">
+						<label>사진 등록</label>
+						<input type="file">
+					</div>
+					<div class="form-group file-list">
 					<table>
 						<thead>
 							<tr>
@@ -167,7 +181,6 @@
 
 					<textarea rows="5"></textarea>
 				</div>
-
 				<div class="form-group options">
 					<div class="form-option-title">
 						<label>옵션</label>
@@ -181,8 +194,9 @@
 					<label>재고량</label> <input type="text">
 				</div>
 				<div class="buttons">
-					<button type="button">등록하기</button>
+					<button type="submit">등록하기</button>
 				</div>
+				</form>
 			</div>
 		</section>
 		<aside class="notifications">
