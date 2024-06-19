@@ -19,9 +19,15 @@
 
 <script>
 	let optionCount = 0;//기존 옵션 개수
+	let fileCount = 0;
 	
 	//사진 업로드 추가
 	function addFile(){
+		if (fileCount >= 5) {
+            alert("옵션은 최대 5개까지 추가할 수 있습니다.");
+            return;
+        }
+		
 		// 새로운 파일 항목 생성
         const fileItem = document.createElement('div');
         fileItem.className = 'file-item';
@@ -45,13 +51,18 @@
         
         document.getElementById('prdImgFileContainer').appendChild(fileItem);
         
+        fileCount = getFileItemCount();
 	}
 	
-	function removeOption(button) {
-        // 부모 요소(option-item) 제거
+	function removeFile(button) {
+        // 부모 요소(file-item) 제거
         button.parentNode.remove();
         
-        optionCount = getOptionItemCount();
+        fileCount = getFileItemCount();
+    }
+	
+	function getFileItemCount() {
+        return document.querySelectorAll('#prdImgFileContainer .file-item').length;
     }
 	
 	
@@ -177,60 +188,8 @@
 					<div id="prdImgFileContainer">
 						
 					</div>
+					
 				
-					
-					<div class="form-group file-list">
-      					<table id="orderTable">
-      						<thead>
-      							<tr>
-      								<th>순서</th>
-      								<th>파일명</th>
-      								<th></th>
-      							</tr>
-      						</thead>
-			      			<tbody>
-			      			</tbody>
-			      		</table>
-					</div>
-					
-					<div class="form-group file-list">
-					<table>
-						<thead>
-							<tr>
-								<th>순서</th>
-								<th>파일명</th>
-								<th>삭제</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>001</td>
-								<td>파일명_102939_asdjk.jpg</td>
-								<td><button type="button">삭제</button></td>
-							</tr>
-							<tr>
-								<td>002</td>
-								<td>파일명_102939_asdjk.jpg</td>
-								<td><button type="button">삭제</button></td>
-							</tr>
-							<tr>
-								<td>003</td>
-								<td>파일명_102939_asdjk.jpg</td>
-								<td><button type="button">삭제</button></td>
-							</tr>
-							<tr>
-								<td>004</td>
-								<td>파일명_102939_asdjk.jpg</td>
-								<td><button type="button">삭제</button></td>
-							</tr>
-							<tr>
-								<td>005</td>
-								<td>파일명_102939_asdjk.jpg</td>
-								<td><button type="button">삭제</button></td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
 				<div class="form-group">
 					<label>상품설명</label>
 				</div>
