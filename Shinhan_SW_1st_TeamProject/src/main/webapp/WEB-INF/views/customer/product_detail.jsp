@@ -49,7 +49,6 @@
 				$('#myModal').hide();
 			}
 		});
-
 		
 	});
 
@@ -59,7 +58,7 @@
 <body>
 	<%@ include file="../common/header.jsp" %>
 	
-	<%-- 브랜치테스트 --%>
+	<%-- 브랜치테스트 2 --%>
 	
 	<%-- 팝업 배경 --%>
 	<div class="popup-background" id="popupBackground">
