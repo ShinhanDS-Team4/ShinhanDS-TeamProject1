@@ -117,6 +117,8 @@
 				<div class="form-group">
 					<label>메인사진</label> <input type="file">
 				</div>
+				
+				<!-- 오늘 할 일 : branch 테스트, 사진 파일 DB 업로드 사전작업(BLOB 형식으로 변환) -->
 				<div class="form-group">
 					<label>사진 등록</label> <input type="file">
 				</div>
