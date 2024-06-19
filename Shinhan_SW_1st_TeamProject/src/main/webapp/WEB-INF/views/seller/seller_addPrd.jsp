@@ -20,6 +20,42 @@
 <script>
 	let optionCount = 0;//기존 옵션 개수
 	
+	//사진 업로드 추가
+	function addFile(){
+		// 새로운 파일 항목 생성
+        const fileItem = document.createElement('div');
+        fileItem.className = 'file-item';
+        
+        // 파일 선택 필드 생성
+        const fileField = document.createElement('input');
+        fileField.type='file';
+        fileField.name='file';
+        
+        //파일 항목 삭제 버튼 생성
+        const fileRemove = document.createElement('button');
+        fileRemove.type = 'button';
+        fileRemove.innerText = '삭제';
+        fileRemove.onclick = function() {
+            removeFile(this);
+        };
+        
+        fileItem.appendChild(fileField);
+        fileItem.appendChild(fileRemove);
+        
+        
+        document.getElementById('prdImgFileContainer').appendChild(fileItem);
+        
+	}
+	
+	function removeOption(button) {
+        // 부모 요소(option-item) 제거
+        button.parentNode.remove();
+        
+        optionCount = getOptionItemCount();
+    }
+	
+	
+	//옵션 항목 추가
 	function addOption(){
 		if (optionCount >= 5) {
             alert("옵션은 최대 5개까지 추가할 수 있습니다.");
@@ -132,10 +168,31 @@
 					</div>
 				
 					<!-- 오늘 할 일 : branch 테스트, 사진 파일 DB 업로드 사전작업(이미지를 BLOB 형식으로 변환해서 DB에 저장됨) -->
+					
+					
 					<div class="form-group">
 						<label>사진 등록</label>
-						<input type="file">
+						<button type="button" onclick="addFile()">사진 추가</button>
 					</div>
+					<div id="prdImgFileContainer">
+						
+					</div>
+				
+					
+					<div class="form-group file-list">
+      					<table id="orderTable">
+      						<thead>
+      							<tr>
+      								<th>순서</th>
+      								<th>파일명</th>
+      								<th></th>
+      							</tr>
+      						</thead>
+			      			<tbody>
+			      			</tbody>
+			      		</table>
+					</div>
+					
 					<div class="form-group file-list">
 					<table>
 						<thead>
