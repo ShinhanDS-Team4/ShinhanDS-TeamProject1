@@ -24,7 +24,7 @@
 	//사진 업로드 추가
 	function addFile(){
 		if (fileCount >= 5) {
-            alert("옵션은 최대 5개까지 추가할 수 있습니다.");
+            alert("사진은 최대 5개까지 추가할 수 있습니다.");
             return;
         }
 		
@@ -34,11 +34,13 @@
         
         // 파일 선택 필드 생성
         const fileField = document.createElement('input');
+        fileField.className='file-input';
         fileField.type='file';
         fileField.name='file';
         
         //파일 항목 삭제 버튼 생성
         const fileRemove = document.createElement('button');
+        fileRemove.classname='file-remove';
         fileRemove.type = 'button';
         fileRemove.innerText = '삭제';
         fileRemove.onclick = function() {
