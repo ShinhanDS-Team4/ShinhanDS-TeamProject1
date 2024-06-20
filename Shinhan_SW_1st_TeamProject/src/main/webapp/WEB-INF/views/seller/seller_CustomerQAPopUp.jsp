@@ -10,6 +10,12 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
+	function submitForm(){
+		var form = document.getElementById('answerCQ');
+		form.submit();
+		window.close();
+	}
+	
 	function closePopUp() {
 		window.close();
 	}
@@ -85,42 +91,46 @@ h1 {
 <body>
 	<div class="container">
 		<h1>구매자 문의</h1>
-		<div class="info">
-			<div>
-				<label>문의ID</label>
-				<input class="type=" number" readonly="readonly"
-					value="${bqa.buyer_inq_id}" placeholder="문의ID" />
+
+		<form id="answerCQ" method="post" action="/shoppingmall/seller/answerCquestion"
+			enctype="multipart/form-data" accept-charset="UTF-8">
+			<div class="info">
+				<div>
+					<label>문의ID</label>
+					<input class="type="number" readonly="readonly" name="CtoSquestionID" value="${bqa.buyer_inq_id}"
+						placeholder="문의ID"/>
+				</div>
+				<div>
+					<label>구매자ID</label> <input type="number" readonly="readonly"
+						value="${bqa.memeber_id}" placeholder="구매자ID" />
+				</div>
+				<div>
+					<label>구매자명</label> <input type="text" readonly="readonly"
+						value="${bqa.member_name}" placeholder="구매자명" />
+				</div>
+				<div>
+					<label>전화번호</label> <input type="number" readonly="readonly"
+						value="${bqa.phone}" placeholder="전화번호" />
+				</div>
 			</div>
-			<div>
-				<label>구매자ID</label> <input type="number" readonly="readonly"
-					value="${bqa.memeber_id}" placeholder="구매자ID"/>
+			<div class="input-group">
+				<label for="subject">제목</label>
+				<input type="text" name="CtoSquestionTitle" id="subject" readonly="readonly" value="${bqa.buyer_inq_title}" />
 			</div>
-			<div>
-				<label>구매자명</label> <input type="text" readonly="readonly"
-					value="${bqa.member_name}" placeholder="구매자명"/>
+			<div class="input-group">
+				<label for="inquiry">문의내용</label>
+				<textarea id="inquiry" readonly="readonly" name="CtoSquestion"
+					rows="5" value="${bqa.buyer_inq}"></textarea>
 			</div>
-			<div>
-				<label>전화번호</label> <input type="number" readonly="readonly"
-					value="${bqa.phone}" placeholder="전화번호"/>
+			<div class="input-group">
+				<label for="response">답변작성</label>
+				<textarea id="response" name="CtoSquestionAnswer" rows="5" maxlength="3000"></textarea>
 			</div>
-		</div>
-		<div class="input-group">
-			<label for="subject">제목</label> <input type="text" id="subject"
-				readonly="readonly" value="${bqa.buyer_inq_title}" />
-		</div>
-		<div class="input-group">
-			<label for="inquiry">문의내용</label>
-			<textarea id="inquiry" readonly="readonly" rows="5"
-				value="${bqa.buyer_inq}"></textarea>
-		</div>
-		<div class="input-group">
-			<label for="response">답변작성</label>
-			<textarea id="response" rows="5" maxlength="3000"></textarea>
-		</div>
-		<div class="buttons">
-			<button type="submit" id="registerBtn" onclick="check(event)">등록</button>
-			<button type="button" onclick="closePopUp()">닫기</button>
-		</div>
+			<div class="buttons">
+				<button type="button" id="registerBtn" onclick="submitForm()">등록</button>
+				<button type="button" onclick="closePopUp()">닫기</button>
+			</div>
+		</form>
 	</div>
 </body>
 </html>

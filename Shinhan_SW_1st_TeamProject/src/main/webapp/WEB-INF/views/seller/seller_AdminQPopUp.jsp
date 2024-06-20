@@ -7,6 +7,20 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>관리자 문의 작성</title>
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+	function submitForm(){
+		var form = document.getElementById('registerAQ');
+		form.submit();
+		window.close();
+	}
+
+	function closePopUp() {
+		window.close();
+	}
+</script>
 <style>
 body {
 	font-family: Arial, sans-serif;
@@ -79,31 +93,33 @@ h1 {
 <body>
 	<div class="container">
 		<h1>관리자 문의 작성</h1>
-		<div class="info">
-			<div>
-				<label>판매자ID</label>
-				<input type="text" value="${aqa.member_id}" /> 
+		<form id="registerAQ" method="post" action="/shoppingmall/seller/registerStoAquestion"
+			enctype="multipart/form-data" accept-charset="UTF-8">
+			<div class="info">
+				<div>
+					<label>판매자ID</label> <input type="text" name="sellerID"
+						value="${aqa.member_id}" />
+				</div>
+				<div>
+					<label>판매자명</label> <input type="text" value="${aqa.member_name}" />
+				</div>
+				<div>
+					<label>전화번호</label> <input type="text" value="${aqa.phone}" />
+				</div>
 			</div>
-			<div>
-				<label>판매자명</label>
-				<input type="text" value="${aqa.member_name}" />
+			<div class="input-group">
+				<label for="subject">제목</label> <input type="text" id="subject"
+					name="StoAquestionTitle" />
 			</div>
-			<div>
-				<label>전화번호</label>
-				<input type="text" value="${aqa.phone}" />
+			<div class="input-group">
+				<label for="content">내용작성</label>
+				<textarea id="content" rows="10" name="StoAquestion"></textarea>
 			</div>
-		</div>
-		<div class="input-group">
-			<label for="subject">제목</label> <input type="text" id="subject" />
-		</div>
-		<div class="input-group">
-			<label for="content">내용작성</label>
-			<textarea id="content" rows="10"></textarea>
-		</div>
-		<div class="buttons">
-			<button type="button">등록</button>
-			<button type="button" onclick="closePopUp()">닫기</button>
-		</div>
+			<div class="buttons">
+				<button type="button" onclick="submitForm()">등록</button>
+				<button type="button" onclick="closePopUp()">닫기</button>
+			</div>
+		</form>
 	</div>
 </body>
 </html>

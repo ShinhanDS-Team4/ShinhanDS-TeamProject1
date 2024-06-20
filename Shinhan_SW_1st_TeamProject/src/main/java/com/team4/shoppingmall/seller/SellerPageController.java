@@ -61,7 +61,7 @@ public class SellerPageController {
 	// 관리자문의 등록 팝업
 	@GetMapping("/addAdminQA.do")
 	public String addAdminQA() {
-		return "/seller/seller_AdminQAPopUp";
+		return "/seller/seller_AdminQPopUp";
 	}
 
 }
