@@ -119,6 +119,9 @@ span {
   border-radius: 50%;
 }
 
+.file-item{
+	margin-bottom: 10px;
+}
 .form-group {
   margin-bottom: 10px;
 }
@@ -189,7 +192,7 @@ span {
   height: 30px;
   color: white;
 }
-.options .option-item {
+.options .option-item{
   display: flex;
   width: 60%;
   gap: 10px;
@@ -232,4 +235,10 @@ span {
 }
 #option-name {
   background-color: lightgray;
+}
+
+.file-upload-button{
+	background-color: black;
+	color: white;
+	font-size:20px;
 }
