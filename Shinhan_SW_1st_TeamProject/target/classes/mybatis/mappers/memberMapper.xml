@@ -8,30 +8,43 @@
 		resultType="memberVO">
 		SELECT *
 		FROM MEMBER
-		WHERE "member_id" = #{member_id}
+		WHERE member_id = #{member_id}
 	</select>
 
 	<select id="selectAll" resultType="memberVO">
 		SELECT *
 		FROM MEMBER
 	</select>
+		<select id="loginChk" resultType="membervo" parameterType="String"> 
+		select membr_id, member_pw 
+		from MEMBER
+		where member_id = #{member_id}
+	</select>
 
 	<insert id="memberInsert" parameterType="memberVO">
 		INSERT
-		INTO MEMBER("member_id", "member_pw", "member_name", "email", "phone",
-					"brand", "birth_date", "last_access", "member_type", "gender")
+		INTO MEMBER(member_id, member_pw, member_name, email, phone,
+					brand, birth_date, last_access, member_type, gender)
 		VALUES(#{member_id}, #{member_pw}, #{member_name}, #{email}, #{phone},
-			   #{brand}, #{birth_date}, #{last_access}, #{member_type}, #{gender})
+		        <choose>
+		            <when test="brand == null">
+		                null
+		            </when>
+		            <otherwise>
+		                #{brand}
+		            </otherwise>
+		        </choose>,
+				#{birth_date}, #{last_access}, #{member_type}, #{gender})
 	</insert>
 
 	<update id="memberUpdate" parameterType="memberVO">
 		UPDATE MEMBER
 		SET
-		"member_pw" = #{member_pw}, "member_name" = #{member_name}, "email" = #{email},
-		"phone" = #{phone}, "brand" = #{brand}, "birth_date" = #{birth_date},
-		"last_access" = #{last_access}, "member_type" = #{member_type}, 
-		"gender" = #{gender}
-		WHERE "member_id" = #{member_id}
+		member_pw = #{member_pw}, member_name = #{member_name}, email = #{email},
+		phone = #{phone}, brand = #{brand}, birth_date = #{birth_date},
+		last_access = #{last_access}, member_type = #{member_type}, 
+		gender = #{gender}
+		WHERE member_id = #{member_id}
 	</update>
 
 	<delete id="memberDelete" parameterType="string">

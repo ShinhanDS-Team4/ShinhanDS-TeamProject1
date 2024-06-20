@@ -38,4 +38,9 @@ public class MemberDAOMybatis implements MemberDAOInterface {
 	public int memberDelete(String member_id) {
 		return sqlSession.delete(namespace+"memberDelete", member_id);
 	}
+	
+	public MemberDTO loginChk(String member_id) {
+		MemberDTO member = sqlSession.selectOne(namespace+"loginChk", member_id);
+		return member;
+	}
 }

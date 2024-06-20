@@ -15,4 +15,6 @@ public interface MemberDAOInterface {
 	public int memberUpdate(MemberDTO member);
 	
 	public int memberDelete(String member_id);
+	
+	public MemberDTO loginChk(String member_id);
 }

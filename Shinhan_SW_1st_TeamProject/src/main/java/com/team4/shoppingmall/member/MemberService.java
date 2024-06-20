@@ -30,4 +30,9 @@ public class MemberService {
 	public int memberDelete(String member_id) {
 		return memberDAO.memberDelete(member_id);
 	}
+	
+	public MemberDTO loginChk(String member_id) {
+		return memberDAO.loginChk(member_id);
+	}
+	
 }
