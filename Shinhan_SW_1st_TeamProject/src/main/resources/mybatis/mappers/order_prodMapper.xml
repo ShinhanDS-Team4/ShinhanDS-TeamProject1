@@ -5,32 +5,57 @@
 <mapper namespace="com.saren.orderprod">
 
 	<!-- 주문상세 -->
-	<select id="selectById" parameterType="com.team4.shoppingmall.order_prod.OrderProdDTO">
-		resultType="orderprodVO">
+	<select id="selectById" parameterType="int" resultType="order_prodVO"> 
 		SELECT *
 		FROM ORDER_PROD
-		WHERE "order_id" = #{order_id}
+		WHERE
+		"order_id" = #{order_id}
 	</select>
 
 	<!-- 주문목록 -->
-	<select id="selectAll" resultType="com.team4.shoppingmall.order_prod.OrderProdDTO">
+	<select id="selectAll" resultType="order_prodVO">
 		SELECT *
 		FROM ORDER_PROD
 	</select>
 
 	<!-- 주문생성 -->
-	<insert id="orderprodInsert" parameterType="com.team4.shoppingmall.order_prod.OrderProdDTO">
+	<insert id="orderprodInsert" parameterType="order_prodVO">
 		INSERT
 		INTO ORDER_PROD("member_id", "addr_num", "total_price")
 		VALUES(#{member_id}, #{addr_num}, #{total_price})
 	</insert>
 
 	<!-- 주문수정 -->
-	<update id="orderprodUpdate" parameterType="com.team4.shoppingmall.order_prod.OrderProdDTO">
+	<update id="orderprodUpdate" parameterType="order_prodVO">
 		UPDATE ORDER_PROD
 		SET
-		"addr_num" = #{addr_num}, "total_price" = #{total_price}
+			"addr_num" = #{addr_num},
+			"total_price" = #{total_price}
 		WHERE "order_id" = #{order_id}
-	</update> 
-	
+	</update>
+
+	<!-- orderlist.jsp에 출력할 상품명, 브랜드, 옵션, 상품가격, 이미지URL -->
+	<select id="selectById2" parameterType="int" resultType="map"> 
+		SELECT
+			P.prod_name,
+			P.prod_desc AS brand,  
+			S.opt_id1,
+			S.opt_id2,
+			S.opt_id3,
+			S.opt_id4,
+			S.opt_id5,
+			OD.order_product_price,
+			PI.img_url
+		FROM
+			ORDER_DETAIL OD
+		JOIN
+			SELLER_PROD_STOCK S ON OD.stock_id = S.stock_id
+		JOIN
+			PROD P ON S.prod_id = P.prod_id
+		JOIN
+			PROD_IMAGE PI ON P.prod_id = PI.prod_id
+		WHERE
+			OD.order_id = #{aa}
+	</select>
+
 </mapper>
