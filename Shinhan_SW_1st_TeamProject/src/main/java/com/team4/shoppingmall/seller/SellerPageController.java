@@ -21,10 +21,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import com.team4.shoppingmall.admin_inq.Admin_InqDTO;
 import com.team4.shoppingmall.admin_inq.Admin_InqService;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqDAOInterface;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqDTO;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqService;
+import com.team4.shoppingmall.member.MemberService;
 
 @Controller
 @RequestMapping("/seller")
@@ -35,6 +37,9 @@ public class SellerPageController {
 	
 	@Autowired
 	Admin_InqService admin_inqService;
+	
+	@Autowired
+	MemberService memberService;
 
 	// 메인 화면 보여주기
 	@GetMapping("/MainPage.do")
@@ -82,8 +87,11 @@ public class SellerPageController {
 	public String qaList(Model model1, Model model2, HttpServletRequest request) {
 		String member_id = "573-50-00882";// 임시로 사용할 판매자ID(사업자등록번호)
 		// 구매자의 문의 목록
+		System.out.println(buyer_inqService.selectInqList(member_id));
 		model1.addAttribute("buyerQAList", buyer_inqService.selectInqList(member_id));
-		model2.addAttribute("AdminQAList", admin_inqService.selectByMemberId(member_id));
+		//System.out.println(model1);
+		model2.addAttribute("adminQAList", admin_inqService.selectByMemberId(member_id));
+		
 		return "/seller/sellerQ&dAList";
 	}
 
@@ -106,7 +114,9 @@ public class SellerPageController {
 		System.out.println(buyer_inq_id);
 		System.out.println(buyer_inqService.selectByInqIdFORseller(buyer_inq_id));
 
-		model.addAttribute("bqa", buyer_inqService.selectByInqIdFORseller(11234));
+		System.out.println(buyer_inqService.selectByInqIdFORseller(buyer_inq_id));
+		
+		model.addAttribute("bqa", buyer_inqService.selectByInqIdFORseller(buyer_inq_id));
 
 		return "/seller/seller_CustomerQAPopUp";
 	}
@@ -153,27 +163,33 @@ public class SellerPageController {
 
 	// 관리자문의 조회 팝업
 	@GetMapping("/answerAdmin.do")
-	public String answerAdmin() {
+	public String answerAdmin(Model model, @RequestParam("admin_inq_id") Integer admin_inq_id) {	
+		model.addAttribute("aqa", admin_inqService.selectByInqId(admin_inq_id));
 		return "/seller/seller_AdminAPopUp";
 	}
 
 	// 관리자문의 등록 팝업
 	@GetMapping("/addAdminQA.do")
-	public String addAdminQA() {
+	public String addAdminQA(Model model){
+		String member_id = "573-50-00882";// 임시로 사용할 판매자ID(사업자등록번호)
+		System.out.println("조회 : "+ memberService.selectById(member_id));
+		model.addAttribute("aqa", memberService.selectById(member_id));
 		return "/seller/seller_AdminQPopUp";
 	}
 
 	// 관리자에게 문의 등록
-	@PostMapping("/registerStoAquestion")
-	public void registerStoAquestion(@RequestParam("sellerID") String sellerID,
-			@RequestParam("StoAquestionTitle") String StoAqTitle, @RequestParam("StoAquestion") String StoAq,
-			RedirectAttributes redirectAttributes) throws UnsupportedEncodingException {
+	@PostMapping("/addAdminQA.do")
+	@ResponseBody
+	public String registerStoAquestion(
+		@RequestParam("member_id") String mid,
+		@RequestParam("admin_inq_title") String StoAqTitle,
+		@RequestParam("admin_inq_content") String StoAq
+		) throws UnsupportedEncodingException {
 
-		// 한글 깨짐 해결
-		String sellerid = new String(sellerID.getBytes("8859_1"), "utf-8");
-		String sToAqTitle = new String(StoAqTitle.getBytes("8859_1"), "utf-8");
-		String sToAq = new String(StoAq.getBytes("8859_1"), "utf-8");
-
+		String member_id=URLDecoder.decode(mid,"UTF-8");
+		String admin_inq_title=URLDecoder.decode(StoAqTitle,"UTF-8");
+		String admin_inq_content=URLDecoder.decode(StoAq,"UTF-8");
+		
 		// 업로드 날짜
 		// 오늘 날짜를 LocalDate로 가져옴
 		LocalDate localDate = LocalDate.now();
@@ -182,8 +198,20 @@ public class SellerPageController {
 		Date sqlDate = Date.valueOf(localDate);
 
 		// 문의ID 생성
+		Integer qid = 12305;
 
 		// 이후에 SQL문으로 DB에 등록
+		
+		Admin_InqDTO admin_InqDTO = new Admin_InqDTO();
+		admin_InqDTO.setAdmin_inq_id(qid);
+		admin_InqDTO.setAdmin_inq_title(admin_inq_title);
+		admin_InqDTO.setAdmin_inq_content(admin_inq_content);
+		admin_InqDTO.setAdmin_inq_date(sqlDate);
+		admin_InqDTO.setMember_id(member_id);
+		
+		int result = admin_inqService.admin_inqInsert(admin_InqDTO);
+		System.out.println(result);
+		return "Answer submitted successfully.";
 	}
 
 }

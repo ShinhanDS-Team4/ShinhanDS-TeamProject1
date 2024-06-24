@@ -8,11 +8,10 @@
 		resultType="admin_inqVO">
 		SELECT * 
 		FROM ADMIN_INQ 
-		WHERE "admin_inq_id" = #{admin_inq_id}
+		WHERE admin_inq_id = #{admin_inq_id}
 	</select>
 	
-	<select id="selectByMemberId" parameterType="string"
-		resultType="admin_inqVO">
+	<select id="selectByMemberId" parameterType="string" resultType="admin_inqVO">
 		SELECT *
 		FROM ADMIN_INQ 
 		WHERE member_id = #{member_id}
@@ -25,10 +24,10 @@
 
 	<insert id="admin_inqInsert" parameterType="admin_inqVO">
 		INSERT 
-		INTO ADMIN_INQ("admin_inq_id", "admin_inq_title", "admin_inq_content", 
-					   "admin_inq_date", "admin_reply", "member_id") 
+		INTO ADMIN_INQ(admin_inq_id, admin_inq_title, admin_inq_content, 
+					   admin_inq_date, member_id) 
 		VALUES(#{admin_inq_id}, #{admin_inq_title}, #{admin_inq_content},  
-			   #{admin_inq_date}, #{admin_reply}, #{member_id})
+			   #{admin_inq_date}, #{member_id})
 	</insert>
 
 	<update id="admin_inqUpdate" parameterType="admin_inqVO">

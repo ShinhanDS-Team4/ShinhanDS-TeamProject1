@@ -12,9 +12,17 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
 	function submitForm(){
-		var form = document.getElementById('registerAQ');
-		form.submit();
-		window.close();
+		$.ajax({
+			url:'/shoppingmall/seller/addAdminQA.do',
+			data:$("#registerAQ").serialize(),
+			type:'POST',
+			success: function(responseData){
+				alert(responseData);
+				window.close();
+			},error:function(responseData){
+				alert("실패");
+			}
+		});
 	}
 
 	function closePopUp() {
@@ -111,11 +119,11 @@ h1 {
 			</div>
 			<div class="input-group">
 				<label for="subject">제목</label>
-				<input type="text" id="admin_inq_title" name="admin_inq_title" value="${aq.admin_inq_title}"/>
+				<input type="text" id="admin_inq_title" name="admin_inq_title"/>
 			</div>
 			<div class="input-group">
 				<label for="content">내용작성</label>
-				<textarea id="admin_inq_content" rows="10" name="admin_inq_content" ${aq.admin_inq_content}></textarea>
+				<textarea id="admin_inq_content" rows="10" name="admin_inq_content"></textarea>
 			</div>
 			<div class="buttons">
 				<button type="button" onclick="submitForm()">등록</button>

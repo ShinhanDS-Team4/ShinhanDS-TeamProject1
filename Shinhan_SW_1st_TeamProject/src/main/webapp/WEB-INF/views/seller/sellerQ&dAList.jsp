@@ -36,8 +36,8 @@
 		window.open("answerCustomer.do?buyer_inq_id="+buyer_inq_id,"_blank","width=1000,height=1000,scrollbars=yes");
 	}
 	
-	function adminAnswerPopUp(){
-		window.open("answerAdmin.do","_blank","width=1000,height=1000,scrollbars=yes");
+	function adminAnswerPopUp(admin_inq_id){
+		window.open("answerAdmin.do?admin_inq_id="+admin_inq_id,"_blank","width=1000,height=1000,scrollbars=yes");
 	}
 </script>
 </head>
@@ -132,13 +132,13 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="Admin_qa" items="${AdminQAList}">
+						<c:forEach var="admin_qa" items="${adminQAList}">
 							<tr>
-								<td>${Admin_qa.admin_inq_id}</td>
-								<td>${Admin_qa.admin_inq_title}</td>
-								<td>${Admin_qa.admin_inq_date}</td>
+								<td>${admin_qa.admin_inq_id}</td>
+								<td>${admin_qa.admin_inq_title}</td>
+								<td>${admin_qa.admin_inq_date}</td>
 								<td><input type="text" placeholder="답변상태"/></td>
-								<td><button>조회</button></td>
+								<td><button onclick="adminAnswerPopUp(${admin_qa.admin_inq_id})">조회</button></td>
 							</tr>
 						</c:forEach>
 						<tr>

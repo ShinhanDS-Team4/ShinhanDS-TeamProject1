@@ -103,11 +103,11 @@ h1 {
 		</div>
 		<div class="input-group">
 			<label for="inquiry">문의내용</label>
-			<textarea id="admin_inq_content" name="admin_inq_content" readonly="readonly" rows="5" value="${aqa.admin_inq_content}"></textarea>
+			<textarea id="admin_inq_content" name="admin_inq_content" readonly="readonly" rows="5">${aqa.admin_inq_content}</textarea>
 		</div>
 		<div class="input-group">
 			<label for="response">답변</label>
-			<textarea id="admin_reply" name="admin_reply" readonly="readonly" rows="5" value="${aq.admin_reply}"></textarea>
+			<textarea id="admin_reply" name="admin_reply" readonly="readonly" rows="5" >${aqa.admin_reply}</textarea>
 		</div>
 		<div class="buttons">
 			<button type="button" onclick="closePopUp()">닫기</button>
