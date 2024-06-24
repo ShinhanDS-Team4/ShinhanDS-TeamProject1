@@ -97,23 +97,25 @@ h1 {
 			enctype="multipart/form-data" accept-charset="UTF-8">
 			<div class="info">
 				<div>
-					<label>판매자ID</label> <input type="text" name="sellerID"
-						value="${aqa.member_id}" />
+					<label>판매자ID</label>
+					<input type="text" name="member_id" id="member_id" value="${aqa.member_id}" />
 				</div>
 				<div>
-					<label>판매자명</label> <input type="text" value="${aqa.member_name}" />
+					<label>판매자명</label>
+					<input type="text" name="member_name" id="member_name" value="${aqa.member_name}" />
 				</div>
 				<div>
-					<label>전화번호</label> <input type="text" value="${aqa.phone}" />
+					<label>전화번호</label>
+					<input type="text" name="phone" id="phone" value="${aqa.phone}" />
 				</div>
 			</div>
 			<div class="input-group">
-				<label for="subject">제목</label> <input type="text" id="subject"
-					name="StoAquestionTitle" />
+				<label for="subject">제목</label>
+				<input type="text" id="admin_inq_title" name="admin_inq_title" value="${aq.admin_inq_title}"/>
 			</div>
 			<div class="input-group">
 				<label for="content">내용작성</label>
-				<textarea id="content" rows="10" name="StoAquestion"></textarea>
+				<textarea id="admin_inq_content" rows="10" name="admin_inq_content" ${aq.admin_inq_content}></textarea>
 			</div>
 			<div class="buttons">
 				<button type="button" onclick="submitForm()">등록</button>

@@ -15,7 +15,7 @@
 		resultType="admin_inqVO">
 		SELECT *
 		FROM ADMIN_INQ 
-		WHERE "member_id" = #{member_id}
+		WHERE member_id = #{member_id}
 	</select>
 
 	<select id="selectAll" resultType="admin_inqVO">
