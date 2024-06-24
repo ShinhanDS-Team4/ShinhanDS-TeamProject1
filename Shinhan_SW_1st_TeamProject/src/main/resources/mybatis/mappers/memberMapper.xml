@@ -8,7 +8,7 @@
 		resultType="memberVO">
 		SELECT *
 		FROM MEMBER
-		WHERE "member_id" = #{member_id}
+		WHERE member_id = #{member_id}
 	</select>
 
 	<select id="selectAll" resultType="memberVO">

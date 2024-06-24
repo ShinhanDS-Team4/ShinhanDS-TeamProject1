@@ -28,16 +28,16 @@
 <script src="${path}/resources/slick/slick.min.js"></script>
 <script>
 	function addAdminQAPopUp(){
-        
 		window.open("addAdminQA.do","_blank","width=1000,height=1000,scrollbars=yes");
 	}
 	
-	function answerCustomerPopUp(){
-		window.open("answerCustomer.do","_blank","width=1000,height=1000,scrollbars=yes");
+	function answerCustomerPopUp(buyer_inq_id){
+		alert(buyer_inq_id);
+		window.open("answerCustomer.do?buyer_inq_id="+buyer_inq_id,"_blank","width=1000,height=1000,scrollbars=yes");
 	}
 	
-	function adminAnswerPopUp(){
-		window.open("answerAdmin.do","_blank","width=1000,height=1000,scrollbars=yes");
+	function adminAnswerPopUp(admin_inq_id){
+		window.open("answerAdmin.do?admin_inq_id="+admin_inq_id,"_blank","width=1000,height=1000,scrollbars=yes");
 	}
 </script>
 </head>
@@ -57,8 +57,8 @@
 			<h2>마이페이지</h2>
 			<hr />
 			<div class="user-info">
-				<p>김철수</p>
-				<p>573-50-00882</p>
+				<input type="text" name="member_name" id="member_name" placeholder="김철수">
+				<input type="text" name="member_id" id="member_id" placeholder="573-50-00882">
 			</div>
 			<!-- 고객 문의글 -->
 			<div class="product-list">
@@ -79,7 +79,7 @@
 								<td>${buyer_qa.buyer_inq_title}</td>
 								<td>${buyer_qa.buyer_inq_date}</td>
 								<td><input type="text" placeholder="답변상태"/></td>
-								<td><button>답변작성</button></td>
+								<td><button onclick="answerCustomerPopUp(${buyer_qa.buyer_inq_id})">답변작성</button></td>
 							</tr>
 						</c:forEach>
 						<tr>
@@ -132,6 +132,15 @@
 						</tr>
 					</thead>
 					<tbody>
+						<c:forEach var="admin_qa" items="${adminQAList}">
+							<tr>
+								<td>${admin_qa.admin_inq_id}</td>
+								<td>${admin_qa.admin_inq_title}</td>
+								<td>${admin_qa.admin_inq_date}</td>
+								<td><input type="text" placeholder="답변상태"/></td>
+								<td><button onclick="adminAnswerPopUp(${admin_qa.admin_inq_id})">조회</button></td>
+							</tr>
+						</c:forEach>
 						<tr>
 							<td><input type="text" placeholder="문의번호" /></td>
 							<td><input type="text" placeholder="문의제목1" /></td>
