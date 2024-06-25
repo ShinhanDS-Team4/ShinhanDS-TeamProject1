@@ -4,6 +4,16 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.prod_option">
 
+	<!-- 옵션명과 옵션값을 함께 조회 -->
+ 	<select id="selectAllOptionsByProdId" parameterType="string" resultType="map">
+        SELECT 
+            PO.OPT_NAME AS OPT_NAME,
+            LISTAGG(  PO.OPT_VALUE, ',' )WITHIN GROUP (ORDER BY PO.OPT_VALUE) AS OPT_VALUE
+		FROM PROD_OPTION PO
+		WHERE PO.PROD_ID = '나이키 반팔_1234-1234' 
+		GROUP BY PO.OPT_NAME
+    </select>
+	
 	<select id="selectByOptionId" parameterType="int"
 		resultType="prod_optionVO">
 		SELECT * 

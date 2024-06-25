@@ -4,6 +4,26 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.cart">
 
+	<!-- CART테이블에 넣을 선택한 옵션 상품의 재고ID 찾기  -->
+    <select id="searchStockId" parameterType="com.team4.shoppingmall.cart.CartDynamicVO" resultType="string">
+		select seller_prod_stock.stock_id 
+		from seller_prod_stock
+		where opt_id1||','|| opt_id2||','||opt_id3 ||','||opt_id4||','||opt_id5   
+		like 	 
+		( 
+	  		SELECT 
+	        listAgg(opt_id,',') within group(order by opt_id)
+			FROM PROD_OPTION PO
+			WHERE     PO.PROD_ID = #{prod_id}
+	        and (
+	       <foreach collection="mapData" item="opt_value" index="opt_name" separator="or">
+	       	 (opt_name = #{opt_name} and opt_value=#{opt_value})  
+	       </foreach>
+       		)
+	 	)||'%'
+    </select>
+
+
 	<select id="selectSellStockByMemberId" parameterType="string"
 		resultType="cartVO">
 		SELECT *
@@ -37,11 +57,12 @@
 		FROM CART
 	</select>
 
+	<!-- (수정함)cart_id에 시퀀스 추가  -->
 	<insert id="cartInsert" parameterType="cartVO">
 		INSERT 
-		INTO CART("cart_id", "member_id", "sellstock_id", "rentstock_id", 
-				  "cart_amount") 
-		VALUES(#{cart_id}, #{member_id}, #{sellstock_id}, #{rentstock_id}, 
+		INTO CART(cart_id, member_id, sellstock_id, rentstock_id, 
+				  cart_amount) 
+		VALUES(cart_squence.nextval, #{member_id}, #{sellstock_id}, #{rentstock_id}, 
 			   #{cart_amount})
 	</insert>
 

@@ -4,6 +4,21 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.seller_prod_stock">
 
+	<!-- 상품ID로 판매 상품 옵션별 재고 조회 -->
+	<select id="selectSpsOptionByProdId" parameterType="string"
+		resultType="com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestDTO">
+		SELECT 
+			SPS.STOCK_ID,
+		    SPS.PROD_ID,
+		    SPS.OPT_ID1,
+		    SPS.OPT_ID2,
+		    SPS.S_P_STOCK
+		FROM 
+		    SELLER_PROD_STOCK SPS
+		WHERE 
+		    SPS.PROD_ID = '나이키 반팔_1234-1234'
+	</select>
+
 	<select id="selectByStockId" parameterType="int"
 		resultType="seller_prod_stockVO">
 		SELECT *

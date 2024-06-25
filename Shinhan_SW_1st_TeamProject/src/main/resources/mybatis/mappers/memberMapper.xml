@@ -4,6 +4,13 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.member">
 
+	<select id="selectByPw" parameterType="string"
+		resultType="memberVO">
+		SELECT member_id
+		FROM MEMBER
+		WHERE member_pw = '1111';     
+	</select>
+
 	<select id="selectById" parameterType="string"
 		resultType="memberVO">
 		SELECT *

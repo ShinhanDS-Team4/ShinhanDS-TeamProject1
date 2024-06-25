@@ -11,6 +11,11 @@ public class ReviewsService {
 	@Autowired
 	ReviewsDAOInterface reviewsDAO;
 	
+	//주문한 상품의 리뷰정보
+	public List<ReviewsDTO> selectAllProductReviewByProdId(String prod_id){
+		return reviewsDAO.selectAllProductReviewByProdId(prod_id);
+	};
+	
 	public ReviewsDTO selectById(Integer review_id) {
 		return reviewsDAO.selectById(review_id);
 	}

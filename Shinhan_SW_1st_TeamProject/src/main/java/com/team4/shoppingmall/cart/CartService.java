@@ -1,5 +1,6 @@
 package com.team4.shoppingmall.cart;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,11 @@ public class CartService {
 	
 	@Autowired
 	CartDAOInterface cartDAO;
+
+	//선택한 옵션 상품의 재고ID 조회
+	public String searchStockId(HashMap<String, String> map, String prod_id) {
+		return cartDAO.searchStockId(map, prod_id);
+	}
 	
 	public List<CartDTO> selectSellStockByMemberId(String member_id) {
 		return cartDAO.selectSellStockByMemberId(member_id);
@@ -42,4 +48,5 @@ public class CartService {
 	public int cartDelete(Integer cart_id) {
 		return cartDAO.cartDelete(cart_id);
 	}
+	
 }

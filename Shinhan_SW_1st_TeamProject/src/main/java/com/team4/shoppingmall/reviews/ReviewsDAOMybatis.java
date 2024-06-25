@@ -14,6 +14,11 @@ public class ReviewsDAOMybatis implements ReviewsDAOInterface {
 	
 	String namespace = "com.saren.reviews.";
 	
+	//주문한 상품의 리뷰정보
+	public List<ReviewsDTO> selectAllProductReviewByProdId(String prod_id){
+		return sqlSession.selectList(namespace+"selectAllProductReviewByProdId", prod_id);
+	};
+	
 	@Override
 	public ReviewsDTO selectById(Integer review_id) {
 		return sqlSession.selectOne(namespace+"selectById", review_id);
