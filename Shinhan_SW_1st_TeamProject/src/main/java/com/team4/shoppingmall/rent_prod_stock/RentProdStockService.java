@@ -16,6 +16,10 @@ public class RentProdStockService {
 		return rentProdStockDAO.selectById(stock_id);
  	}
 	
+	public int findMaxStockNumber(String prod_id) {
+		return rentProdStockDAO.findMaxStockNumber(prod_id);
+	}
+	
 	public List<RentProdStockListDTO> findRentStockList(String memeber_id){
 		return rentProdStockDAO.findRentStockList(memeber_id);
 	}

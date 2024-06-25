@@ -23,6 +23,11 @@ public class RentProdStockDAOMybatis implements RentProdStockDAOInterface {
 	}
 	
 	@Override
+	public int findMaxStockNumber(String prod_id) {
+		return sqlSession.selectOne(namespace+"findMaxStockNumber",prod_id);
+	}
+	
+	@Override
 	public List<RentProdStockListDTO> findRentStockList(String member_id) {
 		return sqlSession.selectList(namespace+"findRentStockList",member_id);
 	}

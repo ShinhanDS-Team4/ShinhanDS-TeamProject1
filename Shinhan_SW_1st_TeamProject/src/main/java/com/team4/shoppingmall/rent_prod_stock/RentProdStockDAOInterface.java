@@ -7,6 +7,8 @@ public interface RentProdStockDAOInterface {
 	// 대여상품상세
 	public RentProdStockDTO selectById(Integer stock_id);
 
+	public int findMaxStockNumber(String prod_id);
+	
 	public List<RentProdStockListDTO> findRentStockList(String member_id);
 	
 	// 대여상품목록
