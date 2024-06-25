@@ -20,8 +20,9 @@ public class RentProdStockService {
 		return rentProdStockDAO.findMaxStockNumber(prod_id);
 	}
 	
-	public List<RentProdStockListDTO> findRentStockList(String memeber_id){
-		return rentProdStockDAO.findRentStockList(memeber_id);
+	public List<RentProdStockListDTO> findRentStockList(String member_id){
+		System.out.println("service 정상 수행됨");
+		return rentProdStockDAO.findRentStockList(member_id);
 	}
 
 	// 대여상품목록 

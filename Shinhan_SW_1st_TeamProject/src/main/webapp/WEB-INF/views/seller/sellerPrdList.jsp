@@ -23,7 +23,6 @@
 <body>
 	<%@ include file="../common/header.jsp"%>
 	<main>
-
 		<aside>
 			<ul>
 				<li><a onclick="location.href='${path}/seller/MainPage.do'">통계</a></li>
@@ -49,7 +48,7 @@
 						<tr>
 							<th></th>
 							<th>상품등록번호</th>
-							<th>상품명</th>
+							<th>등록일자</th>
 							<th>가격</th>
 							<th>재고량</th>
 							<th>수정</th>
@@ -59,7 +58,7 @@
 						<c:forEach var="sStock" items="${stockSList}">
 							<tr>
 								<td>${sStock.stockid}</td>
-								<td>${sStock.prd_name}</td>
+								<td>${sStock.pod_added_date}</td>
 								<td>${sStock.prod_price}</td>
 								<td>${sStock.s_p_stock}</td>
 								<td><button type="button" onclick="location.href='${path}/seller/ModifyProduct.do'">수정</button></td>
@@ -105,7 +104,7 @@
 							<td><input type="number" placeholder="35000" /></td>
 							<td><input type="number" placeholder="35" /></td>
 							<td><button>수정</button></td>
-						</tr> -->
+						</tr>
 					</tbody>
 				</table>
 				<div class="actions">
@@ -120,7 +119,7 @@
 						<tr>
 							<th></th>
 							<th>상품등록번호</th>
-							<th>상품명</th>
+							<th>등록일자</th>
 							<th>가격</th>
 							<th>재고량</th>
 							<th>수정</th>
@@ -130,7 +129,7 @@
 						<c:forEach var="rStock" items="${stockRList}">
 							<tr>
 								<td>${rStock.stockid}</td>
-								<td>${rStock.prd_name}</td>
+								<td>${rStock.prod_added_date}</td>
 								<td>${rStock.prod_price}</td>
 								<td>${rStock.r_p_stock}</td>
 								<td><button type="button" onclick="location.href='${path}/seller/ModifyProduct.do'">수정</button></td>

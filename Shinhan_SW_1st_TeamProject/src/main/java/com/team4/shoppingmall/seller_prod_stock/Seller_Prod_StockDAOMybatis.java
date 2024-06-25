@@ -31,6 +31,8 @@ public class Seller_Prod_StockDAOMybatis implements Seller_Prod_StockDAOInterfac
 	
 	@Override
 	public List<Seller_Prod_StockListDTO> findSellStockList(String member_id){
+		
+		
 		return sqlSession.selectList(namespace+"findSellStockList", member_id);
 	}
 

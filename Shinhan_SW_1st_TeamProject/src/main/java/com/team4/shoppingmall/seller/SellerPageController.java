@@ -76,8 +76,11 @@ public class SellerPageController {
 		// 판매 상품 리스트
 		model1.addAttribute("stockSList", seller_Prod_StockService.findSellStockList(member_id));
 
+		System.out.println("판매상품 리스트 불러옴");
 		// 대여 상품 리스트
 		model2.addAttribute("stockRList", rentProdStockService.findRentStockList(member_id));
+
+		System.out.println("대여상품 리스트 불러옴");
 
 		return "/seller/sellerPrdList";
 	}
@@ -94,13 +97,13 @@ public class SellerPageController {
 
 	// 문의 목록 페이지 보여주기
 	@GetMapping("/Q&AList.do")
-	public String qaList(Model model1, Model model2, HttpServletRequest request) {
+	public String qaList(Model model3, Model model4, HttpServletRequest request) {
 		
 		// 구매자의 문의 목록
 		System.out.println(buyer_inqService.selectInqList(member_id));
-		model1.addAttribute("buyerQAList", buyer_inqService.selectInqList(member_id));
+		model3.addAttribute("buyerQAList", buyer_inqService.selectInqList(member_id));
 		//System.out.println(model1);
-		model2.addAttribute("adminQAList", admin_inqService.selectByMemberId(member_id));
+		model4.addAttribute("adminQAList", admin_inqService.selectByMemberId(member_id));
 		
 		return "/seller/sellerQ&dAList";
 	}

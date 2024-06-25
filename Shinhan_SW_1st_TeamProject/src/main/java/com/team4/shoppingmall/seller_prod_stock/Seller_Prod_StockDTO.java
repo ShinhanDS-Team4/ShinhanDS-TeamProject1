@@ -20,5 +20,4 @@ public class Seller_Prod_StockDTO {
 	Integer opt_id3;
 	Integer opt_id4;
 	Integer opt_id5;
-	Integer review_id;
 }

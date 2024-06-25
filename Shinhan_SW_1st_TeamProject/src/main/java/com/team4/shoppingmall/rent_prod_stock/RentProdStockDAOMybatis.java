@@ -11,7 +11,7 @@ import com.team4.shoppingmall.coupon.CouponDTO;
 @Repository
 public class RentProdStockDAOMybatis implements RentProdStockDAOInterface {
 
-	//@Autowired
+	@Autowired
 	SqlSession sqlSession;
 
 	String namespace = "com.saren.rent_prod_stock.";
@@ -29,7 +29,8 @@ public class RentProdStockDAOMybatis implements RentProdStockDAOInterface {
 	
 	@Override
 	public List<RentProdStockListDTO> findRentStockList(String member_id) {
-		return sqlSession.selectList(namespace+"findRentStockList",member_id);
+		System.out.println("mybatis 정상 수행됨");
+		return sqlSession.selectList(namespace+"findRentStockList", member_id);
 	}
 
 	// 대여상품목록
