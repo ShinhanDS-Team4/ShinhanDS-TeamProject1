@@ -25,8 +25,8 @@ public class Prod_OptionDAOMybatis implements Prod_OptionDAOInterface {
 	}
 	
 	@Override
-	public int findMaxOptId(String prod_id) {
-		return sqlSession.selectOne(namespace+"findMaxOptId",prod_id);
+	public int findMaxOptId() {
+		return sqlSession.selectOne(namespace+"findMaxOptId");
 	}
 
 	@Override

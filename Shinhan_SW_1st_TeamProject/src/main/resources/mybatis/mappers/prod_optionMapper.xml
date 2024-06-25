@@ -18,10 +18,11 @@
 		WHERE "prod_id" = #{prod_id}
 	</select>
 	
-	<select id="findMaxOptId" parameterType="string" resultType="int">
-		SELECT MAX(opt_id) AS max_opt_id
-		FROM PROD_OPTION
-		WHERE prod_id = #{prod_id};
+	<select id="findMaxOptId" resultType="int">
+		SELECT
+    		MAX(opt_id) AS max_opt_id
+		FROM
+    		PROD_OPTION
 	</select>
 
 	<select id="selectAll" resultType="prod_optionVO">

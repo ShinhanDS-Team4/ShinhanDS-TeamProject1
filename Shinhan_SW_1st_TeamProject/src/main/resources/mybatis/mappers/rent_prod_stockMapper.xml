@@ -11,6 +11,20 @@
 		FROM RENT_PROD_STOCK
 		WHERE "stock_id" = #{stock_id}
 	</select>
+	
+	<select id="findRentStockList" parameterType="string" resultType="seller_prod_stocklistVO">
+		SELECT 
+    		r.stock_id, 
+    		r.r_p_stock, 
+    		p.prod_added_date, 
+    		p.prod_price
+		FROM 
+    		RENT_PROD_STOCK r
+		JOIN 
+    		PROD p ON r.prod_id = p.prod_id
+		WHERE 
+    		p.member_id = #{member_id}
+    </select>
 
 	<!-- 대여상품목록 -->
 	<select id="selectAll" resultType="com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO">

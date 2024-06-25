@@ -19,8 +19,8 @@ public class Prod_OptionService {
 		return prod_optionDAO.selectByProdId(prod_id);
 	}
 	
-	public int findMaxOptId(String prod_id) {
-		return prod_optionDAO.findMaxOptId(prod_id);
+	public int findMaxOptId() {
+		return prod_optionDAO.findMaxOptId();
 	}
 	
 	public List<Prod_OptionDTO> selectAll() {

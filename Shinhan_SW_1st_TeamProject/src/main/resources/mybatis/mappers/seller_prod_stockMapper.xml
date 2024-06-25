@@ -18,6 +18,15 @@
 		WHERE "prod_id" = #{prod_id}
 	</select>
 	
+	<select id="findMaxStockNumber" parameterType="string" resultType="int">
+		SELECT
+    		MAX(TO_NUMBER(REGEXP_SUBSTR(stock_id, '[0-9]+$'))) AS max_number
+		FROM
+    		SELLER_PROD_STOCK;
+    	WHERE
+    		prod_id = #{prod_id};
+	</select>
+	
 	<select id="findSellStockList" parameterType="string" resultType="seller_prod_stocklistVO">
 		SELECT 
     		s.stock_id, 

@@ -23,6 +23,16 @@ public class Seller_Prod_StockDAOMybatis implements Seller_Prod_StockDAOInterfac
 	public List<Seller_Prod_StockDTO> selectByProdId(Integer prod_id) {
 		return sqlSession.selectList(namespace+"selectByProdId", prod_id);
 	}
+	
+	@Override
+	public int findMaxStockNumber(String prod_id) {
+		return sqlSession.selectOne(namespace+"findMaxStockNumber",prod_id);
+	}
+	
+	@Override
+	public List<Seller_Prod_StockListDTO> findSellStockList(String member_id){
+		return sqlSession.selectList(namespace+"findSellStockList", member_id);
+	}
 
 	@Override
 	public List<Seller_Prod_StockDTO> selectAll() {
@@ -43,4 +53,6 @@ public class Seller_Prod_StockDAOMybatis implements Seller_Prod_StockDAOInterfac
 	public int seller_prod_stockDelete(Integer stock_id) {
 		return sqlSession.delete(namespace+"seller_prod_stockDelete", stock_id);
 	}
+
+	
 }

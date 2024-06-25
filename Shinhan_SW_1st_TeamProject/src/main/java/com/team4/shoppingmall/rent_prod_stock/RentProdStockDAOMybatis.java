@@ -21,6 +21,11 @@ public class RentProdStockDAOMybatis implements RentProdStockDAOInterface {
 	public RentProdStockDTO selectById(Integer stock_id) {
 		return sqlSession.selectOne(namespace + "selectById", stock_id);
 	}
+	
+	@Override
+	public List<RentProdStockListDTO> findRentStockList(String member_id) {
+		return sqlSession.selectList(namespace+"findRentStockList",member_id);
+	}
 
 	// 대여상품목록
 	@Override

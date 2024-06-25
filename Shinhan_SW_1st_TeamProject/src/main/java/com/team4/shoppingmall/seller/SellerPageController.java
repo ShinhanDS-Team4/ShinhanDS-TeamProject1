@@ -27,6 +27,8 @@ import com.team4.shoppingmall.buyer_inq.Buyer_InqDAOInterface;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqDTO;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqService;
 import com.team4.shoppingmall.member.MemberService;
+import com.team4.shoppingmall.rent_prod_stock.RentProdStockService;
+import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockService;
 
 @Controller
 @RequestMapping("/seller")
@@ -40,6 +42,12 @@ public class SellerPageController {
 	
 	@Autowired
 	MemberService memberService;
+	
+	@Autowired
+	Seller_Prod_StockService seller_Prod_StockService;
+	
+	@Autowired
+	RentProdStockService rentProdStockService;
 	
 	String member_id = "573-50-00882";// 임시로 사용할 판매자ID(사업자등록번호)
 
@@ -66,10 +74,10 @@ public class SellerPageController {
 	public String prdList(Model model1, Model model2) {
 
 		// 판매 상품 리스트
-		model1.addAttribute("stockSList", stock);
+		model1.addAttribute("stockSList", seller_Prod_StockService.findSellStockList(member_id));
 
-		// 대열 상품 리스트
-		// model2.addAttribute("stockRList", request);
+		// 대여 상품 리스트
+		model2.addAttribute("stockRList", rentProdStockService.findRentStockList(member_id));
 
 		return "/seller/sellerPrdList";
 	}

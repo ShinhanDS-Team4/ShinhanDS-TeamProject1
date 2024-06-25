@@ -32,6 +32,8 @@ import com.team4.shoppingmall.prod_image.Prod_ImageDTO;
 import com.team4.shoppingmall.prod_image.Prod_ImageService;
 import com.team4.shoppingmall.prod_option.Prod_OptionDTO;
 import com.team4.shoppingmall.prod_option.Prod_OptionService;
+import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockDTO;
+import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockService;
 
 import retrofit2.http.Multipart;
 
@@ -49,6 +51,9 @@ public class SellerPrdUploadController {
 	
 	@Autowired
 	Prod_OptionService optionService;
+	
+	@Autowired
+	Seller_Prod_StockService seller_Prod_StockService;
 
 	@Value("${file.upload-dir}")
 	private String uploadDir;
@@ -154,10 +159,22 @@ public class SellerPrdUploadController {
 		}
 		
 		// 3.재고(Stock) 테이블 : 재고 테이블 등록은 상품ID, 
-		
 		// 옵션명 & 옵션값 처리
 		List<Map<String, String>> options = new ArrayList<>();//옵션리스트, 근데 이거 필요없어
 		
+		//등록하려는 재고와 일치하는 상품ID를 가진 재고들 중 재고ID 끝자리 숫자가 제일 큰 재고ID의 끝자리 수를 가져온다.
+		//ex)나이키 반팔_550-398-22934_1~5 >> 5
+		int maxSellStockNum = seller_Prod_StockService.findMaxStockNumber(prod_id);
+		maxSellStockNum++;
+		
+		String stockID = prod_id+"_"+maxSellStockNum;
+		Seller_Prod_StockDTO seller_Prod_StockDTO = new Seller_Prod_StockDTO();
+		seller_Prod_StockDTO.setStock_id(stockID);
+		seller_Prod_StockDTO.setS_p_stock(prdStock);
+		seller_Prod_StockDTO.setS_p_sell(0);
+		
+		
+		//for문을 이용한 opt_id 추가
 		for (int i = 0; i < optNames.size(); i++) {
 			Map<String, String> option = new HashMap<String, String>();
 			option.put("optName", new String(optNames.get(i).getBytes("8859_1"), "utf-8"));
@@ -166,8 +183,10 @@ public class SellerPrdUploadController {
 			String optionName =  URLDecoder.decode(optNames.get(i), "UTF-8");
 			String optionValue =  URLDecoder.decode(optValues.get(i), "UTF-8");
 			
-			//현재 DB에서 상품 ID 별로 가장 큰 옵션 ID를 가져온다
-			int maxOptionID = optionService.findMaxOptId(prod_id);
+			//현재 DB의 상품옵션(PROD_OPTION) 테이블에서 가장 큰 옵션 ID를 가져온다
+			int maxOptionID = optionService.findMaxOptId();
+			if(Objects.isNull(maxOptionID))
+				maxOptionID=0;
 			maxOptionID++;
 			
 			Prod_OptionDTO optionDTO = new Prod_OptionDTO();
@@ -178,14 +197,30 @@ public class SellerPrdUploadController {
 			
 			int optRegResult = optionService.optionInsert(optionDTO);
 			
+			switch(i) {
+			case 0:
+				seller_Prod_StockDTO.setOpt_id1(maxOptionID);
+				
+			case 1:
+				seller_Prod_StockDTO.setOpt_id2(maxOptionID);
+				
+			case 2:
+				seller_Prod_StockDTO.setOpt_id3(maxOptionID);
+				
+			case 3:
+				seller_Prod_StockDTO.setOpt_id4(maxOptionID);
+				
+			case 4:
+				seller_Prod_StockDTO.setOpt_id5(maxOptionID);
+			}
+					
 			System.out.println(option);
 			options.add(option);
 		}
-
 		
+		int sellStockRegResult = seller_Prod_StockService.seller_prod_stockInsert(seller_Prod_StockDTO);
 
 		redirectAttributes.addFlashAttribute("PrdRegisterResult", "상품 정보 업로드에 성공하였습니다.");
 		return "/seller/sellerPrdList";// 성공 페이지로 리다이렉션(팀프로젝트에서는 판매자-물품 리스트로 리다이렉트)
 	}
-
 }

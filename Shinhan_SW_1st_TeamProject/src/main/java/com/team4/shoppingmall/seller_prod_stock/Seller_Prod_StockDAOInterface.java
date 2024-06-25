@@ -8,6 +8,10 @@ public interface Seller_Prod_StockDAOInterface {
 
 	public List<Seller_Prod_StockDTO> selectByProdId(Integer prod_id);
 	
+	public int findMaxStockNumber(String prod_id);
+	
+	public List<Seller_Prod_StockListDTO> findSellStockList(String member_id);
+	
 	public List<Seller_Prod_StockDTO> selectAll();
 	
 //	public List<MemberDTO> selectByCondition();
@@ -17,4 +21,6 @@ public interface Seller_Prod_StockDAOInterface {
 	public int seller_prod_stockUpdate(Seller_Prod_StockDTO seller_prod_stock);
 	
 	public int seller_prod_stockDelete(Integer stock_id);
+
+	
 }

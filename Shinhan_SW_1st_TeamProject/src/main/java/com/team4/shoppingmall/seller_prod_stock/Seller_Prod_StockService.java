@@ -19,6 +19,14 @@ public class Seller_Prod_StockService {
 		return seller_prod_stockDAO.selectByProdId(prod_id);
 	}
 	
+	public int findMaxStockNumber(String prod_id) {
+		return seller_prod_stockDAO.findMaxStockNumber(prod_id);
+	}
+	
+	public List<Seller_Prod_StockListDTO> findSellStockList(String member_id){
+		return seller_prod_stockDAO.findSellStockList(member_id);
+	}
+	
 	public List<Seller_Prod_StockDTO> selectAll() {
 		return seller_prod_stockDAO.selectAll();
 	}

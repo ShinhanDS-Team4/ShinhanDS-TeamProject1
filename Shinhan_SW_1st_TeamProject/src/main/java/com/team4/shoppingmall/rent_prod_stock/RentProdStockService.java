@@ -15,6 +15,10 @@ public class RentProdStockService {
 	public RentProdStockDTO selectById(Integer stock_id) {
 		return rentProdStockDAO.selectById(stock_id);
  	}
+	
+	public List<RentProdStockListDTO> findRentStockList(String memeber_id){
+		return rentProdStockDAO.findRentStockList(memeber_id);
+	}
 
 	// 대여상품목록 
 	public List<RentProdStockDTO> selectAll() {
