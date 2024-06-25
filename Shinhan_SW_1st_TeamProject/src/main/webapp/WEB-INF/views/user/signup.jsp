@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+	<c:set var="path" value="${pageContext.servletContext.contextPath}" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원가입 페이지</title>
@@ -50,17 +51,23 @@
             display: flex;
             flex-direction: column;
         }
-        label {
-            margin-bottom: 5px;
+        .form-group {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            flex: 0 0 150px; /* 고정된 너비 설정 */
             font-weight: bold;
         }
-        input[type="text"],
-        input[type="password"],
-        input[type="email"],
-        input[type="date"],
-        select {
+        .form-group input[type="text"],
+        .form-group input[type="password"],
+        .form-group input[type="email"],
+        .form-group input[type="date"],
+        .form-group select {
+            flex: 1;
             padding: 10px;
-            margin-bottom: 15px;
             border: 1px solid #ccc;
             border-radius: 5px;
         }
@@ -82,11 +89,15 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            margin-top: 20px;
         }
         .btn:hover {
             background-color: #555;
         }
-        .form-group {
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+            margin-top: -10px;
             margin-bottom: 15px;
         }
         footer {
@@ -117,6 +128,55 @@
             margin: 0 10px;
         }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        var verificationCode = '';
+
+        // 이메일 인증번호 받기
+        $('#email-verify-btn').on('click', function() {
+            var email = $('#email').val();
+            if (email) {
+                $.ajax({
+                    url: '${path}/member_test/sendEmailVerification',
+                    type: 'POST',
+                    data: { email: email },
+                    success: function(response) {
+                        if (response.success) {
+                            verificationCode = response.verificationCode;
+                            alert('인증번호가 이메일로 전송되었습니다.');
+                            $('#email-verification-popup').show();
+                        } else {
+                            alert('이메일 전송에 실패했습니다.');
+                        }
+                    }
+                });
+            } else {
+                alert('이메일을 입력해주세요.');
+            }
+        });
+
+        // 이메일 인증번호 확인
+        $('#verify-code-btn').on('click', function() {
+            var enteredCode = $('#verification-code').val();
+            if (enteredCode === verificationCode) {
+                alert('이메일 인증이 완료되었습니다.');
+                $('#email').prop('readonly', true);
+                $('#email-verification-popup').hide();
+            } else {
+                alert('인증번호가 올바르지 않습니다.');
+            }
+        });
+
+        // 회원가입 폼 제출
+        $('form').on('submit', function(event) {
+            if (!$('#email').prop('readonly')) {
+                event.preventDefault();
+                $('#email-error').text('이메일을 인증해 주세요.');
+            }
+        });
+    });
+    </script>
 </head>
 <body>
 <c:set var="path" value="${pageContext.servletContext.contextPath}" />
@@ -134,46 +194,20 @@
 
     <div class="container">
         <h1>회원가입</h1>
-        <form method="post" accept-charset="UTF-8" action="${path }/member_test/signup.do">
+        <form method="post" accept-charset="UTF-8" action="${path}/member_test/signup.do">
             <div class="form-group">
-                <label for="user-type">구분</label>
+                <label for="member_type">구분</label>
                 <select id="member_type" name="member_type">
                     <option value="1">고객</option>
                     <option value="2">판매자</option>
                 </select>
-			    <script>
-			    	//고객과 판매자 값을 숫자로 바꾸는 스크립트
-				 function getSelectedValue() {
-				    // select 요소를 가져옵니다
-				    var selectElement = document.getElementById('member_type');
-				    
-				    // 선택된 옵션의 value를 가져옵니다
-				    var selectedValue = selectElement.options[selectElement.selectedIndex].value;
-				    
-				    // value를 숫자로 변환합니다
-				    var numericValue = parseInt(selectedValue, 10);
-				    
-				    // 결과를 콘솔에 출력합니다
-				    console.log(numericValue);
-				  }
-				
-				  // 페이지 로드 시 선택된 값을 출력합니다
-				  window.onload = function() {
-				    getSelectedValue();
-				  };
-				
-				  // 선택이 변경될 때 값을 출력합니다
-				  document.getElementById('mySelect').onchange = function() {
-				    getSelectedValue();
-				  };
-			    </script>
             </div>
             <div class="form-group">
-                <label for="username">아이디</label>
+                <label for="member_id">아이디</label>
                 <input type="text" id="member_id" name="member_id" placeholder="영문, 숫자, 특수문자('_')만 입력 가능">
             </div>
             <div class="form-group">
-                <label for="password">비밀번호</label>
+                <label for="member_pw">비밀번호</label>
                 <input type="password" id="member_pw" name="member_pw" placeholder="영문, 숫자, 특수문자 조합 9자리 이상">
             </div>
             <div class="form-group">
@@ -181,20 +215,21 @@
                 <input type="password" id="confirm-password" name="confirmPassword">
             </div>
             <div class="form-group">
-                <label for="name">이름</label>
+                <label for="member_name">이름</label>
                 <input type="text" id="member_name" name="member_name">
             </div>
             <div class="form-group">
                 <label for="phone">휴대폰 번호</label>
                 <input type="text" id="phone" name="phone" placeholder="01012345678">
-                <button type="button" class="btn">인증번호 받기</button>
             </div>
             <div class="form-group">
                 <label for="email">이메일</label>
                 <input type="email" id="email" name="email">
+                <button type="button" id="email-verify-btn" class="btn">인증번호 받기</button>
+                <div id="email-error" class="error-message"></div>
             </div>
             <div class="form-group">
-                <label for="birthday">생년월일</label>
+                <label for="birth_date">생년월일</label>
                 <input type="date" id="birth_date" name="birth_date">
             </div>
             <div class="form-group radio-group">
@@ -217,8 +252,17 @@
         </form>
     </div>
 
+    <!-- 이메일 인증 팝업 -->
+    <div id="email-verification-popup" style="display:none;">
+        <div style="background:rgba(0,0,0,0.5);position:fixed;top:0;left:0;width:100%;height:100%;z-index:10;"></div>
+        <div style="background:#fff;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);padding:20px;z-index:20;">
+            <h2>이메일 인증</h2>
+            <input type="text" id="verification-code" placeholder="인증번호를 입력하세요">
+            <button id="verify-code-btn" class="btn">확인</button>
+        </div>
+    </div>
+
     <footer>
-        <div class="footer-text">회사소개 이용약관 개인정보처리방침 이메일무단수집거부 단체주문 제휴문의 입점신청 멤버쉽 안내</div>
         <div class="footer-line"></div>
         <div class="footer-text">회사소개 이용약관 개인정보처리방침 이메일무단수집거부 단체주문 제휴문의 입점신청 멤버쉽 안내</div>
         <div class="footer-logo">saren</div>
@@ -240,6 +284,5 @@
             Copyright ⓒ 2003 Samsung C&T Corporation. All rights reserved
         </div>
     </footer>
-
 </body>
 </html>

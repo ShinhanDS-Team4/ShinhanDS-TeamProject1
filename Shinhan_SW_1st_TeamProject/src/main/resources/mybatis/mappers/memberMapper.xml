@@ -10,13 +10,20 @@
 		FROM MEMBER
 		WHERE member_id = #{member_id}
 	</select>
+	
+	<select id="findId" parameterType="string"
+		resultType="memberVO">
+		SELECT *
+		FROM MEMBER
+		WHERE phone = #{phone}
+	</select>
 
 	<select id="selectAll" resultType="memberVO">
 		SELECT *
 		FROM MEMBER
 	</select>
 		<select id="loginChk" resultType="membervo" parameterType="String"> 
-		select membr_id, member_pw 
+		select member_id, member_pw 
 		from MEMBER
 		where member_id = #{member_id}
 	</select>
@@ -52,5 +59,11 @@
 		FROM MEMBER
 		WHERE "member_id" = #{member_id}
 	</delete>
+	
+	<update id="memberUpdatePassword" parameterType="memberVO">
+		UPDATE MEMBER
+		SET member_pw = #{member_pw}
+		WHERE member_id = #{member_id}
+	</update>
 	
 </mapper>

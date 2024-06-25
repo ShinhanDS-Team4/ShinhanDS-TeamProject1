@@ -15,6 +15,10 @@ public class MemberService {
 		return memberDAO.selectById(member_id);
 	}
 	
+	public MemberDTO findId(String member_name, String phone) {
+		return memberDAO.findId(member_name, phone);
+	}
+	
 	public List<MemberDTO> selectAll() {
 		return memberDAO.selectAll();
 	}
@@ -33,6 +37,11 @@ public class MemberService {
 	
 	public MemberDTO loginChk(String member_id) {
 		return memberDAO.loginChk(member_id);
+	}
+
+	public int updatePassword(MemberDTO member) {
+		return memberDAO.updatePassword(member);
+		
 	}
 	
 }

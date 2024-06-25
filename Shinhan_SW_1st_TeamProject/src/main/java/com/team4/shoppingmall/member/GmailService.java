@@ -20,13 +20,4 @@ public class GmailService {
 
         javaMailSender.send(message);
     }
-    public void sendEmail() {
-    	SimpleMailMessage message = new SimpleMailMessage();
-    	message.setTo("kimsh142536@gmail.com");
-    	message.setSubject("종경이형 테스트");
-    	message.setText("테스트 완료 하자 ");
-    	message.setFrom("ljk5252525@gmail.com"); // 실제 발신자 이메일 주소
-    	
-    	javaMailSender.send(message);
-    }
 }
