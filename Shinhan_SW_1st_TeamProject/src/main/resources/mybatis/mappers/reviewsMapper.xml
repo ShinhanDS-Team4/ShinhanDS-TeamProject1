@@ -6,8 +6,8 @@
 
 	<!-- 주문한 상품의 리뷰정보 (resultType 수정하기) -->
 	<select id="selectAllProductReviewByProdId" parameterType="string"
-		resultType="reviewsVO">
-	    SELECT 
+		resultType="map">
+		SELECT 
 		    r.REVIEW_ID, 
 		    r.RATE, 
 		    r.REVIEW_DATE, 
@@ -16,38 +16,16 @@
 		    od.ORDERDETAIL_ID, 
 		    od.STOCK_ID,
 		    o.ORDER_ID,
-		    o.ORDER_STATE,
-		    s.PROD_ID,
-		    p.PROD_NAME,
-		    po1.OPT_NAME AS OPT_NAME1, po1.OPT_VALUE AS OPT_VALUE1,
-		    po2.OPT_NAME AS OPT_NAME2, po2.OPT_VALUE AS OPT_VALUE2,
-		    po3.OPT_NAME AS OPT_NAME3, po3.OPT_VALUE AS OPT_VALUE3,
-		    po4.OPT_NAME AS OPT_NAME4, po4.OPT_VALUE AS OPT_VALUE4,
-		    po5.OPT_NAME AS OPT_NAME5, po5.OPT_VALUE AS OPT_VALUE5
-		FROM 
-		    REVIEWS r
+		    o.ORDER_STATE, s.opt_id1
+		, s.opt_id2, s.opt_id3, s.opt_id4, s.opt_id5 
+		FROM REVIEWS r
 		JOIN 
 		    ORDER_DETAIL od ON r.ORDERDETAIL_ID = od.ORDERDETAIL_ID
 		JOIN 
 		    ORDER_PROD o ON od.ORDER_ID = o.ORDER_ID
-		JOIN 
+        JOIN 
 		    SELLER_PROD_STOCK s ON od.STOCK_ID = s.STOCK_ID
-		JOIN 
-		    PROD p ON s.PROD_ID = p.PROD_ID
-		LEFT JOIN 
-		    PROD_OPTION po1 ON s.OPT_ID1 = po1.OPT_ID
-		LEFT JOIN 
-		    PROD_OPTION po2 ON s.OPT_ID2 = po2.OPT_ID
-		LEFT JOIN 
-		    PROD_OPTION po3 ON s.OPT_ID3 = po3.OPT_ID
-		LEFT JOIN 
-		    PROD_OPTION po4 ON s.OPT_ID4 = po4.OPT_ID
-		LEFT JOIN 
-		    PROD_OPTION po5 ON s.OPT_ID5 = po5.OPT_ID
-		WHERE 
-		    s.PROD_ID = '나이키 반팔_1234-1234'
-		    AND o.ORDER_STATE = 'delievered'
-		    AND s.REVIEW_ID IS NOT NULL
+	    WHERE   s.PROD_ID = #{prod_id} and  o.ORDER_STATE = 'delievered'
 	</select>
 
 	<select id="selectById" parameterType="int"

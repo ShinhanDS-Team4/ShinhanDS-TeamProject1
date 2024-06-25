@@ -1,6 +1,7 @@
 package com.team4.shoppingmall.buyer_inq;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,11 @@ public class Buyer_InqDAOMybatis implements Buyer_InqDAOInterface {
 	SqlSession sqlSession;
 	
 	String namespace = "com.saren.buyer_inq.";
+	
+	//상품ID의 전체 문의 목록 조회 
+	public List<Buyer_InqDTO> selectByProdId(String prod_id) {
+		return sqlSession.selectList(namespace+"selectByProdId", prod_id);
+	}
 	
 	@Override
 	public Buyer_InqDTO selectByInqId(Integer buyer_inq_id) {
@@ -29,9 +35,10 @@ public class Buyer_InqDAOMybatis implements Buyer_InqDAOInterface {
 		return sqlSession.selectList(namespace+"selectAll");
 	}
 
+	//insert 타입 수정
 	@Override
-	public int buyer_inqInsert(Buyer_InqDTO buyer_inq) {
-		return sqlSession.insert(namespace+"buyer_inqInsert", buyer_inq);
+	public int buyer_inqInsert(Map<String,String> buyer_inq_map) {
+		return sqlSession.insert(namespace+"buyer_inqInsert", buyer_inq_map);
 	}
 
 	@Override

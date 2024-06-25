@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"  %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:set var="path" value="${pageContext.servletContext.contextPath}" />
 <!DOCTYPE html>
 <html>
@@ -27,6 +28,7 @@
 		//상품 상세 정보, 리뷰 버튼 조작  (수정필요! 리뷰버튼 클릭하고 상품정보버튼 클릭하면 상품정보내용이 안나타남)
 		$('.detailbtn_wrap button').click(function(e) {
 			e.preventDefault();
+			
 			// 버튼에 active 클래스 적용
 			$('.detailbtn_wrap button').removeClass('this');
 			$(this).addClass('this');
@@ -34,7 +36,10 @@
 			// 관련된 컨텐츠 표시
 			var tabId = $(this).data('tab');
 			$('.container-detail, .container-review').removeClass('active');
-			$('#' + tabId).addClass('active');
+			
+			//button들중 클릭한 버튼에 #tabId를 갖고 있는 컨테이너-디테일 또는 컨테이너-리뷰에 this클래스가 붙고, active 내일ㅈ하자
+			
+			$('#' + tabId).addClass('active'); //container-detail에  다시 active가 안붙음
 		});
 
 		//상품 문의 모달창 열고 닫기 
@@ -113,7 +118,7 @@
 	                </c:forEach>
 	                <div class="rent-prod-total">
 	                    <p><strong>총 대여 금액</strong></p>
-	                    <p class="total-amount"><strong>00,000원</strong></p>
+	                    <p class="total-amount"><strong></strong></p>  <%-- js로 총가격 붙여줌 --%>
 	                </div>
 	                <p class="rent-prod-warning">! 선택한 상품의 옵션을 확인하신 후 대여를 진행해 주세요.</p>
 		            <button type="button" class="rent-prod-button">대여하기</button> 
@@ -135,7 +140,7 @@
 	        <button class="popup-button no-button">아니요</button>
 	    </div>
 	</div>
-	<%-- 상품 문의 모달 창 --%>
+	<%-- 상품 문의 모달 창 action="${path}/prod/productQnaInsert.do"  method="post" --%>
 	<form id="productQnaForm">
 		<div id="myModal" class="modal">
 			<div class="modal-content">
@@ -151,31 +156,34 @@
 						placeholder="문의 내용을 입력해주세요. 특수문자 &#87, &#47, &#60, &#62 는 사용할 수 없습니다.">
 					</textarea>
 					<br> 
-					<input type="text" name="qnaWriterName" placeholder="이름" />
+					<%-- <input type="text" name="qnaWriterName" placeholder="이름" /> --%>
 				</div>
 				<div class="modal-footer">
-					<button id="prodQnaBtn" type="button">등록</button>
+					<button id="prodQnaBtn" type="submit">등록</button> 
 				</div>
 			</div>
 		</div>
 	</form>
 	  <script>
         $(document).ready(function() {
-        	//상품 문의 버튼 클릭 시
-            $('#prodQnaBtn').click(function() {
-            	var formData = $('#productQnaForm').serialize();
-            	
-                $.ajax({
-                    url: '${path}/prod/productQnaInsert',
-                    type: 'GET', // 또는 'POST'
-                    data: formData,
-                    success: function(response) {
-                    	 alert(response);
-                         // 추가 로직: 모달 닫기, 폼 리셋 등
-                    },
-                    error: function(error) {
-                   	 	alert(response);
-                    }
+        	//상품 문의 버튼 클릭 이벤트
+        	$(document).ready(function() {
+                $('#prodQnaBtn').click(function() {
+                    var formData = $('#productQnaForm').serialize();
+
+                    $.ajax({
+                        url: '${path}/prod/productQnaInsert.do',
+                        type: 'POST',
+                        data: formData,
+                        success: function(response) {
+                            alert(response);
+                            location.reload(); 
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error:', error);
+                            alert('오류가 발생했습니다. 다시 시도해주세요.');
+                        }
+                    });
                 });
             });
         });
@@ -195,12 +203,7 @@
 						<h2>${prod.PROD_NAME}</h2>
 						<div class="price_wrap">
 							<p class="productPrice">
-								<%-- <del>${prod.PROD_PRICE}</del>  --%>
 								${prod.PROD_PRICE}원
-							</p>
-							<p>
-								<%-- <span class="discount">50%(front에만 존재중)</span> --%> 
-								<%--<span class="discountPrice">0</span>  할인율로 계산된 가격 (!수정하기-상품자체할인율없음) --%>
 							</p>
 						</div>
 						<p class="rate">
@@ -234,8 +237,8 @@
 								<p class="total"></p>  <%-- 총 상품 가격 --%>
 							</div>
 							
-							<%-- !! 자바로 넘겨 줄 단가와 상품ID --%>
-							<input type="hidden" name="discountPrice" value="40000">
+							<%-- !!!!!!!!!! 자바로 넘겨 줄 단가와 상품ID !!!!!!!!!! --%>
+							<input type="hidden" name="productPrice" value="100000">  <%--value="${prod.prod_price}" --%>
 							<input type="hidden" name="prod_id" value='나이키 반팔_1234-1234'> <%-- value="${prod.prod_id}"> --%>
 						</form>
 						<div class="button-group">
@@ -259,23 +262,31 @@
 		    			
 		    			$('.popup-background').show();
 		    			
-		    			//옵션값을 저장 하고 넘어가야 함 -> 수정 필요!
-						
-		    			//네 선택 시 장바구니페이지로 이동
-		        		$('.yes-button').on('click', function(e) {
-		        			e.preventDefault();
-		        			
-		        			prodOption(); // 옵션 값 넘겨주는 함수
-		        			
-		        			$('.popup-background').hide();
-		        			
-		        		});
-		        		//아니요 선택 시 현재페이지 계속 쇼핑
-		        		$('.no-button').on('click', function() {
-		        			prodOption();
-		        			location.reload(); 
-		        		});
+		    			console.log("장바구니 버튼 클릭");
+		    			
 		    		});
+		    		
+		    		//네 선택 시 장바구니페이지로 이동
+	        		$('.yes-button').on('click', function(e) {
+	        			e.preventDefault();
+	        			
+	        			prodOption(); // 옵션 값을 컨트롤러로 넘겨주는 함수
+	        			
+	        			console.log("네 버튼");
+	        			
+	        			$('.popup-background').hide();
+	        			
+	        		});
+	        		//아니요 선택 시 현재페이지 계속 쇼핑
+	        		$('.no-button').on('click', function(e) {
+	        			e.preventDefault();
+	        			prodOption();
+	        			
+	        			console.log("아니요 버튼");
+	        			
+	        			location.reload(); 
+	        		});
+	        		
 		        });
 				//버튼 클릭 -> 컨트롤러에 선택한 상품 옵션 값 넘김 (수정중)
 				function prodOption(){
@@ -286,18 +297,12 @@
 					if(param != null){
 						
 						 $.ajax({
-			                    url: "${path}/prod/productOption?" + param ,
+			                    url: "${path}/prod/productCartInsert.do?" + param ,
 			                    type: 'GET',
 			                    success: function(response) {
 			                    	 console.log(response);
-			                    	 
 			                    	 alert(response);
-			                         // 추가 로직: 모달 닫기, 폼 리셋 등
-			                         // 폼 리셋 (reset()메서드 사용할 때 jQuery는 dom으로 접근해야 함)
-		               				 $("#prodOptionForm")[0].reset();
-			                    	 
-			                    	 alert(response);
-			                         
+			                    	 alert("장바구니에 저장 완료");
 			                    },
 			                    error: function(error) {
 			                   	 	alert("Error: "+error);
@@ -336,6 +341,11 @@
 			<c:if test="${not empty productReviews}">
 				<div class="review-list">
 					<div class="review-scroll">	
+					<%-- 리뷰가 3개 이상일 때 스크롤 아이콘 ( 수정필요 )
+						<div class="scroll-icon-wrap">
+							<img alt="스크롤아이콘" src="${path}/resources/images/icon-scroll.png"> 
+						</div>
+					--%>
 						<c:forEach items="${productReviews}" var="review">
 							<div class="review"> 
 								<div class="left">
@@ -343,11 +353,8 @@
 								</div>
 								<div class="right">
 									<div class="rating">
-										<span>${review.rate}</span>
-									</div>
-									<div class="rating">
-							            <c:set var="fullStars" value="${review.rate - (review.rate % 1)}" />
-							            <c:set var="halfStar" value="${(review.rate % 1) >= 0.5 ? 1 : 0}" />
+							            <c:set var="fullStars" value="${review.RATE - (review.RATE % 1)}" />
+							            <c:set var="halfStar" value="${(review.RATE % 1) >= 0.5 ? 1 : 0}" />
 							            <c:set var="emptyStars" value="${5 - fullStars - halfStar}" />
 							
 							            <c:forEach begin="1" end="${fullStars}" var="i">
@@ -362,9 +369,31 @@
 							                <span>☆</span>
 							            </c:forEach>
 						        	</div>
-									<h3>색상: 검정색 / 사이즈: L</h3>  <%-- 리뷰상품 옵션값 불러오기 --%>
-									<p>${review.review_content}</p>
-									<p class="date">${review.review_date}</p>
+						        	
+						        	<%-- 리뷰상품 옵션값 불러오기 --%>
+									<h3> 
+										<c:forEach items="${prodOptions }" var="option">
+										   <c:if test="${review.OPT_ID1==option.opt_id}">
+										   ${option.opt_name } ${option.opt_value }
+										   </c:if> 
+										   <c:if test="${review.OPT_ID2==option.opt_id}">
+										   ${option.opt_name } ${option.opt_value }
+										   </c:if> 
+										   <c:if test="${review.OPT_ID3==option.opt_id}">
+										   ${option.opt_name } ${option.opt_value }
+										   </c:if> 
+										   <c:if test="${review.OPT_ID4==option.opt_id}">
+										   ${option.opt_name } ${option.opt_value }
+										   </c:if> 
+										   <c:if test="${review.OPT_ID5==option.opt_id}">
+										   ${option.opt_name } ${option.opt_value }
+										   </c:if> 
+										</c:forEach>
+									</h3>  
+									<p>${review.REVIEW_CONTENT}</p>
+									<p class="date">
+										<fmt:formatDate value="${review.REVIEW_DATE}" pattern="yyyy-MM-dd"/>
+									</p>
 								</div>
 							</div>
 						</c:forEach>
@@ -374,18 +403,56 @@
 			<div class="review-write-btn">
 				<button class="button-write">리뷰 작성하기</button>
 			</div>
+			
+			<script type="text/javascript">
+				//리뷰작성하기 버튼 클릭하면 ${path}/review/write.do 로 이동하기
+			</script>
+			
+			
 			<div class="qa-section inner">
 				<h2>상품 Q&A</h2>
 				<div class="qa-section_txt">
-					<p>등록된 상품 Q&A가 없습니다.</p>
-					
+				
 					<%-- 상품 문의 있을 경우 테이블 생성 --%>
-					<div class="qa-here"></div>
-					
-					<button class="button-write qnaBtn">상품 문의하기</button>
+					<div class="qa-here">
+						  <c:choose>
+					        <c:when test="${not empty buyer_inqList}">
+					            <table class="qa-table">
+					                <thead>
+					                    <tr>
+					                        <th>문의 제목</th>
+					                        <th>문의 내용</th>
+					                        <th>작성자</th>
+					                        <th>작성일</th>
+					                    </tr>
+					                </thead>
+					                <tbody>
+					                    <c:forEach var="inq" items="${buyer_inqList}">
+					                        <tr>
+					                            <td>${inq.buyer_inq_title}</td>
+					                            <td>${inq.buyer_inq_content}</td>
+					                            <td>${inq.member_id}</td>
+					                            <td>${inq.buyer_inq_date}</td>
+					                        </tr>
+					                    </c:forEach>
+					                </tbody>
+					            </table>
+					        </c:when>
+					        <c:otherwise>
+					            <p>등록된 상품 문의가 없습니다.</p>
+					        </c:otherwise>
+					    </c:choose>
+					</div>
+					<button id="qnaBtn" class="button-write qnaBtn">상품 문의하기</button>
 				</div>
 			</div>
-
+			<script type="text/javascript">
+				$('#qnaBtn').on('click',function(e){
+					e.preventDefault();
+					
+					
+				});
+			</script>
 			<%-- 배송 정보 안내 --%>
 			<div class="toggle-button inner">
 				<h2>배송/교환/반품 안내</h2>

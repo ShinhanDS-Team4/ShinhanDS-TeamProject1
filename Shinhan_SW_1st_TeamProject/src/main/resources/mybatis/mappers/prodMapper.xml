@@ -29,7 +29,7 @@
 		JOIN MEMBER M ON P.member_id = M.member_id
 		JOIN CATEGORY C ON P.CATEGORY_ID = C.category_id
 		LEFT JOIN CATEGORY PC ON C.parent_category_id = PC.category_id
-		WHERE P.prod_id = '나이키 반팔_1234-1234'
+		WHERE P.prod_id = #{prod_id}
 	</select>
 
 	<select id="selectByProdId" parameterType="int"

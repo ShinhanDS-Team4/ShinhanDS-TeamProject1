@@ -2,6 +2,7 @@ package com.team4.shoppingmall.cart;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,10 +12,15 @@ public class CartService {
 	
 	@Autowired
 	CartDAOInterface cartDAO;
-
+	
 	//선택한 옵션 상품의 재고ID 조회
 	public String searchStockId(HashMap<String, String> map, String prod_id) {
 		return cartDAO.searchStockId(map, prod_id);
+	}
+	
+	//장바구니에 같은 상품이 존재하는지 조회
+	public CartDTO selectCartBySellstock(Map<String,String> map) {
+		return cartDAO.selectCartBySellstock(map);
 	}
 	
 	public List<CartDTO> selectSellStockByMemberId(String member_id) {
@@ -47,6 +53,11 @@ public class CartService {
 	
 	public int cartDelete(Integer cart_id) {
 		return cartDAO.cartDelete(cart_id);
+	}
+	
+	//장바구니 상품 수량 업데이트
+	public int updateCartBySellstock(CartDTO cart) {
+		return cartDAO.updateCartBySellstock(cart);
 	}
 	
 }

@@ -6,6 +6,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.team4.shoppingmall.prod_option.Prod_OptionDTO;
+
 @Repository
 public class Prod_OptionTestDAOMybatis implements Prod_OptionTestDAOInterface {
 
@@ -20,6 +22,11 @@ public class Prod_OptionTestDAOMybatis implements Prod_OptionTestDAOInterface {
 		 return sqlSession.selectList(namespace + "selectAllOptionsByProdId", prod_id);
 	};
 	
+	//상품의 옵션조회
+	public List<Prod_OptionDTO> productAllOptionsByProdId(String prod_id){
+	 return sqlSession.selectList(namespace + "productAllOptionsByProdId", prod_id);
+	};
+
 	@Override
 	public Prod_OptionTestDTO selectByOptionId(Integer opt_id) {
 		return sqlSession.selectOne(namespace+"selectByOptionId", opt_id);

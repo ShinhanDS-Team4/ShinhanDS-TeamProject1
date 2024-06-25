@@ -8,6 +8,41 @@
     position: relative;
 }
 
+/* 문의 목록 테이블 */
+.qa-here{
+	
+}
+
+.qa-table{
+	width: 100%;
+}
+.qa-table > thead{
+		
+}
+.qa-table > thead > tr{
+    background-color: #eee;	
+}
+.qa-table > thead > tr > th{
+	padding: 10px 0;
+    border-right: 1px solid #fff;
+}
+.qa-table > tbody > tr{
+    border-bottom: 1px solid #eee;	
+}
+.qa-table > tbody > tr > td{
+	padding: 10px 0;
+}
+
+.scroll-icon-wrap{
+	position: fixed;
+    right: 50px;
+    width: 50px;
+    display: block;
+    bottom: 160px;
+}
+.scroll-icon-wrap>img{
+	width: 100%;
+}
 /* 대여버튼 팝업 창 */
 .rent-prod-button{
 	background-color: black;
@@ -527,7 +562,8 @@
 .review-list{
     position: relative;
     overflow-y: scroll;
-    height: 80%;
+    height: 500px;
+    border-bottom: 1px solid #eee;
    /* 	display: none; */
 }
 .review-list::-webkit-scrollbar {
@@ -574,7 +610,7 @@
     width: 100%;
     text-align: center;
 }
-.qa-section_txt>p{
+.qa-section_txt p{
     padding: 30px 0;
 }
 .review-write-btn{
@@ -586,4 +622,9 @@
     border: none;
     border-radius: 5px;
     padding: 20px 45px;
+    font-weight: bold;
+}
+.button-write:hover{
+	background-color: #513ae4; 
+	color: #fff;
 }

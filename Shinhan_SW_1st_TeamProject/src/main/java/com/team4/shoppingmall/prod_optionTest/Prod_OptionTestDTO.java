@@ -14,6 +14,6 @@ public class Prod_OptionTestDTO {
 	Integer opt_id;
 	String opt_name;
 	String opt_value;
-	Integer prod_id;
+	String prod_id;
 	String email;
 }

@@ -1,6 +1,7 @@
 package com.team4.shoppingmall.reviews;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ public class ReviewsDAOMybatis implements ReviewsDAOInterface {
 	String namespace = "com.saren.reviews.";
 	
 	//주문한 상품의 리뷰정보
-	public List<ReviewsDTO> selectAllProductReviewByProdId(String prod_id){
+	public List<Map<String,String>> selectAllProductReviewByProdId(String prod_id){
 		return sqlSession.selectList(namespace+"selectAllProductReviewByProdId", prod_id);
 	};
 	

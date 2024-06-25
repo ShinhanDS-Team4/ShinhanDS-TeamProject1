@@ -2,6 +2,7 @@ package com.team4.shoppingmall.cart;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,12 @@ public class CartDAOMybatis implements CartDAOInterface {
 		
 		return sqlSession.selectOne(namespace + "searchStockId", datas);
 	}
+	
+	//장바구니에 같은 상품이 존재하는지 조회
+	public CartDTO  selectCartBySellstock(Map<String,String> map) {
+		return sqlSession.selectOne(namespace + "selectCartBySellstock", map);
+	}
+	
 	@Override
 	public List<CartDTO> selectSellStockByMemberId(String member_id) {
 		return sqlSession.selectList(namespace + "selectSellStockByMemberId", member_id);
@@ -64,6 +71,11 @@ public class CartDAOMybatis implements CartDAOInterface {
 	public int cartDelete(Integer cart_id) {
 		return sqlSession.delete(namespace + "cartDelete", cart_id);
 	}
+	
+	//장바구니 상품 수량 업데이트
+	public int updateCartBySellstock(CartDTO cart) {
+		return sqlSession.update(namespace + "updateCartBySellstock", cart);
+	};
 
 
 }

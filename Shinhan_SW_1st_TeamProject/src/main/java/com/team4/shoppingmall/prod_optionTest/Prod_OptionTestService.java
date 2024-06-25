@@ -6,6 +6,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.team4.shoppingmall.prod_option.Prod_OptionDTO;
+
 @Service
 public class Prod_OptionTestService {
 	
@@ -16,7 +18,11 @@ public class Prod_OptionTestService {
 	public  List<Object> selectAllOptionsByProdId(String prod_id){
 		return prod_optionDAO.selectAllOptionsByProdId(prod_id);
 	};
-	
+	//상품의 옵션조회
+	public List<Prod_OptionDTO> productAllOptionsByProdId(String prod_id){
+		return prod_optionDAO.productAllOptionsByProdId(prod_id);
+	};
+
 	public Prod_OptionTestDTO selectByOptionId(Integer opt_id) {
 		return prod_optionDAO.selectByOptionId(opt_id);
 	}

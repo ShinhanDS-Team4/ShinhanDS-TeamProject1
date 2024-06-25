@@ -12,6 +12,9 @@
 		    SPS.PROD_ID,
 		    SPS.OPT_ID1,
 		    SPS.OPT_ID2,
+		    SPS.OPT_ID3,
+		    SPS.OPT_ID4,
+		    SPS.OPT_ID5,
 		    SPS.S_P_STOCK
 		FROM 
 		    SELLER_PROD_STOCK SPS
