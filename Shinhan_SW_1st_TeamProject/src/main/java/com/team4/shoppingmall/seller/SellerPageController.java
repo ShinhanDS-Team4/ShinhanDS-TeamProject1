@@ -40,6 +40,8 @@ public class SellerPageController {
 	
 	@Autowired
 	MemberService memberService;
+	
+	String member_id = "573-50-00882";// 임시로 사용할 판매자ID(사업자등록번호)
 
 	// 메인 화면 보여주기
 	@GetMapping("/MainPage.do")
@@ -61,10 +63,10 @@ public class SellerPageController {
 
 	// 판매&대여 상품 페이지 보여주기
 	@GetMapping("/PrdList.do")
-	public String prdList(Model model1, Model model2, HttpServletRequest request) {
+	public String prdList(Model model1, Model model2) {
 
 		// 판매 상품 리스트
-		// model1.addAttribute("stockSList", request);
+		model1.addAttribute("stockSList", stock);
 
 		// 대열 상품 리스트
 		// model2.addAttribute("stockRList", request);
@@ -85,7 +87,7 @@ public class SellerPageController {
 	// 문의 목록 페이지 보여주기
 	@GetMapping("/Q&AList.do")
 	public String qaList(Model model1, Model model2, HttpServletRequest request) {
-		String member_id = "573-50-00882";// 임시로 사용할 판매자ID(사업자등록번호)
+		
 		// 구매자의 문의 목록
 		System.out.println(buyer_inqService.selectInqList(member_id));
 		model1.addAttribute("buyerQAList", buyer_inqService.selectInqList(member_id));

@@ -11,10 +11,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Seller_Prod_StockDTO {
-	Integer stock_id;
+	String stock_id;
 	Integer s_p_stock;
 	Integer s_p_sell;
-	Integer prod_id;
+	String prod_id;
 	Integer opt_id1;
 	Integer opt_id2;
 	Integer opt_id3;

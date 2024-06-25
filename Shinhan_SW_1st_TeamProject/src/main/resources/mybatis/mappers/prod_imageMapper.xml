@@ -25,8 +25,8 @@
 
 	<insert id="prod_imageInsert" parameterType="prod_imageVO">
 		INSERT
-		INTO PROD_IMAGE("img_id", "prod_id", "email", "img_url") 
-		VALUES(#{img_id}, #{prod_id}, #{email}, #{img_url})
+		INTO PROD_IMAGE("img_id", "prod_id", "img_url") 
+		VALUES(#{img_id}, #{prod_id}, #{img_url})
 	</insert>
 
 	<update id="prod_imageUpdate" parameterType="prod_imageVO">

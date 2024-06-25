@@ -11,8 +11,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Prod_ImageDTO {
-	Integer img_id;
-	Integer prod_id;
-	String email;
-	String img_url;
+	String img_id;
+	String prod_id;
 }

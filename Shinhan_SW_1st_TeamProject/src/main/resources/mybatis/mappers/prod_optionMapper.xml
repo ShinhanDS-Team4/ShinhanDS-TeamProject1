@@ -17,6 +17,12 @@
 		FROM PROD_OPTION 
 		WHERE "prod_id" = #{prod_id}
 	</select>
+	
+	<select id="findMaxOptId" parameterType="string" resultType="int">
+		SELECT MAX(opt_id) AS max_opt_id
+		FROM PROD_OPTION
+		WHERE prod_id = #{prod_id};
+	</select>
 
 	<select id="selectAll" resultType="prod_optionVO">
 		SELECT *
@@ -25,7 +31,7 @@
 
 	<insert id="prod_optionInsert" parameterType="prod_optionVO">
 		INSERT 
-		INTO PROD_OPTION("opt_id", "opt_name", "opt_value", "prod_id", "email") 
+		INTO PROD_OPTION(opt_id, opt_name, opt_value, prod_id) 
 		VALUES(#{opt_id}, #{opt_name}, #{opt_value}, #{prod_id}, #{email})
 	</insert>
 

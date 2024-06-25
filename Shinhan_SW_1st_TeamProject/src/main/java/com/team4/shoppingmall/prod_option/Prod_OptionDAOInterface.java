@@ -8,6 +8,8 @@ public interface Prod_OptionDAOInterface {
 	
 	public List<Prod_OptionDTO> selectByProdId(Integer prod_id);
 	
+	public int findMaxOptId(String product_id);
+	
 	public List<Prod_OptionDTO> selectAll();
 	
 //	public List<MemberDTO> selectByCondition();

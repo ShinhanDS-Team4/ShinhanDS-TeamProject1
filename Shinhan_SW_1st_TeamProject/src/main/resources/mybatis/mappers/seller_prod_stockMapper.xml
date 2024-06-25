@@ -17,7 +17,20 @@
 		FROM SELLER_PROD_STOCK
 		WHERE "prod_id" = #{prod_id}
 	</select>
-
+	
+	<select id="findSellStockList" parameterType="string" resultType="seller_prod_stocklistVO">
+		SELECT 
+    		s.stock_id, 
+    		s.s_p_stock, 
+    		p.prod_added_date, 
+    		p.prod_price
+		FROM 
+    		SELLER_PROD_STOCK s
+		JOIN 
+    		PROD p ON s.prod_id = p.prod_id
+		WHERE 
+    		p.member_id = #{member_id}
+    </select>
 	<select id="selectAll" resultType="seller_prod_stockVO">
 		SELECT *
 		FROM SELLER_PROD_STOCK
