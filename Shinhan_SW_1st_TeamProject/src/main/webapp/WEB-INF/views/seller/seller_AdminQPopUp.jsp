@@ -6,15 +6,15 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>구매자 문의</title>
+<title>관리자 문의 작성</title>
+
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
 	function submitForm(){
-		alert($("#answerCQ").serialize());
 		$.ajax({
-			url:'/shoppingmall/seller/answerCustomer.do',
-			data:$("#answerCQ").serialize(),
+			url:'/shoppingmall/seller/addAdminQA.do',
+			data:$("#registerAQ").serialize(),
 			type:'POST',
 			success: function(responseData){
 				alert(responseData);
@@ -24,12 +24,11 @@
 			}
 		});
 	}
-	
+
 	function closePopUp() {
 		window.close();
 	}
 </script>
-
 <style>
 body {
 	font-family: Arial, sans-serif;
@@ -55,6 +54,14 @@ h1 {
 
 .info label {
 	font-weight: bold;
+	display: inline-block;
+	width: 100px;
+}
+
+.info input {
+	border: none;
+	outline: none;
+	font-size: 15px;
 }
 
 .input-group {
@@ -65,12 +72,6 @@ h1 {
 	display: block;
 	margin-bottom: 5px;
 	font-weight: bold;
-}
-
-.info input {
-	border: none;
-	outline: none;
-	font-size: 15px;
 }
 
 .input-group input, .input-group textarea {
@@ -99,46 +100,33 @@ h1 {
 </head>
 <body>
 	<div class="container">
-		<h1>구매자 문의</h1>
-
-		<form id="answerCQ" method="post" action="/shoppingmall/seller/answerCustomer.do">
+		<h1>관리자 문의 작성</h1>
+		<form id="registerAQ" method="post" action="/shoppingmall/seller/registerStoAquestion"
+			enctype="multipart/form-data" accept-charset="UTF-8">
 			<div class="info">
 				<div>
-					<label>문의ID</label>
-					<input class="inqid-class" type="number" readonly="readonly" 
-					id="buyer_inq_id" name="buyer_inq_id" value="${bqa.buyer_inq_id}"
-						placeholder="문의ID"/>
+					<label>판매자ID</label>
+					<input type="text" name="member_id" id="member_id" value="${aqa.member_id}" />
 				</div>
 				<div>
-					<label>구매자ID</label>
-					<input type="text" readonly="readonly" id="member_id" name="member_id" value="${bqa.member_id}" placeholder="구매자ID" />
-				</div>
-				<div>
-					<label>구매자명</label>
-					<input type="text" readonly="readonly"
-						value="${bqa.member_name}" placeholder="구매자명" />
+					<label>판매자명</label>
+					<input type="text" name="member_name" id="member_name" value="${aqa.member_name}" />
 				</div>
 				<div>
 					<label>전화번호</label>
-					<input type="text" readonly="readonly"
-						value="${bqa.phone}" placeholder="전화번호" />
+					<input type="text" name="phone" id="phone" value="${aqa.phone}" />
 				</div>
 			</div>
 			<div class="input-group">
 				<label for="subject">제목</label>
-				<input type="text" name="buyer_inq_title" id="buyer_inq_title" readonly="readonly" value="${bqa.buyer_inq_title}" />
+				<input type="text" id="admin_inq_title" name="admin_inq_title"/>
 			</div>
 			<div class="input-group">
-				<label for="inquiry">문의내용</label>
-				<textarea id="buyer_inq_content" name="buyer_inq_content" readonly="readonly"
-					rows="5">${bqa.buyer_inq_content}</textarea>
-			</div>
-			<div class="input-group">
-				<label for="response">답변작성</label>
-				<textarea id="buyer_reply" name="buyer_reply" rows="5" maxlength="3000">${bqa.buyer_reply}</textarea>
+				<label for="content">내용작성</label>
+				<textarea id="admin_inq_content" rows="10" name="admin_inq_content"></textarea>
 			</div>
 			<div class="buttons">
-				<button type="button" id="registerBtn" onclick="submitForm()">등록</button>
+				<button type="button" onclick="submitForm()">등록</button>
 				<button type="button" onclick="closePopUp()">닫기</button>
 			</div>
 		</form>

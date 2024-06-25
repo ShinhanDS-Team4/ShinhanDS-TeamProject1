@@ -63,12 +63,12 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="stock" items="${List}">
+						<c:forEach var="delivery" items="${deliveryList}">
 							<tr>
-								<td>${stock.stockid}</td>
-								<td>${stock.prd_name}</td>
-								<td>${stock.prod_price}</td>
-								<td>${stock.s_p_stock}</td>
+								<td>${delivery.stockid}</td>
+								<td>${delivery.prd_name}</td>
+								<td>${delivery.prod_price}</td>
+								<td>${delivery.s_p_stock}</td>
 								<td><button>수정</button></td>
 							</tr>
 						</c:forEach>
@@ -111,6 +111,10 @@
 						<option>배송준비중</option>
 						<option>배송중</option>
 						<option>배송완료</option>
+						<option>교환요청</option>
+						<option>교환완료</option>						
+						<option>환불요청</option>
+						<option>환불완료</option>
 					</select>
 					<button>일괄처리</button>
 					<button>선택 내역 삭제</button>

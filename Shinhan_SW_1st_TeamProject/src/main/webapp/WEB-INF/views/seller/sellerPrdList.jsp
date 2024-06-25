@@ -62,16 +62,17 @@
 								<td>${sStock.prd_name}</td>
 								<td>${sStock.prod_price}</td>
 								<td>${sStock.s_p_stock}</td>
-								<td><button>수정</button></td>
+								<td><button type="button" onclick="location.href='${path}/seller/ModifyProduct.do'">수정</button></td>
 							</tr>
 						</c:forEach>
-						<!-- <tr>
+						<!-- 여기는 예시 -->
+						<tr>
 							<td><input type="checkbox" /></td>
 							<td><input type="text" placeholder="상품번호1" /></td>
 							<td><input type="text" placeholder="상품명1" /></td>
 							<td><input type="number" placeholder="35000" /></td>
 							<td><input type="number" placeholder="35" /></td>
-							<td><button>수정</button></td>
+							<td><button type="button" onclick="location.href='${path}/seller/ModifyProduct.do'">수정</button></td>
 						</tr>
 						<tr>
 							<td><input type="checkbox" /></td>
@@ -132,16 +133,17 @@
 								<td>${rStock.prd_name}</td>
 								<td>${rStock.prod_price}</td>
 								<td>${rStock.r_p_stock}</td>
-								<td><button>수정</button></td>
+								<td><button type="button" onclick="location.href='${path}/seller/ModifyProduct.do'">수정</button></td>
 							</tr>
 						</c:forEach>
-						<!-- <tr>
+						
+						<tr>
 							<td><input type="checkbox" /></td>
 							<td><input type="text" placeholder="상품번호1" /></td>
 							<td><input type="text" placeholder="상품명1" /></td>
 							<td><input type="number" placeholder="35000" /></td>
 							<td><input type="number" placeholder="35" /></td>
-							<td><button>수정</button></td>
+							<td><button type="button" onclick="location.href='${path}/seller/ModifyProduct.do'">수정</button></td>
 						</tr>
 						<tr>
 							<td><input type="checkbox" /></td>
@@ -174,7 +176,7 @@
 							<td><input type="number" placeholder="35000" /></td>
 							<td><input type="number" placeholder="35" /></td>
 							<td><button>수정</button></td>
-						</tr> -->
+						</tr>
 					</tbody>
 				</table>
 				<div class="actions">
