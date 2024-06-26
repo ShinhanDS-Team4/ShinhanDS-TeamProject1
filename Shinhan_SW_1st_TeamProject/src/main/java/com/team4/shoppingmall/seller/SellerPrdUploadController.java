@@ -171,7 +171,7 @@ public class SellerPrdUploadController {
 			int maxSellStockNum = seller_Prod_StockService.findMaxStockNumber(prod_id);
 			maxSellStockNum++;// ex) 6으로 올림
 
-			String stockID = prod_id + "_" + maxSellStockNum;
+			String stockID = prod_id + "_SELL_" + maxSellStockNum;
 			Seller_Prod_StockDTO seller_Prod_StockDTO = new Seller_Prod_StockDTO();
 			seller_Prod_StockDTO.setS_stock_id(stockID);
 			seller_Prod_StockDTO.setStock(prdStock);
@@ -225,7 +225,7 @@ public class SellerPrdUploadController {
 			int maxSellStockNum = rentProdStockService.findMaxStockNumber(prod_id);
 			maxSellStockNum++;// ex) 6으로 올림
 
-			String stockID = prod_id + "_" + maxSellStockNum;
+			String stockID = prod_id + "_RENT_" + maxSellStockNum;
 			RentProdStockDTO rentProdStockDTO = new RentProdStockDTO();
 			rentProdStockDTO.setR_stock_id(stockID);
 			rentProdStockDTO.setStock(prdStock);
