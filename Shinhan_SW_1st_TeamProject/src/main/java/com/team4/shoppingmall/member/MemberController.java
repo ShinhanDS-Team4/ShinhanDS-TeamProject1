@@ -57,7 +57,7 @@ public class MemberController {
 			session.setAttribute("loginResult", "로그인 성공");
 			session.setAttribute("member", member);
 		}
-		return "redirect:verify";
+		return "redirect:/";
 	}
 	
 	
@@ -74,6 +74,7 @@ public class MemberController {
 		return "redirect:login.do";
 	}
 	
+	//ID찾기
 	@GetMapping("/findid")
 	public String findid() {
 		return "user/findid";
@@ -91,6 +92,7 @@ public class MemberController {
 		return member;
 	}
 	
+	//비번찾기
 	@GetMapping("/findpassword")
 	public String findpassword() {
 		return "user/findpassword";
@@ -104,6 +106,7 @@ public class MemberController {
 		return member;
 	}
 
+	//이메일 인증
     @GetMapping("/verify")
     public String showVerificationForm() {
         return "verify";

@@ -21,10 +21,10 @@
 		<div class="rightGnb">
 			<ul>
 				<li>
-					<a href="${path}/user/login"> <img src="${path}/resources/images/icon-login.gif" alt="로그인">로그인</a>
+					<a href="${path}/member_test/login.do"> <img src="${path}/resources/images/icon-login.gif" alt="로그인">로그인</a>
 				</li>
 				<li>
-					<a href="${path}/user/signup"><img src="${path}/resources/images/icon-sign-in.png" alt="회원가입">회원가입</a>
+					<a href="${path}/member_test/signup.do"><img src="${path}/resources/images/icon-sign-in.png" alt="회원가입">회원가입</a>
 				</li>
 				<li>
 					<a href="${path}/customer/myPage.do"><img src="${path}/resources/images/icon-user.png" alt="마이페이지">마이페이지</a>

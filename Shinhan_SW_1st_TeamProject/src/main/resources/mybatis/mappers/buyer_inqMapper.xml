@@ -54,12 +54,12 @@
 	<!-- 구매자 : 상품 문의사항 등록 -->
 	<insert id="buyer_inqInsert" parameterType="buyer_inqVO">
 		INSERT 
-		INTO BUYER_INQ("buyer_inq_id", "buyer_inq_title", "buyer_inq_content", 
-					   "buyer_inq_date", "buyer_reply", "member_id",
-					   "prod_id", "buyer_reply_date", "email") 
+		INTO BUYER_INQ(buyer_inq_id, buyer_inq_title, buyer_inq_content, 
+					   buyer_inq_date, member_id,
+					   prod_id) 
 		VALUES(#{buyer_inq_id}, #{buyer_inq_title}, #{buyer_inq_content},  
-			   #{buyer_inq_date}, #{buyer_reply}, #{member_id},
-			   #{prod_id}, #{buyer_reply_date}, #{email})
+			   #{buyer_inq_date}, #{member_id},
+			   #{prod_id})
 	</insert>
 
 	<!-- 판매자 : 구매자의 상품 문의사항에 대한 답변 작성-->
