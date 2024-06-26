@@ -30,4 +30,16 @@ public class MemberService {
 	public int memberDelete(String member_id) {
 		return memberDAO.memberDelete(member_id);
 	}
+	
+	public List<MemberDTO> selectBySeller() {
+		return memberDAO.selectBySeller();
+	}
+
+	public List<MemberDTO> selectBySeller_authority() {
+		return memberDAO.selectBySeller_authority();
+	}
+	
+	public MemberDTO selectBySeller_info(String member_id) {
+		return memberDAO.selectBySeller_info(member_id);
+	}
 }

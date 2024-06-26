@@ -8,11 +8,17 @@ public interface MemberDAOInterface {
 	
 	public List<MemberDTO> selectAll();
 	
-//	public List<MemberDTO> selectByCondition();
+	public List<MemberDTO> selectByCondition();
 	
 	public int memberInsert(MemberDTO member);
 	
 	public int memberUpdate(MemberDTO member);
 	
 	public int memberDelete(String member_id);
+	
+	public List<MemberDTO> selectBySeller();
+	
+	public List<MemberDTO> selectBySeller_authority();
+	
+	public MemberDTO selectBySeller_info(String member_id);
 }

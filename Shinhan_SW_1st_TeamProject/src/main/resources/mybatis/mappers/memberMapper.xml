@@ -6,9 +6,7 @@
 
 	<select id="selectById" parameterType="string"
 		resultType="memberVO">
-		SELECT *
-		FROM MEMBER
-		WHERE "member_id" = #{member_id}
+		SELECT * FROM MEMBER WHERE member_id = #{member_id}
 	</select>
 
 	<select id="selectAll" resultType="memberVO">
@@ -37,7 +35,19 @@
 	<delete id="memberDelete" parameterType="string">
 		DELETE
 		FROM MEMBER
-		WHERE "member_id" = #{member_id}
+		WHERE member_id = #{member_id}
 	</delete>
 	
+	<select id="selectBySeller" parameterType="string" resultType="memberVO">
+		select * from member where member_type = 2
+		
+	</select>
+	
+	<select id="selectBySeller_authority" parameterType="string" resultType="memberVO">
+		select * from member where member_seller_authority = 'Y' and member_type = 2
+	</select>
+	
+	<select id="selectBySeller_info" resultType="memberVO">
+		select * from member where member_id = #{member_id} 
+	</select>
 </mapper>

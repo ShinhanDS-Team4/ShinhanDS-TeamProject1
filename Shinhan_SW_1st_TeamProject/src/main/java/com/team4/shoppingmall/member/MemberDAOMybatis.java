@@ -38,4 +38,26 @@ public class MemberDAOMybatis implements MemberDAOInterface {
 	public int memberDelete(String member_id) {
 		return sqlSession.delete(namespace+"memberDelete", member_id);
 	}
+	
+	@Override
+	public List<MemberDTO> selectByCondition() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<MemberDTO> selectBySeller() {
+		return sqlSession.selectList(namespace+"selectBySeller");
+	}
+	
+	@Override
+	public List<MemberDTO> selectBySeller_authority() {
+		return sqlSession.selectList(namespace+"selectBySeller_authority");
+	}
+	
+	@Override
+	public MemberDTO selectBySeller_info(String member_id) {
+		return sqlSession.selectOne(namespace+"selectBySeller_info", member_id);
+	}
+
 }

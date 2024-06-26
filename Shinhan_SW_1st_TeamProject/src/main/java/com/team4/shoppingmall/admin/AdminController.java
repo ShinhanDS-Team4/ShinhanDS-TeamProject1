@@ -1,5 +1,7 @@
 package com.team4.shoppingmall.admin;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -12,110 +14,148 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.team4.shoppingmall.member.MemberDTO;
+import com.team4.shoppingmall.member.MemberService;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-	
+
 	@Autowired
 	AdminService aService;
-	
+	@Autowired
+	MemberService mService;
+
 	Logger logger = LoggerFactory.getLogger(AdminController.class);
-	
+
+	@PostMapping("admin_mypage_edit")
+	public String adminmypageedit(AdminDTO aDto) {
+		System.out.println(aDto);
+		return "admin/admin_mypage";
+	}
+
+	@GetMapping("admin_mypage")
+	public String adminmypage(Model model, HttpSession session) {
+		AdminDTO aDto = (AdminDTO) session.getAttribute("aDto");
+		model.addAttribute("admin_name", aDto.getAdmin_name());
+		model.addAttribute("admin_email", aDto.getAdmin_email());
+		model.addAttribute("admin_phone", aDto.getAdmin_phone());
+		model.addAttribute("admin_pw", aDto.getAdmin_pw());
+		return "admin/admin_mypage";
+	}
+
 	@GetMapping("admin_page")
-	public String productlist() {
+	public String adminpage(Model model, HttpSession session) {
+		AdminDTO aDto = (AdminDTO) session.getAttribute("aDto");
+		List<MemberDTO> mDto = mService.selectBySeller();
+		model.addAttribute("admin_name", aDto.getAdmin_name());
+		model.addAttribute("sellers", mDto);
 		return "admin/admin_page";
 	}
-	
+
 	@GetMapping("admin_seller_list")
-	public String adminsellerlist() {
+	public String adminsellerlist(Model model) {
+		List<MemberDTO> mDto = mService.selectBySeller_authority();
+		model.addAttribute("sellers", mDto);
 		return "admin/admin_seller_list";
 	}
-	
+
+	@GetMapping("admin_seller_prod")
+	public String adminsellerdetail() {
+		return "admin/admin_seller_prod";
+	}
+
 	@GetMapping("admin_seller_register")
-	public String adminsellerregister() {
+	public String adminsellerregister(Model model) {
+		List<MemberDTO> mDto = mService.selectBySeller();
+		model.addAttribute("sellers", mDto);
 		return "admin/admin_seller_register";
 	}
-	
+
+	@GetMapping("admin_seller_info")
+	public String adminsellerinfo(Model model, String member_id) {
+		model.addAttribute("member_info", mService.selectById(member_id));
+		return "admin/admin_seller_info";
+	}
+
+	@GetMapping("search_results")
+	public @ResponseBody String search_results(String searchType, String keyword) {
+		System.out.println(searchType);
+		System.out.println(keyword);
+		return "ko";
+	}
+
 	@GetMapping("admin_faq")
 	public String adminsellerfaq() {
 		return "admin/admin_faq";
 	}
+
 	@GetMapping("admin_login")
 	public void adminlogindispaly() {
-		logger.debug("login¿äÃ»(debug)");
-		logger.info("login¿äÃ»(info)");
-		logger.warn("login¿äÃ»(warn)");
-		logger.error("login¿äÃ»(error)");	
+		logger.debug("ë¡œê·¸ì¸ ìš”ì²­(debug)");
+		logger.info("ë¡œê·¸ì¸ ìš”ì²­(info)");
+		logger.warn("ë¡œê·¸ì¸ ìš”ì²­(warn)");
+		logger.error("ë¡œê·¸ì¸ ìš”ì²­(error)");
 	}
-	
+
 	@GetMapping("admin_logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
-		return "redirect:admin_login";		
+		return "redirect:admin_login";
 	}
-	
+
 	@PostMapping("admin_login")
-	public String loginCheck(@RequestParam("admin_id") String admin_id, @RequestParam("admin_pw") String admin_pw, HttpSession session, HttpServletRequest request) {
-		AdminDTO aDto = aService.loginChk(admin_id,admin_pw);
+	public String loginCheck(@RequestParam("admin_id") String admin_id, @RequestParam("admin_pw") String admin_pw,
+			HttpSession session, HttpServletRequest request) {
+		AdminDTO aDto = aService.loginChk(admin_id, admin_pw);
 		System.out.println(aDto);
-		if(aDto == null) {
-			session.setAttribute("loginResult", "Á¸ÀçÇÏÁö ¾Ê´Â IDÀÔ´Ï´Ù.");
+		if (aDto == null) {
+			session.setAttribute("loginResult", "ì¡´ì¬í•˜ì§€ ì•ŠëŠ” IDì…ë‹ˆë‹¤.");
 			return "redirect:admin_login";
-		} else if(!aDto.getAdmin_pw().equals(admin_pw)) {
-			session.setAttribute("loginResult", "Á¸ÀçÇÏÁö ¾Ê´Â PWÀÔ´Ï´Ù.");
+		} else if (!aDto.getAdmin_pw().equals(admin_pw)) {
+			session.setAttribute("loginResult", "ì˜ëª»ëœ ë¹„ë°€ë²ˆí˜¸ì…ë‹ˆë‹¤.");
 			return "redirect:admin_login";
 		} else {
-			session.setAttribute("loginResult", "login¼º°ø");
+			session.setAttribute("loginResult", "ë¡œê·¸ì¸ ì˜¤ë¥˜");
 			session.setAttribute("aDto", aDto);
-			
-			String lastRequest = (String)session.getAttribute("lastRequest");
-			System.out.println(lastRequest);
-			String goPage;
-			if(lastRequest == null || lastRequest.endsWith("admin_findid") || lastRequest.endsWith("admin_findpw")) {
-				goPage = "admin_page";
-			} else {
-				int length = request.getContextPath().length();
-				goPage = lastRequest.substring(length);
-				String queryString = (String)session.getAttribute("queryString");
-				if(queryString != null) goPage = goPage + "?" + queryString;
-			}
-			return "redirect:" + goPage;
+
+			return "redirect:admin_page";
 		}
 	}
-	
-	@GetMapping("admin_findid")
-	public String findIdForm() {
-		return "admin/admin_findid";		
-	}
-	
+
 	@PostMapping("admin_findid")
-	public String findId(@RequestParam("admin_email") String admin_email, @RequestParam("admin_name") String admin_name, Model model) {
+	public @ResponseBody String findId(String admin_email, String admin_name, Model model) {
+		System.out.println(admin_email);
+		System.out.println(admin_name);
 		String admin_id = aService.findById(admin_email, admin_name);
-		
-		if(admin_id == null) {
-            model.addAttribute("findIdResult", "ÇØ´çÇÏ´Â ÀÌ¸ŞÀÏ°ú ÀÌ¸§¿¡ ÇØ´çÇÏ´Â ID°¡ ¾ø½À´Ï´Ù.");
-        } else {
-            model.addAttribute("findIdResult", "ÇØ´ç ¾ÆÀÌµğ´Â: " + admin_id + " ÀÔ´Ï´Ù.");
-        }
-		return "admin/admin_findid_result";
+		String findIdResult = "";
+		if (admin_id == null) {
+			findIdResult= "0";
+		} else {
+			findIdResult = admin_id;
+	    }
+		return findIdResult;
 	}
-	
-	@GetMapping("admin_findpw")
-	public String findPwForm() {
-		return "admin/admin_findpw";		
-	}
+
 	
 	@PostMapping("admin_findpw")
-	public String findPw(@RequestParam("admin_id") String admin_id, @RequestParam("admin_name") String admin_name, @RequestParam("admin_phone") String admin_phone, Model model) {
-		String admin_pw = aService.findByPw(admin_id, admin_name, admin_phone);
-		
-		if(admin_pw == null) {
-            model.addAttribute("findPwResult", "ÇØ´ç Á¤º¸¿¡ ÇØ´çÇÏ´Â ¾ÆÀÌµğ, ÀÌ¸§, ¿¬¶ôÃ³°¡ ¾ø½À´Ï´Ù.");
-        } else {
-            model.addAttribute("findPwResult", "¿äÃ»ÇÏ½Å ºñ¹Ğ¹øÈ£´Â: " + admin_pw + " ÀÔ´Ï´Ù.");
-        }
-		
-		return "admin/admin_findpw_result";
-	}
+    @ResponseBody
+    public String findPw(String admin_id, String admin_name, String admin_phone) {	
+		System.out.println(admin_id);
+		System.out.println(admin_name);
+		System.out.println(admin_phone);		
+        String admin_pw = aService.findByPw(admin_id, admin_name, admin_phone);
+        return admin_pw != null ? admin_pw : "0";
+    }
+
+    @PostMapping("/admin_changepw")
+    @ResponseBody
+    public String changePw(String admin_id, String new_admin_pw) {
+    	System.out.println(admin_id);
+		System.out.println(new_admin_pw);
+        boolean result = aService.updateByPw(admin_id, new_admin_pw);
+        return result ? "1" : "0";
+    }	
 }
