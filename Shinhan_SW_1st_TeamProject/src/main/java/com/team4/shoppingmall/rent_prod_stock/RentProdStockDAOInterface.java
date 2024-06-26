@@ -5,8 +5,12 @@ import java.util.List;
 public interface RentProdStockDAOInterface {
 
 	// 대여상품상세
-	public RentProdStockDTO selectById(Integer stock_id);
+	public RentProdStockDTO selectById(String r_stock_id);
 
+	public Integer findMaxStockNumber(String prod_id);
+	
+	public List<RentProdStockListDTO> findRentStockList(String member_id);
+	
 	// 대여상품목록
 	public List<RentProdStockDTO> selectAll();
 
@@ -14,9 +18,13 @@ public interface RentProdStockDAOInterface {
 	public int rentProdInsert(RentProdStockDTO rentprod);
 
 	// 대여상품수정
-	public int rentProdUpdate(Integer stock_id);
+	public int rentProdUpdate(RentProdStockDTO rentprod);
 
 	// 대여상품삭제
-	public int rentProdDelete(Integer stock_id);
+	public int rentProdDelete(String r_stock_id);
+
+	
+
+	
 
 }

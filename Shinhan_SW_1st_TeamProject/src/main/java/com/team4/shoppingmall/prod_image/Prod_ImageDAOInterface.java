@@ -4,9 +4,11 @@ import java.util.List;
 
 public interface Prod_ImageDAOInterface {
 	
-	public Prod_ImageDTO selectByImageId(Integer img_id);
+	public Prod_ImageDTO selectByImageId(String img_id);
 
-	public Prod_ImageDTO selectByProdId(Integer prod_id);
+	public Prod_ImageDTO selectByProdId(String prod_id);
+	
+	public List<Prod_ImageDTO> findAllImgsByProdID(String prod_id);
 	
 	public List<Prod_ImageDTO> selectAll();
 	
@@ -14,5 +16,7 @@ public interface Prod_ImageDAOInterface {
 	
 	public int prod_imageUpdate(Prod_ImageDTO prod_image);
 	
-	public int prod_imageDelete(Integer img_id);
+	public int prod_imageDelete(String img_id);
+
+	
 }

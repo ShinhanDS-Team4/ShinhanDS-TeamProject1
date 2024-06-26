@@ -15,13 +15,18 @@ public class Prod_ImageDAOMybatis implements Prod_ImageDAOInterface {
 	String namespace = "com.saren.prod_image.";
 	
 	@Override
-	public Prod_ImageDTO selectByImageId(Integer img_id) {
+	public Prod_ImageDTO selectByImageId(String img_id) {
 		return sqlSession.selectOne(namespace+"selectByImageId", img_id);
 	}
 
 	@Override
-	public Prod_ImageDTO selectByProdId(Integer prod_id) {
+	public Prod_ImageDTO selectByProdId(String prod_id) {
 		return sqlSession.selectOne(namespace+"selectByProdId", prod_id);
+	}
+	
+	@Override
+	public List<Prod_ImageDTO> findAllImgsByProdID(String prod_id) {
+		return sqlSession.selectList(namespace+"findAllImgsByProdID",prod_id);
 	}
 
 	@Override
@@ -40,7 +45,9 @@ public class Prod_ImageDAOMybatis implements Prod_ImageDAOInterface {
 	}
 
 	@Override
-	public int prod_imageDelete(Integer img_id) {
+	public int prod_imageDelete(String img_id) {
 		return sqlSession.delete(namespace+"prod_imageDelete", img_id);
 	}
+
+	
 }

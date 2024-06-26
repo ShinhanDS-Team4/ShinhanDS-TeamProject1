@@ -8,14 +8,21 @@
 		resultType="prod_optionVO">
 		SELECT * 
 		FROM PROD_OPTION 
-		WHERE "opt_id" = #{opt_id}
+		WHERE opt_id = #{opt_id}
 	</select>
 	
 	<select id="selectByProdId" parameterType="int"
 		resultType="prod_optionVO">
 		SELECT * 
 		FROM PROD_OPTION 
-		WHERE "prod_id" = #{prod_id}
+		WHERE prod_id = #{prod_id}
+	</select>
+	
+	<select id="findMaxOptId" resultType="integer">
+		SELECT
+    		MAX(opt_id) AS max_opt_id
+		FROM
+    		PROD_OPTION
 	</select>
 
 	<select id="selectAll" resultType="prod_optionVO">
@@ -25,22 +32,22 @@
 
 	<insert id="prod_optionInsert" parameterType="prod_optionVO">
 		INSERT 
-		INTO PROD_OPTION("opt_id", "opt_name", "opt_value", "prod_id", "email") 
-		VALUES(#{opt_id}, #{opt_name}, #{opt_value}, #{prod_id}, #{email})
+		INTO PROD_OPTION(opt_id, opt_name, opt_value, prod_id) 
+		VALUES(#{opt_id}, #{opt_name}, #{opt_value}, #{prod_id})
 	</insert>
 
 	<update id="prod_optionUpdate" parameterType="prod_optionVO">
 		UPDATE PROD_OPTION
 		SET
-		"opt_name" = #{opt_name}, "opt_value" = #{opt_value}, 
-		"prod_id" = #{prod_id}, "email" = #{email}
-		WHERE "opt_id" = #{opt_id}
+		opt_name = #{opt_name}, opt_value = #{opt_value}, 
+		prod_id = #{prod_id}
+		WHERE opt_id = #{opt_id}
 	</update>
 
 	<delete id="prod_optionDelete" parameterType="int">
 		DELETE
 		FROM PROD_OPTION
-		WHERE "opt_id" = #{opt_id}
+		WHERE opt_id = #{opt_id}
 	</delete>
 	
 </mapper>

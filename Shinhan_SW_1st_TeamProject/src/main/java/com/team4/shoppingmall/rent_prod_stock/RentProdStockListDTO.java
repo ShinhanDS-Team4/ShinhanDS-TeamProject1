@@ -1,4 +1,4 @@
-package com.team4.shoppingmall.prod;
+package com.team4.shoppingmall.rent_prod_stock;
 
 import java.sql.Date;
 
@@ -12,12 +12,9 @@ import lombok.ToString;
 @Getter@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProdDTO {
-	String prod_id;
-	String prod_name;
-	String prod_desc;
+public class RentProdStockListDTO {
+	String r_stock_id;
 	Integer prod_price;
 	Date prod_added_date;
-	Integer category_id;
-	String member_id;
+	Integer stock;
 }
