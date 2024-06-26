@@ -8,7 +8,7 @@ public interface Seller_Prod_StockDAOInterface {
 
 	public List<Seller_Prod_StockDTO> selectByProdId(String prod_id);
 	
-	public int findMaxStockNumber(String prod_id);
+	public Integer findMaxStockNumber(String prod_id);
 	
 	public List<Seller_Prod_StockListDTO> findSellStockList(String member_id);
 	

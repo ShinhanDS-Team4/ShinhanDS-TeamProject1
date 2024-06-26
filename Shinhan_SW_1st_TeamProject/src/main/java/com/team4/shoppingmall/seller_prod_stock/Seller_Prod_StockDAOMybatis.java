@@ -25,8 +25,8 @@ public class Seller_Prod_StockDAOMybatis implements Seller_Prod_StockDAOInterfac
 	}
 	
 	@Override
-	public int findMaxStockNumber(String prod_id) {
-		return sqlSession.selectOne(namespace+"findMaxStockNumber",prod_id);
+	public Integer findMaxStockNumber(String prod_id) {
+		return sqlSession.selectOne(namespace+"findMaxStockNumber", prod_id);
 	}
 	
 	@Override

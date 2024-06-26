@@ -16,7 +16,7 @@ public class RentProdStockService {
 		return rentProdStockDAO.selectById(r_stock_id);
  	}
 	
-	public int findMaxStockNumber(String prod_id) {
+	public Integer findMaxStockNumber(String prod_id) {
 		return rentProdStockDAO.findMaxStockNumber(prod_id);
 	}
 	
@@ -36,8 +36,8 @@ public class RentProdStockService {
  	}
 
 	// 대여상품수정 
-	public int rentProdUpdate(String r_stock_id) {
-		return rentProdStockDAO.rentProdUpdate(r_stock_id);
+	public int rentProdUpdate(RentProdStockDTO rentprod) {
+		return rentProdStockDAO.rentProdUpdate(rentprod);
  	}
 
 	// 대여상품삭제 

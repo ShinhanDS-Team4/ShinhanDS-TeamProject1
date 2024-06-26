@@ -34,7 +34,7 @@
 	<update id="prodUpdate" parameterType="prodVO">
 		UPDATE PROD
 		SET
-		"prod_name" = #{prod_name}, "prod_desc" = #{prod_desc}, 
+		prod_name = #{prod_name}, prod_desc = #{prod_desc}, 
 		"prod_price" = #{prod_price}, "prod_added_date" = #{prod_added_date}, 
 		"category_id" = #{category_id}, "member_id" = #{member_id}
 		WHERE "prod_id" = #{prod_id}

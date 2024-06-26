@@ -8,14 +8,20 @@
 		resultType="prod_imageVO">
 		SELECT *
 		FROM PROD_IMAGE
-		WHERE "img_id" = #{img_id}
+		WHERE img_id = #{img_id}
 	</select>
 	
 	<select id="selectByProdId" parameterType="int"
 		resultType="prod_imageVO">
 		SELECT *
 		FROM PROD_IMAGE 
-		WHERE "prod_id" = #{prod_id}
+		WHERE prod_id = #{prod_id}
+	</select>
+	
+	<select id="findAllImgsByProdID" parameterType="string" resultType="prod_imageVO">
+		SELECT *
+		FROM PROD_IMAGE 
+		WHERE prod_id = #{prod_id}
 	</select>
 
 	<select id="selectAll" resultType="prod_imageVO">
@@ -25,15 +31,14 @@
 
 	<insert id="prod_imageInsert" parameterType="prod_imageVO">
 		INSERT
-		INTO PROD_IMAGE("img_id", "prod_id", "img_url") 
-		VALUES(#{img_id}, #{prod_id}, #{img_url})
+		INTO PROD_IMAGE(img_id, prod_id) 
+		VALUES(#{img_id}, #{prod_id})
 	</insert>
 
 	<update id="prod_imageUpdate" parameterType="prod_imageVO">
 		UPDATE PROD_IMAGE
-		SET
-		"prod_id" = #{prod_id}, "email" = #{email}, "img_url" = #{img_url}
-		WHERE "img_id" = #{img_id}
+		SET img_id = #{img_id}
+		WHERE prod_id = #{prod_id}
 	</update>
 
 	<delete id="prod_imageDelete" parameterType="int">

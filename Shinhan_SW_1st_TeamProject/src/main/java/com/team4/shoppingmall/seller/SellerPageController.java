@@ -29,6 +29,7 @@ import com.team4.shoppingmall.buyer_inq.Buyer_InqDTO;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqService;
 import com.team4.shoppingmall.member.MemberService;
 import com.team4.shoppingmall.prod.ProdService;
+import com.team4.shoppingmall.prod_image.Prod_ImageService;
 import com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO;
 import com.team4.shoppingmall.rent_prod_stock.RentProdStockService;
 import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockDTO;
@@ -49,6 +50,9 @@ public class SellerPageController {
 	
 	@Autowired
 	ProdService prodService;
+	
+	@Autowired
+	Prod_ImageService imageService;
 	
 	@Autowired
 	Seller_Prod_StockService seller_Prod_StockService;
@@ -116,10 +120,11 @@ public class SellerPageController {
 
 	// 상품 수정 페이지
 	@GetMapping("/ModifyProduct.do")
-	public String modifyProduct(Model model1, Model model2, @RequestParam("stock_id") String stockID) throws UnsupportedEncodingException {
+	public String modifyProduct(Model model1, Model model2, Model model3, @RequestParam("stock_id") String stockID) throws UnsupportedEncodingException {
 		
 		String stock_id = URLDecoder.decode(stockID, "UTF-8");//한글로 변환
 		
+		//재고ID가 어느 재고 테이블에 속하는지 확인
 		Seller_Prod_StockDTO seller_Prod_StockDTO = seller_Prod_StockService.selectByStockId(stock_id);
 		if(Objects.isNull(seller_Prod_StockDTO)) {//대여상품 재고일 경우
 			RentProdStockDTO rentProdStockDTO = rentProdStockService.selectById(stock_id);//상품의 기본 정보를 끌어오기 위해 재고데이터에서 상품ID를 가져온다.
@@ -127,11 +132,13 @@ public class SellerPageController {
 			
 			model1.addAttribute("StockInfo", rentProdStockDTO);
 			model2.addAttribute("ProductInfo", prodService.selectByProdId(ProdID));
+			model3.addAttribute("ProdImgList",imageService.findAllImgsByProdID(ProdID));
 		}else {//판매상품 재고일 경우
 			String ProdID = seller_Prod_StockDTO.getProd_id();
 			
 			model1.addAttribute("StockInfo", seller_Prod_StockDTO);
 			model2.addAttribute("ProductInfo", prodService.selectByProdId(ProdID));
+			model3.addAttribute("ProdImgList",imageService.findAllImgsByProdID(ProdID));
 		}
 		
 		return "/seller/seller_modifyPrd";

@@ -7,66 +7,70 @@
 	<select id="selectByStockId" parameterType="string"
 		resultType="seller_prod_stockVO">
 		SELECT *
-		FROM SELLER_PROD_STOCK 
+		FROM SELLER_PROD_STOCK
 		WHERE s_stock_id = #{s_stock_id}
 	</select>
-	
+
 	<select id="selectByProdId" parameterType="string"
 		resultType="seller_prod_stockVO">
-		SELECT * 
+		SELECT *
 		FROM SELLER_PROD_STOCK
 		WHERE prod_id = #{prod_id}
 	</select>
-	
-	<select id="findMaxStockNumber" parameterType="string" resultType="int">
-		SELECT
-    		MAX(TO_NUMBER(REGEXP_SUBSTR(s_stock_id, '[0-9]+$'))) AS max_number
-		FROM
-    		SELLER_PROD_STOCK;
-    	WHERE
-    		prod_id = #{prod_id};
+
+	<select id="findMaxStockNumber" parameterType="string"
+		resultType="integer">
+		SELECT max(to_number(REGEXP_SUBSTR(s.s_stock_id,'_([0-9]+)$', 1, 1, null, 1)))
+		FROM SELLER_PROD_STOCK s
+		WHERE s.prod_id = #{prod_id}
 	</select>
-	
-	<select id="findSellStockList" parameterType="string" resultType="seller_prod_stocklistVO">
-		SELECT 
-    		s.s_stock_id, 
-    		s.stock, 
-    		p.prod_added_date, 
-    		p.prod_price
-		FROM 
-    		SELLER_PROD_STOCK s
-		JOIN 
-    		PROD p ON s.prod_id = p.prod_id
-		WHERE 
-    		p.member_id = #{member_id}
-    </select>
+
+	<select id="findSellStockList" parameterType="string"
+		resultType="seller_prod_stocklistVO">
+		SELECT
+			s.s_stock_id,
+			s.stock,
+			p.prod_added_date,
+			p.prod_price
+		FROM
+			SELLER_PROD_STOCK s
+		JOIN
+			PROD p ON s.prod_id = p.prod_id
+		WHERE
+			p.member_id = #{member_id}
+	</select>
 	<select id="selectAll" resultType="seller_prod_stockVO">
 		SELECT *
 		FROM SELLER_PROD_STOCK
 	</select>
 
-	<insert id="seller_prod_stockInsert" parameterType="seller_prod_stockVO">
+	<insert id="seller_prod_stockInsert"
+		parameterType="seller_prod_stockVO">
 		INSERT
-		INTO SELLER_PROD_STOCK(s_stock_id, stock, total, prod_id, 
-		opt_id1, opt_id2, opt_id3, opt_id4, opt_id5) 
-		VALUES(#{s_stock_id}, #{stock}, #{total}, #{prod_id}, #{opt_id1}, 
+		INTO SELLER_PROD_STOCK(s_stock_id, stock, total,
+		prod_id, opt_id1, opt_id2, opt_id3, opt_id4, opt_id5)
+		VALUES(#{s_stock_id}, #{stock}, #{total}, #{prod_id}, #{opt_id1},
 		#{opt_id2}, #{opt_id3}, #{opt_id4}, #{opt_id5})
 	</insert>
 
-	<update id="seller_prod_stockUpdate" parameterType="seller_prod_stockVO">
+	<update id="seller_prod_stockUpdate"
+		parameterType="seller_prod_stockVO">
 		UPDATE SELLER_PROD_STOCK
 		SET
-		stock = #{stock}, total = #{total}, 
-		prod_id = #{prod_id}, opt_id1 = #{opt_id1}, 
+		stock = #{stock}, total =
+		#{total},
+		prod_id = #{prod_id}, opt_id1 = #{opt_id1},
 		opt_id2 = #{opt_id2}, opt_id3 = #{opt_id3},
-		opt_id4 = #{opt_id4}, opt_id5 = #{opt_id5}
+		opt_id4 = #{opt_id4}, opt_id5 =
+		#{opt_id5}
 		WHERE s_stock_id = #{s_stock_id}
 	</update>
 
 	<delete id="seller_prod_stockDelete" parameterType="string">
 		DELETE
-		FROM SELLER_PROD_STOCK
+		FROM
+		SELLER_PROD_STOCK
 		WHERE s_stock_id = #{s_stock_id}
 	</delete>
-	
+
 </mapper>

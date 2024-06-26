@@ -12,13 +12,10 @@
 		WHERE r_stock_id = #{r_stock_id}
 	</select>
 	
-	<select id="findMaxStockNumber" parameterType="string" resultType="int">
-		SELECT
-    		MAX(TO_NUMBER(REGEXP_SUBSTR(r_stock_id, '[0-9]+$'))) AS max_number
-		FROM
-    		RENT_PROD_STOCK;
-    	WHERE
-    		prod_id = #{prod_id};
+	<select id="findMaxStockNumber" parameterType="string" resultType="integer">
+		SELECT max(to_number(REGEXP_SUBSTR(r.r_stock_id,'_([0-9]+)$', 1, 1, null, 1)))
+		FROM RENT_PROD_STOCK r
+		WHERE r.prod_id = #{prod_id}
 	</select>
 	
 	<select id="findRentStockList" parameterType="string" resultType="rent_prod_stocklistVO">
@@ -36,20 +33,22 @@
     </select>
 
 	<!-- 대여상품목록 -->
-	<select id="selectAll" resultType="com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO">
+	<select id="selectAll" resultType="rent_prod_stockVO">
 		SELECT *
 		FROM RENT_PROD_STOCK
 	</select>
 
 	<!-- 대여상품등록 -->
-	<insert id="rentProdInsert" parameterType="com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO">
+	<insert id="rentProdInsert" parameterType="rent_prod_stockVO">
 		INSERT
-		INTO RENT_PROD_STOCK(r_stock_id, stock, total, prod_id, opt_id1, opt_id2, opt_id3, opt_id4, opt_id5)
-		VALUES(#{r_stock_id}, #{stock}, #{total}, #{prod_id}, #{opt_id1}, #{opt_id2}, #{opt_id3}, #{opt_id4}, #{opt_id5})
+		INTO RENT_PROD_STOCK(r_stock_id, stock, total, 
+		prod_id, opt_id1, opt_id2, opt_id3, opt_id4, opt_id5)
+		VALUES(#{r_stock_id}, #{stock}, #{total}, #{prod_id}, #{opt_id1}, 
+		#{opt_id2}, #{opt_id3}, #{opt_id4}, #{opt_id5})
 	</insert>
 
 	<!-- 대여상품수정 -->
-	<update id="rentProdUpdate" parameterType="com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO">
+	<update id="rentProdUpdate" parameterType="rent_prod_stockVO">
 		UPDATE RENT_PROD_STOCK
 		SET
 		stock = #{stock}, total = #{total}, opt_id1 = #{opt_id1},

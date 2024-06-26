@@ -23,7 +23,7 @@ public class RentProdStockDAOMybatis implements RentProdStockDAOInterface {
 	}
 	
 	@Override
-	public int findMaxStockNumber(String prod_id) {
+	public Integer findMaxStockNumber(String prod_id) {
 		return sqlSession.selectOne(namespace+"findMaxStockNumber",prod_id);
 	}
 	
@@ -42,13 +42,13 @@ public class RentProdStockDAOMybatis implements RentProdStockDAOInterface {
 	// 대여상품등록
 	@Override
 	public int rentProdInsert(RentProdStockDTO rentprod) {
-		return sqlSession.insert(namespace + "selectById", rentprod);
+		return sqlSession.insert(namespace + "rentProdInsert", rentprod);
 	}
 
 	// 대여상품수정
 	@Override
-	public int rentProdUpdate(String r_stock_id) {
-		return sqlSession.update(namespace + "selectById", r_stock_id);
+	public int rentProdUpdate(RentProdStockDTO rentprod) {
+		return sqlSession.update(namespace + "rentProdUpdate", rentprod);
 	}
 
 	// 대여상품삭제

@@ -19,7 +19,7 @@ public class Prod_OptionService {
 		return prod_optionDAO.selectByProdId(prod_id);
 	}
 	
-	public int findMaxOptId() {
+	public Integer findMaxOptId() {
 		return prod_optionDAO.findMaxOptId();
 	}
 	

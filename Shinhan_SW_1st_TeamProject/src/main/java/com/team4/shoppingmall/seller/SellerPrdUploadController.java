@@ -103,19 +103,26 @@ public class SellerPrdUploadController {
 		// PROD에서 상품 ID를 검색하여 동일한 값이 존재하는지 우선 확인
 		// if(존재하지 않으면) 상품 등록 & 사진 등록 후 재고 등록
 		// else(존재하면) => 재고(Stock) 데이터만 만들면 됨
-		ProdDTO prodDTO = prodService.selectByProdId(prod_id);
+		ProdDTO prodDTO = new ProdDTO();
+				
+		prodDTO = prodService.selectByProdId(prod_id);
+		
+		System.out.println(prodDTO);
 
 		if (Objects.isNull(prodDTO)) {
 			// 상품 등록
-			prodDTO.setProd_id(prod_id);
-			prodDTO.setProd_name(productName);
-			prodDTO.setProd_desc(prdDescription);
-			prodDTO.setProd_price(prdPrice);
-			prodDTO.setProd_added_date(sqlDate);
-			prodDTO.setCategory_id(prdCategory);
-			prodDTO.setMember_id(member_id);
+			ProdDTO prodDTO2 = new ProdDTO();
+			
+			prodDTO2.setProd_id(prod_id);
+			prodDTO2.setProd_name(productName);
+			prodDTO2.setProd_desc(prdDescription);
+			prodDTO2.setProd_price(prdPrice);
+			prodDTO2.setProd_added_date(sqlDate);
+			prodDTO2.setCategory_id(prdCategory);
+			prodDTO2.setMember_id(member_id);
 
-			int prdRegResult = prodService.prodInsert(prodDTO);
+			int prdRegResult = prodService.prodInsert(prodDTO2);
+			System.out.println(prdRegResult);
 
 			// 상품 테이블 등록 종료
 
@@ -134,7 +141,7 @@ public class SellerPrdUploadController {
 				// 파일 처리(URL로 변환)
 				try {
 					// 파일명은 '상품명_판매자ID_image_x'(x는 sequence)
-					String filename = prod_id + "_image_" + fileIndex;
+					String filename = prod_id + "_image_" + fileIndex+".png";
 					Path filePath = Paths.get(uploadDir).resolve(filename);
 					Files.createDirectories(filePath.getParent()); // 디렉토리가 존재하지 않으면 생성
 					Files.write(filePath, file.getBytes()); // 파일 저장
@@ -145,11 +152,12 @@ public class SellerPrdUploadController {
 					fileUrls.add(fileUrl);
 
 					// DB에 저장
-
 					Prod_ImageDTO imageDTO = new Prod_ImageDTO();
 
-					imageDTO.setImg_id(filename);
-					imageDTO.setProd_id(prod_id);
+					imageDTO.setImg_id(filename);//상품명_판매자ID_image_fileindex
+					imageDTO.setProd_id(prod_id);//상품_판매자ID
+					
+					System.out.println(imageDTO);
 
 					int prdImgRegResult = imageService.prod_imageInsert(imageDTO);
 
@@ -165,12 +173,16 @@ public class SellerPrdUploadController {
 
 		// 3.재고(Stock) 등록
 		// 여기서부터 productType 별로 StockDTO를 따로따로 생성해서 처리한다
-		if (productType == "판매") {// 판매용 재고에 들어가야 하는 경우(SELLER_PROD_STOCK)
+		if (productType.equals("판매")) {// 판매용 재고에 들어가야 하는 경우(SELLER_PROD_STOCK)
 			// 등록하려는 재고와 일치하는 상품ID를 가진 판매 재고들 중 재고ID 끝자리 숫자가 제일 큰 재고ID의 끝자리 수를 가져온다.
 			// ex)나이키 반팔_550-398-22934_1~5 >> 5
-			int maxSellStockNum = seller_Prod_StockService.findMaxStockNumber(prod_id);
+			Integer maxSellStockNum=seller_Prod_StockService.findMaxStockNumber(prod_id);
+			System.out.println(maxSellStockNum);
+			if(Objects.isNull(maxSellStockNum)) maxSellStockNum=0;
 			maxSellStockNum++;// ex) 6으로 올림
-
+			
+			System.out.println(maxSellStockNum);
+			
 			String stockID = prod_id + "_SELL_" + maxSellStockNum;
 			Seller_Prod_StockDTO seller_Prod_StockDTO = new Seller_Prod_StockDTO();
 			seller_Prod_StockDTO.setS_stock_id(stockID);
@@ -183,9 +195,12 @@ public class SellerPrdUploadController {
 			for (int i = 0; i < optNames.size(); i++) {
 				String optionName = URLDecoder.decode(optNames.get(i), "UTF-8");
 				String optionValue = URLDecoder.decode(optValues.get(i), "UTF-8");
+				
+				System.out.println(optionName);
+				System.out.println(optionValue);
 
 				// 현재 DB의 상품옵션(PROD_OPTION) 테이블에서 가장 큰 옵션 ID를 가져온다
-				int maxOptionID = optionService.findMaxOptId();
+				Integer maxOptionID = optionService.findMaxOptId();
 				if (Objects.isNull(maxOptionID))
 					maxOptionID = 0;
 				maxOptionID++;
@@ -201,29 +216,33 @@ public class SellerPrdUploadController {
 				switch (i) {
 				case 0:
 					seller_Prod_StockDTO.setOpt_id1(maxOptionID);
-
+					break;
 				case 1:
 					seller_Prod_StockDTO.setOpt_id2(maxOptionID);
-
+					break;
 				case 2:
 					seller_Prod_StockDTO.setOpt_id3(maxOptionID);
-
+					break;
 				case 3:
 					seller_Prod_StockDTO.setOpt_id4(maxOptionID);
-
+					break;
 				case 4:
 					seller_Prod_StockDTO.setOpt_id5(maxOptionID);
+					break;
 				}
 
 			}
 
 			int sellStockRegResult = seller_Prod_StockService.seller_prod_stockInsert(seller_Prod_StockDTO);
 
-		} else {// 대여 재고에 들어가야 하는 경우(RENT_PROD_STOCK)
+		} else if(productType.equals("대여")){// 대여 재고에 들어가야 하는 경우(RENT_PROD_STOCK)
 			// 등록하려는 재고와 일치하는 상품ID를 가진 대여 재고들 중 재고ID 끝자리 숫자가 제일 큰 재고ID의 끝자리 수를 가져온다.
 			// ex)나이키 반팔_550-398-22934_1~5 >> 5
-			int maxSellStockNum = rentProdStockService.findMaxStockNumber(prod_id);
+			Integer maxSellStockNum = rentProdStockService.findMaxStockNumber(prod_id);
+			if(Objects.isNull(maxSellStockNum)) maxSellStockNum=0;
 			maxSellStockNum++;// ex) 6으로 올림
+			
+			System.out.println("대여재고 최대값:"+maxSellStockNum);
 
 			String stockID = prod_id + "_RENT_" + maxSellStockNum;
 			RentProdStockDTO rentProdStockDTO = new RentProdStockDTO();
@@ -239,7 +258,7 @@ public class SellerPrdUploadController {
 				String optionValue = URLDecoder.decode(optValues.get(i), "UTF-8");
 
 				// 현재 DB의 상품옵션(PROD_OPTION) 테이블에서 가장 큰 옵션 ID를 가져온다
-				int maxOptionID = optionService.findMaxOptId();
+				Integer maxOptionID = optionService.findMaxOptId();
 				if (Objects.isNull(maxOptionID))
 					maxOptionID = 0;
 				maxOptionID++;
@@ -250,29 +269,29 @@ public class SellerPrdUploadController {
 				optionDTO.setOpt_value(optionValue);
 				optionDTO.setProd_id(prod_id);
 
-				int optRegResult = optionService.optionInsert(optionDTO);
-
 				switch (i) {
 				case 0:
 					rentProdStockDTO.setOpt_id1(maxOptionID);
-
+					break;
 				case 1:
 					rentProdStockDTO.setOpt_id2(maxOptionID);
-
+					break;
 				case 2:
 					rentProdStockDTO.setOpt_id3(maxOptionID);
-
+					break;
 				case 3:
 					rentProdStockDTO.setOpt_id4(maxOptionID);
-
+					break;
 				case 4:
 					rentProdStockDTO.setOpt_id5(maxOptionID);
+					break;
 				}
 			}
 			int rentStockRegResult = rentProdStockService.rentProdInsert(rentProdStockDTO);	
+			System.out.println(rentStockRegResult);
 		}
 
 		redirectAttributes.addFlashAttribute("PrdRegisterResult", "상품 정보 업로드에 성공하였습니다.");
-		return "/seller/sellerPrdList";// 성공 페이지로 리다이렉션(팀프로젝트에서는 판매자-물품 리스트로 리다이렉트)
+		return "/seller/PrdList.do";// 성공 페이지로 리다이렉션(팀프로젝트에서는 판매자-물품 리스트로 리다이렉트)
 	}
 }
