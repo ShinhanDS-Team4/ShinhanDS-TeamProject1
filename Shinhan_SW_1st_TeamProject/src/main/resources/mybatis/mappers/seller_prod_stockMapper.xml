@@ -4,48 +4,93 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.seller_prod_stock">
 
-	<select id="selectByStockId" parameterType="int"
+
+	<!-- 상품ID로 판매 상품 옵션별 재고 조회 -->
+	<select id="selectSpsOptionByProdId" parameterType="string"
 		resultType="seller_prod_stockVO">
-		SELECT *
-		FROM SELLER_PROD_STOCK 
-		WHERE "stock_id" = #{stock_id}
-	</select>
-	
-	<select id="selectByProdId" parameterType="int"
-		resultType="seller_prod_stockVO">
-		SELECT * 
-		FROM SELLER_PROD_STOCK
-		WHERE "prod_id" = #{prod_id}
+		SELECT 
+			SPS.s_stock_id,
+		    SPS.prod_id,
+		    SPS.opt_id1,
+		    SPS.opt_id2,
+		    SPS.opt_id3,
+		    SPS.opt_id4,
+		    SPS.opt_id5,
+		    SPS.stock
+		FROM 
+		    SELLER_PROD_STOCK SPS
+		WHERE 
+		    SPS.prod_id = #{prod_id}
 	</select>
 
+	<select id="selectByStockId" parameterType="string"
+
+		resultType="seller_prod_stockVO">
+		SELECT *
+		FROM SELLER_PROD_STOCK
+		WHERE s_stock_id = #{s_stock_id}
+	</select>
+
+	<select id="selectByProdId" parameterType="string"
+		resultType="seller_prod_stockVO">
+		SELECT *
+		FROM SELLER_PROD_STOCK
+		WHERE prod_id = #{prod_id}
+	</select>
+
+	<select id="findMaxStockNumber" parameterType="string"
+		resultType="integer">
+		SELECT max(to_number(REGEXP_SUBSTR(s.s_stock_id,'_([0-9]+)$', 1, 1, null, 1)))
+		FROM SELLER_PROD_STOCK s
+		WHERE s.prod_id = #{prod_id}
+	</select>
+
+	<select id="findSellStockList" parameterType="string"
+		resultType="seller_prod_stocklistVO">
+		SELECT
+			s.s_stock_id,
+			s.stock,
+			p.prod_added_date,
+			p.prod_price
+		FROM
+			SELLER_PROD_STOCK s
+		JOIN
+			PROD p ON s.prod_id = p.prod_id
+		WHERE
+			p.member_id = #{member_id}
+	</select>
 	<select id="selectAll" resultType="seller_prod_stockVO">
 		SELECT *
 		FROM SELLER_PROD_STOCK
 	</select>
 
-	<insert id="seller_prod_stockInsert" parameterType="seller_prod_stockVO">
+	<insert id="seller_prod_stockInsert"
+		parameterType="seller_prod_stockVO">
 		INSERT
-		INTO SELLER_PROD_STOCK("stock_id", "s_p_stock", "s_p_sell", "prod_id", 
-		"opt_id1", "opt_id2", "opt_id3", "opt_id4", "opt_id5", "review_id") 
-		VALUES(#{stock_id}, #{s_p_stock}, #{s_p_sell}, #{prod_id}, #{opt_id1}, 
-		#{opt_id2}, #{opt_id3}, #{opt_id4}, #{opt_id5}, #{review_id})
+		INTO SELLER_PROD_STOCK(s_stock_id, stock, total,
+		prod_id, opt_id1, opt_id2, opt_id3, opt_id4, opt_id5)
+		VALUES(#{s_stock_id}, #{stock}, #{total}, #{prod_id}, #{opt_id1},
+		#{opt_id2}, #{opt_id3}, #{opt_id4}, #{opt_id5})
 	</insert>
 
-	<update id="seller_prod_stockUpdate" parameterType="seller_prod_stockVO">
+	<update id="seller_prod_stockUpdate"
+		parameterType="seller_prod_stockVO">
 		UPDATE SELLER_PROD_STOCK
 		SET
-		"s_p_stock" = #{s_p_stock}, "s_p_sell" = #{s_p_sell}, 
-		"prod_id" = #{prod_id}, "opt_id1" = #{opt_id1}, 
-		"opt_id2" = #{opt_id2}, "opt_id3" = #{opt_id3},
-		"opt_id4" = #{opt_id4}, "opt_id5" = #{opt_id5},
-		"review_id" = #{review_id}
-		WHERE "stock_id" = #{stock_id}
+		stock = #{stock}, total =
+		#{total},
+		prod_id = #{prod_id}, opt_id1 = #{opt_id1},
+		opt_id2 = #{opt_id2}, opt_id3 = #{opt_id3},
+		opt_id4 = #{opt_id4}, opt_id5 =
+		#{opt_id5}
+		WHERE s_stock_id = #{s_stock_id}
 	</update>
 
-	<delete id="seller_prod_stockDelete" parameterType="int">
+	<delete id="seller_prod_stockDelete" parameterType="string">
 		DELETE
-		FROM SELLER_PROD_STOCK
-		WHERE "stock_id" = #{stock_id}
+		FROM
+		SELLER_PROD_STOCK
+		WHERE s_stock_id = #{s_stock_id}
 	</delete>
-	
+
 </mapper>

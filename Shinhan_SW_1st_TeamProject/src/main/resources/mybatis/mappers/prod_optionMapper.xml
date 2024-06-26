@@ -4,18 +4,42 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.prod_option">
 
-	<select id="selectByOptionId" parameterType="int"
+	<!-- 옵션명과 옵션값들 한번에 조회 -->
+ 	<select id="selectAllOptionsByProdId" parameterType="string" resultType="map">
+        SELECT 
+            PO.OPT_NAME AS OPT_NAME,
+            LISTAGG(  PO.OPT_VALUE, ',' )WITHIN GROUP (ORDER BY PO.OPT_VALUE) AS OPT_VALUE
+		FROM PROD_OPTION PO
+		WHERE PO.PROD_ID = #{prod_id} 
+		GROUP BY PO.OPT_NAME
+    </select>
+    <!-- 상품의 옵션조회 -->
+ 	<select id="productAllOptionsByProdId" parameterType="string" 
+ 		resultType="prod_optionVO">
+        select *
+		from PROD_OPTION 
+		where PROD_ID= #{prod_id}
+    </select>
+    
+	<select id="selectByOptionId" parameterType="string"
 		resultType="prod_optionVO">
 		SELECT * 
 		FROM PROD_OPTION 
-		WHERE "opt_id" = #{opt_id}
+		WHERE opt_id = #{opt_id}
 	</select>
 	
-	<select id="selectByProdId" parameterType="int"
+	<select id="selectByProdId" parameterType="string"
 		resultType="prod_optionVO">
 		SELECT * 
 		FROM PROD_OPTION 
-		WHERE "prod_id" = #{prod_id}
+		WHERE prod_id = #{prod_id}
+	</select>
+	
+	<select id="findMaxOptId" resultType="integer">
+		SELECT
+    		MAX(opt_id) AS max_opt_id
+		FROM
+    		PROD_OPTION
 	</select>
 
 	<select id="selectAll" resultType="prod_optionVO">
@@ -25,22 +49,22 @@
 
 	<insert id="prod_optionInsert" parameterType="prod_optionVO">
 		INSERT 
-		INTO PROD_OPTION("opt_id", "opt_name", "opt_value", "prod_id", "email") 
-		VALUES(#{opt_id}, #{opt_name}, #{opt_value}, #{prod_id}, #{email})
+		INTO PROD_OPTION(opt_id, opt_name, opt_value, prod_id) 
+		VALUES(#{opt_id}, #{opt_name}, #{opt_value}, #{prod_id})
 	</insert>
 
 	<update id="prod_optionUpdate" parameterType="prod_optionVO">
 		UPDATE PROD_OPTION
 		SET
-		"opt_name" = #{opt_name}, "opt_value" = #{opt_value}, 
-		"prod_id" = #{prod_id}, "email" = #{email}
-		WHERE "opt_id" = #{opt_id}
+		opt_name = #{opt_name}, opt_value = #{opt_value}, 
+		prod_id = #{prod_id}
+		WHERE opt_id = #{opt_id}
 	</update>
 
 	<delete id="prod_optionDelete" parameterType="int">
 		DELETE
 		FROM PROD_OPTION
-		WHERE "opt_id" = #{opt_id}
+		WHERE opt_id = #{opt_id}
 	</delete>
 	
 </mapper>

@@ -13,7 +13,6 @@ import lombok.ToString;
 public class CartDTO {
 	Integer cart_id;
 	String member_id;
-	Integer sellstock_id;
-	Integer rentstock_id;
+	String s_stock_id;
 	Integer cart_amount;
 }
