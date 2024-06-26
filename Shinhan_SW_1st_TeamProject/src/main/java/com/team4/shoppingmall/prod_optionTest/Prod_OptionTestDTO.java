@@ -1,4 +1,4 @@
-package com.team4.shoppingmall.cart;
+package com.team4.shoppingmall.prod_optionTest;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,9 +10,10 @@ import lombok.ToString;
 @Getter@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CartDTO {
-	Integer cart_id;
-	String member_id;
-	String s_stock_id;
-	Integer cart_amount;
+public class Prod_OptionTestDTO {
+	Integer opt_id;
+	String opt_name;
+	String opt_value;
+	String prod_id;
+	String email;
 }

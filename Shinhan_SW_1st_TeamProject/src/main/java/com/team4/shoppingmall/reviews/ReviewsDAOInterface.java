@@ -1,8 +1,12 @@
 package com.team4.shoppingmall.reviews;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ReviewsDAOInterface {
+	
+	//주문한 상품의 리뷰정보
+	public List<Map<String,String>> selectAllProductReviewByProdId(String prod_id);
 	
 	public ReviewsDTO selectById(Integer review_id);
 	

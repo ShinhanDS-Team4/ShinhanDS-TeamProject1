@@ -1,8 +1,7 @@
 package com.team4.shoppingmall;
 
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,26 +13,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.team4.shoppingmall.addr_list.AddrService;
 import com.team4.shoppingmall.addr_list.Addr_ListDTO;
-import com.team4.shoppingmall.member.MemberService;
+import com.team4.shoppingmall.cart.CartDTO;
+import com.team4.shoppingmall.prod.ProdService;
+import com.team4.shoppingmall.prod_optionTest.Prod_OptionTestService;
+import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestDTO;
+import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestService;
 
 @Controller
 @RequestMapping("/customer")
 public class CustomerControllerJH {
 	
 	@Autowired
-	AddrService addrService;
+	AddrService addrService; //회원 주소 
 	
-	/*헤더 메뉴 - 상품 목록 조회 */
-	@GetMapping("/productlist")
-	public String productlist() {
-		
-		return "customer/productlist";
-	}
-	
+
 	/*마이페이지 메인*/
 	@GetMapping("/myPage.do")
 	public String myPage() {
-		//1.나의 주문 목록 불러오기
+		//1.나의 주문 목록 불러오기 (목록은 1개만 보인다) 
 		
 		//2.나의 대여 목록 불러오기
 		
@@ -81,7 +78,10 @@ public class CustomerControllerJH {
 	//비밀번호 체크 후 다음 스텝(step3)
 	@GetMapping("/myInfoUpdatePwCheck.do")
 	public String myInfoUpdatePwCheck(@RequestParam("password") String password) {
-		//로그인 회원 비밀번호 체크
+		
+		//로그인 회원 비밀번호 체크(session에서 읽을 예정)
+        String member_id = "testid"; //pw = 1111
+        
 		if(password.equals("aaa")) {
 			return "customer/myInfoUpdate_step3";
 		}else {
@@ -119,4 +119,5 @@ public class CustomerControllerJH {
 		
 	}
 	
+
 }

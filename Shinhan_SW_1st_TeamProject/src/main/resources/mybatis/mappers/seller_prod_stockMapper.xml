@@ -4,7 +4,27 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.seller_prod_stock">
 
+
+	<!-- 상품ID로 판매 상품 옵션별 재고 조회 -->
+	<select id="selectSpsOptionByProdId" parameterType="string"
+		resultType="seller_prod_stockVO">
+		SELECT 
+			SPS.s_stock_id,
+		    SPS.prod_id,
+		    SPS.opt_id1,
+		    SPS.opt_id2,
+		    SPS.opt_id3,
+		    SPS.opt_id4,
+		    SPS.opt_id5,
+		    SPS.stock
+		FROM 
+		    SELLER_PROD_STOCK SPS
+		WHERE 
+		    SPS.prod_id = #{prod_id}
+	</select>
+
 	<select id="selectByStockId" parameterType="string"
+
 		resultType="seller_prod_stockVO">
 		SELECT *
 		FROM SELLER_PROD_STOCK

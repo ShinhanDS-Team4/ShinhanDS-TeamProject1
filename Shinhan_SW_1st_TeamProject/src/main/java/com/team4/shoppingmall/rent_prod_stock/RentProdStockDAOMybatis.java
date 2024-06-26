@@ -16,6 +16,12 @@ public class RentProdStockDAOMybatis implements RentProdStockDAOInterface {
 
 	String namespace = "com.saren.rent_prod_stock.";
 
+	
+	//선택 옵션 상품의 대여 재고id 찾기
+	public RentProdStockDTO selectRentStockByProdId(String prod_id) {
+		return sqlSession.selectOne(namespace + "selectRentStockByProdId", prod_id);
+	};
+	
 	// 대여상품상세
 	@Override
 	public RentProdStockDTO selectById(String r_stock_id) {

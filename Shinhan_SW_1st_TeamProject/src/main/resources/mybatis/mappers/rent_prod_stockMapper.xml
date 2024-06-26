@@ -4,6 +4,14 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.rent_prod_stock">
 
+	<select id="selectRentStockByProdId" parameterType="string"
+			resultType="map">
+		select r_stock_id, rps.opt_id1,rps.opt_id2,rps.opt_id3,rps.opt_id4,rps.opt_id5 , stock
+		from rent_prod_stock rps
+		join prod p on(rps.prod_id = p.prod_id)
+		where p.prod_id= #{prod_id}
+	</select>
+
 	<!-- 대여상품상세 -->
 	<select id="selectById" parameterType="string"
 		resultType="memberVO">

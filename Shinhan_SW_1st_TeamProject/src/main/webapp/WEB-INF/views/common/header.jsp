@@ -7,7 +7,7 @@
 		<div class="leftGnb">
 			<h1 class="logo">
 				<a href="${path}/">
-					<img src="${path}/resources/images/logo_main.png" alt="매안로고">
+					<img src="${path}/resources/images/logo_main.png" alt="메인로고">
 				</a>
 			</h1>
 			<%-- 상품 검색창 --%>

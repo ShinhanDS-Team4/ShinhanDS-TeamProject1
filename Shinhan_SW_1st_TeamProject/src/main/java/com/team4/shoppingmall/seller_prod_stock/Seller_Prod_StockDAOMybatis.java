@@ -13,7 +13,7 @@ public class Seller_Prod_StockDAOMybatis implements Seller_Prod_StockDAOInterfac
 	SqlSession sqlSession;
 	
 	String namespace = "com.saren.seller_prod_stock.";
-	
+
 	@Override
 	public Seller_Prod_StockDTO selectByStockId(String s_stock_id) {
 		return sqlSession.selectOne(namespace+"selectByStockId", s_stock_id);
