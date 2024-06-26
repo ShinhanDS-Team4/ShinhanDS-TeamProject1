@@ -13,22 +13,22 @@
 		WHERE PO.PROD_ID = #{prod_id} 
 		GROUP BY PO.OPT_NAME
     </select>
-    <!-- (나중에 resultType수정하기) 상품의 옵션조회 -->
+    <!-- 상품의 옵션조회 -->
  	<select id="productAllOptionsByProdId" parameterType="string" 
- 	resultType="com.team4.shoppingmall.prod_optionTest.Prod_OptionTestDTO">
+ 		resultType="prod_optionVO">
         select *
 		from PROD_OPTION 
 		where PROD_ID= #{prod_id}
     </select>
     
-	<select id="selectByOptionId" parameterType="int"
+	<select id="selectByOptionId" parameterType="string"
 		resultType="prod_optionVO">
 		SELECT * 
 		FROM PROD_OPTION 
 		WHERE "opt_id" = #{opt_id}
 	</select>
 	
-	<select id="selectByProdId" parameterType="int"
+	<select id="selectByProdId" parameterType="string"
 		resultType="prod_optionVO">
 		SELECT * 
 		FROM PROD_OPTION 

@@ -540,14 +540,13 @@
     font-weight: bold;
 }
 
-/* �긽�뭹 �긽�꽭 �젙蹂� */
+/* 상품정보 컨테이너 */
 .container-detail{
     border: 1px solid red;
     height: 100vh;
 }
 
-
-/* �긽�뭹 由щ럭 紐⑸줉 */
+/* 상품의 리뷰-문의 컨테이너 */
 .container-review{
    /*  height: 800px; */
     height:100%;
@@ -556,7 +555,7 @@
 .container-detail, .container-review {
     display: none;
 }
-.container-detail.active, .container-review.active {
+.active{
     display: block;
 }
 .review-list{

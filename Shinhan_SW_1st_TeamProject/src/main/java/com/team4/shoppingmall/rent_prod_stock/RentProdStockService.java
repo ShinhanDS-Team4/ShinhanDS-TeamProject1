@@ -11,6 +11,11 @@ public class RentProdStockService {
 	@Autowired
 	RentProdStockDAOInterface rentProdStockDAO;
 
+	//선택 옵션 상품의 대여 재고id 찾기
+	public RentProdStockDTO selectRentStockByProdId(String prod_id) {
+		return rentProdStockDAO.selectRentStockByProdId(prod_id);
+	};
+	
 	// 대여상품상세
 	public RentProdStockDTO selectById(Integer stock_id) {
 		return rentProdStockDAO.selectById(stock_id);

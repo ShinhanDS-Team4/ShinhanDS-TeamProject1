@@ -5,7 +5,7 @@
 <mapper namespace="com.saren.prod">
 	
 	<!-- 상품 상세 정보 조회 -->
-	<!-- 상품ID로 상품 이름,상품 가격,브랜드명,카테고리명(부모카테고리명,세부카테고리명),상품의 리뷰 수,문의 수 조회 -->
+	<!-- 상품 이름,상품 가격,브랜드명,카테고리명(부모카테고리명,세부카테고리명),상품의 리뷰 수,문의 수 조회 -->
 	<select id="selectProdDetailInfoByProdId" parameterType="string"
 		resultType="map">
 		SELECT 
@@ -32,7 +32,7 @@
 		WHERE P.prod_id = #{prod_id}
 	</select>
 
-	<select id="selectByProdId" parameterType="int"
+	<select id="selectByProdId" parameterType="string"
 		resultType="prodVO">
 		SELECT * 
 		FROM PROD 

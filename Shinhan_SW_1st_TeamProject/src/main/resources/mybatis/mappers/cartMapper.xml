@@ -4,13 +4,13 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.cart">
 
-	<!-- CART테이블에 넣을 선택한 옵션 상품의 재고ID 찾기(parameterType수정하기)  -->
+	<!-- CART테이블에 넣을 선택한 옵션 상품의 재고ID 찾기(parameterType = 동적VO)  -->
     <select id="searchStockId" parameterType="com.team4.shoppingmall.cart.CartDynamicVO" 
     		resultType="string">
-		select seller_prod_stock.stock_id 
-		from seller_prod_stock
-		where opt_id1||','|| opt_id2||','||opt_id3 ||','||opt_id4||','||opt_id5   
-		like 	 
+		SELECT seller_prod_stock.s_stock_id 
+		FROM seller_prod_stock
+		WHERE opt_id1||','|| opt_id2||','||opt_id3 ||','||opt_id4||','||opt_id5   
+		LIKE 	 
 		( 
 	  		SELECT 
 	        listAgg(opt_id,',') within group(order by opt_id)
@@ -62,15 +62,13 @@
 	    select * 
 	    from CART
 	    where member_id = #{member_id}
-	    and sellstock_id = #{sellstock_id}
+	    and s_stock_id = #{s_stock_id}
 	</select>
-	<!-- 장바구니에 추가 : cart_id에 시퀀스 사용함(cart_squence)  -->
+	<!-- 장바구니에 추가 : cart_id에 시퀀스 사용함(cart_squence), 수정: 대여ID칼럼 제거  -->
 	<insert id="cartInsert" parameterType="cartVO">
 		INSERT 
-		INTO CART(cart_id, member_id, sellstock_id, rentstock_id, 
-				  cart_amount) 
-		VALUES(cart_squence.nextval, #{member_id}, 
-		#{sellstock_id}, #{rentstock_id}, #{cart_amount})
+		INTO CART(cart_id, member_id, s_stock_id, cart_amount) 
+		VALUES(cart_squence.nextval, #{member_id}, #{s_stock_id}, #{cart_amount})
 	</insert>
 	<!-- 장바구니 속 중복 상품의 수량 업데이트 -->
 	<update id="updateCartBySellstock" parameterType="cartVO">
@@ -83,10 +81,10 @@
 		UPDATE CART
 		SET
 		"member_id" = #{member_id}, "sellstock_id" = #{sellstock_id}, 
-		"rentstock_id" = #{rentstock_id}, "cart_amount" = #{cart_amount}
+		"cart_amount" = #{cart_amount}
 		WHERE "cart_id" = #{cart_id}
 	</update>
-
+	
 	<delete id="cartDelete" parameterType="int">
 		DELETE
 		FROM CART

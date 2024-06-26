@@ -6,20 +6,20 @@
 
 	<!-- 상품ID로 판매 상품 옵션별 재고 조회 -->
 	<select id="selectSpsOptionByProdId" parameterType="string"
-		resultType="com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestDTO">
+		resultType="seller_prod_stockVO">
 		SELECT 
-			SPS.STOCK_ID,
-		    SPS.PROD_ID,
-		    SPS.OPT_ID1,
-		    SPS.OPT_ID2,
-		    SPS.OPT_ID3,
-		    SPS.OPT_ID4,
-		    SPS.OPT_ID5,
-		    SPS.S_P_STOCK
+			SPS.s_stock_id,
+		    SPS.prod_id,
+		    SPS.opt_id1,
+		    SPS.opt_id2,
+		    SPS.opt_id3,
+		    SPS.opt_id4,
+		    SPS.opt_id5,
+		    SPS.stock
 		FROM 
 		    SELLER_PROD_STOCK SPS
 		WHERE 
-		    SPS.PROD_ID = '나이키 반팔_1234-1234'
+		    SPS.prod_id = #{prod_id}
 	</select>
 
 	<select id="selectByStockId" parameterType="int"
