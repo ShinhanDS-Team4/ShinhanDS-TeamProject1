@@ -10,6 +10,8 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
+
+	
 	function closePopUp() {
 		window.close();
 	}
@@ -86,24 +88,26 @@ h1 {
 		<h1>관리자 문의 결과</h1>
 		<div class="info">
 			<div>
-				<label>문의ID</label> <input type="number" value="${aqa.admin_inq_id}" />
+				<label>문의ID</label>
+				<input type="number" id="admin_inq_id" name="admin_inq_id" value="${aqa.admin_inq_id}" />
 			</div>
 			<div>
-				<label>문의일자</label> <input type="date" value="${aqa.admin_inq_date}" />
+				<label>문의일자</label>
+				<input type="date" id="admin_inq_date" name="admin_inq_date" value="${aqa.admin_inq_date}" />
 			</div>
 		</div>
 		<div class="input-group">
 			<label for="subject">제목</label>
-			<input type="text" id="subject" readonly="readonly"
-				value="${aqa.adimin_inq_id}" />
+			<input type="text" id="admin_inq_title" name="admin_inq_title" readonly="readonly"
+				value="${aqa.admin_inq_title}" />
 		</div>
 		<div class="input-group">
 			<label for="inquiry">문의내용</label>
-			<textarea id="inquiry" readonly="readonly" rows="5"></textarea>
+			<textarea id="admin_inq_content" name="admin_inq_content" readonly="readonly" rows="5">${aqa.admin_inq_content}</textarea>
 		</div>
 		<div class="input-group">
 			<label for="response">답변</label>
-			<textarea id="response" readonly="readonly" rows="5"></textarea>
+			<textarea id="admin_reply" name="admin_reply" readonly="readonly" rows="5" >${aqa.admin_reply}</textarea>
 		</div>
 		<div class="buttons">
 			<button type="button" onclick="closePopUp()">닫기</button>

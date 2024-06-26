@@ -1,14 +1,19 @@
 package com.team4.shoppingmall.buyer_inq;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 public interface Buyer_InqDAOInterface {
 	
-	//»óÇ°IDÀÇ ÀüÃ¼ ¹®ÀÇ ¸ñ·Ï Á¶È¸ 
+	//ï¿½ï¿½Ç°IDï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½È¸ 
 	public List<Buyer_InqDTO> selectByProdId(String prod_id);
 	
 	public Buyer_InqDTO selectByInqId(Integer buyer_inq_id);
+	
+	public Buyer_InqDetailDTO selectByInqIdFORseller(Integer buyer_inq_id);
 	
 	public List<Buyer_InqDTO> selectByMemberId(String member_id);
 
@@ -16,8 +21,10 @@ public interface Buyer_InqDAOInterface {
 	
 //	public List<MemberDTO> selectByCondition();
 	
-	//insert Å¸ÀÔ ¼öÁ¤
 	public int buyer_inqInsert(Map<String,String> buyer_inq_map);
+
+	public List<Buyer_InqDTO> selectInqList(String member_id);
+
 	
 	public int buyer_inqUpdate(Buyer_InqDTO buyer_inq);
 	

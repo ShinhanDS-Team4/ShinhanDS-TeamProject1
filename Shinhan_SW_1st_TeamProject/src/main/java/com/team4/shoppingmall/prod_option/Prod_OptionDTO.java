@@ -15,5 +15,4 @@ public class Prod_OptionDTO {
 	String opt_name;
 	String opt_value;
 	String prod_id;
-	String email;
 }

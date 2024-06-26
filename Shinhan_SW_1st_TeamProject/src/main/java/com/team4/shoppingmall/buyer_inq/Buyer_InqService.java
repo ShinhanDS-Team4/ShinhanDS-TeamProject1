@@ -1,5 +1,6 @@
 package com.team4.shoppingmall.buyer_inq;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -12,13 +13,20 @@ public class Buyer_InqService {
 	@Autowired
 	Buyer_InqDAOInterface buyer_inqDAO;
 	
-	//»óÇ°IDÀÇ ÀüÃ¼ ¹®ÀÇ ¸ñ·Ï Á¶È¸ 
+
+	//ìƒí’ˆ IDì˜ ì „ì²´ ë¬¸ì˜ ëª©ë¡ ì¡°íšŒ
 	public List<Buyer_InqDTO> selectByProdId(String prod_id){
 		return buyer_inqDAO.selectByProdId(prod_id);
 	};
+
 	
 	public Buyer_InqDTO selectByInqId(Integer buyer_inq_id) {
 		return buyer_inqDAO.selectByInqId(buyer_inq_id);
+	}
+	
+	public Buyer_InqDetailDTO selectByInqIdFORseller(Integer buyer_inq_id){
+		System.out.println("selectByInqIdFORseller Service Â¼Ã¶Ã‡Ã ");
+		return buyer_inqDAO.selectByInqIdFORseller(buyer_inq_id);
 	}
 	
 	public List<Buyer_InqDTO> selectByMemberId(String member_id) {
@@ -29,10 +37,16 @@ public class Buyer_InqService {
 		return buyer_inqDAO.selectAll();
 	}
 	
-	//insert Å¸ÀÔ ¼öÁ¤
+
+	//insert íƒ€ì… ìˆ˜ì •
 	public int buyer_inqInsert(Map<String,String> buyer_inq_map) {
 		return buyer_inqDAO.buyer_inqInsert(buyer_inq_map);
+
+	public List<Buyer_InqDTO> selectInqList(String member_id){
+		return buyer_inqDAO.selectInqList(member_id);
 	}
+	
+
 	
 	public int buyer_inqUpdate(Buyer_InqDTO buyer_inq) {
 		return buyer_inqDAO.buyer_inqUpdate(buyer_inq);
