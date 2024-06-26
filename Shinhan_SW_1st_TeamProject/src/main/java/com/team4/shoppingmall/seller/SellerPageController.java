@@ -5,6 +5,7 @@ import java.net.URLDecoder;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -27,7 +28,10 @@ import com.team4.shoppingmall.buyer_inq.Buyer_InqDAOInterface;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqDTO;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqService;
 import com.team4.shoppingmall.member.MemberService;
+import com.team4.shoppingmall.prod.ProdService;
+import com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO;
 import com.team4.shoppingmall.rent_prod_stock.RentProdStockService;
+import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockDTO;
 import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockService;
 
 @Controller
@@ -44,6 +48,9 @@ public class SellerPageController {
 	MemberService memberService;
 	
 	@Autowired
+	ProdService prodService;
+	
+	@Autowired
 	Seller_Prod_StockService seller_Prod_StockService;
 	
 	@Autowired
@@ -53,15 +60,8 @@ public class SellerPageController {
 
 	// 메인 화면 보여주기
 	@GetMapping("/MainPage.do")
-	public String mainpage(Model model, HttpServletRequest request) {
+	public String mainpage(Model model) {
 
-		// 이 쪽은 솔직히 아직도 잘 모르겠다...
-		String result = "";
-		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
-		if (flashMap != null) {
-			result = (String) flashMap.get("deptResult");
-			System.out.println("result:" + result);
-		}
 
 		// 여기서 SQL문을 사용해 model로 데이터를 끌어옴
 		// 여기에는 판매자가 판매하는 상품들의 판매량 데이터를 끌어오고, 데이터를 그래프화하여 표현
@@ -116,7 +116,24 @@ public class SellerPageController {
 
 	// 상품 수정 페이지
 	@GetMapping("/ModifyProduct.do")
-	public String modifyProduct() {
+	public String modifyProduct(Model model1, Model model2, @RequestParam("stock_id") String stockID) throws UnsupportedEncodingException {
+		
+		String stock_id = URLDecoder.decode(stockID, "UTF-8");//한글로 변환
+		
+		Seller_Prod_StockDTO seller_Prod_StockDTO = seller_Prod_StockService.selectByStockId(stock_id);
+		if(Objects.isNull(seller_Prod_StockDTO)) {//대여상품 재고일 경우
+			RentProdStockDTO rentProdStockDTO = rentProdStockService.selectById(stock_id);//상품의 기본 정보를 끌어오기 위해 재고데이터에서 상품ID를 가져온다.
+			String ProdID = rentProdStockDTO.getProd_id();
+			
+			model1.addAttribute("StockInfo", rentProdStockDTO);
+			model2.addAttribute("ProductInfo", prodService.selectByProdId(ProdID));
+		}else {//판매상품 재고일 경우
+			String ProdID = seller_Prod_StockDTO.getProd_id();
+			
+			model1.addAttribute("StockInfo", seller_Prod_StockDTO);
+			model2.addAttribute("ProductInfo", prodService.selectByProdId(ProdID));
+		}
+		
 		return "/seller/seller_modifyPrd";
 	}
 

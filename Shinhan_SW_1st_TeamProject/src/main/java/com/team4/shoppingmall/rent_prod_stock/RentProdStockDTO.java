@@ -13,9 +13,9 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RentProdStockDTO {
-	String stock_id;
-	Integer r_p_stock;
-	Integer r_p_total;
+	String r_stock_id;
+	Integer stock;
+	Integer total;
 	String prod_id;
 	Integer opt_id1;
 	Integer opt_id2;

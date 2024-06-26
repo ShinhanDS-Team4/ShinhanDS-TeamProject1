@@ -13,8 +13,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Seller_Prod_StockListDTO {
-	String stock_id;
+	String s_stock_id;
 	Integer prod_price;
 	Date prod_added_date;
-	Integer s_p_stock;
+	Integer stock;
 }

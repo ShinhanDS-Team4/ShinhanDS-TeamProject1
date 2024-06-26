@@ -166,16 +166,16 @@ public class SellerPrdUploadController {
 		// 3.재고(Stock) 등록
 		// 여기서부터 productType 별로 StockDTO를 따로따로 생성해서 처리한다
 		if (productType == "판매") {// 판매용 재고에 들어가야 하는 경우(SELLER_PROD_STOCK)
-			// 등록하려는 재고와 일치하는 상품ID를 가진 재고들 중 재고ID 끝자리 숫자가 제일 큰 재고ID의 끝자리 수를 가져온다.
+			// 등록하려는 재고와 일치하는 상품ID를 가진 판매 재고들 중 재고ID 끝자리 숫자가 제일 큰 재고ID의 끝자리 수를 가져온다.
 			// ex)나이키 반팔_550-398-22934_1~5 >> 5
 			int maxSellStockNum = seller_Prod_StockService.findMaxStockNumber(prod_id);
 			maxSellStockNum++;// ex) 6으로 올림
 
 			String stockID = prod_id + "_" + maxSellStockNum;
 			Seller_Prod_StockDTO seller_Prod_StockDTO = new Seller_Prod_StockDTO();
-			seller_Prod_StockDTO.setStock_id(stockID);
-			seller_Prod_StockDTO.setS_p_stock(prdStock);
-			seller_Prod_StockDTO.setS_p_sell(0);
+			seller_Prod_StockDTO.setS_stock_id(stockID);
+			seller_Prod_StockDTO.setStock(prdStock);
+			seller_Prod_StockDTO.setTotal(0);
 			seller_Prod_StockDTO.setProd_id(prod_id);
 
 			// 옵션명 & 옵션값 처리
@@ -220,16 +220,16 @@ public class SellerPrdUploadController {
 			int sellStockRegResult = seller_Prod_StockService.seller_prod_stockInsert(seller_Prod_StockDTO);
 
 		} else {// 대여 재고에 들어가야 하는 경우(RENT_PROD_STOCK)
-			// 등록하려는 재고와 일치하는 상품ID를 가진 재고들 중 재고ID 끝자리 숫자가 제일 큰 재고ID의 끝자리 수를 가져온다.
+			// 등록하려는 재고와 일치하는 상품ID를 가진 대여 재고들 중 재고ID 끝자리 숫자가 제일 큰 재고ID의 끝자리 수를 가져온다.
 			// ex)나이키 반팔_550-398-22934_1~5 >> 5
 			int maxSellStockNum = rentProdStockService.findMaxStockNumber(prod_id);
 			maxSellStockNum++;// ex) 6으로 올림
 
 			String stockID = prod_id + "_" + maxSellStockNum;
 			RentProdStockDTO rentProdStockDTO = new RentProdStockDTO();
-			rentProdStockDTO.setStock_id(stockID);
-			rentProdStockDTO.setR_p_stock(prdStock);
-			rentProdStockDTO.setR_p_total(0);
+			rentProdStockDTO.setR_stock_id(stockID);
+			rentProdStockDTO.setStock(prdStock);
+			rentProdStockDTO.setTotal(0);
 			rentProdStockDTO.setProd_id(prod_id);
 
 			// 옵션명 & 옵션값 처리

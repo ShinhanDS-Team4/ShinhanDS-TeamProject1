@@ -57,11 +57,11 @@
 					<tbody>
 						<c:forEach var="sStock" items="${stockSList}">
 							<tr>
-								<td>${sStock.stockid}</td>
+								<td>${sStock.stock_id}</td>
 								<td>${sStock.pod_added_date}</td>
 								<td>${sStock.prod_price}</td>
 								<td>${sStock.s_p_stock}</td>
-								<td><button type="button" onclick="location.href='${path}/seller/ModifyProduct.do'">수정</button></td>
+								<td><button type="button" onclick="location.href='${path}/seller/ModifyProduct.do?stock_id=${sStock.stock_id}'">수정</button></td>
 							</tr>
 						</c:forEach>
 						<!-- 여기는 예시 -->
@@ -71,7 +71,7 @@
 							<td><input type="text" placeholder="상품명1" /></td>
 							<td><input type="number" placeholder="35000" /></td>
 							<td><input type="number" placeholder="35" /></td>
-							<td><button type="button" onclick="location.href='${path}/seller/ModifyProduct.do'">수정</button></td>
+							<td><button type="button" onclick="location.href='${path}/seller/ModifyProduct.do?stock_id=aaa'">수정</button></td>
 						</tr>
 						<tr>
 							<td><input type="checkbox" /></td>
@@ -128,11 +128,11 @@
 					<tbody>
 						<c:forEach var="rStock" items="${stockRList}">
 							<tr>
-								<td>${rStock.stockid}</td>
+								<td>${rStock.stock_id}</td>
 								<td>${rStock.prod_added_date}</td>
 								<td>${rStock.prod_price}</td>
 								<td>${rStock.r_p_stock}</td>
-								<td><button type="button" onclick="location.href='${path}/seller/ModifyProduct.do'">수정</button></td>
+								<td><button type="button" onclick="location.href='${path}/seller/ModifyProduct.do?stock_id=${rStock.stock_id}'">수정</button></td>
 							</tr>
 						</c:forEach>
 						

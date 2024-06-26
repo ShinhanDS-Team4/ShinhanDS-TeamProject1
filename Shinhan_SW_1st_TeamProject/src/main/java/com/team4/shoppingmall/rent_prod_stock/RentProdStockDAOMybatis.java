@@ -18,8 +18,8 @@ public class RentProdStockDAOMybatis implements RentProdStockDAOInterface {
 
 	// 대여상품상세
 	@Override
-	public RentProdStockDTO selectById(Integer stock_id) {
-		return sqlSession.selectOne(namespace + "selectById", stock_id);
+	public RentProdStockDTO selectById(String r_stock_id) {
+		return sqlSession.selectOne(namespace + "selectById", r_stock_id);
 	}
 	
 	@Override
@@ -47,14 +47,14 @@ public class RentProdStockDAOMybatis implements RentProdStockDAOInterface {
 
 	// 대여상품수정
 	@Override
-	public int rentProdUpdate(Integer stock_id) {
-		return sqlSession.update(namespace + "selectById", stock_id);
+	public int rentProdUpdate(String r_stock_id) {
+		return sqlSession.update(namespace + "selectById", r_stock_id);
 	}
 
 	// 대여상품삭제
 	@Override
-	public int rentProdDelete(Integer stock_id) {
-		return sqlSession.delete(namespace + "selectById", stock_id);
+	public int rentProdDelete(String r_stock_id) {
+		return sqlSession.delete(namespace + "selectById", r_stock_id);
 	}
 
 }

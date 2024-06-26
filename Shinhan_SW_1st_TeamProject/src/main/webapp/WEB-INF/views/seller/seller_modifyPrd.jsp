@@ -45,21 +45,22 @@
 			<h2>마이페이지</h2>
 			<hr />
 			<div class="user-info">
-				<p>김철수</p>
-				<p>573-50-00882</p>
+				<input type="text" name="member_name" id="member_name" placeholder="김철수">
+				<input type="text" name="member_id" id="member_id" placeholder="573-50-00882">
 			</div>
 
 			<div class="container">
 
 				<h1>상품 정보 수정</h1>
 
+				<!-- <div class="form-group">
+					<label>구분</label>
+					<label><input type="radio" name="category" value="판매" >판매</label>
+					<label><input type="radio" name="category" value="대여"> 대여</label>
+				</div> -->
 				<div class="form-group">
-					<label>구분</label> <label><input type="radio"
-						name="category" value="판매"> 판매</label> <label><input
-						type="radio" name="category" value="대여"> 대여</label>
-				</div>
-				<div class="form-group">
-					<label>상품명</label> <input type="text">
+					<label>상품명</label>
+					<input type="text" value="${ProductInfo. }">
 				</div>
 				<div class="form-group">
 					<label>가격</label> <input type="text">
