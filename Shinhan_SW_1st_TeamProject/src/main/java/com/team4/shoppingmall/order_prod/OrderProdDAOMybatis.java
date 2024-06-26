@@ -7,6 +7,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.team4.shoppingmall.prod_option.Prod_OptionDTO;
+
 @Repository
 public class OrderProdDAOMybatis implements OrderProdDAOInterface {
 
@@ -32,7 +34,7 @@ public class OrderProdDAOMybatis implements OrderProdDAOInterface {
 	public int orderprodInsert(OrderProdDTO orderprod) {
 		return sqlSession.insert(namespace+"orderprodInsert", orderprod);
 	}
-
+	
 	// 주문수정
 	@Override
 	public int orderprodUpdate(OrderProdDTO orderprod) {
@@ -41,8 +43,16 @@ public class OrderProdDAOMybatis implements OrderProdDAOInterface {
 	
 	// orderlist.jsp에 출력할 상품명, 브랜드, 옵션, 상품가격, 이미지URL
 	@Override
-	public List<Map<String, Object>> selectById2(Integer order_id) { 
-        return sqlSession.selectList(namespace + "selectById2", order_id);
-    }
+	public Map<String, Object> selectById2(int order_id) { 
+        return sqlSession.selectOne(namespace + "selectById2", order_id);
+    } 
+	
+	// orderlist.jsp에서, 상세상품 옵션 출력시, 모든 옵션 가져오기
+	@Override
+	public List<Prod_OptionDTO> selectOptions() { 
+		List<Prod_OptionDTO> optlist = sqlSession.selectList(namespace + "selectOptions");
+		System.out.println(optlist);
+        return optlist;
+	} 
 
 }

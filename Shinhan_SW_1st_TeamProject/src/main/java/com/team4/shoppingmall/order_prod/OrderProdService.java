@@ -33,8 +33,13 @@ public class OrderProdService {
 	}
 	
 	// orderlist.jsp에 출력할 상품명, 브랜드, 옵션, 상품가격, 이미지URL
-	public List<Map<String, Object>> selectById2(Integer order_id) {
+	public Map<String, Object> selectById2(int order_id) {
         return orderprodDAO.selectById2(order_id);
     }
+
+	// orderlist.jsp에서, 상세상품 옵션 출력시, 모든 옵션 가져오기
+	public Object selectOptions() { 
+        return orderprodDAO.selectOptions();
+	}
 
 }

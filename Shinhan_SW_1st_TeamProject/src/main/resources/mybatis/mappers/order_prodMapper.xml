@@ -34,11 +34,17 @@
 		WHERE "order_id" = #{order_id}
 	</update>
 
+	<!-- orderlist.jsp에서, 상세상품 옵션 출력시, 모든 옵션 가져오기 -->
+    <select id="selectOptions" resultType="prod_optionVO">
+	    SELECT *
+	    FROM PROD_OPTION 
+    </select>
+ 
 	<!-- orderlist.jsp에 출력할 상품명, 브랜드, 옵션, 상품가격, 이미지URL -->
 	<select id="selectById2" parameterType="int" resultType="map"> 
 		SELECT
 			P.prod_name,
-			P.prod_desc AS brand,  
+		   	M.brand, 
 			S.opt_id1,
 			S.opt_id2,
 			S.opt_id3,
@@ -49,13 +55,19 @@
 		FROM
 			ORDER_DETAIL OD
 		JOIN
+			ORDER_PROD OP ON OD.order_id = OP.order_id
+		JOIN
 			SELLER_PROD_STOCK S ON OD.stock_id = S.stock_id
 		JOIN
 			PROD P ON S.prod_id = P.prod_id
 		JOIN
+			MEMBER M ON P.member_id = M.member_id
+		JOIN
 			PROD_IMAGE PI ON P.prod_id = PI.prod_id
-		WHERE
-			OD.order_id = #{aa}
+		where 
+			OD.ORDER_ID = #{aa}
 	</select>
+	
+
 
 </mapper>

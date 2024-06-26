@@ -19,4 +19,5 @@ public class RentDTO {
 	Integer stock_id;
 	String member_id;
 	String rent_state;
+	Integer total_rent_price;
 }
