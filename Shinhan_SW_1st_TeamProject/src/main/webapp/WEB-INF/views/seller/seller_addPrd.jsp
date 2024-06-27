@@ -14,6 +14,9 @@
 <!-- jquery 연결 -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!-- 사진의 순서 변경에 사용 -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
 <!-- 페이지용 css -->
 <link rel="stylesheet" href="${path}/resources/css/prdAdd.css" />
 
@@ -39,6 +42,9 @@
 		fileField.type = 'file';
 		fileField.name = 'file';
 		fileField.accept = '.jpg,.jpeg,.png';
+		fileField.onchange = function(event) {
+			setProdDescribeImg(event, fileItem);
+        };
 
 		//파일 항목 삭제 버튼 생성
 		const fileRemove = document.createElement('button');
@@ -68,6 +74,25 @@
 		return document.querySelectorAll('#prdImgFileContainer .file-item').length;
 	}
 
+	function setProdDescribeImg(event, fileItem) {
+		var file = event.target.files[0];
+		var reader = new FileReader();
+
+		reader.onload = function(event) {
+			var imgContainer = document.createElement("div");
+			imgContainer.classList.add("prdImgFile");
+
+			var img = document.createElement("img");
+			img.setAttribute("src", event.target.result);
+
+			imgContainer.appendChild(img);
+			
+			fileItem.appendChild(imgContainer);
+		};
+
+		reader.readAsDataURL(file);
+	}
+
 	//옵션 항목 추가
 	function addOption() {
 		if (optionCount >= 5) {
@@ -83,7 +108,7 @@
 		const optionName = document.createElement('input');
 		optionName.type = 'text';
 		optionName.id = 'option-name';
-		optionName.name='optName';
+		optionName.name = 'optName';
 		optionName.placeholder = '옵션명 ' + optionCount;
 
 		// 옵션값 입력 필드 생성
@@ -149,64 +174,86 @@
 			<h2>마이페이지</h2>
 			<hr />
 			<div class="user-info">
-				<p>김철수</p><!-- 판매자 회원의 이름 -->
-				<p>573-50-00882</p><!-- 판매자 회원의 ID(사업자등록번호) -->
+				<p>김철수</p>
+				<!-- 판매자 회원의 이름 -->
+				<p>573-50-00882</p>
+				<!-- 판매자 회원의 ID(사업자등록번호) -->
 			</div>
 
 			<div class="container">
 				<div class="header">
 					<h1>상품 등록</h1>
 				</div>
-				<form method="post" action="/shoppingmall/seller/uploadPrd" enctype="multipart/form-data" accept-charset="UTF-8">
+				<form method="post" action="/shoppingmall/seller/uploadPrd"
+					enctype="multipart/form-data" accept-charset="UTF-8">
 					<div class="form-group">
-						<label>구분</label>
-						<label><input type="radio" name="prdType" value="판매">판매</label>
-						<label><input type="radio" name="prdType" value="대여">대여</label>
+						<label>구분</label> <label><input type="radio"
+							name="prdType" value="판매">판매</label> <label><input
+							type="radio" name="prdType" value="대여">대여</label>
 					</div>
 					<div class="form-group">
-						<label>상품명</label>
-						<input type="text" name="prdName">
+						<label>상품명</label> <input type="text" name="prdName">
 					</div>
 					<div class="form-group">
-						<label>가격</label>
-						<input type="number" name="prdPrice">
+						<label>가격</label> <input type="number" name="prdPrice">
 					</div>
 					<div class="form-group">
-						<label>카테고리</label>
-						<select name="prdCategory">
+						<label>카테고리</label> <select name="prdCategory">
 							<option value="">선택</option>
 							<option value=1>카테고리 1</option>
 							<option value=2>카테고리 2</option>
 						</select>
 					</div>
 					<div class="form-group">
-						<label>메인사진</label>
-						<input type="file" name="file" accept=".jpg,.jpeg,.png">
+						<label>메인사진</label> <input type="file" name="file"
+							accept=".jpg,.jpeg,.png" onchange="setMainProdIMG(event);">
+						<div id="image_container"></div>
+
+						<script>
+							function setMainProdIMG(event) {
+								var reader = new FileReader();
+
+								reader.onload = function(event) {
+									// Create a container for the image and the delete button
+									var imgContainer = document
+											.createElement("div");
+									imgContainer.classList.add("image-preview");
+
+									// Create the image element
+									var img = document.createElement("img");
+									img
+											.setAttribute("src",
+													event.target.result);
+
+									// Create the delete button
+									var deleteButton = document
+											.createElement("button");
+									deleteButton.textContent = "삭제";
+									deleteButton.onclick = function() {
+										imgContainer.remove();
+									};
+
+									// Append the image and delete button to the container
+									imgContainer.appendChild(img);
+									imgContainer.appendChild(deleteButton);
+
+									// Append the container to the image_container div
+									document.querySelector(
+											"div#image_container").appendChild(
+											imgContainer);
+								};
+
+								reader.readAsDataURL(event.target.files[0]);
+							}
+						</script>
 					</div>
 
-					<!-- 오늘 할 일 : branch 테스트, 사진 파일 DB 업로드 사전작업(이미지를 BLOB 형식으로 변환해서 DB에 저장됨) -->
+					<!-- 상품 설명에 사용할 여러 페이지를  -->
 					<div class="form-group">
-						<label>사진 등록</label>
+						<label>상품 설명 사진 등록</label>
 						<button type="button" onclick="addFile()">사진 추가</button>
 					</div>
-					<div id="prdImgFileContainer">
-						<!-- <div class="file-item">
-							<input class="file-input" "type="file" name="file">
-							<button type="button">삭제</button>
-						</div>
-						<div class="file-item">
-							<input class="file-input" "type="file" name="file">
-							<button type="button">삭제</button>
-						</div>
-						<div class="file-item">
-							<input class="file-input" "type="file" name="file">
-							<button type="button">삭제</button>
-						</div>
-						<div class="file-item">
-							<input class="file-input" "type="file" name="file">
-							<button type="button">삭제</button>
-						</div> -->
-					</div>
+					<div id="prdImgFileContainer"></div>
 
 					<div class="form-group">
 						<label>상품설명</label>
@@ -219,13 +266,10 @@
 							<label>옵션</label>
 							<button type="button" onclick="addOption()">옵션 추가</button>
 						</div>
-						<div id="optionsContainer">
-						
-						</div>
+						<div id="optionsContainer"></div>
 					</div>
 					<div class="form-group">
-						<label>재고량</label>
-						<input type="text" name="prdStock">
+						<label>재고량</label> <input type="text" name="prdStock">
 					</div>
 					<div class="buttons">
 						<button type="submit">등록하기</button>
@@ -233,7 +277,7 @@
 				</form>
 			</div>
 		</section>
-		
+
 		<!-- 여기부터는 오른쪽에 있는 알림버튼창 관련 -->
 		<aside class="notifications">
 			<div class="notify_icon">

@@ -49,5 +49,10 @@ public class Prod_ImageDAOMybatis implements Prod_ImageDAOInterface {
 		return sqlSession.delete(namespace+"prod_imageDelete", img_id);
 	}
 
+	@Override
+	public List<String> findAllImgFileNameByProdID(String prod_id) {
+		return sqlSession.selectList(namespace+"findAllImgFileNameByProdID", prod_id);
+	}
+
 	
 }

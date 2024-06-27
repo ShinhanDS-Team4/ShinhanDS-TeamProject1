@@ -66,6 +66,87 @@
     function getFileItemCount() {
         return document.querySelectorAll('#prdImgFileContainer .file-item').length;
     }
+  //옵션 항목 추가
+	function addOption() {
+		if (optionCount >= 5) {
+			alert("옵션은 최대 5개까지 추가할 수 있습니다.");
+			return;
+		}
+
+		// 새로운 옵션 항목 생성
+		const optionItem = document.createElement('div');
+		optionItem.className = 'option-item';
+
+		// 옵션명 입력 필드 생성
+		const optionName = document.createElement('input');
+		optionName.type = 'text';
+		optionName.id = 'option-name';
+		optionName.name = 'optName';
+		optionName.placeholder = '옵션명 ' + optionCount;
+
+		// 옵션값 입력 필드 생성
+		const optionValue = document.createElement('input');
+		optionValue.type = 'text';
+		optionValue.name = 'optValue';
+		optionValue.placeholder = '옵션값 ' + optionCount;
+
+		// 삭제 버튼 생성
+		const removeButton = document.createElement('button');
+		removeButton.type = 'button';
+		removeButton.innerText = '삭제';
+		removeButton.onclick = function() {
+			removeOption(this);
+		};
+
+		// 옵션 항목에 추가
+		optionItem.appendChild(optionName);
+		optionItem.appendChild(optionValue);
+		optionItem.appendChild(removeButton);
+
+		// 옵션 컨테이너에 추가
+		document.getElementById('optionsContainer').appendChild(optionItem);
+
+		optionCount = getOptionItemCount();
+	}
+
+	function removeOption(button) {
+		// 부모 요소(option-item) 제거
+		button.parentNode.remove();
+
+		optionCount = getOptionItemCount();
+	}
+
+	function getOptionItemCount() {
+		return document.querySelectorAll('#optionsContainer .option-item').length;
+	}
+    
+    function resetProdImg(){
+    	
+    	$.ajax({
+    		type:"POST",
+    		url:"/shoppingmall/seller/resetProdImg",
+    		success:function(response){
+    			// 서버에서 반환한 문자열에 따라 처리
+                if (response === "resetImgSuccess") {
+                    console.log("이미지 초기화 성공");
+                    // 성공했을 때 추가적인 작업 수행
+                    // 예: 다른 UI 업데이트, 메시지 표시 등
+                    $("#prdImgFileContainer").empty();
+                } else if (response === "resetImgFail") {
+                    console.log("이미지 초기화 실패");
+                    // 실패했을 때의 처리
+                    // 예: 경고 메시지 표시 등
+                } else {
+                    console.log("알 수 없는 응답: " + response);
+                    // 다른 응답에 대한 처리
+                }
+    		},
+    		error: function(xhr, status, error) {
+                console.error(error);
+                // 실패 시 처리
+            }
+    	});
+    }
 	
 </script>
 
@@ -95,31 +176,8 @@
 			<div class="container">
 
 				<h1>상품 정보 수정</h1>
-
-				<!-- <div class="form-group">
-					<label>구분</label>
-					<label><input type="radio" name="category" value="판매" >판매</label>
-					<label><input type="radio" name="category" value="대여"> 대여</label>
-				</div> -->
-
 				<form method="post" action="/shoppingmall/seller/modifyPrdouct"
 					enctype="multipart/form-data" accept-charset="UTF-8">
-					<div class="form-group">
-						<label>재고ID</label>
-						<c:choose>
-							<c:when test="${StockInfo.s_stock_id != null}">
-								<input type="text" name="stockID"
-									value="${StockInfo.s_stock_id}">
-							</c:when>
-							<c:when test="${StockInfo.r_stock_id != null}">
-								<input type="text" name="stockID"
-									value="${StockInfo.r_stock_id}">
-							</c:when>
-							<c:otherwise>
-								<input type="text" name="stockID" value="">
-							</c:otherwise>
-						</c:choose>
-					</div>
 					<div class="form-group">
 						<label>상품명</label> <input type="text" name="prdName"
 							value="${ProductInfo.prod_name}">
@@ -135,71 +193,40 @@
 							<option value="category2">카테고리 2</option>
 						</select>
 					</div>
+
+					<!-- 사진 미리보기 구역 : DB 및 서버 저장소에 등록되어 있는 사진 파일들을 미리보기로 보여준다 -->
 					<div class="form-group">
+						<label>사진목록</label>
+						<button type="button" onclick="resetProdImg()">사진 항목 초기화</button>
+					</div>
+					<div id="prdImgFileContainer">
+						<c:forEach var="imgName" items="${ProdImgList}">
+							<img src="http://localhost:9090/saren/ProdImgFile/${imgName}"
+								width="200" height="200">
+						</c:forEach>
+					</div>
+
+					<!-- 사진 추가 구역 : 사진 재등록을 선택하면 활성화 & 화면에 표시됨 -->
+					<div class="form-group">
+						<button type="button" class="removeExistImg"
+							onclick="removeAllFile()"></button>
 						<label>메인사진</label>
-						<c:choose>
-							<c:when
-								test="${not empty ProdImgList and ProdImgList.size() > 0}">
-								<input type="file" name="file" accept=".jpg,.jpeg,.png"
-									value="${ProdImgList[0].img_id}">
-							</c:when>
-							<c:otherwise>
-								<input type="file" name="file" accept=".jpg,.jpeg,.png">
-							</c:otherwise>
-						</c:choose>
+
 					</div>
 					<div class="form-group">
-						<label>사진 등록</label>
+						<label>상품 정보 사진 등록</label>
 						<button type="button" onclick="addFile()">사진 추가</button>
 					</div>
 					<c:forEach var="image" items="${ProdImgList}" varStatus="status">
 						<c:if test="${status.index > 0}">
 							<div class="file-item">
 								<input type="file" class="file-input" name="file"
-									accept=".jpg,.jpeg,.png" value="${image.img_id}">
+									accept=".jpg,.jpeg,.png" value="${image}">
 								<button type="button" class="file-remove"
 									onclick="removeFile(this)">삭제</button>
 							</div>
 						</c:if>
 					</c:forEach>
-					<!-- <div class="form-group file-list">
-						<table>
-							<thead>
-								<tr>
-									<th>순서</th>
-									<th>파일명</th>
-									<th>삭제</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>001</td>
-									<td>파일명_102939_asdjk.jpg</td>
-									<td><button type="button">삭제</button></td>
-								</tr>
-								<tr>
-									<td>002</td>
-									<td>파일명_102939_asdjk.jpg</td>
-									<td><button type="button">삭제</button></td>
-								</tr>
-								<tr>
-									<td>003</td>
-									<td>파일명_102939_asdjk.jpg</td>
-									<td><button type="button">삭제</button></td>
-								</tr>
-								<tr>
-									<td>004</td>
-									<td>파일명_102939_asdjk.jpg</td>
-									<td><button type="button">삭제</button></td>
-								</tr>
-								<tr>
-									<td>005</td>
-									<td>파일명_102939_asdjk.jpg</td>
-									<td><button type="button">삭제</button></td>
-								</tr>
-							</tbody>
-						</table>
-					</div> -->
 					<div class="form-group">
 						<label>상품설명</label>
 					</div>

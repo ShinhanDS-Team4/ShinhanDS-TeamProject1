@@ -41,6 +41,7 @@ public class Buyer_InqService {
 	//insert 타입 수정
 	public int buyer_inqInsert(Map<String,String> buyer_inq_map) {
 		return buyer_inqDAO.buyer_inqInsert(buyer_inq_map);
+	}
 
 	public List<Buyer_InqDTO> selectInqList(String member_id){
 		return buyer_inqDAO.selectInqList(member_id);

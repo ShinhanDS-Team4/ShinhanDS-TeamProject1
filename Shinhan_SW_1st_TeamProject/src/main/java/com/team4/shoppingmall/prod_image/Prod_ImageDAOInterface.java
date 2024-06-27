@@ -18,5 +18,7 @@ public interface Prod_ImageDAOInterface {
 	
 	public int prod_imageDelete(String img_id);
 
+	public List<String> findAllImgFileNameByProdID(String prod_id);
+
 	
 }
