@@ -19,8 +19,8 @@ import com.team4.shoppingmall.prod_optionTest.Prod_OptionTestService;
 import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestDTO;
 import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestService;
 
-@Controller
-@RequestMapping("/customer")
+//@Controller
+//@RequestMapping("/customer")
 public class CustomerControllerJH {
 	
 	@Autowired

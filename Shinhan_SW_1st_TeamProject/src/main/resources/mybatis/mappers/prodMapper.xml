@@ -38,7 +38,7 @@
 		FROM PROD 
 		WHERE prod_id = #{prod_id}
 	</select>
-	
+
 	<select id="selectByMemberId" parameterType="string"
 		resultType="prodVO">
 		SELECT * 
@@ -49,6 +49,23 @@
 	<select id="selectAll" resultType="prodVO">
 		SELECT *
 		FROM PROD
+	</select>
+
+	<select id="selectByCategory" parameterType="int" resultType="map">
+		SELECT
+			M.brand,
+			P.prod_name,
+			P.prod_price,
+			PI.img_url
+		FROM
+			PROD P
+		JOIN
+			MEMBER M ON P.member_id = M.member_id
+		LEFT JOIN
+			PROD_IMAGE PI ON P.prod_id = PI.prod_id
+		WHERE
+			P.category_id = #{aa}
+
 	</select>
 
 	<insert id="prodInsert" parameterType="prodVO">
@@ -71,7 +88,19 @@
 	<delete id="prodDelete" parameterType="int">
 		DELETE
 		FROM PROD
-		WHERE "prod_id" = #{prod_id}
+		WHERE
+		"prod_id" = #{prod_id}
 	</delete>
-	
+
+	<select id="selectAll2" resultType="map">
+		SELECT
+		M.brand,
+		P.prod_name,
+		P.prod_price
+		FROM
+		MEMBER M
+		JOIN
+		PROD P ON M.member_id = P.member_id
+	</select>
+
 </mapper>
