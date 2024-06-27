@@ -50,4 +50,10 @@ public class ProdDAOMybatis implements ProdDAOInterface {
 	public List<Map<String, Object>> selectAll2() {
 		return sqlSession.selectList(namespace+"selectAll2"); 
 	}
+
+	@Override
+	public List<Map<String, Object>> selectByCategory(int categoryId) {
+		return sqlSession.selectList(namespace+"selectByCategory", categoryId); 
+
+	}
 }

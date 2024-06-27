@@ -16,8 +16,8 @@ import com.team4.shoppingmall.addr_list.AddrService;
 import com.team4.shoppingmall.addr_list.Addr_ListDTO;
 import com.team4.shoppingmall.member.MemberService;
 
-@Controller
-@RequestMapping("/customer")
+//@Controller
+//@RequestMapping("/customer")
 public class CustomerControllerJH {
 	
 	@Autowired

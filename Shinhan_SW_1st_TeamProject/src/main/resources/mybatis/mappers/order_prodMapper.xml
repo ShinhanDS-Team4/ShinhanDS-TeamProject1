@@ -68,6 +68,26 @@
 			OD.ORDER_ID = #{aa}
 	</select>
 	
+	<!-- 취소 -->
+	<update id="orderCancel" parameterType="int">
+		UPDATE 
+			ORDER_PROD 
+		SET 
+			order_state = 'cancelled' 
+		WHERE 
+			order_id = #{aa} 
+	</update>
+	
+	<!-- 환불 -->
+	<update id="orderRefund" parameterType="int">
+		UPDATE 
+			ORDER_PROD 
+		SET 
+			order_state = 'refunded' 
+		WHERE 
+			order_id = #{aa} 
+	</update>
+	
 
 
 </mapper>

@@ -50,9 +50,20 @@ public class OrderProdDAOMybatis implements OrderProdDAOInterface {
 	// orderlist.jsp에서, 상세상품 옵션 출력시, 모든 옵션 가져오기
 	@Override
 	public List<Prod_OptionDTO> selectOptions() { 
-		List<Prod_OptionDTO> optlist = sqlSession.selectList(namespace + "selectOptions");
-		System.out.println(optlist);
+		List<Prod_OptionDTO> optlist = sqlSession.selectList(namespace + "selectOptions"); 
         return optlist;
+	}
+
+	@Override
+	public int orderCancel(int orderId) {
+        return sqlSession.update(namespace + "orderCancel", orderId);
+
+	}
+
+	@Override
+	public int orderRefund(int orderId) {
+        return sqlSession.update(namespace + "orderRefund", orderId);
+
 	} 
 
 }

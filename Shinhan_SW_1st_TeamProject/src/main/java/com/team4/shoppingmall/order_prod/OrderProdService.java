@@ -42,4 +42,14 @@ public class OrderProdService {
         return orderprodDAO.selectOptions();
 	}
 
+	// orderlist.jsp에서, 주문취소
+	public int orderCancel(int orderId) {
+		return orderprodDAO.orderCancel(orderId);
+	}
+
+	// orderlist.jsp에서, 환불
+	public int orderRefund(int orderId) {
+		return orderprodDAO.orderRefund(orderId);
+	}
+
 }

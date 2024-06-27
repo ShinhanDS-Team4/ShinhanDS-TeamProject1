@@ -2,273 +2,18 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<c:set var="path" value="${pageContext.servletContext.contextPath}" />
 <!DOCTYPE html>
 <html>
 
 <head>
 <link rel="stylesheet" type="text/css"
-	href="../resources/css/header_footer.css">
+	href="${path}/resources/css/header_footer.css">
+<link rel="stylesheet" type="text/css" href="${path}/resources/css/orderlist.css">
 <meta charset="UTF-8">
 <title>주문내역</title>
-<style>
-.inner {
-	max-width: 1300px;
-	margin: 0 auto;
-}
-
-body {
-	font-family: Arial, sans-serif;
-	margin: 0;
-	padding: 0;
-	background-color: #ffffff;
-	display: flex;
-	flex-direction: column;
-	min-height: 100vh;
-}
-
-.sidebar h2 {
-	margin-top: 0;
-}
-
-.sidebar ul {
-	list-style-type: none;
-	padding: 0;
-}
-
-.sidebar ul li {
-	margin-bottom: 10px;
-}
-
-.sidebar ul li a {
-	text-decoration: none;
-	color: #333;
-	background-color: #fff;
-	padding: 5px 10px;
-	border-radius: 3px;
-	display: block;
-}
-
-.sidebar ul li a:hover {
-	background-color: #ddd;
-}
-
-.main-content {
-	flex: 1;
-	padding: 20px;
-	background-color: white;
-}
-
-.main-content h2 {
-	margin-top: 0;
-}
-
-section {
-	margin-bottom: 20px;
-	padding: 10px;
-	background-color: #fff;
-	border-radius: 5px;
-	width: 1190px;
-	margin: 0 auto;
-}
-
-section h3 {
-	margin-top: 0;
-}
-
-footer {
-	background-color: #333;
-	color: #fff;
-	text-align: center;
-	padding: 10px 0;
-}
-
-.order-text {
-	display: flex;
-	justify-content: space-between;
-}
-
-.order {
-	margin-bottom: 20px;
-	padding: 10px;
-	background-color: #fff;
-	border-radius: 5px;
-	width: 1190px;
-	margin: 0 auto;
-}
-
-.order-group {
-	display: flex;
-	flex-direction: column;
-}
-
-.order-details {
-	display: flex;
-	align-items: center;
-	margin-top: 20px;
-	margin-bottom: 20px;
-}
-
-.order-date {
-	margin-top: 10px;
-}
-
-.product-info {
-	display: flex;
-	flex-direction: column;
-	margin-left: 20px;
-}
-
-.product-info img {
-	max-width: 100px;
-	max-height: 100px;
-}
-
-.product-info p {
-	margin: 5px 0;
-}
-
-.order-text {
-	display: flex;
-	justify-content: space-between;
-	width: calc(100% - 40px);
-}
-
-.order-status {
-	margin-top: 10px;
-	font-weight: bold;
-}
-
-.refund-button, .cancel-button {
-	background-color: #555;
-	color: #fff;
-	border: none;
-	border-radius: 3px;
-	padding: 5px 10px;
-	cursor: pointer;
-}
-
-.refund-button:hover, .cancel-button:hover {
-	background-color: #666;
-}
-
-.divider {
-	margin: 20px auto;
-	width: 80%;
-}
-
-.total-section {
-	text-align: center;
-	margin: auto;
-	max-width: 200px;
-}
-
-.total-amount, .accumulated-points {
-	margin: 10px 0;
-}
-
-.total-amount span, .accumulated-points span {
-	float: right;
-}
-
-.divider-between-orders, .divider-between-sections {
-	width: 1190px;
-	height: 0px;
-	border: 3px solid #DFDFDF;
-	margin: 20px auto;
-}
-
-.divider-between-sections {
-	border: 1px solid #F0F0F0;
-}
-
-.divider-between-title-and-order {
-	border-top: 3px solid #000000;
-	margin-top: 20px;
-	margin-bottom: 20px;
-}
-
-/* Refund Popup Styles */
-.popup {
-	display: none;
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0, 0, 0, 0.5);
-	z-index: 1000;
-	justify-content: center;
-	align-items: center;
-}
-
-.popup-content {
-	background-color: white;
-	padding: 20px;
-	text-align: center;
-	max-width: 300px;
-	width: 100%;
-}
-
-.popup-header {
-	margin-bottom: 20px;
-}
-
-.popup-icon {
-	font-size: 30px;
-	font-weight: bold;
-	color: black;
-}
-
-.popup-body {
-	margin-bottom: 20px;
-}
-
-.popup-footer {
-	display: flex;
-	justify-content: space-around;
-}
-
-.popup-button {
-	padding: 10px 20px;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-}
-
-#yes-button, #yes-cancel-button {
-	background-color: #6200EA;
-	color: white;
-}
-
-#no-button, #no-cancel-button {
-	background-color: #FFFFFF;
-	color: black;
-	border: 1px solid #000000;
-}
-
-/* Refund Complete Popup Styles */
-#refund-complete-popup, #cancel-complete-popup {
-	display: none;
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0, 0, 0, 0.5);
-	z-index: 1000;
-	justify-content: center;
-	align-items: center;
-}
-
-.popup-content {
-	background-color: white;
-	padding: 20px;
-	text-align: center;
-	max-width: 300px;
-	width: 100%;
-}
-</style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js">
+</script>
 <script>
 	$(document).ready(function() {
 		// Function to show the refund popup
@@ -315,25 +60,31 @@ footer {
 
 		// Add event listeners to refund buttons
 		$('.refund-button').on('click', function() {
-			var orderId = $(this).data('order-id');
-			showRefundPopup(orderId);
+		    var orderId = $(this).data('order-id');
+		    showRefundPopup(orderId);
 		});
 
 		// Submit the refund form via AJAX
-		$('#yes-button').on('click', function() {
+		$('#yes-refund-button').on('click', function() {
 			var orderId = $('#refund-order-id').val();
 			$.ajax({
 				type: 'POST',
 				url: 'refund.do',
 				data: { orderId: orderId },
 				success: function(response) {
+					alert(response);
 					if (response === 'success') {
-						hideRefundPopup();
-						showRefundCompletePopup();
+						hideCancelPopup();
+						showCancelCompletePopup();
 					}
+				},
+				error:function(error){
+					alert("Error: " + error);
 				}
 			});
 		});
+
+
 
 		$('#no-button').on('click', hideRefundPopup);
 
@@ -353,10 +104,14 @@ footer {
 				url: 'cancel.do',
 				data: { orderId: orderId },
 				success: function(response) {
+					alert(response);
 					if (response === 'success') {
 						hideCancelPopup();
 						showCancelCompletePopup();
 					}
+				},
+				error:function(error){
+					alert("Error: " + error);
 				}
 			});
 		});
@@ -385,10 +140,10 @@ footer {
 							<p class="order-date">
 								주문일: ${order.order_date}
 								<c:choose>
-									<c:when test="${order.order_state == 'pay_pending' || order.order_state == 'pay_completed' || order.order_state == 'deliever_prep'}">
+									<c:when test="${order.order_state == 'pay_pending' || order.order_state == 'pay_completed' || order.order_state == 'deliver_prep'}">
 										<button class="cancel-button" data-order-id="${order.order_id}">취소신청</button>
 									</c:when>
-									<c:when test="${order.order_state == 'delievering' || order.order_state == 'delievered' }">
+									<c:when test="${order.order_state == 'delivering' || order.order_state == 'delivered' }">
 										<button class="refund-button" data-order-id="${order.order_id}">환불신청</button>
 									</c:when>
 								</c:choose>
@@ -396,9 +151,10 @@ footer {
 							<span class="order-status"> <c:choose>
 									<c:when test="${order.order_state == 'pay_pending'}">결제 대기</c:when>
 									<c:when test="${order.order_state == 'pay_completed'}">결제 완료</c:when>
-									<c:when test="${order.order_state == 'deliever_prep'}">배송 준비중</c:when>
-									<c:when test="${order.order_state == 'delievering'}">배송중</c:when>
-									<c:when test="${order.order_state == 'delievered'}">배송 완료</c:when>
+									<c:when test="${order.order_state == 'cancelled'}">취소 완료</c:when>
+									<c:when test="${order.order_state == 'deliver_prep'}">배송 준비중</c:when>
+									<c:when test="${order.order_state == 'delivering'}">배송중</c:when>
+									<c:when test="${order.order_state == 'delivered'}">배송 완료</c:when>
 									<c:when test="${order.order_state == 'ref_requested'}">환불 신청</c:when>
 									<c:when test="${order.order_state == 'refunded'}">환불 완료</c:when> 
 									<c:otherwise>알 수 없음</c:otherwise>

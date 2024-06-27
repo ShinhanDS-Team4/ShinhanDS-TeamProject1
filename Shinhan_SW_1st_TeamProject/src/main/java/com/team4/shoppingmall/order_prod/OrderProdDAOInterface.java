@@ -24,5 +24,9 @@ public interface OrderProdDAOInterface {
 
 	// orderlist.jsp에서, 상세상품 옵션 출력시, 모든 옵션 가져오기
 	public List<Prod_OptionDTO> selectOptions();
+
+	public int orderCancel(int orderId);
+
+	public int orderRefund(int orderId);
 	
 }
