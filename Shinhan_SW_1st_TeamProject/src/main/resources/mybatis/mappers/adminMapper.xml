@@ -9,30 +9,27 @@
 	</select>
 	
 	<select id="findById"
-		parameterType="com.team4.shoppingmall.admin.AdminDTO"
-		resultType="adminVO">
+		parameterType="map"
+		resultType="string">
 		SELECT admin_id FROM admin_info
-		where 1=1
-		<if test="admin_email != 0 and admin_email != null">
-			and admin_email = #{admin_email}
-		</if>
-		<if test="admin_name != 'all' and admin_name != null">
-			and admin_name = #{admin_name}
-		</if>
+		where 
+		admin_email = #{admin_email}
+		and admin_name = #{admin_name}
 	</select>
 
-	<select id="findByPw" resultType="adminVO">
+	<select id="findByPw" parameterType="map"
+		resultType="string">
 		SELECT admin_pw
 		FROM admin_info
-		where 1=1
-		<if test="admin_id != 0 and admin_id != null">
-			and admin_id = #{admin_id}
-		</if>
-		<if test="admin_name != 'all' and admin_name != null">
-			and admin_name = #{admin_name}
-		</if>
-		<if test="admin_phone != 'all' and admin_phone != null">
-			and admin_phone = #{admin_phone}
-		</if>
+		where
+		admin_id = #{admin_id}
+		and admin_name = #{admin_name}
+		and admin_phone = #{admin_phone}
 	</select>
+	
+	<update id="updateByPw" parameterType="map">
+		update admin_info 
+		set admin_pw = #{new_admin_pw} 
+		where admin_id = #{admin_id}
+	</update>
 </mapper>

@@ -37,8 +37,14 @@ public class AdminDAOMybatis {
 		selectByPwMap.put("admin_id", admin_id);
 		selectByPwMap.put("admin_name", admin_name);
 		selectByPwMap.put("admin_phone", admin_phone);
-		String admin_pw = sqlSession.selectOne(namespace + "selectByPw", selectByPwMap);
-		logger.info(admin_pw);
-		return admin_pw;
+		return sqlSession.selectOne(namespace + "findByPw", selectByPwMap);
 	}
+
+    public boolean updateByPw(String admin_id, String new_admin_pw) {
+        Map<String, Object> updatePwMap = new HashMap<>();
+        updatePwMap.put("admin_id", admin_id);
+        updatePwMap.put("new_admin_pw", new_admin_pw);
+        int is_updatePw = sqlSession.update(namespace + "updateByPw", updatePwMap);
+        return is_updatePw > 0;
+    }
 }
