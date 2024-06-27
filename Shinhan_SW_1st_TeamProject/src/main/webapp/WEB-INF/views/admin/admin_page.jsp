@@ -1,17 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="path" value="${pageContext.servletContext.contextPath}" />
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>관리자 페이지</title>
-<link
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-	rel="stylesheet">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<c:set var="path" value="${pageContext.servletContext.contextPath}" />
 <link href="${path }/resources/css/admin/admin_page.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="${path}/resources/css/admin/admin_page.js"></script>
 </head>
 <body>
 <jsp:include page="common.jsp" />
@@ -23,7 +23,8 @@
 						<div class="card-body">
 							<h5 class="card-title">총 가입 판매자 수</h5>
 							<h6 class="card-subtitle mb-2 text-muted">${seller_total}명</h6>
-							<p class="card-text">8% increase</p>
+							<p class="card-text">${seller_monthly_increaseRate} increase </p>
+							<p class="card-text">${seller_monthly_increase_rate}% increase</p>
 						</div>
 					</div>
 				</div>
@@ -32,7 +33,8 @@
 						<div class="card-body">
 							<h5 class="card-title">총 가입 고객 수</h5>
 							<h6 class="card-subtitle mb-2 text-muted">${customer_total}명</h6>
-							<p class="card-text">8% increase</p>
+							<p class="card-text">${customer_monthly_increaseRate} increase </p>
+							<p class="card-text">${customer_monthly_increase_rate}% increase</p>
 						</div>
 					</div>
 				</div>
@@ -40,8 +42,8 @@
 					<div class="card">
 						<div class="card-body">
 							<h5 class="card-title">총 수익금액</h5>
-							<h6 class="card-subtitle mb-2 text-muted">${money_total}원</h6>
-							<p class="card-text">12% decrease</p>
+							<h6 class="card-subtitle mb-2 text-muted">${total_money_amount}원</h6>
+							<p class="card-text">${total_money_amount_increase_rate}% increase</p>
 						</div>
 					</div>
 				</div>
@@ -88,14 +90,14 @@
 						<c:forEach var="seller" items="${sellers}" varStatus="status">
 							<c:if test="${status.count <= 5}">
 								<tr>
-									<td><a href="admin_seller_detail?id=${seller.member_id}">${seller.member_id}</a></td>
+									<td><a href="admin_seller_prod?member_id=${seller.member_id}">${seller.member_id}</a></td>
 									<td>${seller.member_name}</td>									
 									<td>${seller.member_brand}</td>
 									<%-- <td>${seller_status}</td> --%>
 									<td>${seller.member_seller_create_date}</td>
 									<td>
 										<button class="btn btn-sm"
-											onclick="location.href='admin_seller_update.jsp?id=${seller.member_id}'">수정</button>
+											onclick="location.href='admin_seller_info?member_id=${seller.member_id}'">수정</button>
 										<button class="btn btn-sm"
 											onclick="location.href='admin_seller_delete.jsp?id=${seller.member_id}'">삭제</button>
 									</td>
@@ -152,9 +154,7 @@
 			</div>
 
 		</div>
-	</div>
-
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-	<script src="${path}/resources/css/admin/admin_page.js"></script>
+	</div>	
+	
 </body>
 </html>

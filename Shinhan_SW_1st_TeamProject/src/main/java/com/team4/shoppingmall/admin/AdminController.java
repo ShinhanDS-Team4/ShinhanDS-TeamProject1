@@ -1,6 +1,8 @@
 package com.team4.shoppingmall.admin;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.team4.shoppingmall.customer.CustomerService;
 import com.team4.shoppingmall.member.MemberDTO;
 import com.team4.shoppingmall.member.MemberService;
 
@@ -27,7 +30,10 @@ public class AdminController {
 	AdminService aService;
 	@Autowired
 	MemberService mService;
+	@Autowired
+	CustomerService cService;
 
+	
 	Logger logger = LoggerFactory.getLogger(AdminController.class);
 
 	@PostMapping("admin_mypage_edit")
@@ -49,9 +55,35 @@ public class AdminController {
 	@GetMapping("admin_page")
 	public String adminpage(Model model, HttpSession session) {
 		AdminDTO aDto = (AdminDTO) session.getAttribute("aDto");
-		List<MemberDTO> mDto = mService.selectBySeller();
+		List<MemberDTO> sellerDto = mService.selectBySeller();
+		List<MemberDTO> customerDto = mService.selectByCustomer();
+		
 		model.addAttribute("admin_name", aDto.getAdmin_name());
-		model.addAttribute("sellers", mDto);
+		model.addAttribute("sellers", sellerDto);
+		model.addAttribute("customers", customerDto);
+		
+		int seller_total = sellerDto.size();
+		model.addAttribute("seller_total", seller_total);
+		
+		int customer_total = customerDto.size();
+		model.addAttribute("customer_total", customer_total);
+		
+		Long totalMoneyAmount = cService.TotalMoneyAmount();
+		System.out.println(totalMoneyAmount);		
+		model.addAttribute("total_money_amount", totalMoneyAmount);
+		
+		int seller_monthly_increaseRate = mService.seller_Monthly_IncreaseRate();
+		model.addAttribute("seller_monthly_increaseRate", seller_monthly_increaseRate);
+		int customer_monthly_increaseRate = mService.customer_Monthly_IncreaseRate();
+		model.addAttribute("customer_monthly_increaseRate", customer_monthly_increaseRate);
+		
+		Double seller_monthly_increase_rate = mService.sellerMonthlyIncreaseRate();
+        model.addAttribute("seller_monthly_increase_rate", seller_monthly_increase_rate);		             
+
+        Double customer_monthly_increase_rate = mService.customerMonthlyIncreaseRate();
+        model.addAttribute("customer_monthly_increase_rate", customer_monthly_increase_rate);		             
+
+        
 		return "admin/admin_page";
 	}
 
@@ -79,13 +111,12 @@ public class AdminController {
 		model.addAttribute("member_info", mService.selectById(member_id));
 		return "admin/admin_seller_info";
 	}
-
+	
 	@GetMapping("search_results")
-	public @ResponseBody String search_results(String searchType, String keyword) {
-		System.out.println(searchType);
-		System.out.println(keyword);
-		return "ko";
-	}
+	public @ResponseBody List<MemberDTO> searchResults( String searchType,  String keyword) {
+		List<MemberDTO> members = mService.searchMembers(searchType, keyword);        
+        return members;
+    }
 
 	@GetMapping("admin_faq")
 	public String adminsellerfaq() {

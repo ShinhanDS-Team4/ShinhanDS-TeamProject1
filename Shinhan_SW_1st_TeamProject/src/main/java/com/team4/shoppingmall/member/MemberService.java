@@ -34,6 +34,10 @@ public class MemberService {
 	public List<MemberDTO> selectBySeller() {
 		return memberDAO.selectBySeller();
 	}
+	
+	public List<MemberDTO> selectByCustomer() {
+		return memberDAO.selectByCustomer();
+	}
 
 	public List<MemberDTO> selectBySeller_authority() {
 		return memberDAO.selectBySeller_authority();
@@ -42,4 +46,26 @@ public class MemberService {
 	public MemberDTO selectBySeller_info(String member_id) {
 		return memberDAO.selectBySeller_info(member_id);
 	}
+	
+	public List<MemberDTO> searchMembers(String searchType, String keyword) {
+        return memberDAO.searchMembers(searchType, keyword);
+    }
+	 
+	public int seller_Monthly_IncreaseRate() {
+		return memberDAO.seller_Monthly_IncreaseRate();
+	}
+	public int customer_Monthly_IncreaseRate() {
+		return memberDAO.customer_Monthly_IncreaseRate();
+	}
+	
+	public Double sellerMonthlyIncreaseRate() {
+        return memberDAO.sellerMonthlyIncreaseRate();
+    }
+	
+	public Double customerMonthlyIncreaseRate() {
+		return memberDAO.customerMonthlyIncreaseRate();		
+	}
+	
+
+	
 }

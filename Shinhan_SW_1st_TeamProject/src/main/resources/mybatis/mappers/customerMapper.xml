@@ -5,31 +5,45 @@
 <mapper namespace="com.saren.customer">
 
 	<!-- 고객상세 -->
-	<select id="selectById" parameterType="string" resultType="com.team4.shoppingmall.customer.CustomerDTO">
+	<select id="selectById" parameterType="string"
+		resultType="com.team4.shoppingmall.customer.CustomerDTO">
 		SELECT *
 		FROM CUSTOMER
 		WHERE "member_id" = #{member_id}
 	</select>
 
 	<!-- 고객목록 -->
-	<select id="selectAll" resultType="com.team4.shoppingmall.customer.CustomerDTO">
+	<select id="selectAll"
+		resultType="com.team4.shoppingmall.customer.CustomerDTO">
 		SELECT *
 		FROM CUSTOMER
 	</select>
 
 	<!-- 고객등록 -->
-	<insert id="customerInsert" parameterType="com.team4.shoppingmall.customer.CustomerDTO">
+	<insert id="customerInsert"
+		parameterType="com.team4.shoppingmall.customer.CustomerDTO">
 		INSERT
-		INTO CUSTOMER("member_id", "point", "member_level", "account_amount")
-		VALUES(#{member_id}, #{point}, #{member_level})
+		INTO CUSTOMER("member_id", "point",
+		"member_level", "account_amount")
+		VALUES(#{member_id}, #{point},
+		#{member_level})
 	</insert>
 
 	<!-- 고객수정 -->
-	<update id="customerUpdate" parameterType="com.team4.shoppingmall.customer.CustomerDTO">
+	<update id="customerUpdate"
+		parameterType="com.team4.shoppingmall.customer.CustomerDTO">
 		UPDATE CUSTOMER
 		SET
-		"point" = #{point}, "member_level" = #{member_level}, "accum_amount" = #{accum_amount}
-		WHERE "member_id" = #{member_id}
+		"point" = #{point}, "member_level" =
+		#{member_level}, "accum_amount" = #{accum_amount}
+		WHERE "member_id" =
+		#{member_id}
 	</update>
-	
+
+	<select id="TotalMoneyAmount" resultType="long">
+		SELECT SUM(c.accum_amount) AS total_accum_amount
+		FROM CUSTOMER c
+		JOIN MEMBER m ON c.member_id = m.member_id
+		WHERE m.member_type = 1		
+	</select>
 </mapper>

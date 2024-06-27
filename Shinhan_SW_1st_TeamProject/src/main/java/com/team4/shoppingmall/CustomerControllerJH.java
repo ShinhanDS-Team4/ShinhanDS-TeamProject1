@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.team4.shoppingmall.addr_list.AddrService;
+import com.team4.shoppingmall.addr_list.Addr_ListService;
 import com.team4.shoppingmall.addr_list.Addr_ListDTO;
 import com.team4.shoppingmall.member.MemberService;
 
@@ -21,56 +21,56 @@ import com.team4.shoppingmall.member.MemberService;
 public class CustomerControllerJH {
 	
 	@Autowired
-	AddrService addrService;
+	Addr_ListService addrService;
 	
-	/*Çì´õ ¸Þ´º - »óÇ° ¸ñ·Ï Á¶È¸ */
+	/*ï¿½ï¿½ï¿½ ï¿½Þ´ï¿½ - ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ ï¿½ï¿½È¸ */
 	@GetMapping("/productlist")
 	public String productlist() {
 		
 		return "customer/productlist";
 	}
 	
-	/*¸¶ÀÌÆäÀÌÁö ¸ÞÀÎ*/
+	/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½*/
 	@GetMapping("/myPage.do")
 	public String myPage() {
-		//1.³ªÀÇ ÁÖ¹® ¸ñ·Ï ºÒ·¯¿À±â
+		//1.ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¹ï¿½ ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½
 		
-		//2.³ªÀÇ ´ë¿© ¸ñ·Ï ºÒ·¯¿À±â
+		//2.ï¿½ï¿½ï¿½ï¿½ ï¿½ë¿© ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½
 		
 		return "customer/myPage";
 	}
 
-	//³ªÀÇ ÁÖ¹® ¸®½ºÆ®
+	//ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¹ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
 	@GetMapping("/orderlist")
 	public String orderlist() {
 		
 		return "customer/orderlist";
 	}
 	
-	//³ªÀÇ ´ë¿© ¸®½ºÆ®
+	//ï¿½ï¿½ï¿½ï¿½ ï¿½ë¿© ï¿½ï¿½ï¿½ï¿½Æ®
 	@GetMapping("/rentlist")
 	public String rentlist() {
-		//´ë¿© ¸ñ·Ï Á¶È¸
+		//ï¿½ë¿© ï¿½ï¿½ï¿½ ï¿½ï¿½È¸
 		
 		return "customer/rentlist";
 	}
 
 	
-	/* È¸¿øÁ¤º¸¼öÁ¤ */
+	/* È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
 	//step1
 	@GetMapping("/myInfoUpdate.do")
 	public String myInfoUpdate(Model model) {
 		
-		//¹è¼ÛÁö ¸ñ·Ï Á¶È¸ Å×½ºÆ® Áß
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½È¸ ï¿½×½ï¿½Æ® ï¿½ï¿½
 		List<Addr_ListDTO> addrlist = addrService.selectAll();
 		model.addAttribute("addrlist", addrlist);
 		
-		System.out.println("--³ªÀÇ ¹è¼ÛÁö Á¶È¸" + addrlist);
+		System.out.println("--ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸" + addrlist);
 		
 		return "customer/myInfoUpdate";
 	}
 	
-	//step2 - ºñ¹Ð¹øÈ£ È®ÀÎ Ã¢
+	//step2 - ï¿½ï¿½Ð¹ï¿½È£ È®ï¿½ï¿½ Ã¢
 	@GetMapping("/myInfoUpdatePw.do")
 	public String myInfoUpdatePw() {
 		
@@ -78,42 +78,42 @@ public class CustomerControllerJH {
 	}
 	
 	
-	//ºñ¹Ð¹øÈ£ Ã¼Å© ÈÄ ´ÙÀ½ ½ºÅÜ(step3)
+	//ï¿½ï¿½Ð¹ï¿½È£ Ã¼Å© ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(step3)
 	@GetMapping("/myInfoUpdatePwCheck.do")
 	public String myInfoUpdatePwCheck(@RequestParam("password") String password) {
-		//·Î±×ÀÎ È¸¿ø ºñ¹Ð¹øÈ£ Ã¼Å©
+		//ï¿½Î±ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½Ð¹ï¿½È£ Ã¼Å©
 		if(password.equals("aaa")) {
 			return "customer/myInfoUpdate_step3";
 		}else {
-			System.out.println("¸¶ÀÌÆäÀÌÁö È¸¿ø ºñ¹Ð¹øÈ£ È®ÀÎ ½ÇÆÐ");
+			System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½Ð¹ï¿½È£ È®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 			return "redirect:customer/myInfoUpdate_step2";
 		}
 		
 	}
 	
-	//step3 - ¼öÁ¤ÇÒ È¸¿ø Á¤º¸ ÀÔ·ÂÃ¢	
+	//step3 - ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½Ã¢	
 	@PostMapping("/myInfoUpdateForm.do")
 	public String myInfoUpdateForm() {
-		System.out.println("¹è¼ÛÁö Á¶È¸");
+		System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸");
 		
 		return "customer/myPage";
 	}
 	
 	
-	/* È¸¿ø Å»Åð */
+	/* È¸ï¿½ï¿½ Å»ï¿½ï¿½ */
 	@GetMapping("/memberDelete.do")
 	public String memberDelete() {
 		
 		return "customer/memberDelete";
 	}
-	//ºñ¹Ð¹øÈ£ Ã¼Å© ÈÄ È¸¿ø Å»Åð
+	//ï¿½ï¿½Ð¹ï¿½È£ Ã¼Å© ï¿½ï¿½ È¸ï¿½ï¿½ Å»ï¿½ï¿½
 	@GetMapping("/memberDeletePwCheck.do")
 	public String memberDeletePwCheck(@RequestParam("password") String password) {
-		//·Î±×ÀÎ È¸¿ø ºñ¹Ð¹øÈ£ Ã¼Å©
+		//ï¿½Î±ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½Ð¹ï¿½È£ Ã¼Å©
 		if(password.equals("aaa")) {
 			return "customer/myPage";
 		}else {
-			System.out.println("È¸¿ù Å»Åð ½ÇÆÐ");
+			System.out.println("È¸ï¿½ï¿½ Å»ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 			return "redirect:customer/memberDelete";
 		}
 		

@@ -44,7 +44,7 @@
 	                            <td>${seller.member_gender}</td>
 	                            <td>${seller.member_seller_authority}</td>                          
 	                            <td>
-	                            	<button class="btn btn-sm btn-primary" onclick="window.location.href='admin_seller_detail.jsp?sellerid=${seller.member_id}'">수정</button>
+	                            	<button class="btn btn-sm btn-primary" onclick="window.location.href='admin_seller_info?member_id=${seller.member_id}'">수정</button>
 	                                <button class="btn btn-sm btn-danger">삭제</button>
 	                            </td>
 	                        </tr>
