@@ -4,9 +4,13 @@ import java.util.List;
 
 public interface Seller_Prod_StockDAOInterface {
 	
-	public Seller_Prod_StockDTO selectByStockId(Integer stock_id);
+	public Seller_Prod_StockDTO selectByStockId(String s_stock_id);
 
-	public List<Seller_Prod_StockDTO> selectByProdId(Integer prod_id);
+	public List<Seller_Prod_StockDTO> selectByProdId(String prod_id);
+	
+	public Integer findMaxStockNumber(String prod_id);
+	
+	public List<Seller_Prod_StockListDTO> findSellStockList(String member_id);
 	
 	public List<Seller_Prod_StockDTO> selectAll();
 	
@@ -16,5 +20,7 @@ public interface Seller_Prod_StockDAOInterface {
 	
 	public int seller_prod_stockUpdate(Seller_Prod_StockDTO seller_prod_stock);
 	
-	public int seller_prod_stockDelete(Integer stock_id);
+	public int seller_prod_stockDelete(String s_stock_id);
+
+	
 }

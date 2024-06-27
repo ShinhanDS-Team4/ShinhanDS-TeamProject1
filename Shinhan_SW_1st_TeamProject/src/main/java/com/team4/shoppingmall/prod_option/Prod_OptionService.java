@@ -19,19 +19,23 @@ public class Prod_OptionService {
 		return prod_optionDAO.selectByProdId(prod_id);
 	}
 	
+	public Integer findMaxOptId() {
+		return prod_optionDAO.findMaxOptId();
+	}
+	
 	public List<Prod_OptionDTO> selectAll() {
 		return prod_optionDAO.selectAll();
 	}
 	
-	public int memberInsert(Prod_OptionDTO prod_option) {
+	public int optionInsert(Prod_OptionDTO prod_option) {
 		return prod_optionDAO.prod_optionInsert(prod_option);
 	}
 	
-	public int memberUpdate(Prod_OptionDTO prod_option) {
+	public int optionUpdate(Prod_OptionDTO prod_option) {
 		return prod_optionDAO.prod_optionUpdate(prod_option);
 	}
 	
-	public int memberDelete(Integer opt_id) {
+	public int optionDelete(Integer opt_id) {
 		return prod_optionDAO.prod_optionDelete(opt_id);
 	}
 }

@@ -13,6 +13,7 @@
 		<typeAlias type="com.team4.shoppingmall.admin.AdminDTO" alias="adminVO" />
 		<typeAlias type="com.team4.shoppingmall.admin_inq.Admin_InqDTO" alias="admin_inqVO" />
 		<typeAlias type="com.team4.shoppingmall.buyer_inq.Buyer_InqDTO" alias="buyer_inqVO" />
+		<typeAlias type="com.team4.shoppingmall.buyer_inq.Buyer_InqDetailDTO" alias="buyer_inqDetailVO" />
 		<typeAlias type="com.team4.shoppingmall.cart.CartDTO" alias="cartVO" />
 		<typeAlias type="com.team4.shoppingmall.category.CategoryDTO" alias="categoryVO" />
 		<typeAlias type="com.team4.shoppingmall.coupon.CouponDTO" alias="couponVO" />
@@ -28,8 +29,10 @@
 		<typeAlias type="com.team4.shoppingmall.rent.RentDTO" alias="rentVO" />
 		<typeAlias type="com.team4.shoppingmall.rent_detail.RentDetailDTO" alias="rent_detailVO" />
 		<typeAlias type="com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO" alias="rent_prod_stockVO" />
+		<typeAlias type="com.team4.shoppingmall.rent_prod_stock.RentProdStockListDTO" alias="rent_prod_stocklistVO" />
 		<typeAlias type="com.team4.shoppingmall.reviews.ReviewsDTO" alias="reviewsVO" />
 		<typeAlias type="com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockDTO" alias="seller_prod_stockVO" />
+		<typeAlias type="com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockListDTO" alias="seller_prod_stocklistVO" />
 		<typeAlias type="com.team4.shoppingmall.wish_list.Wish_ListDTO" alias="wish_listVO" />
 	</typeAliases>
 

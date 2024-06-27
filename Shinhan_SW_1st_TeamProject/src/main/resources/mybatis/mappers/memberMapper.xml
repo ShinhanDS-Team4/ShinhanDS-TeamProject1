@@ -4,36 +4,63 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.member">
 
+	<!-- (확인 필요) 로그인한 회원의 비밀번호체크  -->
+	<select id="selectByPw" parameterType="string"
+		resultType="memberVO">
+		SELECT *
+		FROM MEMBER
+		WHERE member_pw = #{member_pw} and member_id = #{member_id}
+	</select>
+
 	<select id="selectById" parameterType="string"
 		resultType="memberVO">
-		SELECT * FROM MEMBER WHERE member_id = #{member_id}
+		SELECT *
+		FROM MEMBER
+		WHERE member_id = #{member_id}
+	</select>
+	
+	<select id="findId" parameterType="string"
+		resultType="memberVO">
+		SELECT *
+		FROM MEMBER
+		WHERE phone = #{phone}
 	</select>
 
 	<select id="selectAll" resultType="memberVO">
 		SELECT *
 		FROM MEMBER
 	</select>
+		<select id="loginChk" resultType="membervo" parameterType="String"> 
+		select member_id, member_pw 
+		from MEMBER
+		where member_id = #{member_id}
+	</select>
 
 	<insert id="memberInsert" parameterType="memberVO">
 		INSERT
-		INTO
-		MEMBER("member_id", "member_pw", "member_name", "email", "phone",
-		"brand", "birth_date", "last_access", "member_type", "gender")
+
+		INTO MEMBER(member_id, member_pw, member_name, email, phone,
+					brand, birth_date, last_access, member_type, gender)
 		VALUES(#{member_id}, #{member_pw}, #{member_name}, #{email}, #{phone},
-		#{brand}, #{birth_date}, #{last_access}, #{member_type}, #{gender})
+		        <choose>
+		            <when test="brand == null">
+		                null
+		            </when>
+		            <otherwise>
+		                #{brand}
+		            </otherwise>
+		        </choose>,
+				#{birth_date}, #{last_access}, #{member_type}, #{gender})
 	</insert>
 
 	<update id="memberUpdate" parameterType="memberVO">
 		UPDATE MEMBER
 		SET
-		"member_pw" = #{member_pw}, "member_name" = #{member_name}, "email" =
-		#{email},
-		"phone" = #{phone}, "brand" = #{brand}, "birth_date" =
-		#{birth_date},
-		"last_access" = #{last_access}, "member_type" =
-		#{member_type},
-		"gender" = #{gender}
-		WHERE "member_id" = #{member_id}
+		member_pw = #{member_pw}, member_name = #{member_name}, email = #{email},
+		phone = #{phone}, brand = #{brand}, birth_date = #{birth_date},
+		last_access = #{last_access}, member_type = #{member_type}, 
+		gender = #{gender}
+		WHERE member_id = #{member_id}
 	</update>
 
 	<delete id="memberDelete" parameterType="string">
@@ -160,4 +187,13 @@
 		TO_CHAR(member_last_access, 'YYYY-MM-DD')
 		ORDER BY day;
 	</select>
+		WHERE member_id = #{member_id}
+	</delete>
+	
+	<update id="memberUpdatePassword" parameterType="memberVO">
+		UPDATE MEMBER
+		SET member_pw = #{member_pw}
+		WHERE member_id = #{member_id}
+	</update>
+
 </mapper>

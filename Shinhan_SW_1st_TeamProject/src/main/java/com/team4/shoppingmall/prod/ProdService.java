@@ -1,6 +1,7 @@
 package com.team4.shoppingmall.prod;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ public class ProdService {
 	@Autowired
 	ProdDAOInterface prodDAO;
 	
-	public ProdDTO selectByProdId(Integer prod_id) {
+	public ProdDTO selectByProdId(String prod_id) {
 		return prodDAO.selectByProdId(prod_id);
 	}
 	
@@ -31,7 +32,15 @@ public class ProdService {
 		return prodDAO.prodUpdate(prod);
 	}
 	
-	public int prodDelete(Integer prod_id) {
-		return prodDAO.prodDelete(prod_id);
+	public int prodDelete(Integer rental_code) {
+		return prodDAO.prodDelete(rental_code);
+	}
+
+	public List<Map<String, Object>> selectAll2() {
+		return prodDAO.selectAll2(); 
+	}
+
+	public List<Map<String, Object>> selectByCategory(int categoryId) {
+		return prodDAO.selectByCategory(categoryId); 
 	}
 }

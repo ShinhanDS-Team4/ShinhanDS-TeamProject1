@@ -11,12 +11,16 @@ public class Prod_ImageService {
 	@Autowired
 	Prod_ImageDAOInterface prod_imageDAO;
 	
-	public Prod_ImageDTO selectByImageId(Integer img_id) {
+	public Prod_ImageDTO selectByImageId(String img_id) {
 		return prod_imageDAO.selectByImageId(img_id);
 	}
 
-	public Prod_ImageDTO selectByProdId(Integer prod_id) {
+	public Prod_ImageDTO selectByProdId(String prod_id) {
 		return prod_imageDAO.selectByProdId(prod_id);
+	}
+	
+	public List<Prod_ImageDTO> findAllImgsByProdID(String prod_id){
+		return prod_imageDAO.findAllImgsByProdID(prod_id);
 	}
 	
 	public List<Prod_ImageDTO> selectAll() {
@@ -31,7 +35,7 @@ public class Prod_ImageService {
 		return prod_imageDAO.prod_imageUpdate(prod_image);
 	}
 	
-	public int prod_imageDelete(Integer img_id) {
+	public int prod_imageDelete(String img_id) {
 		return prod_imageDAO.prod_imageDelete(img_id);
 	}
 }

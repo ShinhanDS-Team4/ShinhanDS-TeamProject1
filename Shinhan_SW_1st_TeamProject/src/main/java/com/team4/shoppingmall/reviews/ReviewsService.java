@@ -1,6 +1,7 @@
 package com.team4.shoppingmall.reviews;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,11 @@ public class ReviewsService {
 	
 	@Autowired
 	ReviewsDAOInterface reviewsDAO;
+	
+	//주문한 상품의 리뷰정보
+	public List<Map<String,String>> selectAllProductReviewByProdId(String prod_id){
+		return reviewsDAO.selectAllProductReviewByProdId(prod_id);
+	};
 	
 	public ReviewsDTO selectById(Integer review_id) {
 		return reviewsDAO.selectById(review_id);
