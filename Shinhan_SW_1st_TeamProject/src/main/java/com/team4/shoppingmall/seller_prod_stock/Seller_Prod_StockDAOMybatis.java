@@ -13,15 +13,27 @@ public class Seller_Prod_StockDAOMybatis implements Seller_Prod_StockDAOInterfac
 	SqlSession sqlSession;
 	
 	String namespace = "com.saren.seller_prod_stock.";
-	
+
 	@Override
-	public Seller_Prod_StockDTO selectByStockId(Integer stock_id) {
-		return sqlSession.selectOne(namespace+"selectByStockId", stock_id);
+	public Seller_Prod_StockDTO selectByStockId(String s_stock_id) {
+		return sqlSession.selectOne(namespace+"selectByStockId", s_stock_id);
 	}
 
 	@Override
-	public List<Seller_Prod_StockDTO> selectByProdId(Integer prod_id) {
+	public List<Seller_Prod_StockDTO> selectByProdId(String prod_id) {
 		return sqlSession.selectList(namespace+"selectByProdId", prod_id);
+	}
+	
+	@Override
+	public Integer findMaxStockNumber(String prod_id) {
+		return sqlSession.selectOne(namespace+"findMaxStockNumber", prod_id);
+	}
+	
+	@Override
+	public List<Seller_Prod_StockListDTO> findSellStockList(String member_id){
+		
+		
+		return sqlSession.selectList(namespace+"findSellStockList", member_id);
 	}
 
 	@Override
@@ -40,7 +52,9 @@ public class Seller_Prod_StockDAOMybatis implements Seller_Prod_StockDAOInterfac
 	}
 
 	@Override
-	public int seller_prod_stockDelete(Integer stock_id) {
-		return sqlSession.delete(namespace+"seller_prod_stockDelete", stock_id);
+	public int seller_prod_stockDelete(String s_stock_id) {
+		return sqlSession.delete(namespace+"seller_prod_stockDelete", s_stock_id);
 	}
+
+	
 }

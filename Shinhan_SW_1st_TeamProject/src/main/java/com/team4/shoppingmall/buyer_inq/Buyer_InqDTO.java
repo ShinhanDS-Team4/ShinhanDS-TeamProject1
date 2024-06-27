@@ -19,7 +19,7 @@ public class Buyer_InqDTO {
 	Date buyer_inq_date;
 	String buyer_reply;
 	String member_id;
-	Integer prod_id;
+	String prod_id;
 	Date buyer_reply_date;
 	String email;
 }

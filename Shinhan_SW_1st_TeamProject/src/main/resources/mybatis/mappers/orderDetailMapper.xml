@@ -5,33 +5,36 @@
 	
 <mapper namespace="com.saren.order_detail">
 	
-<select id="selectAll" resultType="com.team4.shoppingmall.order_detail.Order_DetailDTO">
+	<select id="selectAll" resultType="order_detailVO">
 		SELECT *
 		FROM ORDER_DETAIL
 	</select>
 	<select id="selectByOrderDetail_Id" parameterType="int"
-		resultType="com.team4.shoppingmall.order_detail.Order_DetailDTO">
+		resultType="order_detailVO">
 		SELECT *
 		FROM ORDER_DETAIL
-		WHERE orderdetail_id = #{orderdetail_id}
+		WHERE "orderdetail_id" = #{orderdetail_id}
 	</select>
-	<insert id="orderDetailInsert" parameterType="com.team4.shoppingmall.order_detail.Order_DetailDTO">
+	<insert id="orderDetailInsert" parameterType="order_detailVO">
 		INSERT
-		INTO ORDER_DETAIL(orderdetail_id, order_product_price, order_num, order_id, stock_id)
+		INTO ORDER_DETAIL("orderdetail_id", "order_product_price", "order_num", "order_id", "stock_id")
 		VALUES(#{orderdetail_id}, #{order_product_price}, #{order_num}, #{order_id}, #{stock_id})
 	</insert>
-	<update id="orderDetailUpdate" parameterType="com.team4.shoppingmall.order_detail.Order_DetailDTO">
+	<update id="orderDetailUpdate" parameterType="order_detailVO">
 		UPDATE ORDER_DETAIL
 		SET
-		orderdetail_id = #{orderdetail_id}, order_product_price = #{order_product_price}, order_num = #{order_num},
-		order_id = #{order_id}, stock_id = #{stock_id}
+			"orderdetail_id" = #{orderdetail_id}, 
+			"order_product_price" = #{order_product_price}, 
+			"order_num" = #{order_num},
+			"order_id" = #{order_id}, 
+			"stock_id" = #{stock_id}
 		WHERE orderdetail_id = #{orderdetail_id}
 	</update>
 	
-	<delete id="orderDetailDelete" parameterType="com.team4.shoppingmall.order_detail.Order_DetailDTO">
+	<delete id="orderDetailDelete" parameterType="order_detailVO">
 		DELETE
 		FROM ORDER_DETAIL
-		WHERE orderdetail_id = #{orderdetail_id}
+		WHERE "orderdetail_id" = #{orderdetail_id}
 	</delete>
 	
 </mapper>

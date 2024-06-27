@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface ProdDAOInterface {
-	public ProdDTO selectByProdId(Integer prod_id);
+	public ProdDTO selectByProdId(String prod_id);
 	
 	public List<ProdDTO> selectByMemberId(String member_id);
 	
