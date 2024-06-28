@@ -13,6 +13,8 @@ import com.team4.shoppingmall.util.DateUtil;
 
 import lombok.RequiredArgsConstructor;
 
+import com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO;
+
 @Service
 @RequiredArgsConstructor
 public class RentService {
@@ -75,6 +77,16 @@ public class RentService {
 	// 대여상태 수정
 	public int rentUpdate(Integer rental_code) {
 		return rentDAO.rentUpdate(rental_code);
+	}
+
+	// rentlist.jsp에 출력할 대여상품 상세정보
+	public Map<String, Object> selectById2(int rental_code) { 
+		return rentDAO.selectById2(rental_code);
+	}
+
+	// rentlist.jsp에서, 상세상품 옵션 출력시, 모든 옵션 가져오기
+	public List<RentProdStockDTO> selectOptions() {
+        return rentDAO.selectOptions();
 	}
 
 }

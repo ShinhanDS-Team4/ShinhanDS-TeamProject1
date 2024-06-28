@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AddrService {
+public class Addr_ListService {
 	
 	@Autowired
 	Addr_ListDAOInterface addr_ListDAOMybatis;

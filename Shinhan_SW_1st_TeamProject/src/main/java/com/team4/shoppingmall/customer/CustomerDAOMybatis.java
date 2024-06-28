@@ -6,38 +6,41 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.team4.shoppingmall.coupon.CouponDTO;
-
 @Repository
 public class CustomerDAOMybatis implements CustomerDAOInterface {
 
-	//@Autowired
+	@Autowired
 	SqlSession sqlSession;
 
 	String namespace = "com.saren.customer.";
 
-	// °í°´»ó¼¼
+	// ï¿½ï¿½ï¿½ï¿½
 	@Override
 	public CustomerDTO selectById(Integer rental_code) {
 		return sqlSession.selectOne(namespace+"selectById", rental_code);
 	}
 	
-	// °í°´¸ñ·Ï
+	// ï¿½ï¿½ï¿½ï¿½ï¿½
 	@Override
 	public List<CustomerDTO> selectAll() {
 		return sqlSession.selectList(namespace+"selectAll");
 	}
 	
-	// °í°´µî·Ï
+	// ï¿½ï¿½ï¿½ï¿½ï¿½
 	@Override
 	public int customerInsert(CustomerDTO customer) {
 		return sqlSession.insert(namespace+"customerInsert", customer);
 	}
 	
-	// °í°´¼öÁ¤
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	@Override
 	public int customerUpdate(Integer rental_code) {
 		return sqlSession.update(namespace+"customerUpdate", rental_code);
 	}
+	
+	@Override
+    public Long TotalMoneyAmount() {
+        return sqlSession.selectOne(namespace + "TotalMoneyAmount");
+    }
 
 }

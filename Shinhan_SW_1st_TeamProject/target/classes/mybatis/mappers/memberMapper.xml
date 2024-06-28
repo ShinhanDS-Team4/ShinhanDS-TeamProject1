@@ -57,7 +57,7 @@
 	<delete id="memberDelete" parameterType="string">
 		DELETE
 		FROM MEMBER
-		WHERE "member_id" = #{member_id}
+		WHERE member_id = #{member_id}
 	</delete>
 	
 	<update id="memberUpdatePassword" parameterType="memberVO">
