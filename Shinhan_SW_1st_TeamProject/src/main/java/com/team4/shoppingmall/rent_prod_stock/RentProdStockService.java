@@ -1,6 +1,7 @@
 package com.team4.shoppingmall.rent_prod_stock;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,8 +13,8 @@ public class RentProdStockService {
 	RentProdStockDAOInterface rentProdStockDAO;
 
 	//선택 옵션 상품의 대여 재고id 찾기
-	public RentProdStockDTO selectRentStockByProdId(String prod_id) {
-		return rentProdStockDAO.selectRentStockByProdId(prod_id);
+	public Map<String,String> selectRentStockByProdId(String prod_id, String optionString) {
+		return rentProdStockDAO.selectRentStockByProdId(prod_id, optionString);
 	};
 	
 	// 대여상품상세

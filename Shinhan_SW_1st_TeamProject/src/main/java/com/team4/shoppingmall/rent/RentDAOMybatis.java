@@ -11,7 +11,7 @@ import com.team4.shoppingmall.coupon.CouponDTO;
 @Repository
 public class RentDAOMybatis implements RentDAOInterface {
 
-	//@Autowired
+	@Autowired
 	SqlSession sqlSession;
 
 	String namespace = "com.saren.rent.";

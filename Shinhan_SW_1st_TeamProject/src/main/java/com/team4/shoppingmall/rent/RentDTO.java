@@ -16,7 +16,7 @@ public class RentDTO {
 	Integer rental_code;
 	Date rent_start_date;
 	Date rent_end_date; 
-	Integer stock_id;
 	String member_id;
-	String rent_state;
+	//String rent_state;  주문상태 
+	Integer total_rent_price;
 }
