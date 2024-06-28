@@ -23,6 +23,11 @@ public class Prod_OptionDAOMybatis implements Prod_OptionDAOInterface {
 	public List<Prod_OptionDTO> selectByProdId(Integer prod_id) {
 		return sqlSession.selectList(namespace+"selectByProdId", prod_id);
 	}
+	
+	@Override
+	public Integer findMaxOptId() {
+		return sqlSession.selectOne(namespace+"findMaxOptId");
+	}
 
 	@Override
 	public List<Prod_OptionDTO> selectAll() {

@@ -70,7 +70,7 @@
 	        <p>계속 쇼핑하시겠습니까?</p>
 	        <!-- 팝업 버튼 -->
 	        <button class="popup-button no-button">네</button>
-	        <button class="popup-button yes-button">장바구니로 이동</button>
+	        <button class="popup-button yes-button">아니요</button>
 	    </div>
 	</div>
 	
@@ -98,7 +98,7 @@
 	
 	<div class="container">
 		<div class="inner">
-			<p>home > 의류 > 바람</p>
+			<p>home > 여성의류 > 셔츠</p>
 			<div class="product-detail_wrap">
 				<div class="product-image">
 					<img src="${path}/resources/images/product1.png" alt="상품">
@@ -120,22 +120,40 @@
 						★ 4.5 <span><a href="#void">리뷰 8건</a></span>
 					</p>
 					<form id="prodOptionFrom">
+						 <%-- 테스트
+						 <c:forEach items="${prod_Options}" var="prodOption">
+							<h2>!!  ${prodOption.OPT_NAME}  </h2>
+							<c:forTokens items="${prodOption.OPT_VALUE}" delims="," var="optValue">
+							     <h3>${optValue }</h3>
+							</c:forTokens>
+						</c:forEach>   
+						--%>
 						<div class="choose_wrap">
-							<p>선택</p>
 							<div class="select_choose">
+								
 								<%-- 카테고리 : 의류 > 상의 --%>
-								<select id="product-size" name="product-size">
-									<option value="0" selected="selected">선택</option>
-									<option value="L" selected>상의 (L)</option>
-									<option value="M">상의 (M)</option>
-									<option value="S">상의 (S)</option>
+								<c:forEach items="${prod_Options}" var="prodOption">
+									<p>${prodOption.OPT_NAME} :</p>
+									<select id="product-size" name="productOption">
+								       <c:forTokens items="${prodOption.OPT_VALUE}" delims="," var="optValue">
+										     <option value="${optValue }">${optValue }</option>
+										</c:forTokens>
+									   
+								    </select> 
+							     </c:forEach>
+								    
+								<%-- <select id="product-size" name="productSize">
+									<option value="0" selected="selected">${prod_OptionName}</option>
+									<option value="L">L</option>
+									<option value="M">M</option>
+									<option value="S">S</option>
 								</select> 
-								<select id="product-color" name="product-color">
-									<option value="0" selected="selected">선택</option>
-									<option value="RED" selected>색상 (BLACK)</option>
-									<option value="RED">색상 (RED)</option>
-									<option value="RED">색상 (GREEN)</option>
-								</select>
+								<select id="product-color" name="productColor">
+									<option value="0" selected="selected">${prod_OptionName}</option>
+									<option value="BLACK">BLACK</option>
+									<option value="RED">RED</option>
+									<option value="GREEN">GREEN</option>
+								</select> --%>
 							</div>
 						</div>
 						<div class="quantity-price">
@@ -148,12 +166,17 @@
 						</div>
 						<%-- 단가 --%>
 						<input type="hidden" name="discountPrice" value="40000">
+						<input type="hidden" name="sellstock_id" value="${product.prod_id}">
 					</form>
 					<div class="button-group">
-						<button id="cartButton" type="button" class="white_button" onclick="prodOption()">장바구니</button>
+						<%--<button id="cartButton" type="button" class="white_button" onclick="prodOption()">장바구니</button>--%>
+						<button id="cartButton" type="button" class="white_button">장바구니</button>
 						<button type="button" class="button">바로 구매</button>
 					</div>
-					<button type="button" class="noRent_btn">대여불가상품</button>
+					
+					<%-- 대여상품이면 rent_btn으로 클래스명 change --%>
+					<%-- <button type="button" class="noRent_btn">대여불가상품</button> --%>
+					<button type="button" class="rent_btn">대여하기</button>
 				</div>
 			</div>
 			<%-- 상품정보, 리뷰 버튼 --%>
@@ -385,24 +408,34 @@
                 $('.total').text(totalPrice.toLocaleString() + '원');
             });
     		
-    		//장바구니 버튼 선택 시 나타나는 팝업창 
-    		//$('#cartButton').on('click', function() {
-    		//	$('.popup-background').show();
-    		//});
-    		//계속 쇼핑 선택시
-    		//$('.no-button').on('click', function() {
-    		//	$('.popup-background').hide();
-    		//});
-    		//계속 쇼핑 선택시
-    		//$('.yes-button').on('click', function() {
-    		//	location.href= "${path}/cart/cart"; //장바구니 페이지 이동(수정중)
-    		//});
+    		//"장바구니 버튼" 선택 시 나타나는 팝업창 
+    		$('#cartButton').on('click', function() {
+    			$('.popup-background').show();
+    			
+    			//옵션값을 저장 하고 넘어가야 함
+				
+   			    //다른 버튼 click 이벤트를 트리거
+    			//아니요 선택 시 장바구니페이지로 이동
+        		$('.no-button').on('click', function() {
+        			prodOption();
+        			$('.popup-background').hide();
+        			
+        		});
+        		//네 선택 시 현재페이지 계속 쇼핑
+        		$('.yes-button').on('click', function() {
+        			prodOption();
+        			location.reload(); 
+        		});
+    			
+    			
+    			
+    		});
+    	
     		
         });
     	
 		//버튼 클릭 -> 컨트롤러에 상품 옵션 값 저장
 		function prodOption(){
-		        
 	       //컨트롤러에 상품 옵션 값 보내기
 		   var param = $("#prodOptionFrom").serialize();
 		   //location.href : Get요청

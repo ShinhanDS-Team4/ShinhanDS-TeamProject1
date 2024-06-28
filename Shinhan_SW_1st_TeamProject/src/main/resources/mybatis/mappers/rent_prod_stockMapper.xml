@@ -4,42 +4,72 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.rent_prod_stock">
 
+	<select id="selectRentStockByProdId" parameterType="string"
+			resultType="map">
+		select r_stock_id, rps.opt_id1,rps.opt_id2,rps.opt_id3,rps.opt_id4,rps.opt_id5 , stock
+		from rent_prod_stock rps
+		join prod p on(rps.prod_id = p.prod_id)
+		where p.prod_id= #{prod_id}
+	</select>
+
 	<!-- 대여상품상세 -->
 	<select id="selectById" parameterType="string"
 		resultType="memberVO">
 		SELECT *
 		FROM RENT_PROD_STOCK
-		WHERE "stock_id" = #{stock_id}
+		WHERE r_stock_id = #{r_stock_id}
 	</select>
+	
+	<select id="findMaxStockNumber" parameterType="string" resultType="integer">
+		SELECT max(to_number(REGEXP_SUBSTR(r.r_stock_id,'_([0-9]+)$', 1, 1, null, 1)))
+		FROM RENT_PROD_STOCK r
+		WHERE r.prod_id = #{prod_id}
+	</select>
+	
+	<select id="findRentStockList" parameterType="string" resultType="rent_prod_stocklistVO">
+		SELECT 
+    		r.r_stock_id, 
+    		r.stock, 
+    		p.prod_added_date, 
+    		p.prod_price
+		FROM 
+    		RENT_PROD_STOCK r
+		JOIN 
+    		PROD p ON r.prod_id = p.prod_id
+		WHERE 
+    		p.member_id = #{member_id}
+    </select>
 
 	<!-- 대여상품목록 -->
-	<select id="selectAll" resultType="com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO">
+	<select id="selectAll" resultType="rent_prod_stockVO">
 		SELECT *
 		FROM RENT_PROD_STOCK
 	</select>
 
 	<!-- 대여상품등록 -->
-	<insert id="rentProdInsert" parameterType="com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO">
+	<insert id="rentProdInsert" parameterType="rent_prod_stockVO">
 		INSERT
-		INTO RENT_PROD_STOCK("prod_id", "opt_id1", "opt_id2", "opt_id3", "opt_id4", "opt_id5")
-		VALUES(#{prod_id}, #{opt_id1}, #{opt_id2}, #{opt_id3}, #{opt_id4}, #{opt_id5})
+		INTO RENT_PROD_STOCK(r_stock_id, stock, total, 
+		prod_id, opt_id1, opt_id2, opt_id3, opt_id4, opt_id5)
+		VALUES(#{r_stock_id}, #{stock}, #{total}, #{prod_id}, #{opt_id1}, 
+		#{opt_id2}, #{opt_id3}, #{opt_id4}, #{opt_id5})
 	</insert>
 
 	<!-- 대여상품수정 -->
-	<update id="rentProdUpdate" parameterType="com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO">
+	<update id="rentProdUpdate" parameterType="rent_prod_stockVO">
 		UPDATE RENT_PROD_STOCK
 		SET
-		"r_p_stock" = #{r_p_stock}, "r_p_total" = #{r_p_total}, "opt_id1" = #{opt_id1},
-		"opt_id2" = #{opt_id2}, "opt_id3" = #{opt_id3}, "opt_id4" = #{opt_id4},
-		"opt_id5" = #{opt_id5}
-		WHERE "stock_id" = #{stock_id}
+		stock = #{stock}, total = #{total}, opt_id1 = #{opt_id1},
+		opt_id2 = #{opt_id2}, opt_id3 = #{opt_id3}, opt_id4 = #{opt_id4},
+		opt_id5 = #{opt_id5}
+		WHERE r_stock_id = #{r_stock_id}
 	</update>
 
 	<!-- 대여상품삭제 -->
-	<delete id="rentProdDelete" parameterType="com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO">
+	<delete id="rentProdDelete" parameterType="string">
 		DELETE
 		FROM RENT_PROD_STOCK
-		WHERE "stock_id" = #{stock_id}
+		WHERE r_stock_id = #{r_stock_id}
 	</delete>
 	
 </mapper>

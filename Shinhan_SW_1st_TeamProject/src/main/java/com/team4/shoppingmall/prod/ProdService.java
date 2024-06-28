@@ -12,7 +12,7 @@ public class ProdService {
 	@Autowired
 	ProdDAOInterface prodDAO;
 	
-	public ProdDTO selectByProdId(Integer prod_id) {
+	public ProdDTO selectByProdId(String prod_id) {
 		return prodDAO.selectByProdId(prod_id);
 	}
 	

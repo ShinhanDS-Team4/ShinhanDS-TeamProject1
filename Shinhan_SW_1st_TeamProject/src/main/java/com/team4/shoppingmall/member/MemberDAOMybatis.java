@@ -18,6 +18,11 @@ public class MemberDAOMybatis implements MemberDAOInterface {
 	public MemberDTO selectById(String member_id) {
 		return sqlSession.selectOne(namespace+"selectById", member_id);
 	}
+	
+	@Override
+	public MemberDTO findId(String member_name, String phone) {
+		return sqlSession.selectOne(namespace+"findId", phone);
+	}
 
 	@Override
 	public List<MemberDTO> selectAll() {
@@ -37,5 +42,15 @@ public class MemberDAOMybatis implements MemberDAOInterface {
 	@Override
 	public int memberDelete(String member_id) {
 		return sqlSession.delete(namespace+"memberDelete", member_id);
+	}
+	
+	public MemberDTO loginChk(String member_id) {
+		MemberDTO member = sqlSession.selectOne(namespace+"loginChk", member_id);
+		return member;
+	}
+
+	@Override
+	public int updatePassword(MemberDTO member) {
+		return sqlSession.update(namespace+"memberUpdatePassword", member);
 	}
 }

@@ -6,6 +6,8 @@ public interface MemberDAOInterface {
 	
 	public MemberDTO selectById(String member_id);
 	
+	public MemberDTO findId(String member_name, String phone);
+	
 	public List<MemberDTO> selectAll();
 	
 //	public List<MemberDTO> selectByCondition();
@@ -15,4 +17,8 @@ public interface MemberDAOInterface {
 	public int memberUpdate(MemberDTO member);
 	
 	public int memberDelete(String member_id);
+	
+	public MemberDTO loginChk(String member_id);
+
+	public int updatePassword(MemberDTO member);
 }

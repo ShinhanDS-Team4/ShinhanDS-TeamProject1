@@ -13,7 +13,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProdDTO {
-	Integer prod_id;
+	String prod_id;
 	String prod_name;
 	String prod_desc;
 	Integer prod_price;
