@@ -18,9 +18,9 @@ public interface RentDetailDAOInterface {
 	// 대여상세 수정
 	public int rentDetailUpdate(RentDetailDTO rentdetail);
 
-	
+	public int rentDetailStatusUpdate(RentDetailDTO rentdetail);
 	
 	// 대여상세 삭제
-//	public int rentDetailDelete(Integer rentdetail_id);
+	public int rentDetailDelete(int rentdetail_id);
 	
 }

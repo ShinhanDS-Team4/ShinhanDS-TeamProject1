@@ -42,10 +42,16 @@ public class RentDetailDAOMybatis implements RentDetailDAOInterface {
 	// 대여상세 수정
 	@Override
 	public int rentDetailUpdate(RentDetailDTO rentdetail) {
-		return sqlSession.update(namespace+"rentDetailInsert", rentdetail);
+		return sqlSession.update(namespace+"rentDetailUpdate", rentdetail);
+	}
+	
+	@Override
+	public int rentDetailStatusUpdate(RentDetailDTO rentdetail) {
+		return sqlSession.update(namespace+"rentDetailStatusUpdate", rentdetail);
 	}
 
-	
-
-
+	@Override
+	public int rentDetailDelete(int rentdetail_id) {
+		return sqlSession.delete(namespace+"rentDetailDelete", rentdetail_id);
+	}
 }

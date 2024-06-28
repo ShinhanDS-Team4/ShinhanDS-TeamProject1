@@ -40,6 +40,8 @@ import com.team4.shoppingmall.order_detail.Order_DetailDTO;
 import com.team4.shoppingmall.order_detail.Order_DetailService;
 import com.team4.shoppingmall.prod.ProdService;
 import com.team4.shoppingmall.prod_image.Prod_ImageService;
+import com.team4.shoppingmall.rent.RentDTO;
+import com.team4.shoppingmall.rent_detail.RentDetailDTO;
 import com.team4.shoppingmall.rent_detail.RentDetailService;
 import com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO;
 import com.team4.shoppingmall.rent_prod_stock.RentProdStockService;
@@ -121,11 +123,16 @@ public class SellerPageController {
 
 		// 판매&배송 리스트
 		//1.판매 상품 대상 주문상세리스트
+		System.out.println(order_DetailService.selectBySellerID(member_id));
+		System.out.println(rentDetailService.selectBySellerID(member_id));
+		
 		model1.addAttribute("orderDetailList", order_DetailService.selectBySellerID(member_id));
 		model2.addAttribute("rentDetailList", rentDetailService.selectBySellerID(member_id));
 		return "/seller/sellerDelivery";
 	}
 	
+	
+	//판매 주문 항목 일괄처리
 	@PostMapping("/updateOrderStatus")
 	@ResponseBody
 	public String updateOrderStauts(@RequestBody OrderUpdateReqDTO request) {
@@ -146,6 +153,7 @@ public class SellerPageController {
 		return "Update Success";
 	}
 	
+	//판매 주문 항목 일괄삭제
 	@PostMapping("/deleteOrderDetails")
 	@ResponseBody
 	public String deleteOrderDetails(@RequestBody OrderUpdateReqDTO request) {
@@ -155,6 +163,40 @@ public class SellerPageController {
 			int orderDetailDelResult = order_DetailService.orderDetailDelete(orderDetail);
 		}
 		
+		return "Delete Success";
+	}
+	
+	
+	//대여 주문 항목 일괄처리
+	@PostMapping("/updateRentStatus")
+	@ResponseBody
+	public String updateRentStatus(@RequestBody OrderUpdateReqDTO request) {
+		List<Integer> rentDetailIds = request.getOrderDetailIds();
+		System.out.println("대여 일괄처리 대상 목록:"+rentDetailIds);
+		
+		String status = request.getStatus();
+		
+		for(Integer rentDetail : rentDetailIds) {
+			
+			RentDetailDTO rentDatilDTO = new RentDetailDTO();
+			
+			rentDatilDTO.setRentdetail_id(rentDetail);
+			rentDatilDTO.setRent_state(status);
+			
+			int statusUpdateResult = rentDetailService.rentDetailStatusUpdate(rentDatilDTO);	
+		}
+		return "Update Success";
+	}
+	
+	//대여 주문 항목 일괄삭제
+	@PostMapping("/deleteRentDetails")
+	@ResponseBody
+	public String deleteRentDetails(@RequestBody OrderUpdateReqDTO request) {
+		List<Integer> rentDetailIds = request.getOrderDetailIds();
+		System.out.println(rentDetailIds);
+		for(Integer rentDetail : rentDetailIds) {
+			int rentDetailDelResult = rentDetailService.rentDetailDelete(rentDetail);
+		}
 		return "Delete Success";
 	}
 	
