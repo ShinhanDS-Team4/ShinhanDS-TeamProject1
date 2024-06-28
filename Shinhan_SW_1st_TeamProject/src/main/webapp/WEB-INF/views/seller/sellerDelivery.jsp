@@ -245,15 +245,12 @@
 				</table>
 				<div class="actions">
 					<select id="rent_status_select">
-						<option>결제대기</option>
+						<option>대여신청완료</option>
 						<option>결제완료</option>
-						<option>배송준비중</option>
-						<option>배송중</option>
-						<option>배송완료</option>
-						<option>교환요청</option>
-						<option>교환완료</option>
-						<option>환불요청</option>
-						<option>환불완료</option>
+						<option>대여취소</option>
+						<option>대여중</option>
+						<option>반납중</option>
+						<option>반납완료</option>
 					</select>
 					<button id="batch_process_button" onclick="updateRentStatus()">일괄처리</button>
 					<button id="delete_selected_button" onclick="deleteCheckedRent()">선택 내역 삭제</button>
