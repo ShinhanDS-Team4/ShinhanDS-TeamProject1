@@ -43,11 +43,18 @@ public class Order_DetailDAOMybatis implements Order_DetailDAOInterface{
 	public int orderDetailUpdate(Order_DetailDTO order_detail) {
 		return sqlSession.update(namespace+"orderDetailUpdate", order_detail);
 	};
-
+	
+	@Override
+	public int orderDetailStatusUpdate(Order_DetailDTO order_detail) {
+		return sqlSession.update(namespace+"orderDetailStatusUpdate", order_detail);
+	};
+	
 	@Override
 	public int orderDetailDelete(int orderdetail_id) {
 		return sqlSession.delete(namespace+"orderDetailDelete", orderdetail_id);
 	}
+
+	
 
 	
 

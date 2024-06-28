@@ -21,7 +21,11 @@ public interface Order_DetailDAOInterface {
 
 	public int orderDetailUpdate(Order_DetailDTO order_detail);
 
+	public int orderDetailStatusUpdate(Order_DetailDTO order_detail);
+	
 	public int orderDetailDelete(int orderdetail_id);
+
+	
 
 	
 

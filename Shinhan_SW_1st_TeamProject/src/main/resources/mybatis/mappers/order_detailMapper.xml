@@ -49,7 +49,13 @@
 		order_state = #{order_state},
 		order_id = #{order_id},
 		s_stock_id = #{s_stock_id}
-		WHERE order_detail_id = #{order_detail_id}
+		WHERE orderdetail_id = #{orderdetail_id}
+	</update>
+	
+	<update id="orderDetailStatusUpdate" parameterType="order_detailVO">
+		UPDATE ORDER_DETAIL
+		SET order_state = #{order_state}
+		WHERE orderdetail_id = #{orderdetail_id}
 	</update>
 
 	<delete id="orderDetailDelete" parameterType="string">

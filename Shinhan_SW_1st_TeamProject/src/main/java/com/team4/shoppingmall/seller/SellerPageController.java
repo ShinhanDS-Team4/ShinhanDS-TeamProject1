@@ -35,6 +35,8 @@ import com.team4.shoppingmall.buyer_inq.Buyer_InqDAOInterface;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqDTO;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqService;
 import com.team4.shoppingmall.member.MemberService;
+import com.team4.shoppingmall.order_detail.OrderUpdateReqDTO;
+import com.team4.shoppingmall.order_detail.Order_DetailDTO;
 import com.team4.shoppingmall.order_detail.Order_DetailService;
 import com.team4.shoppingmall.prod.ProdService;
 import com.team4.shoppingmall.prod_image.Prod_ImageService;
@@ -44,10 +46,16 @@ import com.team4.shoppingmall.rent_prod_stock.RentProdStockService;
 import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockDTO;
 import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockService;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 @Controller
 @RequestMapping("/seller")
 public class SellerPageController {
-
+	
 	@Autowired
 	Buyer_InqService buyer_inqService;
 
@@ -116,6 +124,27 @@ public class SellerPageController {
 		model1.addAttribute("orderDetailList", order_DetailService.selectBySellerID(member_id));
 		model2.addAttribute("rentDetailList", rentDetailService.selectBySellerID(member_id));
 		return "/seller/sellerDelivery";
+	}
+	
+	@PostMapping("/updateOrderStatus")
+	@ResponseBody
+	public String updateOrderStauts(@RequestBody OrderUpdateReqDTO request) {
+		List<Integer> orderDetailIds = request.getOrderDetailIds();
+        System.out.println(orderDetailIds);
+		
+		String status = request.getStatus();
+        
+        for(Integer orderDetail : orderDetailIds) {
+        	
+        	Order_DetailDTO order_DetailDTO = new Order_DetailDTO();
+        	
+        	order_DetailDTO.setOrderdetail_id(orderDetail);
+        	order_DetailDTO.setOrder_state(status);
+        	
+        	int statusUpdateResult = order_DetailService.orderDetailStatusUpdate(order_DetailDTO);
+        }
+		
+		return "Update Success";
 	}
 
 	// 문의 목록 페이지 보여주기

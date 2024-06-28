@@ -12,12 +12,44 @@
 <!-- 헤더,푸터 css -->
 <link rel="stylesheet" href="${path}/resources/css/header_footer.css">
 <!-- jquery 연결 -->
-<script src="${path}/resources/js/jquery-3.7.1.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<!-- Slick 불러오기 -->
-
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!-- 페이지용 css -->
 <link rel="stylesheet" href="${path}/resources/css/seller_Delivery.css" />
+<script>
+
+	function updateOrderStatus(){
+		
+		var selectedStatus = $('#order_status_select').val();//일괄처리할 상태(select-option)
+		
+		var slectedOrderDetails =[];
+		$('.order-checkbox:checked').each(function() {
+			slectedOrderDetails.push($(this).data('id'));
+		});
+		
+		if(slectedOrderDetails.length>0){
+    		$.ajax({
+    			url:"/shoppingmall/seller/updateOrderStatus",
+    			type:'POST',
+    			contentType: 'application/json',
+    			data: JSON.stringify({orderDetailIds:slectedOrderDetails, status:selectedStatus}),
+    			success: function(response){
+    				if(response==="Update Success"){
+    					alert('갱신 완료');
+    					location.reload();
+    				}else{
+    					alert('갱신 중 오류 발생');
+    				}
+    			},
+    			error:function(){
+    				alert('서버 요청 중 오류가 발생했습니다.');
+    			}
+    		});
+    	}else {
+        	alert('선택된 주문이 없습니다.');
+    	}
+	}
+</script>
 </head>
 <body>
 	<%@ include file="../common/header.jsp"%>
@@ -57,7 +89,8 @@
 					<tbody>
 						<c:forEach var="order_detail" items="${orderDetailList}">
 							<tr>
-								<td><input type="checkbox"/></td>
+								<td><input type="checkbox" class="order-checkbox"
+									data-id="${order_detail.orderdetail_id}" /></td>
 								<td>${order_detail.orderdetail_id}</td>
 								<td>${order_detail.s_stock_id}</td>
 								<td>${order_detail.order_product_price}</td>
@@ -68,22 +101,22 @@
 					</tbody>
 				</table>
 				<div class="actions">
-					<select>
+					<select id="order_status_select">
 						<option>결제대기</option>
 						<option>결제완료</option>
 						<option>배송준비중</option>
 						<option>배송중</option>
 						<option>배송완료</option>
 						<option>교환요청</option>
-						<option>교환완료</option>						
+						<option>교환완료</option>
 						<option>환불요청</option>
 						<option>환불완료</option>
 					</select>
-					<button>일괄처리</button>
-					<button>선택 내역 삭제</button>
+					<button id="batch_process_button" onclick="updateOrderStatus()">일괄처리</button>
+					<button id="delete_selected_button">선택 내역 삭제</button>
 				</div>
 			</div>
-			
+
 			<!-- 대여 -->
 			<div class="product-list">
 				<h3>대여 상품 주문 리스트</h3>
@@ -101,7 +134,7 @@
 					<tbody>
 						<c:forEach var="rent_detail" items="${rentDetailList}">
 							<tr>
-								<td><input type="checkbox"/></td>
+								<td><input type="checkbox" /></td>
 								<td>${rent_detail.rentdetail_id}</td>
 								<td>${order_detail.r_stock_id}</td>
 								<td>${order_detail.rent_product_price}</td>
@@ -149,7 +182,7 @@
 						<option>배송중</option>
 						<option>배송완료</option>
 						<option>교환요청</option>
-						<option>교환완료</option>						
+						<option>교환완료</option>
 						<option>환불요청</option>
 						<option>환불완료</option>
 					</select>

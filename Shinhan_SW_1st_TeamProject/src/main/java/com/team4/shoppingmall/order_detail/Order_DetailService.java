@@ -29,6 +29,10 @@ public class Order_DetailService {
 	public int orderDetailUpdate(Order_DetailDTO order_detail) {
 		return order_DetailDAO.orderDetailUpdate(order_detail);
 	}
+	
+	public int orderDetailStatusUpdate(Order_DetailDTO order_detail) {
+		return order_DetailDAO.orderDetailStatusUpdate(order_detail);
+	}
 
 	public int orderDetailDelete(int orderdetail_id) {
 		return order_DetailDAO.orderDetailDelete(orderdetail_id);
