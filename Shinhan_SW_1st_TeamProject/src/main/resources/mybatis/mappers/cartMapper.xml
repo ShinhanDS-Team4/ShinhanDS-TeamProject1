@@ -4,7 +4,7 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.cart">
 
-	<!-- CART테이블에 넣을 선택한 옵션 상품의 재고ID 찾기(parameterType = 동적VO)  -->
+	<!-- CART테이블에 넣을 선택한 옵션 이름으로 상품의 재고ID 찾기(parameterType = 동적VO)  -->
     <select id="searchStockId" parameterType="com.team4.shoppingmall.cart.CartDynamicVO" 
     		resultType="string">
 		SELECT seller_prod_stock.s_stock_id 

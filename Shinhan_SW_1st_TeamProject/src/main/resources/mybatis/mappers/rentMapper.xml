@@ -10,6 +10,10 @@
 		FROM RENT
 		WHERE "member_id" = #{member_id}
 	</select>
+	
+	<select id="searchRentId" resultType="int">
+		select last_number-1 from user_sequences where sequence_name = 'RENT_SEQUENCE'
+	</select>
 
 	<!-- 대여목록 -->
 	<select id="selectAll" resultType="com.team4.shoppingmall.rent.RentDTO">

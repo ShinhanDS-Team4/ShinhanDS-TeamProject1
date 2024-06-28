@@ -42,7 +42,6 @@
 			$('#' + tabId).addClass('active'); //container-detail에  다시 active가 안붙음
 		});
 
-		
 
 		//상품 문의 모달창 열고 닫기 
 		$('.qnaBtn').on('click', function() {
@@ -112,44 +111,52 @@
 	            </div>
 	            <%--상품 상세 정보 조회 --%>
 	            <div class="rent-prod-content">
-		                <p><strong>상품 명:</strong> (<strong class="blue-text">${prod_detail_info.BRAND}) ${prod_detail_info.PROD_NAME}</strong></p>
-		                <div class="rent-prod-option">
-		               		<strong>상품 옵션: </strong>
-							<c:forEach items="${prod_Options}" var="prodOption">
-								<div>
-									<p>${prodOption.OPT_NAME} :</p>
-									<select id="product-option" name="${prodOption.OPT_NAME}">
-									   <option disabled selected>선택</option>
-								       <c:forTokens items="${prodOption.OPT_VALUE}" delims="," var="optValue" >
-										     <c:set var="position" value="${fn:indexOf(optValue,'-')}"/>
-										     <c:set var="optName" value="${fn:substring(optValue,0,position) }"/>
-										     <c:set var="optLength" value="${fn:length(optValue)}"/>
-										     <c:set var="optId" value="${fn:substring(optValue,position+1, optLength) }"/>
-										     <option value="${optId}">${optName}</option>
-										</c:forTokens>
-								    </select> 
-								</div>
-					     	</c:forEach>
-							<input type="hidden" name="prod_id" value="${prod_detail_info.prod_id}">
-						</div>
-		                <p>
-		                <strong>대여량:</strong> 
-		                <input type="number" id="rent_prod_quantity" class="rent-prod-quantity" 
-		                	   name="rent_prod_quantity" value="1" min="1">개
-		                </p>
-		                <p><strong>대여 시작일 선택:</strong> <span>대여 기간은 7일입니다.</span></p>
-		                
-		                <div class="rent-prod-dates">
-		                    <input type="date" id="rent_start_date" name="rent_start_date">
-		                    <span> ~ </span>
-		                    <input type="date" value="2024-07-01" id="rent_end_date" name="rent_end_date" readonly> <%-- 마감일 선택 불가 --%>
-		                    <span class="small-text red-text">(제품도착일 - 반납처리일)</span>
-		                </div>
+	                <p><strong>상품 명:</strong> (<strong class="blue-text">${prod_detail_info.BRAND}) ${prod_detail_info.PROD_NAME}</strong></p>
+	                <div class="rent-prod-option">
+	               		<strong>상품 옵션: </strong>
+						<c:forEach items="${prod_Options}" var="prodOption">
+							<div>
+								<p>${prodOption.OPT_NAME} :</p>
+								<select id="product-option" name="${prodOption.OPT_NAME}">
+								   <option disabled selected>선택</option>
+							       <c:forTokens items="${prodOption.OPT_VALUE}" delims="," var="optValue" >
+									     <c:set var="position" value="${fn:indexOf(optValue,'-')}"/>
+									     <c:set var="optName" value="${fn:substring(optValue,0,position) }"/>
+									     <c:set var="optLength" value="${fn:length(optValue)}"/>
+									     <c:set var="optId" value="${fn:substring(optValue,position+1, optLength) }"/>
+									     <option value="${optId}">${optName}</option>
+									</c:forTokens>
+							    </select> 
+							</div>
+				     	</c:forEach>
+						<input type="hidden" name="prod_id" value="${prod_detail_info.prod_id}">
+					</div>
+	                <p>
+	                <strong>대여량:</strong> 
+	                <input type="number" id="rent_prod_quantity" class="rent-prod-quantity" 
+	                	   name="rent_prod_quantity" value="1" min="1">개
+	                </p>
+	                <p><strong>대여 시작일 선택:</strong> <span>대여 기간은 7일입니다.</span></p>
+	                
+	                <div class="rent-prod-dates">
+	                    <input type="date" id="rent_start_date" name="rent_start_date">
+	                    <span> ~ </span>
+	                    <input type="date" value="2024-07-01" id="rent_end_date" name="rent_end_date" readonly> <%-- 마감일 선택 불가 --%>
+	                    <span class="small-text red-text">(제품도착일 - 반납처리일)</span>
+	                </div>
 	               
 	                <div class="rent-prod-total">
 	                    <p><strong>총 대여 금액</strong></p>
 	                    <p class="total-amount"><strong>30,000원</strong></p> <%-- js: 기간확인 후 가격붙이기 --%>
-	                	<input name="total_amount" type="hidden" value="30000"> <%-- 자바로 넘길 대여가격 --%>
+	                	
+	                	
+	                	<%--<input name="total_amount" type="hidden" value="30000">  자바로 넘길 대여가격 --%>
+	                	<%-- <input id="total_amount" name="total_amount" type="hidden" value=""> --%>
+	                	
+	                	<input id="total-price-hidden" name="total_amount" type="hidden" value=""> <%-- 자바로 넘길 대여가격 value="30000" --%>
+	                	<%-- 대여가격
+	                	<input id="basePrice" type="hidden" name="basePrice" value=""> --%>
+	                	
 	                </div>
 	                <p class="rent-prod-warning">! 선택한 상품의 옵션을 확인하신 후 대여를 진행해 주세요.</p>
 		            <button type="button" class="rent-prod-button">대여하기</button> 
@@ -160,6 +167,8 @@
   	</form>
     <script type="text/javascript">
     $(document).ready(function() {
+    	
+    	//대여가격 기본 3만원
        const basePrice = 30000;
     	 
        function formatDate(date) {
@@ -180,7 +189,13 @@
            var quantity = $('#rent_prod_quantity').val();
            var totalPrice = basePrice * quantity;
            $('.total-amount>strong').text(totalPrice.toLocaleString() + '원');
+           
+           /* 자바로 넘겨줄 input에 가격 붙이기 */
+           //기본 대여 가격
+           //$('#basePrice').val(basePrice);
+           //총 수량별 대여가격 
            $('#total-price-hidden').val(totalPrice);
+           
        }
        var today = new Date();
        var formattedToday = formatDate(today);
@@ -245,8 +260,6 @@
              });
     	});
        
-       
-       
     });
     </script>
 	<%-- 장바구니 팝업 창 --%>
@@ -284,7 +297,6 @@
 	<%-- 본문 --%>
 	<div class="container">
 		<div class="product_detail-inner">
-			 
 				<p>home > ${prod_detail_info.PARENT_CATEGORY_NAME} > ${prod_detail_info.SUB_CATEGORY_NAME}</p>
 				<div class="product-detail_wrap">
 				
@@ -304,7 +316,7 @@
 						<p class="rate">
 							★${prod_detail_info.AVERAGE_RATE} <span><a href="javascript:#void" class="review-rate-btn">리뷰 ${prod_detail_info.REVIEW_COUNT}건</a></span>
 						</p>
-						<form id="prodOptionFrom" >
+						<form id="prodOptionFrom">
 							<div class="choose_wrap">
 								<p class="option_name">상품 옵션</p>
 								<div class="select_choose">
@@ -319,12 +331,11 @@
 													     <c:set var="optName" value="${fn:substring(optValue,0,position) }"/>
 													     <c:set var="optLength" value="${fn:length(optValue)}"/>
 													     <c:set var="optId" value="${fn:substring(optValue,position+1, optLength) }"/>
-													     <option value="${optId}">${optName}</option>
+													     <option value="${optName}">${optName}</option>
 													</c:forTokens>
 											    </select> 
 											</div>
 								     	</c:forEach>
-										<input type="hidden" name="prod_id" value="${prod_detail_info.prod_id}">
 									</div>
 								</div>
 							</div>
@@ -338,14 +349,53 @@
 							</div>
 							
 							<%-- !!!!!!!!!! 자바로 넘겨 줄 단가와 상품ID !!!!!!!!!! --%>
-							<input type="hidden" name="productPrice" value="${prod_detail_info.prod_price}">  
+							<input type="hidden" name="productPrice" value="${prod_detail_info.PROD_PRICE}">  
 							<input type="hidden" name="prod_id" value="${prod_detail_info.prod_id}">  
 						</form>
 						<div class="button-group">
 							<button id="cartButton" type="button" class="white_button">장바구니</button> 
-							<%-- <input id="cartButton" type="button" class="white_button" value="장바구니" /> --%>
-							<button type="button" class="button">바로 구매</button>
+							<button id="orderButton" type="button" class="button">바로 구매</button>
 						</div>
+						
+						<script type="text/javascript">
+						
+							//구매하기 버튼 클릭
+							$('#orderButton').on('click', function(){
+
+								var param = $("#prodOptionForm").serialize();
+							    console.log(param);
+								
+						        // 컨트롤러에 상품 옵션 값 보내기
+							    //var formArray = $("#prodOptionForm").serializeArray();
+							    //var formData = {};
+								
+							    // 배열을 JSON 객체로 변환
+							    //$.each(formArray, function(index, item) {
+							    //   formData[item.name] = item.value;
+							    //});
+								//console.log("formData: " + formData);
+								
+								 // 선택한 옵션이 null인 경우 페이지 이동 X
+						        //if (Object.keys(formData).length > 0) {
+					        	if(param != null){
+						            $.ajax({
+						                url: "${path}/prod/productOrderInsert.do?"+param,
+						                type: 'POST',
+						                //contentType: 'application/json', // JSON 형식으로 전송
+						                //data: JSON.stringify(formData), // JSON 데이터 전송
+						                success: function(response) {
+						                    console.log(response);
+						                    alert("주문 저장 완료");
+						                },
+						                error: function(error) {
+						                    alert("Error: " + error);
+						                }
+						            });
+						        } else {
+						            alert("옵션을 선택해 주세요.");
+						        }
+							});
+						</script>
 						
 						<%-- 
 							대여 재고에 있는 상품이면 대여하기 버튼 활성화 시키기 (상품의 대여재고id를 찾기)

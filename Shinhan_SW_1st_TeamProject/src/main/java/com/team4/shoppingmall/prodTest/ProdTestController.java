@@ -2,7 +2,6 @@ package com.team4.shoppingmall.prodTest;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,17 +25,17 @@ import com.team4.shoppingmall.buyer_inq.Buyer_InqDTO;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqService;
 import com.team4.shoppingmall.cart.CartDTO;
 import com.team4.shoppingmall.cart.CartService;
+import com.team4.shoppingmall.order_detail.Order_DetailService;
+import com.team4.shoppingmall.order_prod.OrderProdDTO;
+import com.team4.shoppingmall.order_prod.OrderProdService;
 import com.team4.shoppingmall.prod_option.Prod_OptionDTO;
 import com.team4.shoppingmall.prod_optionTest.Prod_OptionTestService;
-import com.team4.shoppingmall.rent.RentDTO;
 import com.team4.shoppingmall.rent.RentService;
-import com.team4.shoppingmall.rent_detail.RentDetailDTO;
 import com.team4.shoppingmall.rent_detail.RentDetailService;
 import com.team4.shoppingmall.rent_prod_stock.RentProdStockService;
 import com.team4.shoppingmall.reviews.ReviewsService;
 import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestDTO;
 import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestService;
-import com.team4.shoppingmall.util.DateUtil;
 
 @Controller
 @RequestMapping("/prod")
@@ -69,6 +69,12 @@ public class ProdTestController {
 	
 	@Autowired
 	RentDetailService rentDetailService; //대여 상세
+
+	@Autowired
+	OrderProdService orderProdService; //주문
+	
+	@Autowired
+	Order_DetailService order_DetailService; //주문상세 
 	
 	/* 상품 목록 페이지 */
 	@GetMapping("/productlistTest")
@@ -131,7 +137,6 @@ public class ProdTestController {
 		
     	//1.session에서 읽을 예정 
         String member_id = "testid";
-		//String memberId = (String) session.getAttribute("member_id"); 나중에 주석 풀기
 		
 		//선택된 옵션 값 확인 
 		String param = request.getQueryString();
@@ -149,15 +154,20 @@ public class ProdTestController {
         	String[] propertis = param.split("&");
         	for(String pro: propertis) {
         		String[] keyValue = pro.split("=");
+        		System.out.println(keyValue[0] + ":" + keyValue[1]);
         		
-        		//상품ID 한글 꺠짐 해결 decode
+        		//상품ID
         		map.put(keyValue[0], URLDecoder.decode(keyValue[1], "utf-8"));
         		
-        		//discountPrice는 장바구니에 필요없음(param으로 넘어올 필요없음) - 수정 필요
-        		//if(!keyValue[0].contains("quantity")&& !keyValue[0].contains("discountPrice") &&  !keyValue[0].contains("prod_id"))
-        		if(!keyValue[0].contains("quantity")&& !keyValue[0].contains("productPrice") &&  !keyValue[0].contains("prod_id"))
-        			optionMap.put(keyValue[0], keyValue[1]);
+        		//옵션
+        		if(!keyValue[0].contains("quantity")&& !keyValue[0].contains("productPrice") &&  !keyValue[0].contains("prod_id")) {
+        			
+					optionMap.put(keyValue[0], keyValue[1]); 
+        		}
+        		System.out.println("optionMap" + optionMap);
+        		
         	}
+        	System.out.println("optionMap" + optionMap);
         	System.out.println("param으로 넘어온 전체 값 map : " + map);
         	
            
@@ -175,20 +185,15 @@ public class ProdTestController {
             	
                 if(cartBySellstockDTO != null) {
                 	//2.update문 - 같은 상품 존재 시 수량 업데이트 
-                	
                 	CartDTO cart = new CartDTO();
                 	
-                	//select로 조회한 결과에 있는 cart_id를 가져와서 저장
-                	cart.setCart_id(cartBySellstockDTO.getCart_id()); 
-                	//cart_amount 변수 저장 => 기존에 있는 cart_amount + 수량(quantity)	
-                	cart.setCart_amount(Integer.parseInt(map.get("quantity")));
+                	cart.setCart_id(cartBySellstockDTO.getCart_id());  //장바구니ID
+                	cart.setCart_amount(Integer.parseInt(map.get("quantity"))); //기존에 있는 cart_amount + 수량(quantity)	
                 	
-                	//int updateResult = cartService.updateCartBySellstock(cart);
-                	cartService.updateCartBySellstock(cart);
+                	int updateResult = cartService.updateCartBySellstock(cart);
                 	
                 } else {
-                	//3.insert문 - 장바구니 테이블에 새로 등록
-                	//여기서 쓰인 cart_id = 0은 의미없음. 시퀀스 사용중
+                	//3.insert문 - 장바구니 새로 등록 (여기서 쓰인 cart_id = 0은 의미없음. 시퀀스 사용중)
                 	CartDTO cartDTO = new CartDTO(0, member_id, sellStockId, Integer.parseInt(map.get("quantity")));
                 	cartService.cartInsert(cartDTO);
                 }
@@ -200,43 +205,80 @@ public class ProdTestController {
             return message; //장바구니 페이지 아직 연결 X
             
         }else {//(2)param이 null인 경우
-				System.out.println("(옵션null)Selected option: " + param);
-				message = "옵션을 선택해 주세요";
-				return message;  
-			  }
+			message = "옵션을 선택해 주세요";
+			return message;  
+		  }
     }
 	    
-	/* 구매하기 */
-	//상품 선택한 옵션 값 저장하기 -> 주문페이지
-	//결제가 된 후에 주문상세테이블에 저장되는것? 
-	//@GetMapping("/?")
-	//public void productOrderInsert(String productOption) {
-	
-	//주문테이블 insert 1 : 주문상세테이블 insert  n
-	
-	
-	//
-	//}
+	/* 구매하기 */ //json으로 가져와보자 , 프로세스는 바로 대여하기 기능이랑 같음.~~~~~~~~~~~~~~~~~ㅇㅕ기하는중  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	//상품 선택한 옵션 값 저장하기 -> 주문페이지 , 주문상세 동시에 insert
+	/*
+	@PostMapping("/productOrderInsert.do")
+	@ResponseBody
+	public String productOrderInsert(HttpServletRequest request, Model model) throws UnsupportedEncodingException {
+        
+		String prod_id = "나이키 반팔_1234-1234";
+		
+    	//1.session에서 읽을 예정 
+        String member_id = "testid";
+		
+		//선택된 옵션 값 확인 
+		String param = request.getQueryString();
+        System.out.println("(구매하기)param: " + param);
+        
+        //1.판매재고에 옵션의 상품이 존재하는지 찾기
+    	HashMap<String, String> map = new HashMap<>(); 
+    	HashMap<String, String> optionMap = new HashMap<>(); //옵션Map-키(옵션명):값(옵션값)
+    	String[] propertis = param.split("&");
+    	for(String pro: propertis) {
+    		String[] keyValue = pro.split("=");
+    		System.out.println(keyValue[0] + ":" + keyValue[1]);
+    		
+    		//상품ID
+    		map.put(keyValue[0], URLDecoder.decode(keyValue[1], "utf-8"));
+    		
+    		//옵션들
+    		if(!keyValue[0].contains("quantity")&& !keyValue[0].contains("productPrice") &&  !keyValue[0].contains("prod_id")) {
+				optionMap.put(keyValue[0], keyValue[1]); 
+    		}
+    		System.out.println("optionMap" + optionMap);
+    	}
+    	
+    	//판매재고ID
+    	String sellStockId = cartService.searchStockId(optionMap, map.get("prod_id"));
+       
+    	//판매 재고가 있을 경우
+		 if(sellStockId != null) {
+			 //1.select문 - 주문에 같은 상품 있는지 조회
+			 Map<String,String> map2 = new HashMap<>();
+             map2.put("member_id", member_id);
+             map2.put("sellstock_id", sellStockId);
+             
+             //OrderProdDTO orderProdDTO = orderProdService.selectOrderBySellstock(map2);
+		 }
+    	 //2.주문하기 insert -> 주문id 생성
+        
+        //3.주문상세 insert <- 주문테이블에서 생성된 주문id
+        
+        
+        
 
+        // 주문 처리 후 응답 반환
+        return "주문이 성공적으로 저장되었습니다.";
+    }
+
+	*/
 	/* 상품 대여 가능한지 체크 => 대여하기 진행 */
 	@PostMapping("/isProductRentable")
 	@ResponseBody
 	public int isProductRentable(HttpServletRequest request, Model model) {
 		
 		//회원 세션에서 읽기
-		String member_id = "testid";
-    	 
+		String member_id = "testid";	 
 		String param = request.getQueryString();
 		String prod_id="";
 		
-		String rent_prod_quantity = "";
-		String rent_start_date = "";
-		String rent_end_date = "";
-		String total_amount = "";
-		
 		//1.상품이 대여재고에 존재하는지 찾기
-		//{color=4, size=1, rent_prod_quantity=1, rent_start_date=2024-06-27, rent_end_date=2024-07-04, prod_id=%EB%82%98%EC%9D%B4%ED%82%A4%20%EB%B0%98%ED%8C%94_1234-1234, total_amount=30000}
-		
     	HashMap<String, String> map = new HashMap<>(); 
     	HashMap<String, String> optionMap = new HashMap<>(); //옵션Map
     	String[] propertis = param.split("&");
@@ -246,21 +288,10 @@ public class ProdTestController {
     	int index=0;
     	
     	for(String pro: propertis) {
-    		String[] keyValue = pro.split("=");
-    		
-    		map.put(keyValue[0], keyValue[1]);
-    		
+    		String[] keyValue = pro.split("=");  		
+    		map.put(keyValue[0], keyValue[1]);   		
     		//상품id
     		if(keyValue[0].equals("prod_id")) prod_id = keyValue[1];
-    		
-    		//대여 수
-    		if(keyValue[0].equals("rent_prod_quantity")) rent_prod_quantity = keyValue[1];  //수량
-    		//대여 시작일
-    		if(keyValue[0].equals(("rent_start_date"))) rent_start_date = keyValue[1]; 
-    		//대여 마감일
-    		if(keyValue[0].equals(("rent_end_date"))) rent_end_date = keyValue[1];
-    		//대여가
-    		if(keyValue[0].equals(("total_amount"))) total_amount = keyValue[1]; //대여가
     		
     		//옵션들
     		if(!keyValue[0].contains("prod_id")&& 
@@ -297,94 +328,16 @@ public class ProdTestController {
 		//해당 옵션의 대여 상품 재고 조회
 		Map<String, String> rentProductStockCheck = rentProdStockService.selectRentStockByProdId(prod_id, optionString);
         model.addAttribute("rentProductStockCheck",rentProductStockCheck);
-        //rentProductStockCheck => {OPT_ID2=4, OPT_ID1=1, R_STOCK_ID=나이키 반팔_1234-1234_RENT_1, STOCK=50}
         
-        
-        /* 대여 */
         // 2.대여재고가 존재하는 경우 대여하기 가능
-         if (rentProductStockCheck != null) { 
-        	
-        	 RentDTO rent = new RentDTO();
-        	
-        	 rent.setRent_start_date( DateUtil.getSQLDate(rent_start_date)  );
-        	 rent.setRent_end_date(DateUtil.getSQLDate(rent_end_date));
-             rent.setMember_id(member_id);
-             rent.setTotal_rent_price(Integer.parseInt(total_amount));
-            
-        	 int rentProdInsert = rentService.rentInsert(rent);
-        	 
-        	 
-        	 /* 대여 상세 -------------------------||진행중||---------------------------------------- 
-        	 // 삽입된 대여ID를 찾는 select문 RENT테이블에 삽입되는 RENTAL_CODE 찾기
-             int rentalCode = rentService.selectInsertRentalCode();
-    	 	
-        	 //3.옵션에 해당하는 상품의 대여재고ID(r_stock_id) 구하고 대여상세 생성
-             if (rentProductStockCheck != null && rentProductStockCheck.containsKey("R_STOCK_ID")) {
-                 String rentStockId = rentProductStockCheck.get("R_STOCK_ID");
-                 System.out.println("R_STOCK_ID: " + rentStockId);
-                 
-                 //대여ID는 어떻게 찾지?
-                 
-                 RentDetailDTO rentDetailDTO = new RentDetailDTO();
-                 
-                 //rentDetailDTO.setRentdetail_id(); 	//시퀀ㅅ
-                 rentDetailDTO.setRent_product_price(Integer.parseInt(total_amount)); //일단 대여가격 넣음
-                 rentDetailDTO.setR_stock_id(rentStockId);  //대여재고id
-                 rentDetailDTO.setRent_num(Integer.parseInt(rent_prod_quantity)); //대여 주문 수량
-                 
-                 rentDetailDTO.setRental_code(rentalCode); //대여id (시퀀스)
-                 
-                 
-                 //대여상세 생성 Insert (대여id, 대여재고id, 주문수량, 상품가격(대여가), 주문상세번호(시퀀스) )
-                 //맵핑된 sql문 못찾음 이슈
-                 int rentDetailInsert = rentDetailService.rentDetailInsert(rentDetailDTO);
-                 
-                 System.out.println("rentDetailInsert: " + rentDetailInsert);
-                 
-                 
-             } else {
-                 System.out.println("R_STOCK_ID 값이 존재하지 않습니다.");
-             }
-             //------------------------------------------------------------------------
-        	 */
-        	
-        	 
-        	 
-             return 1; // 대여 성공
-             
-         } else{
-        	 
-        	 return 0; //대여실패 (재고없음)
-         }
-         
-         
-		
+        if (rentProductStockCheck == null || !rentProductStockCheck.containsKey("R_STOCK_ID")) {
+        	return 0; //대여실패 (재고없음);
+        }
+        //대여하기 Insert (Service에서 로직 처리)
+         int rentProdInsert = rentService.rentInsert(member_id, map, rentProductStockCheck);        	 
+         return rentProdInsert; // 대여 성공
+
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	/* 상품 문의하기 (구매자=>판매자) */
