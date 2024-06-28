@@ -8,7 +8,7 @@
  	<select id="selectAllOptionsByProdId" parameterType="string" resultType="map">
         SELECT 
             PO.OPT_NAME AS OPT_NAME,
-            LISTAGG(  PO.OPT_VALUE, ',' )WITHIN GROUP (ORDER BY PO.OPT_VALUE) AS OPT_VALUE
+            LISTAGG(  PO.OPT_VALUE||'-'||PO.OPT_ID, ',' )WITHIN GROUP (ORDER BY PO.OPT_VALUE||'-'||PO.OPT_ID) AS OPT_VALUE
 		FROM PROD_OPTION PO
 		WHERE PO.PROD_ID = #{prod_id} 
 		GROUP BY PO.OPT_NAME

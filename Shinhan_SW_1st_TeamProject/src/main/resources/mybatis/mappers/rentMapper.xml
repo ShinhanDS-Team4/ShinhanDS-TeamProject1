@@ -17,14 +17,17 @@
 		FROM RENT
 	</select>
 
-	<!-- 대여하기 -->
-	<insert id="memberInsert" parameterType="rentVO">
+	<!-- 대여하기 (주문상태 칼럼 삭제) -->
+	<insert id="rentInsert" parameterType="com.team4.shoppingmall.rent.RentDTO">
 		INSERT
-		INTO
-		RENT("member_id", "member_pw", "member_name", "email", "phone",
-		"brand", "birth_date", "last_access", "member_type", "gender")
-		VALUES(#{member_id}, #{member_pw}, #{member_name}, #{email}, #{phone},
-		#{brand}, #{birth_date}, #{last_access}, #{member_type}, #{gender})
+		INTO RENT(rental_code, rent_start_date, rent_end_date, member_id, total_rent_price)
+		VALUES(
+			rent_sequence.nextval, 
+			#{rent_start_date}, 
+			#{rent_end_date}, 
+			#{member_id}, 
+			#{total_rent_price}
+		)
 	</insert>
 
 	<!-- 대여상태 수정 -->
@@ -67,6 +70,5 @@
 		where
 			r.rental_code = #{aa}
 	</select>
-
 
 </mapper>

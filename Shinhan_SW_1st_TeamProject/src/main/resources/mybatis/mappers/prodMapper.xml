@@ -25,7 +25,7 @@
 		    (SELECT COUNT(BI.buyer_inq_id) 
 		     FROM BUYER_INQ BI 
 		     WHERE BI.prod_id = P.prod_id) AS inquiry_count
-		FROM PROD P
+		FROM PROD P                                                                       
 		JOIN MEMBER M ON P.member_id = M.member_id
 		JOIN CATEGORY C ON P.CATEGORY_ID = C.category_id
 		LEFT JOIN CATEGORY PC ON C.parent_category_id = PC.category_id
@@ -36,14 +36,14 @@
 		resultType="prodVO">
 		SELECT * 
 		FROM PROD 
-		WHERE prod_id = #{prod_id}
+		WHERE "prod_id" = #{prod_id}
 	</select>
 
 	<select id="selectByMemberId" parameterType="string"
 		resultType="prodVO">
 		SELECT * 
 		FROM PROD 
-		WHERE member_id = #{member_id}
+		WHERE "member_id" = #{member_id}
 	</select>
 
 	<select id="selectAll" resultType="prodVO">
@@ -70,8 +70,8 @@
 
 	<insert id="prodInsert" parameterType="prodVO">
 		INSERT 
-		INTO PROD(prod_id, prod_name, prod_desc, prod_price, 
-				  prod_added_date, category_id, member_id) 
+		INTO PROD("prod_id", "prod_name", "prod_desc", "prod_price", 
+				  "prod_added_date", "category_id", "member_id") 
 		VALUES(#{prod_id}, #{prod_name}, #{prod_desc}, #{prod_price}, 
 			   #{prod_added_date}, #{category_id}, #{member_id})
 	</insert>
@@ -79,7 +79,7 @@
 	<update id="prodUpdate" parameterType="prodVO">
 		UPDATE PROD
 		SET
-		prod_name = #{prod_name}, prod_desc = #{prod_desc}, 
+		"prod_name" = #{prod_name}, "prod_desc" = #{prod_desc}, 
 		"prod_price" = #{prod_price}, "prod_added_date" = #{prod_added_date}, 
 		"category_id" = #{category_id}, "member_id" = #{member_id}
 		WHERE "prod_id" = #{prod_id}

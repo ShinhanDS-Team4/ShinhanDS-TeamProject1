@@ -73,6 +73,27 @@
 				$('#rentPopup').hide();
 			}
 		});
+		
+		//상품 문의 버튼 클릭 이벤트
+    	$(document).ready(function() {
+            $('#prodQnaBtn').click(function() {
+                var formData = $('#productQnaForm').serialize();
+
+                $.ajax({
+                    url: '${path}/prod/productQnaInsert.do',
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        alert(response);
+                        location.reload(); 
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+                        alert('오류가 발생했습니다. 다시 시도해주세요.');
+                    }
+                });
+            });
+        });
 	});
 
 </script>
@@ -89,9 +110,9 @@
 	                <h2>상품 대여</h2>
 	                <span class="rent-prod-close">&times;</span>
 	            </div>
+	            <%--상품 상세 정보 조회 --%>
 	            <div class="rent-prod-content">
-	           		<c:forEach items="${prod_detail_info}" var="prod"> <%--상품 상세 정보 조회 --%>
-		                <p><strong>상품 명:</strong> (<strong class="blue-text">${prod.BRAND}) ${prod.PROD_NAME}</strong></p>
+		                <p><strong>상품 명:</strong> (<strong class="blue-text">${prod_detail_info.BRAND}) ${prod_detail_info.PROD_NAME}</strong></p>
 		                <div class="rent-prod-option">
 		               		<strong>상품 옵션: </strong>
 							<c:forEach items="${prod_Options}" var="prodOption">
@@ -99,17 +120,22 @@
 									<p>${prodOption.OPT_NAME} :</p>
 									<select id="product-option" name="${prodOption.OPT_NAME}">
 									   <option disabled selected>선택</option>
-								       <c:forTokens items="${prodOption.OPT_VALUE}" delims="," var="optValue">
-										     <option value="${optValue}">${optValue}</option>
+								       <c:forTokens items="${prodOption.OPT_VALUE}" delims="," var="optValue" >
+										     <c:set var="position" value="${fn:indexOf(optValue,'-')}"/>
+										     <c:set var="optName" value="${fn:substring(optValue,0,position) }"/>
+										     <c:set var="optLength" value="${fn:length(optValue)}"/>
+										     <c:set var="optId" value="${fn:substring(optValue,position+1, optLength) }"/>
+										     <option value="${optId}">${optName}</option>
 										</c:forTokens>
 								    </select> 
 								</div>
 					     	</c:forEach>
+							<input type="hidden" name="prod_id" value="${prod_detail_info.prod_id}">
 						</div>
 		                <p>
 		                <strong>대여량:</strong> 
-		                <input type="number" id="rent-prod-quantity" class="rent-prod-quantity" 
-		                	   name="rent-prod-quantity" value="1" min="1">개
+		                <input type="number" id="rent_prod_quantity" class="rent-prod-quantity" 
+		                	   name="rent_prod_quantity" value="1" min="1">개
 		                </p>
 		                <p><strong>대여 시작일 선택:</strong> <span>대여 기간은 7일입니다.</span></p>
 		                
@@ -119,26 +145,23 @@
 		                    <input type="date" value="2024-07-01" id="rent_end_date" name="rent_end_date" readonly> <%-- 마감일 선택 불가 --%>
 		                    <span class="small-text red-text">(제품도착일 - 반납처리일)</span>
 		                </div>
-	                </c:forEach>
+	               
 	                <div class="rent-prod-total">
 	                    <p><strong>총 대여 금액</strong></p>
 	                    <p class="total-amount"><strong>30,000원</strong></p> <%-- js: 기간확인 후 가격붙이기 --%>
-	                	<input type="hidden" value="30000"> <%-- 자바로 넘길 대여가격 --%>
+	                	<input name="total_amount" type="hidden" value="30000"> <%-- 자바로 넘길 대여가격 --%>
 	                </div>
 	                <p class="rent-prod-warning">! 선택한 상품의 옵션을 확인하신 후 대여를 진행해 주세요.</p>
 		            <button type="button" class="rent-prod-button">대여하기</button> 
+		            <button type="button" class="rent-cart-button">장바구니</button> 
 	            </div>
 	        </div>
 	    </div>
   	</form>
     <script type="text/javascript">
     $(document).ready(function() {
-    	
-    	
-      $('.rent-prod-button').on('click',function(){
        const basePrice = 30000;
     	 
-    	
        function formatDate(date) {
            var day = String(date.getDate()).padStart(2, '0');
            var month = String(date.getMonth() + 1).padStart(2, '0');
@@ -154,7 +177,7 @@
        }
 	   //대여 가격
        function updateTotalPrice() {
-           var quantity = $('#rent-prod-quantity').val();
+           var quantity = $('#rent_prod_quantity').val();
            var totalPrice = basePrice * quantity;
            $('.total-amount>strong').text(totalPrice.toLocaleString() + '원');
            $('#total-price-hidden').val(totalPrice);
@@ -179,7 +202,7 @@
            $(this).val(setReturnDate(startDate));
        });
        
-       $('#rent-prod-quantity').on('input', function() {
+       $('#rent_prod_quantity').on('input', function() {
            updateTotalPrice();
        });
        
@@ -187,50 +210,55 @@
        
        
     	//대여 팝업창 대여하기 버튼 클릭 이벤트
-    	//$('.rent-prod-button').on('click',function(){
+    	$('.rent-prod-button').on('click',function(){
     		 var rentFormData = $('#rentPopupForm').serialize();
-    		 
     		 console.log("rentFormData: " + rentFormData);
-    		 /*
-    		 $.ajax({
-                 url: "${path}/prod/isProductRentable",
-                 type: 'POST',
-                 data: rentFormData,
-                 success: function(response) {
-                 	 alert(response);
-                 },
-                 error: function(error) {
-                	 	alert("Error: "+error);
-                 }
-             });*/
+    		 
+	   		 //옵션 값이 null일 때 경고 띄우기
+   		     var allOptionsSelected = true;
+	   		 $('#product-option').each(function() {
+		            if ($(this).val() === null) {
+		                allOptionsSelected = false;
+		                
+		                return false; 
+		            }
+		     });
+	         if (!allOptionsSelected) {
+	            alert("모든 옵션을 선택해 주세요.");
+	            return;
+      		 }
+    		 
     		 $.ajax({
                  url: "${path}/prod/isProductRentable?"+rentFormData,
                  type: 'POST',
-                 //data: rentFormData,
                  success: function(response) {
-                 	 alert(response);
+                  	 if (response == 1) {
+                     	 alert("대여 가능");
+                 	 } else {
+                 		 alert("해당 옵션의 상품 재고가 없습니다");
+                 	 }
+                 	 
                  },
                  error: function(error) {
                 	 	alert("Error: "+error);
                  }
              });
     	});
+       
+       
+       
     });
     </script>
 	<%-- 장바구니 팝업 창 --%>
 	<div class="popup-background" id="popupBackground">
-	    <%-- 팝업 컨테이너 --%>
-	    <div class="popup-container">
-	        <%-- 팝업 아이콘 --%>
-	        <div class="popup-icon">!</div>
-	        <%-- 팝업 메시지 --%>
-	        <p>장바구니로 이동하시겠습니까?</p>
-	        <!-- 팝업 버튼 -->
+	    <div class="popup-container">	       
+	        <div class="popup-icon">!</div>	       
+	        <p>장바구니로 이동하시겠습니까?</p>	        
 	        <button class="popup-button yes-button">네</button>
 	        <button class="popup-button no-button">아니요</button>
 	    </div>
 	</div>
-	<%-- 상품 문의 모달 창 action="${path}/prod/productQnaInsert.do"  method="post" --%>
+	<%-- 상품 문의 모달 창 --%>
 	<form id="productQnaForm">
 		<div id="myModal" class="modal">
 			<div class="modal-content">
@@ -246,7 +274,6 @@
 						placeholder="문의 내용을 입력해주세요. 특수문자 &#87, &#47, &#60, &#62 는 사용할 수 없습니다.">
 					</textarea>
 					<br> 
-					<%-- <input type="text" name="qnaWriterName" placeholder="이름" /> --%>
 				</div>
 				<div class="modal-footer">
 					<button id="prodQnaBtn" type="submit">등록</button> 
@@ -254,35 +281,11 @@
 			</div>
 		</div>
 	</form>
-	  <script>
-        $(document).ready(function() {
-        	//상품 문의 버튼 클릭 이벤트
-        	$(document).ready(function() {
-                $('#prodQnaBtn').click(function() {
-                    var formData = $('#productQnaForm').serialize();
-
-                    $.ajax({
-                        url: '${path}/prod/productQnaInsert.do',
-                        type: 'POST',
-                        data: formData,
-                        success: function(response) {
-                            alert(response);
-                            location.reload(); 
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Error:', error);
-                            alert('오류가 발생했습니다. 다시 시도해주세요.');
-                        }
-                    });
-                });
-            });
-        });
-    </script>
 	<%-- 본문 --%>
 	<div class="container">
 		<div class="product_detail-inner">
-			<c:forEach items="${prod_detail_info}" var="prod">
-				<p>home > ${prod.PARENT_CATEGORY_NAME} > ${prod.SUB_CATEGORY_NAME}</p>
+			 
+				<p>home > ${prod_detail_info.PARENT_CATEGORY_NAME} > ${prod_detail_info.SUB_CATEGORY_NAME}</p>
 				<div class="product-detail_wrap">
 				
 					<%-- 메인 상품 사진 :판매자가 등록한 이미지 중 첫번째 --%>
@@ -291,31 +294,37 @@
 					</div>
 					<div class="product-details">
 						<p class="free">무료배송</p>
-						<h1>${prod.BRAND}</h1>
-						<h2>${prod.PROD_NAME}</h2>
+						<h1>${prod_detail_info.BRAND}</h1>
+						<h2>${prod_detail_info.PROD_NAME}</h2>
 						<div class="price_wrap">
 							<p class="productPrice">
-								${prod.PROD_PRICE}원
+								${prod_detail_info.PROD_PRICE}원
 							</p>
 						</div>
 						<p class="rate">
-							★${prod.AVERAGE_RATE} <span><a href="javascript:#void" class="review-rate-btn">리뷰 ${prod.REVIEW_COUNT}건</a></span>
+							★${prod_detail_info.AVERAGE_RATE} <span><a href="javascript:#void" class="review-rate-btn">리뷰 ${prod_detail_info.REVIEW_COUNT}건</a></span>
 						</p>
 						<form id="prodOptionFrom" >
 							<div class="choose_wrap">
 								<p class="option_name">상품 옵션</p>
 								<div class="select_choose">
-									<%-- 현재 판매 상품의 옵션들 --%>
 									<div>
-										<c:forEach items="${prod_Options}" var="prodOption">
-											<p>${prodOption.OPT_NAME} :</p>
-											<select id="product-option" name="${prodOption.OPT_NAME}">
-											   <option disabled selected>선택</option>
-										       <c:forTokens items="${prodOption.OPT_VALUE}" delims="," var="optValue">
-												     <option value="${optValue}">${optValue}</option>
-												</c:forTokens>
-										    </select> 
+									    <c:forEach items="${prod_Options}" var="prodOption">
+											<div>
+												<p>${prodOption.OPT_NAME} :</p>
+												<select id="product-option" name="${prodOption.OPT_NAME}">
+												   <option disabled selected>선택</option>
+											       <c:forTokens items="${prodOption.OPT_VALUE}" delims="," var="optValue" >
+													     <c:set var="position" value="${fn:indexOf(optValue,'-')}"/>
+													     <c:set var="optName" value="${fn:substring(optValue,0,position) }"/>
+													     <c:set var="optLength" value="${fn:length(optValue)}"/>
+													     <c:set var="optId" value="${fn:substring(optValue,position+1, optLength) }"/>
+													     <option value="${optId}">${optName}</option>
+													</c:forTokens>
+											    </select> 
+											</div>
 								     	</c:forEach>
+										<input type="hidden" name="prod_id" value="${prod_detail_info.prod_id}">
 									</div>
 								</div>
 							</div>
@@ -329,8 +338,8 @@
 							</div>
 							
 							<%-- !!!!!!!!!! 자바로 넘겨 줄 단가와 상품ID !!!!!!!!!! --%>
-							<input type="hidden" name="productPrice" value="100000">  <%--value="${prod.prod_price}" --%>
-							<input type="hidden" name="prod_id" value='나이키 반팔_1234-1234'> <%-- value="${prod.prod_id}"> --%>
+							<input type="hidden" name="productPrice" value="${prod_detail_info.prod_price}">  
+							<input type="hidden" name="prod_id" value="${prod_detail_info.prod_id}">  
 						</form>
 						<div class="button-group">
 							<button id="cartButton" type="button" class="white_button">장바구니</button> 
@@ -341,11 +350,14 @@
 						<%-- 
 							대여 재고에 있는 상품이면 대여하기 버튼 활성화 시키기 (상품의 대여재고id를 찾기)
 						--%>
-						<%-- <button type="button" class="noRent_btn">대여불가상품</button> --%>
-						<button type="button" class="rent_btn">대여하기</button>
+						<c:if test="${not empty rentProductStockCheck}">
+						    <button type="button" class="noRent_btn">대여불가상품</button>
+						</c:if>
+						<c:if test="${empty rentProductStockCheck}">
+						    <button type="button" class="rent_btn">대여하기</button>
+						</c:if>
 					</div>
 				</div>
-			</c:forEach>
 			<script>
 		        $(document).ready(function() {
 		    		/* "장바구니 버튼" 선택 시 나타나는 팝업창 */ 
@@ -434,11 +446,6 @@
 			<c:if test="${not empty productReviews}">
 				<div class="review-list" id="review-list">
 					<div class="review-scroll">	
-					<%-- 리뷰가 3개 이상일 때 스크롤 아이콘 ( 수정필요 )
-						<div class="scroll-icon-wrap">
-							<img alt="스크롤아이콘" src="${path}/resources/images/icon-scroll.png"> 
-						</div>
-					--%>
 						<c:forEach items="${productReviews}" var="review">
 							<div class="review"> 
 								<div class="left">
@@ -467,19 +474,19 @@
 									<h3> 
 										<c:forEach items="${prodOptions }" var="option">
 										   <c:if test="${review.OPT_ID1==option.opt_id}">
-										   ${option.opt_name } ${option.opt_value }
+										   ${option.opt_name } : ${option.opt_value }
 										   </c:if> 
 										   <c:if test="${review.OPT_ID2==option.opt_id}">
-										   ${option.opt_name } ${option.opt_value }
+										   ${option.opt_name } : ${option.opt_value }
 										   </c:if> 
 										   <c:if test="${review.OPT_ID3==option.opt_id}">
-										   ${option.opt_name } ${option.opt_value }
+										   ${option.opt_name } : ${option.opt_value }
 										   </c:if> 
 										   <c:if test="${review.OPT_ID4==option.opt_id}">
-										   ${option.opt_name } ${option.opt_value }
+										   ${option.opt_name } : ${option.opt_value }
 										   </c:if> 
 										   <c:if test="${review.OPT_ID5==option.opt_id}">
-										   ${option.opt_name } ${option.opt_value }
+										   ${option.opt_name } : ${option.opt_value }
 										   </c:if> 
 										</c:forEach>
 									</h3>  
@@ -498,7 +505,7 @@
 			</div>
 			
 			<script type="text/javascript">
-				//리뷰작성하기 버튼 클릭 : ${path}/review/write.do 로 이동
+				//리뷰작성하기 버튼 클릭 
 				$('.review-write-btn>button').on('click',function(e){
 					e.preventDefault();
 					location.href = "${path}/review/write.do";

@@ -15,6 +15,6 @@ public class Order_DetailDTO {
 	int order_product_price;	//상품가격
 	int order_num;				//주문수량
 	int order_id;				//주문ID
-	int stock_id;				//재고ID
-	
+	String s_stock_id;			//재고ID (수정)
+	String order_state; 		//주문상태 (수정)
 }

@@ -4,7 +4,15 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.rent_detail">
 
-<!-- 대여상세 상세 -->
+	<!-- 대여재고ID에 해당하는 대여ID 찾기 
+	<select id="selectByRentStockId" parameterType="string"
+			resultType="rent_detailVO">
+		SELECT RENTAL_CODE
+		FROM RENT_DETAIL 
+		WHERE r_stock_id= #{r_stock_id}
+	</select>
+ 	-->
+	<!-- 대여상세 상세 -->
 	<select id="selectById" parameterType="string"
 		resultType="com.team4.shoppingmall.rent_detail.RentDetailDTO">
 		SELECT *
@@ -12,21 +20,28 @@
 		WHERE "rentdetail_id" = #{rentdetail_id}
 	</select>
 
-<!-- 대여상세 목록 -->
+	<!-- 대여상세 목록 -->
 	<select id="selectAll" resultType="com.team4.shoppingmall.rent_detail.RentDetailDTO">
 		SELECT *
 		FROM RENT_DETAIL
 	</select>
 
-<!-- 대여상세 생성 -->
+	<!-- 대여상세 생성 (시퀀스 사용, 주문상태 칼럼 추가) -->
 	<insert id="rentDetailInsert" parameterType="com.team4.shoppingmall.rent_detail.RentDetailDTO">
 		INSERT
-		INTO RENT_DETAIL("rent_product_price", "rent_num", "stock_id", "rental_code")
-		VALUES(#{rent_product_price}, #{rent_num}, #{stock_id}, #{rental_code})
+		INTO RENT_DETAIL(rentdetail_id, rent_product_price, rent_num, r_stock_id, rental_code, rent_state)
+		VALUES(
+			rent_detail_sequence.nextval, 
+			#{rent_product_price}, 
+			#{rent_num}, 
+			#{r_stock_id}, 
+			#{rental_code},
+			'rent_requested'
+		)
 	</insert>
 
-<!-- 대여상세 수정 -->
-	<update id="rentDetailUpdate" parameterType="com.team4.shoppingmall.rent_detail.RentDetailDTO">
+	<!-- 대여상세 수정 -->
+	<update id="rentDetailUpdate" parameterType="rent_detailVO">
 		UPDATE RENT_DETAIL
 		SET
 		"rent_product_price" = #{rent_product_price}, "rent_num" = #{rent_num}

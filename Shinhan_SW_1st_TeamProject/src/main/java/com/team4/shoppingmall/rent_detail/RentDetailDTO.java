@@ -14,6 +14,7 @@ public class RentDetailDTO {
 	Integer rentdetail_id;
 	Integer rent_product_price;
 	Integer rent_num;
-	Integer stock_id;
 	Integer rental_code;
+	String r_stock_id;
+	String rent_state;  //주문상태 옮김
 }
