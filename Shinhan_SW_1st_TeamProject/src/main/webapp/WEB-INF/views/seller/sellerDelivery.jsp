@@ -22,17 +22,18 @@
 		
 		var selectedStatus = $('#order_status_select').val();//일괄처리할 상태(select-option)
 		
-		var slectedOrderDetails =[];
+		var selectedOrderDetails =[];
+		
 		$('.order-checkbox:checked').each(function() {
-			slectedOrderDetails.push($(this).data('id'));
+			selectedOrderDetails.push($(this).data('id'));
 		});
 		
-		if(slectedOrderDetails.length>0){
+		if(selectedOrderDetails.length>0){
     		$.ajax({
     			url:"/shoppingmall/seller/updateOrderStatus",
     			type:'POST',
     			contentType: 'application/json',
-    			data: JSON.stringify({orderDetailIds:slectedOrderDetails, status:selectedStatus}),
+    			data: JSON.stringify({orderDetailIds:selectedOrderDetails, status:selectedStatus}),
     			success: function(response){
     				if(response==="Update Success"){
     					alert('갱신 완료');
@@ -46,6 +47,36 @@
     			}
     		});
     	}else {
+        	alert('선택된 주문이 없습니다.');
+    	}
+	}
+	
+	function deleteCheckedOrder(){
+		var selectedStatus = '일괄삭제'
+		var selectedOrderDetails =[];
+		$('.order-checkbox:checked').each(function() {
+			selectedOrderDetails.push($(this).data('id'));
+		});
+		
+		if(selectedOrderDetails.length>0){
+			$.ajax({
+    			url:'/shoppingmall/seller/deleteOrderDetails',
+    			type:'POST',
+    			contentType: 'application/json',
+    			data: JSON.stringify({orderDetailIds:selectedOrderDetails, status:selectedStatus}),
+    			success: function(response){
+    				if(response==="Delete Success"){
+    					alert('선택 항목 삭제 완료');
+    					location.reload();
+    				}else{
+    					alert('삭제 중 오류 발생');
+    				}
+    			},
+    			error:function(){
+    				alert('서버 요청 중 오류가 발생했습니다.');
+    			}
+    		});
+		}else {
         	alert('선택된 주문이 없습니다.');
     	}
 	}
@@ -113,7 +144,7 @@
 						<option>환불완료</option>
 					</select>
 					<button id="batch_process_button" onclick="updateOrderStatus()">일괄처리</button>
-					<button id="delete_selected_button">선택 내역 삭제</button>
+					<button id="delete_selected_button" onclick="deleteCheckedOrder()">선택 내역 삭제</button>
 				</div>
 			</div>
 

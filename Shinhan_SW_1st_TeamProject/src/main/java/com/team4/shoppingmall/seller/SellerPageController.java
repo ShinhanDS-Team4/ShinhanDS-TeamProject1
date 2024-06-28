@@ -143,9 +143,22 @@ public class SellerPageController {
         	
         	int statusUpdateResult = order_DetailService.orderDetailStatusUpdate(order_DetailDTO);
         }
-		
 		return "Update Success";
 	}
+	
+	@PostMapping("/deleteOrderDetails")
+	@ResponseBody
+	public String deleteOrderDetails(@RequestBody OrderUpdateReqDTO request) {
+		List<Integer> orderDetailIds = request.getOrderDetailIds();
+		System.out.println(orderDetailIds);
+		for(Integer orderDetail : orderDetailIds) {
+			int orderDetailDelResult = order_DetailService.orderDetailDelete(orderDetail);
+		}
+		
+		return "Delete Success";
+	}
+	
+	
 
 	// 문의 목록 페이지 보여주기
 	@GetMapping("/Q&AList.do")

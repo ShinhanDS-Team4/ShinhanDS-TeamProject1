@@ -58,7 +58,7 @@
 		WHERE orderdetail_id = #{orderdetail_id}
 	</update>
 
-	<delete id="orderDetailDelete" parameterType="string">
+	<delete id="orderDetailDelete" parameterType="int">
 		DELETE
 		FROM
 		ORDER_DETAIL
