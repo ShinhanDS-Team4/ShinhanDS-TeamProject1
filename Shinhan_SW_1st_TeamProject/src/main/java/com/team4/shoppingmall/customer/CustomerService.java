@@ -11,24 +11,27 @@ public class CustomerService {
 	@Autowired
 	CustomerDAOInterface customerDAO;
 	
-	// °í°´»ó¼¼ 
+	// ï¿½ï¿½ï¿½ï¿½ 
 	public CustomerDTO selectById(Integer rental_code) {
 		return customerDAO.selectById(rental_code);
 	}
 	
-	// °í°´¸ñ·Ï 
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ 
 	public List<CustomerDTO> selectAll() {
 		return customerDAO.selectAll();
 	}
 	
-	// °í°´µî·Ï 
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ 
 	public int customerInsert(CustomerDTO customer) {
 		return customerDAO.customerInsert(customer);
 	}
 	
-	// °í°´¼öÁ¤ 
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
 	public int customerUpdate(Integer rental_code) {
 		return customerDAO.customerUpdate(rental_code);
 	}
 
+	public Long TotalMoneyAmount() {		
+		return customerDAO.TotalMoneyAmount();
+	}
 }

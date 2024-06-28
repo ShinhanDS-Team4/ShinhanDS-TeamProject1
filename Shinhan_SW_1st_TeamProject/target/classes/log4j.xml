@@ -12,29 +12,29 @@
 	
 	<!-- Application Loggers -->
 	<logger name="com.team4.shoppingmall">
-		<level value="warn" />
+		<level value="info" />
 	</logger>
-
-	<!-- 3rdparty Loggers -->
+<!-- 3rdparty Loggers -->
 	<logger name="org.springframework.core">
-		<level value="warn" />
+		<level value="info" />
 	</logger>
 	
 	<logger name="org.springframework.beans">
-		<level value="warn" />
+		<level value="info" />
 	</logger>
 	
 	<logger name="org.springframework.context">
-		<level value="warn" />
+		<level value="info" />
 	</logger>
 
 	<logger name="org.springframework.web">
-		<level value="warn" />
+		<level value="info" />
 	</logger>
 
+	
 	<!-- Root Logger -->
 	<root>
-		<priority value="warn" />
+		<priority value="info" />
 		<appender-ref ref="console" />
 	</root>
 	

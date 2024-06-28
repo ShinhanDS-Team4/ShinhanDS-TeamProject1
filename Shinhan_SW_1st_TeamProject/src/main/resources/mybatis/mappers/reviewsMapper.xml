@@ -32,7 +32,7 @@
 		resultType="reviewsVO">
 		SELECT *
 		FROM REVIEWS
-		WHERE "review_id" = #{review_id}
+		WHERE review_id = #{review_id}
 	</select>
 
 	<select id="selectAll" resultType="reviewsVO">
@@ -42,25 +42,25 @@
 
 	<insert id="reviewsInsert" parameterType="reviewsVO">
 		INSERT
-		INTO REVIEWS("review_id", "rate", "review_date", 
-					 "review_img", "review_content", "orderdetail_id")
-		VALUES(#{review_id}, #{rate}, #{review_date}, 
+		INTO REVIEWS(review_id, review_title, rate, review_date, 
+					 review_img, review_content, orderdetail_id)
+		VALUES(#{review_id}, #{review_title}, #{rate}, #{review_date}, 
 			   #{review_img}, #{review_content}, #{orderdetail_id})
 	</insert>
 
 	<update id="reviewsUpdate" parameterType="reviewsVO">
 		UPDATE REVIEWS
 		SET
-		"rate" = #{rate}, "review_date" = #{review_date},
-		"review_img" = #{review_img}, "review_content" = #{review_content},
-		"orderdetail_id" = #{orderdetail_id}
-		WHERE "review_id" = #{review_id}
+		review_title = #{review_title}, rate = #{rate}, review_date = #{review_date},
+		review_img = #{review_img}, review_content = #{review_content},
+		orderdetail_id = #{orderdetail_id}
+		WHERE review_id = #{review_id}
 	</update>
 
 	<delete id="reviewsDelete" parameterType="int">
 		DELETE
 		FROM REVIEWS
-		WHERE "review_id" = #{review_id}
+		WHERE review_id = #{review_id}
 	</delete>
 	
 </mapper>

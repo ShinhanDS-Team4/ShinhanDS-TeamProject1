@@ -1,6 +1,7 @@
 package com.team4.shoppingmall.prod;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +43,17 @@ public class ProdDAOMybatis implements ProdDAOInterface {
 	@Override
 	public int prodDelete(Integer prod_id) {
 		return sqlSession.delete(namespace+"prodDelete", prod_id);
+	}
+
+
+	@Override
+	public List<Map<String, Object>> selectAll2() {
+		return sqlSession.selectList(namespace+"selectAll2"); 
+	}
+
+	@Override
+	public List<Map<String, Object>> selectByCategory(int categoryId) {
+		return sqlSession.selectList(namespace+"selectByCategory", categoryId); 
+
 	}
 }

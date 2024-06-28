@@ -13,12 +13,12 @@
 	<logger name="com.team4.shoppingmall">
 		<level value="info" />
 	</logger>
-	
+
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework.core">
 		<level value="info" />
 	</logger>	
-	
+
 	<logger name="org.springframework.beans">
 		<level value="info" />
 	</logger>
@@ -31,6 +31,7 @@
 		<level value="info" />
 	</logger>
 
+	
 	<!-- Root Logger -->
 	<root>
 		<priority value="info" />
