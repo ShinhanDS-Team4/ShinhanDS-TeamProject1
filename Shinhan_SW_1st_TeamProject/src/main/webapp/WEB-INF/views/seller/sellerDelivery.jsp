@@ -13,21 +13,11 @@
 <link rel="stylesheet" href="${path}/resources/css/header_footer.css">
 <!-- jquery 연결 -->
 <script src="${path}/resources/js/jquery-3.7.1.min.js"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <!-- Slick 불러오기 -->
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
-<!-- Slick 직접 연결 -->
-<link rel="stylesheet" href="${path}/resources/slick/slick-theme.css">
-<link rel="stylesheet" href="${path}/resources/slick/slick.css">
+
 <!-- 페이지용 css -->
 <link rel="stylesheet" href="${path}/resources/css/seller_Delivery.css" />
-<script src="${path}/resources/slick/slick.min.js"></script>
 </head>
 <body>
 	<%@ include file="../common/header.jsp"%>
@@ -52,24 +42,71 @@
 			</div>
 			<!-- 주문/배송 -->
 			<div class="product-list">
-				<h3>주문/배송</h3>
+				<h3>판매 상품 주문 리스트</h3>
 				<table>
 					<thead>
 						<tr>
 							<th></th>
-							<th>주문ID</th>
-							<th>결제금액(원)</th>
+							<th>주문상세ID</th>
+							<th>상품재고ID</th>
+							<th>가격</th>
+							<th>주문 수량</th>
 							<th>주문상태</th>
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="delivery" items="${deliveryList}">
+						<c:forEach var="order_detail" items="${orderDetailList}">
 							<tr>
-								<td>${delivery.stockid}</td>
-								<td>${delivery.prd_name}</td>
-								<td>${delivery.prod_price}</td>
-								<td>${delivery.s_p_stock}</td>
-								<td><button>수정</button></td>
+								<td><input type="checkbox"/></td>
+								<td>${order_detail.orderdetail_id}</td>
+								<td>${order_detail.s_stock_id}</td>
+								<td>${order_detail.order_product_price}</td>
+								<td>${order_detail.order_num}</td>
+								<td>${order_detail.order_state}</td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+				<div class="actions">
+					<select>
+						<option>결제대기</option>
+						<option>결제완료</option>
+						<option>배송준비중</option>
+						<option>배송중</option>
+						<option>배송완료</option>
+						<option>교환요청</option>
+						<option>교환완료</option>						
+						<option>환불요청</option>
+						<option>환불완료</option>
+					</select>
+					<button>일괄처리</button>
+					<button>선택 내역 삭제</button>
+				</div>
+			</div>
+			
+			<!-- 대여 -->
+			<div class="product-list">
+				<h3>대여 상품 주문 리스트</h3>
+				<table>
+					<thead>
+						<tr>
+							<th></th>
+							<th>주문상세ID</th>
+							<th>상품재고ID</th>
+							<th>가격</th>
+							<th>주문 수량</th>
+							<th>주문상태</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach var="rent_detail" items="${rentDetailList}">
+							<tr>
+								<td><input type="checkbox"/></td>
+								<td>${rent_detail.rentdetail_id}</td>
+								<td>${order_detail.r_stock_id}</td>
+								<td>${order_detail.rent_product_price}</td>
+								<td>${order_detail.rent_num}</td>
+								<td>${order_detail.rent_state}</td>
 							</tr>
 						</c:forEach>
 						<!-- <tr>

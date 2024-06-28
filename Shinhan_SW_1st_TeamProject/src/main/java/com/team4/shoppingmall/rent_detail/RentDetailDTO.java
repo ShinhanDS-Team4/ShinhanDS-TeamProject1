@@ -14,6 +14,7 @@ public class RentDetailDTO {
 	Integer rentdetail_id;
 	Integer rent_product_price;
 	Integer rent_num;
-	Integer stock_id;
+	String r_stock_id;
 	Integer rental_code;
+	String rent_state;
 }

@@ -35,8 +35,10 @@ import com.team4.shoppingmall.buyer_inq.Buyer_InqDAOInterface;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqDTO;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqService;
 import com.team4.shoppingmall.member.MemberService;
+import com.team4.shoppingmall.order_detail.Order_DetailService;
 import com.team4.shoppingmall.prod.ProdService;
 import com.team4.shoppingmall.prod_image.Prod_ImageService;
+import com.team4.shoppingmall.rent_detail.RentDetailService;
 import com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO;
 import com.team4.shoppingmall.rent_prod_stock.RentProdStockService;
 import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockDTO;
@@ -66,6 +68,12 @@ public class SellerPageController {
 
 	@Autowired
 	RentProdStockService rentProdStockService;
+	
+	@Autowired
+	Order_DetailService order_DetailService; 
+	
+	@Autowired
+	RentDetailService rentDetailService;
 
 	String member_id = "573-50-00882";// 임시로 사용할 판매자ID(사업자등록번호)
 
@@ -101,11 +109,12 @@ public class SellerPageController {
 
 	// 판매&배송 페이지 보여주기
 	@GetMapping("/DeliveryList.do")
-	public String deliveryList(Model model, HttpServletRequest request) {
+	public String deliveryList(Model model1, Model model2) {
 
 		// 판매&배송 리스트
-		// model.addAttribute("deliveryList", request);
-
+		//1.판매 상품 대상 주문상세리스트
+		model1.addAttribute("orderDetailList", order_DetailService.selectBySellerID(member_id));
+		model2.addAttribute("rentDetailList", rentDetailService.selectBySellerID(member_id));
 		return "/seller/sellerDelivery";
 	}
 

@@ -47,8 +47,8 @@
 		WHERE prod_id = #{prod_id}
 	</update>
 
-	<delete id="prod_imageDelete" parameterType="int">
-		DELETE *
+	<delete id="prod_imageDelete" parameterType="string">
+		DELETE
 		FROM PROD_IMAGE
 		WHERE prod_id = #{prod_id}
 	</delete>

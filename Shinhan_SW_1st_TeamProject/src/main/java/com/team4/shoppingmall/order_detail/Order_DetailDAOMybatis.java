@@ -15,9 +15,19 @@ public class Order_DetailDAOMybatis implements Order_DetailDAOInterface{
 	String namespace = "com.saren.order_detail.";
 	
 	@Override
-	public Order_DetailDTO selectByOrderDetail_Id(int orderdetail_id) {
-		return sqlSession.selectOne(namespace+"selectByOrderDetail_Id", orderdetail_id);
+	public List<Order_DetailDTO> selectByOrder_Id(int order_id) {
+		return sqlSession.selectList(namespace+"selectByOrder_Id", order_id);
 	};
+	
+	@Override
+	public List<Order_DetailDTO> selectByOrderDetail_Id(int orderdetail_id) {
+		return sqlSession.selectList(namespace+"selectByOrderDetail_Id", orderdetail_id);
+	};
+	
+	@Override
+	public List<Order_DetailDTO> selectBySellerID(String member_id) {
+		return sqlSession.selectList(namespace+"selectBySellerID", member_id);
+	}
 
 	@Override
 	public List<Order_DetailDTO> selectAll() {
@@ -37,6 +47,10 @@ public class Order_DetailDAOMybatis implements Order_DetailDAOInterface{
 	@Override
 	public int orderDetailDelete(int orderdetail_id) {
 		return sqlSession.delete(namespace+"orderDetailDelete", orderdetail_id);
-	};
+	}
+
+	
+
+	
 	
 }

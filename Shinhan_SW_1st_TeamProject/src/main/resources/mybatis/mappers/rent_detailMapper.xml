@@ -4,34 +4,54 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.rent_detail">
 
-<!-- 대여상세 상세 -->
-	<select id="selectById" parameterType="string"
-		resultType="com.team4.shoppingmall.rent_detail.RentDetailDTO">
+	<!-- 대여상세 상세 -->
+	<select id="selectById" parameterType="string" resultType="rent_detailVO">
 		SELECT *
 		FROM RENT_DETAIL
-		WHERE "rentdetail_id" = #{rentdetail_id}
+		WHERE rentdetail_id =
+		#{rentdetail_id}
 	</select>
 
-<!-- 대여상세 목록 -->
-	<select id="selectAll" resultType="com.team4.shoppingmall.rent_detail.RentDetailDTO">
+	<!-- 대여상세 목록 -->
+	<select id="selectAll" resultType="rent_detailVO">
 		SELECT *
 		FROM RENT_DETAIL
 	</select>
 
-<!-- 대여상세 생성 -->
-	<insert id="rentDetailInsert" parameterType="com.team4.shoppingmall.rent_detail.RentDetailDTO">
+	<!-- 판매자ID 단위로 대여 상세 데이터 목록 가져오기 -->
+	<select id="selectBySellerID" parameterType="string" resultType="rent_detailVO">
+		SELECT rd.*
+		FROM RENT_DETAIL rd
+		JOIN RENT_PROD_STOCK rps ON rd.r_stock_id = rps.r_stock_id
+		JOIN PROD p ON rps.prod_id = p.prod_id
+		WHERE p.member_id = #{member_id}
+	</select>
+
+	<!-- 대여상세 생성 -->
+	<insert id="rentDetailInsert" parameterType="rent_detailVO">
 		INSERT
-		INTO RENT_DETAIL("rent_product_price", "rent_num", "stock_id", "rental_code")
-		VALUES(#{rent_product_price}, #{rent_num}, #{stock_id}, #{rental_code})
+		INTO RENT_DETAIL(
+		rentdetail_id, rent_product_price, rent_num,
+		rental_code, r_stock_id, rent_state
+		)
+		VALUES(
+		#{rentdetail_id}, #{rent_product_price}, #{rent_num},
+		#{rental_code}, #{r_stock_id}, #{rent_state})
 	</insert>
 
-<!-- 대여상세 수정 -->
-	<update id="rentDetailUpdate" parameterType="com.team4.shoppingmall.rent_detail.RentDetailDTO">
+	<!-- 대여상세 수정 -->
+	<update id="rentDetailUpdate"
+		parameterType="com.team4.shoppingmall.rent_detail.RentDetailDTO">
 		UPDATE RENT_DETAIL
 		SET
-		"rent_product_price" = #{rent_product_price}, "rent_num" = #{rent_num}
-		WHERE "rentdetail_id" = #{rentdetail_id}
+		rentdetail_id = #{rentdetail_id},
+		rent_product_price = #{rent_product_price}, 
+		rent_num = #{rent_num},
+		rental_code = #{rental_code}, 
+		r_stock_id = #{r_stock_id}, 
+		rent_state = #{rent_state}
+		WHERE rentdetail_id = #{rentdetail_id}
 	</update>
- 
-	
+
+
 </mapper>
