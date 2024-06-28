@@ -14,7 +14,7 @@ public class RentDetailDAOMybatis implements RentDetailDAOInterface {
 	@Autowired
 	SqlSession sqlSession;
 
-	String namespace = "com.saren.rentdetail.";
+	String namespace = "com.saren.rent_detail.";
 
 	// 대여상세 상세
 	@Override
@@ -28,6 +28,11 @@ public class RentDetailDAOMybatis implements RentDetailDAOInterface {
 		return sqlSession.selectList(namespace+"selectAll");
 	}
 
+	@Override
+	public List<RentDetailDTO> selectBySellerID(String member_id) {
+		return sqlSession.selectList(namespace+"selectBySellerID", member_id);
+	}
+	
 	// 대여상세 생성
 	@Override
 	public int rentDetailInsert(RentDetailDTO rentdetail) {
@@ -37,8 +42,16 @@ public class RentDetailDAOMybatis implements RentDetailDAOInterface {
 	// 대여상세 수정
 	@Override
 	public int rentDetailUpdate(RentDetailDTO rentdetail) {
-		return sqlSession.update(namespace+"rentDetailInsert", rentdetail);
+		return sqlSession.update(namespace+"rentDetailUpdate", rentdetail);
+	}
+	
+	@Override
+	public int rentDetailStatusUpdate(RentDetailDTO rentdetail) {
+		return sqlSession.update(namespace+"rentDetailStatusUpdate", rentdetail);
 	}
 
-
+	@Override
+	public int rentDetailDelete(int rentdetail_id) {
+		return sqlSession.delete(namespace+"rentDetailDelete", rentdetail_id);
+	}
 }
