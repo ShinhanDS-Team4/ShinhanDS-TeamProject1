@@ -68,7 +68,7 @@
 			OD.ORDER_ID = #{aa}
 	</select>
 	
-	<!-- 취소 -->
+	<!-- orderlist.jsp에서, 주문취소 -->
 	<update id="orderCancel" parameterType="int">
 		UPDATE 
 			ORDER_PROD 
@@ -78,7 +78,7 @@
 			order_id = #{aa} 
 	</update>
 	
-	<!-- 환불 -->
+	<!-- ordrlist.jsp에서, 환불 -->
 	<update id="orderRefund" parameterType="int">
 		UPDATE 
 			ORDER_PROD 

@@ -26,5 +26,11 @@ public interface RentDAOInterface {
 
 	// rentlist.jsp에서, 상세상품 옵션 출력시, 모든 옵션 가져오기
 	public List<RentProdStockDTO> selectOptions();
+
+	// rentlist.jsp에서, 취소
+	public int cancelRent(int rentalCode);
+
+	// rentlist.jsp에서, 반납
+	public int returnRent(int rentalCode);
 	
 }

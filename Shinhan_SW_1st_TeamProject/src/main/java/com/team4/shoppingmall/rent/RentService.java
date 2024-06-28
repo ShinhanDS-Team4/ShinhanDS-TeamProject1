@@ -44,4 +44,14 @@ public class RentService {
         return rentDAO.selectOptions();
 	}
 
+	// rentlist.jsp에서, 취소
+	public int cancelRent(int rentalCode) {
+        return rentDAO.cancelRent(rentalCode);
+	}
+
+	// rentlist.jsp에서, 반납
+	public int returnRent(int rentalCode) {
+        return rentDAO.returnRent(rentalCode);
+	}
+
 }

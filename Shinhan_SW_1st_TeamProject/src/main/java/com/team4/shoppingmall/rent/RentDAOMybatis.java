@@ -50,9 +50,20 @@ public class RentDAOMybatis implements RentDAOInterface {
 	// rentlist.jsp에서, 상세상품 옵션 출력시, 모든 옵션 가져오기
 	@Override
 	public List<RentProdStockDTO> selectOptions() {
-		return sqlSession.selectList(namespace+"selectOptions"); 
-
+		return sqlSession.selectList(namespace+"selectOptions");  
     }
+
+	// rentlist.jsp에서, 대여취소
+	@Override
+	public int cancelRent(int rentalCode) {
+		return sqlSession.update(namespace+"cancelRent", rentalCode);
+	}
+	
+	// rentlist.jsp에서, 반납
+	@Override
+	public int returnRent(int rentalCode) {
+		return sqlSession.update(namespace+"returnRent", rentalCode);
+	}
 
 
 }

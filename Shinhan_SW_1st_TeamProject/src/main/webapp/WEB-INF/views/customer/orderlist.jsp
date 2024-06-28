@@ -66,16 +66,17 @@
 
 		// Submit the refund form via AJAX
 		$('#yes-refund-button').on('click', function() {
-			var orderId = $('#refund-order-id').val();
+			var orderId = $('#refund-order-id').val(); 
+			
 			$.ajax({
 				type: 'POST',
 				url: 'refund.do',
 				data: { orderId: orderId },
-				success: function(response) {
-					alert(response);
+				success: function(response) { 
 					if (response === 'success') {
-						hideCancelPopup();
-						showCancelCompletePopup();
+						hideRefundPopup();
+						showRefundCompletePopup();
+						location.reload();
 					}
 				},
 				error:function(error){
@@ -84,9 +85,7 @@
 			});
 		});
 
-
-
-		$('#no-button').on('click', hideRefundPopup);
+		$('#no-refund-button').on('click', hideRefundPopup);
 
 		$('#refund-complete-popup .popup-button').on('click', hideRefundCompletePopup);
 
@@ -102,12 +101,14 @@
 			$.ajax({
 				type: 'POST',
 				url: 'cancel.do',
-				data: { orderId: orderId },
-				success: function(response) {
-					alert(response);
+				data: { 
+					orderId: orderId 
+				},
+				success: function(response) { 
 					if (response === 'success') {
 						hideCancelPopup();
 						showCancelCompletePopup();
+						location.reload();
 					}
 				},
 				error:function(error){
@@ -220,8 +221,8 @@
 					<div class="popup-footer">
 						<form id="refund-form" method="post" action="refund.do">
 							<input type="hidden" id="refund-order-id" name="orderId" value="">
-							<button type="button" class="popup-button" id="yes-button">예</button>
-							<button type="button" class="popup-button" id="no-button">아니오</button>
+							<button type="button" class="popup-button" id="yes-refund-button">예</button>
+							<button type="button" class="popup-button" id="no-refund-button">아니오</button>
 						</form>
 					</div>
 				</div>
