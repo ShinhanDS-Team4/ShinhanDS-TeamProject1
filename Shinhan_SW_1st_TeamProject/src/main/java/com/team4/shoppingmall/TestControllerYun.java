@@ -37,8 +37,7 @@ public class TestControllerYun {
 	@Autowired
 	ProdService prodService;
 
-	// 상품목록 - selectAll2
-
+	// 상품목록 - selectAll2 
 	@GetMapping("/productlist.do")
 	public String test1(Model model, HttpServletRequest request) {
 		System.out.println("/customer/productlist.jsp"); // 모든 상품목록
@@ -96,6 +95,46 @@ public class TestControllerYun {
 		return "customer/rentlist";
 	}
 
+	// 대여취소
+	@PostMapping("/cancelRent.do")
+	@ResponseBody
+	public String cancelRent(@RequestParam("rentalCode") int rentalCode, HttpServletResponse response) { 
+		System.out.println("대여요청(주문번호): " + rentalCode);
+		
+		// 판매자에게 요청보내기?
+		
+		int cancelSuccess = rentService.cancelRent(rentalCode);
+		String message = "";
+		
+		if (cancelSuccess > 0) { 
+			message = "success"; 
+			return message; 
+		} else { 
+			message = "failure";
+			return message;
+		}
+	}
+
+	// 반납
+	@PostMapping("/returnRent.do")
+	@ResponseBody
+	public String returnRent(@RequestParam("rentalCode") int rentalCode, HttpServletResponse response) {
+		System.out.println("반납요청(주문번호): " + rentalCode);
+
+		int returnSuccess = rentService.returnRent(rentalCode);
+		String message = "";
+		
+		// 판매자에게 요청보내기?
+		
+		if (returnSuccess > 0) { 
+			message = "success"; 
+			return message; 
+		} else { 
+			message = "failure";
+			return message;
+		}
+	}
+
 	// 주문목록
 	@GetMapping("/orderlist.do")
 	public String test3(Model model, HttpServletRequest request) {
@@ -128,26 +167,21 @@ public class TestControllerYun {
 	@ResponseBody
 	public String processCancel(@RequestParam("orderId") int orderId, HttpServletResponse response) throws IOException {
 		System.out.println("취소요청(주문번호): " + orderId);
-		
+
 		// 판매자에게 취소요청 보내기
-		
-		int cancelSuccess = orderProdService.orderCancel(orderId);
-		// boolean refundSuccess = true;
+
+		int cancelSuccess = orderProdService.orderCancel(orderId); 
 		String message = "";
-		
-		if (cancelSuccess>0) {
-			//response.getWriter().write("success");
-			message = "success";
-			
-			return message;
-			
-		} else {
-			//response.getWriter().write("failure");
+
+		if (cancelSuccess > 0) { 
+			message = "success"; 
+			return message; 
+		} else { 
 			message = "failure";
 			return message;
 		}
 	}
-	
+
 	// 환불요청
 	@PostMapping("/refund.do")
 	@ResponseBody
@@ -155,22 +189,16 @@ public class TestControllerYun {
 		System.out.println("환불요청(주문번호): " + orderId);
 
 		// 판매자에게 환불요청 보내기
-		
-		int refundSuccess = orderProdService.orderRefund(orderId);
-		// boolean refundSuccess = true;
+
+		int refundSuccess = orderProdService.orderRefund(orderId); 
 		String message = "";
-		
-		if (refundSuccess>0) {
-			//response.getWriter().write("success");
-			message = "success";
-			
-			return message;
-			
-		} else {
-			//response.getWriter().write("failure");
+
+		if (refundSuccess > 0) { 
+			message = "success"; 
+			return message; 
+		} else { 
 			message = "failure";
 			return message;
 		}
 	}
-
 }

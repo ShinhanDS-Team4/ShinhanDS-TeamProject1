@@ -67,6 +67,26 @@
 		where
 			r.rental_code = #{aa}
 	</select>
+	
+	<!-- rentlist.jsp에서, 대여취소 -->
+	<update id="cancelRent" parameterType="int">
+		UPDATE 
+			RENT
+		SET
+			rent_state = 'cancelled'
+		WHERE 
+			rental_code = #{aa}
+	</update>
+	
+	<!-- rentlist.jsp에서, 반납 -->
+	<update id="returnRent" parameterType="int">
+		UPDATE 
+			RENT
+		SET
+			rent_state = 'returned'
+		WHERE
+	    	rental_code = #{aa}
+	</update>
 
 
 </mapper>
