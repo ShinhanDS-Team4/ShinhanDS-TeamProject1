@@ -259,12 +259,17 @@ span {
 	height: 200px;
 }
 
-#prdImgFileContainer{
+#prdMainImgFileContainer{
 	display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     column-gap: 250px;
-    row-gapt:200px;
-    
+    row-gapt:200px;  
+}
+#prdDescImgFileContainer{
+	display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    column-gap: 250px;
+    row-gapt:200px;  
 }
 
 .file-item{

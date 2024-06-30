@@ -60,13 +60,25 @@ public class SellerPrdUploadController {
 	@Autowired
 	RentProdStockService rentProdStockService;
 
-	@Value("${file.upload-dir}")
-	private String uploadDir;
+	
+	//상품 이미지 파일 업로드 디렉토리
+	//1.메인 이미지 파일
+	@Value("${file.main-img-upload-dir}")
+	private String mainIMG_uploadDir;
+	
+	//2.설명 이미지 파일
+	@Value("${file.desc-img-upload-dir}")
+	private String descIMG_uploadDir;
 
 	@PostMapping("/uploadPrd")
-	public String handleFileUpload(@RequestParam("prdType") String prdType, @RequestParam("prdName") String prdName,
-			@RequestParam("prdPrice") int prdPrice, @RequestParam("prdCategory") int prdCategory,
-			@RequestParam("file") List<MultipartFile> files, @RequestParam("prdDescription") String prdDescription,
+	public String handleFileUpload(
+			@RequestParam("prdType") String prdType,
+			@RequestParam("prdName") String prdName,
+			@RequestParam("prdPrice") int prdPrice, 
+			@RequestParam("prdCategory") int prdCategory,
+			@RequestParam("mainImgFile") List<MultipartFile> mainFiles, 
+			@RequestParam("descImgFile") List<MultipartFile> descFiles, 
+			@RequestParam("prdDescription") String prdDescription,
 			@RequestParam("optName") List<String> optNames, @RequestParam("optValue") List<String> optValues,
 			@RequestParam("prdStock") int prdStock, RedirectAttributes redirectAttributes)
 			throws UnsupportedEncodingException {
@@ -127,29 +139,28 @@ public class SellerPrdUploadController {
 			// 상품 테이블 등록 종료
 
 			// 2.상품 이미지(PROD_IMAGE) 테이블 데이터 저장
-			int fileIndex = 1; // 파일 인덱스를 1로 초기화
+			// 상품이미지 등록은 메인 이미지 목록 등록 >> 설명 이미지 목록 등록 순으로 진행
+			int mainfileIndex = 1; // 메인 이미지 파일 인덱스를 1로 초기화
+			int descfileIndex = 1; // 설명 이미지 파일 인덱스를 1로 초기화
 
-			for (MultipartFile file : files) {
+			for (MultipartFile mainfile : mainFiles) {
 				// 파일 타입 체크
-				String contentType = file.getContentType();
+				String contentType = mainfile.getContentType();
 				System.out.println(contentType);
 				if (!"image/jpeg".equals(contentType) && !"image/png".equals(contentType)) {
 					redirectAttributes.addFlashAttribute("PrdRegisterResult", "이미지 파일이 아닙니다.");
 					return "/seller/sellerPrdList";// 오류페이지로 리다이렉션(팀프로젝트에서는 alert으로 에러를 띄우고 판매자-물품 리스트로 리다이렉트)
 				}
 
-				// 파일 처리(URL로 변환)
+				//서버 컴퓨터의 디렉토리에 파일 저장
+				
+				//(1)메인이미지 파일
 				try {
-					// 파일명은 '상품명_판매자ID_image_x'(x는 sequence)
-					String filename = prod_id + "_image_" + fileIndex+".png";
-					Path filePath = Paths.get(uploadDir).resolve(filename);
+					// 파일명은 '상품명_판매자ID_mainimage_x'(x는 sequence)
+					String filename = prod_id + "_mainimage_" + mainfileIndex+".png";
+					Path filePath = Paths.get(mainIMG_uploadDir).resolve(filename);
 					Files.createDirectories(filePath.getParent()); // 디렉토리가 존재하지 않으면 생성
-					Files.write(filePath, file.getBytes()); // 파일 저장
-
-					// 파일 URL 생성 >> 주의!!) 해당 파일URL은 생성 시점에서 사용 중인 서버에서만 유효함
-					String fileUrl = "/images/" + filename;
-					System.out.println("이미지파일URL : " + fileUrl);
-					fileUrls.add(fileUrl);
+					Files.write(filePath, mainfile.getBytes()); // 파일 저장
 
 					// DB에 저장
 					Prod_ImageDTO imageDTO = new Prod_ImageDTO();
@@ -159,9 +170,47 @@ public class SellerPrdUploadController {
 					
 					System.out.println(imageDTO);
 
-					int prdImgRegResult = imageService.prod_imageInsert(imageDTO);
+					int prdMainImgRegResult = imageService.prod_imageInsert(imageDTO);
 
-					fileIndex++;
+					mainfileIndex++;
+
+				} catch (IOException e) {
+					e.printStackTrace();
+					redirectAttributes.addFlashAttribute("PrdRegisterResult", "상품 정보 업로드에 실패하였습니다.");
+					return "/seller/sellerPrdList";// 오류페이지로 리다이렉션(팀프로젝트에서는 alert으로 에러를 띄우고 판매자-물품 리스트로 리다이렉트)
+				}
+			}
+			
+			
+			//(2)설명이미지파일
+			for (MultipartFile descfile : descFiles) {
+				// 파일 타입 체크
+				String contentType = descfile.getContentType();
+				System.out.println(contentType);
+				if (!"image/jpeg".equals(contentType) && !"image/png".equals(contentType)) {
+					redirectAttributes.addFlashAttribute("PrdRegisterResult", "이미지 파일이 아닙니다.");
+					return "/seller/sellerPrdList";// 오류페이지로 리다이렉션(팀프로젝트에서는 alert으로 에러를 띄우고 판매자-물품 리스트로 리다이렉트)
+				}
+
+				// 서버 컴퓨터의 디렉토리에 파일 저장
+				try {
+					// 파일명은 '상품명_판매자ID_descimage_x'(x는 sequence)
+					String filename = prod_id + "_descimage_" + descfileIndex+".png";
+					Path filePath = Paths.get(descIMG_uploadDir).resolve(filename);
+					Files.createDirectories(filePath.getParent()); // 디렉토리가 존재하지 않으면 생성
+					Files.write(filePath, descfile.getBytes()); // 파일 저장
+
+					// DB에 저장
+					Prod_ImageDTO imageDTO = new Prod_ImageDTO();
+
+					imageDTO.setImg_id(filename);//상품명_판매자ID_image_fileindex
+					imageDTO.setProd_id(prod_id);//상품_판매자ID
+					
+					System.out.println(imageDTO);
+
+					int prdDescImgRegResult = imageService.prod_imageInsert(imageDTO);
+
+					descfileIndex++;
 
 				} catch (IOException e) {
 					e.printStackTrace();

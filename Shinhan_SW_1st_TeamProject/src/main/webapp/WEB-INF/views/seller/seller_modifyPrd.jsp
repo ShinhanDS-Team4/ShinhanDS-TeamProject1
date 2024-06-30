@@ -18,55 +18,58 @@
 <link rel="stylesheet" href="${path}/resources/css/prdAdd.css" />
 
 <script>
-	let fileCount = document.querySelectorAll('#prdImgFileContainer .file-item').length;
+	let fileCount = document
+			.querySelectorAll('#prdImgFileContainer .file-item').length;
 	const maxFileCount = 5;
-	
+
 	// 사진 업로드 추가
-    function addFile() {
-        if (fileCount >= maxFileCount) {
-            alert("사진은 최대 5개까지 추가할 수 있습니다.");
-            return;
-        }
+	function addFile() {
+		if (fileCount >= maxFileCount) {
+			alert("사진은 최대 5개까지 추가할 수 있습니다.");
+			return;
+		}
 
-        // 새로운 파일 항목 생성
-        const fileItem = document.createElement('div');
-        fileItem.className = 'file-item';
+		// 새로운 파일 항목 생성
+		const fileItem = document.createElement('div');
+		fileItem.className = 'file-item';
 
-        // 파일 선택 필드 생성
-        const fileField = document.createElement('input');
-        fileField.className = 'file-input';
-        fileField.type = 'file';
-        fileField.name = 'file';
-        fileField.accept = '.jpg,.jpeg,.png';
+		// 파일 선택 필드 생성
+		const fileField = document.createElement('input');
+		fileField.className = 'file-input';
+		fileField.type = 'file';
+		fileField.name = 'file';
+		fileField.accept = '.jpg,.jpeg,.png';
 
-        // 파일 항목 삭제 버튼 생성
-        const fileRemove = document.createElement('button');
-        fileRemove.className = 'file-remove';
-        fileRemove.type = 'button';
-        fileRemove.innerText = '삭제';
-        fileRemove.onclick = function() {
-            removeFile(this);
-        };
+		// 파일 항목 삭제 버튼 생성
+		const fileRemove = document.createElement('button');
+		fileRemove.className = 'file-remove';
+		fileRemove.type = 'button';
+		fileRemove.innerText = '삭제';
+		fileRemove.onclick = function() {
+			removeFile(this);
+		};
 
-        fileItem.appendChild(fileField);
-        fileItem.appendChild(fileRemove);
+		fileItem.appendChild(fileField);
+		fileItem.appendChild(fileRemove);
 
-        document.getElementById('prdImgFileContainer').appendChild(fileItem);
+		document.getElementById('prdImgFileContainer').appendChild(fileItem);
 
-        fileCount = getFileItemCount();
-    }
+		fileCount = getFileItemCount();
+	}
 
-    function removeFile(button) {
-        // 부모 요소(file-item) 제거
-        button.parentNode.remove();
+	function removeFile(button) {
+		// 부모 요소(file-item) 제거
+		button.parentNode.remove();
 
-        fileCount = getFileItemCount();
-    }
+		fileCount = getFileItemCount();
+	}
 
-    function getFileItemCount() {
-        return document.querySelectorAll('#prdImgFileContainer .file-item').length;
-    }
-  //옵션 항목 추가
+	function getFileItemCount() {
+		return document.querySelectorAll('#prdImgFileContainer .file-item').length;
+	}
+	
+	
+	//옵션 항목 추가
 	function addOption() {
 		if (optionCount >= 5) {
 			alert("옵션은 최대 5개까지 추가할 수 있습니다.");
@@ -119,35 +122,34 @@
 	function getOptionItemCount() {
 		return document.querySelectorAll('#optionsContainer .option-item').length;
 	}
-    
-    function resetProdImg(){
-    	
-    	$.ajax({
-    		type:"POST",
-    		url:"/shoppingmall/seller/resetProdImg",
-    		success:function(response){
-    			// 서버에서 반환한 문자열에 따라 처리
-                if (response === "resetImgSuccess") {
-                    console.log("이미지 초기화 성공");
-                    // 성공했을 때 추가적인 작업 수행
-                    // 예: 다른 UI 업데이트, 메시지 표시 등
-                    $("#prdImgFileContainer").empty();
-                } else if (response === "resetImgFail") {
-                    console.log("이미지 초기화 실패");
-                    // 실패했을 때의 처리
-                    // 예: 경고 메시지 표시 등
-                } else {
-                    console.log("알 수 없는 응답: " + response);
-                    // 다른 응답에 대한 처리
-                }
-    		},
-    		error: function(xhr, status, error) {
-                console.error(error);
-                // 실패 시 처리
-            }
-    	});
-    }
-	
+
+	function resetProdImg() {
+
+		$.ajax({
+			type : "POST",
+			url : "/shoppingmall/seller/resetProdImg",
+			success : function(response) {
+				// 서버에서 반환한 문자열에 따라 처리
+				if (response === "resetImgSuccess") {
+					console.log("이미지 초기화 성공");
+					// 성공했을 때 추가적인 작업 수행
+					// 예: 다른 UI 업데이트, 메시지 표시 등
+					$("#prdImgFileContainer").empty();
+				} else if (response === "resetImgFail") {
+					console.log("이미지 초기화 실패");
+					// 실패했을 때의 처리
+					// 예: 경고 메시지 표시 등
+				} else {
+					console.log("알 수 없는 응답: " + response);
+					// 다른 응답에 대한 처리
+				}
+			},
+			error : function(xhr, status, error) {
+				console.error(error);
+				// 실패 시 처리
+			}
+		});
+	}
 </script>
 
 </head>
@@ -194,14 +196,26 @@
 						</select>
 					</div>
 
-					<!-- 사진 미리보기 구역 : DB 및 서버 저장소에 등록되어 있는 사진 파일들을 미리보기로 보여준다 -->
+					<!-- 메인 사진 미리보기 구역 : DB 및 서버 저장소에 등록되어 있는 사진 파일들을 미리보기로 보여준다 -->
 					<div class="form-group">
-						<label>사진목록</label>
+						<label>메인 사진목록</label>
+						<button type="button" onclick="resetProdImg()">사진 항목 초기화</button>
+					</div>
+					<div id="prdMainImgFileContainer">
+						<c:forEach var="mainImgName" items="${ProdMainImgList}">
+							<img src="http://localhost:9090/saren/ProdImgFile/main/${mainImgName}"
+								width="200" height="200">
+						</c:forEach>
+					</div>
+					
+					<!-- 설명 사진 미리보기 구역 : DB 및 서버 저장소에 등록되어 있는 사진 파일들을 미리보기로 보여준다 -->
+					<div class="form-group">
+						<label>설명 사진목록</label>
 						<button type="button" onclick="resetProdImg()">사진 항목 초기화</button>
 					</div>
 					<div id="prdImgFileContainer">
-						<c:forEach var="imgName" items="${ProdImgList}">
-							<img src="http://localhost:9090/saren/ProdImgFile/${imgName}"
+						<c:forEach var="imgName" items="${ProdDescImgList}">
+							<img src="http://localhost:9090/saren/ProdImgFile/desc/${imgName}"
 								width="200" height="200">
 						</c:forEach>
 					</div>

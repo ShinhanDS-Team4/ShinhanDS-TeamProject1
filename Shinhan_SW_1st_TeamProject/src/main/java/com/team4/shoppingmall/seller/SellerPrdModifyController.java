@@ -54,12 +54,6 @@ public class SellerPrdModifyController {
 	RentProdStockService rentProdStockService;
 	
 	String member_id = "573-50-00882";// 임시로 사용할 판매자ID(사업자등록번호)
-
-	//서버 이미지파일 디렉토리
-	@Value("${file.upload-dir}")
-	private String uploadDir;
-	
-	
 	
 	
 }

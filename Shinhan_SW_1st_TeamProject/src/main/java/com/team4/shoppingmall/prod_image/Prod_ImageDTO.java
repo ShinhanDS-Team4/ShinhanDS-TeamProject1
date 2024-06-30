@@ -13,4 +13,5 @@ import lombok.ToString;
 public class Prod_ImageDTO {
 	String img_id;
 	String prod_id;
+	int img_type;
 }

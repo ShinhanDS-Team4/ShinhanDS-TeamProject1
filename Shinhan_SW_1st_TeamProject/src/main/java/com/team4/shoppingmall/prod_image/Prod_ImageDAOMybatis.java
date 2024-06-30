@@ -28,6 +28,21 @@ public class Prod_ImageDAOMybatis implements Prod_ImageDAOInterface {
 	public List<Prod_ImageDTO> findAllImgsByProdID(String prod_id) {
 		return sqlSession.selectList(namespace+"findAllImgsByProdID",prod_id);
 	}
+	
+	@Override
+	public List<String> findAllImgFileNameByProdID(String prod_id) {
+		return sqlSession.selectList(namespace+"findAllImgFileNameByProdID", prod_id);
+	}
+	
+	@Override
+	public List<String> findMainImgFileNameByProdID(Prod_ImageDTO prod_image) {
+		return sqlSession.selectList(namespace+"findMainImgFileNameByProdID", prod_image);
+	}
+	
+	@Override
+	public List<String> findDescImgFileNameByProdID(Prod_ImageDTO prod_image) {
+		return sqlSession.selectList(namespace+"findDescImgFileNameByProdID", prod_image);
+	}
 
 	@Override
 	public List<Prod_ImageDTO> selectAll() {
@@ -49,10 +64,7 @@ public class Prod_ImageDAOMybatis implements Prod_ImageDAOInterface {
 		return sqlSession.delete(namespace+"prod_imageDelete", img_id);
 	}
 
-	@Override
-	public List<String> findAllImgFileNameByProdID(String prod_id) {
-		return sqlSession.selectList(namespace+"findAllImgFileNameByProdID", prod_id);
-	}
+	
 
 	
 }

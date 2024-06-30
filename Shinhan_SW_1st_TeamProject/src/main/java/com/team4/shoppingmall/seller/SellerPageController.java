@@ -39,6 +39,7 @@ import com.team4.shoppingmall.order_detail.OrderUpdateReqDTO;
 import com.team4.shoppingmall.order_detail.Order_DetailDTO;
 import com.team4.shoppingmall.order_detail.Order_DetailService;
 import com.team4.shoppingmall.prod.ProdService;
+import com.team4.shoppingmall.prod_image.Prod_ImageDTO;
 import com.team4.shoppingmall.prod_image.Prod_ImageService;
 import com.team4.shoppingmall.rent.RentDTO;
 import com.team4.shoppingmall.rent_detail.RentDetailDTO;
@@ -57,7 +58,7 @@ import lombok.ToString;
 @Controller
 @RequestMapping("/seller")
 public class SellerPageController {
-	
+
 	@Autowired
 	Buyer_InqService buyer_inqService;
 
@@ -78,18 +79,23 @@ public class SellerPageController {
 
 	@Autowired
 	RentProdStockService rentProdStockService;
-	
+
 	@Autowired
-	Order_DetailService order_DetailService; 
-	
+	Order_DetailService order_DetailService;
+
 	@Autowired
 	RentDetailService rentDetailService;
 
 	String member_id = "573-50-00882";// 임시로 사용할 판매자ID(사업자등록번호)
 
-	// 서버 이미지파일 디렉토리
-	@Value("${file.upload-dir}")
-	private String uploadDir;
+	// 상품 이미지 파일 업로드 디렉토리
+	// 1.메인 이미지 파일
+	@Value("${file.main-img-upload-dir}")
+	private String mainIMG_uploadDir;
+
+	// 2.설명 이미지 파일
+	@Value("${file.desc-img-upload-dir}")
+	private String descIMG_uploadDir;
 
 	// 메인 화면 보여주기
 	@GetMapping("/MainPage.do")
@@ -122,85 +128,81 @@ public class SellerPageController {
 	public String deliveryList(Model model1, Model model2) {
 
 		// 판매&배송 리스트
-		//1.판매 상품 대상 주문상세리스트
+		// 1.판매 상품 대상 주문상세리스트
 		System.out.println(order_DetailService.selectBySellerID(member_id));
 		System.out.println(rentDetailService.selectBySellerID(member_id));
-		
+
 		model1.addAttribute("orderDetailList", order_DetailService.selectBySellerID(member_id));
 		model2.addAttribute("rentDetailList", rentDetailService.selectBySellerID(member_id));
 		return "/seller/sellerDelivery";
 	}
-	
-	
-	//판매 주문 항목 일괄처리
+
+	// 판매 주문 항목 일괄처리
 	@PostMapping("/updateOrderStatus")
 	@ResponseBody
 	public String updateOrderStauts(@RequestBody OrderUpdateReqDTO request) {
 		List<Integer> orderDetailIds = request.getOrderDetailIds();
-        System.out.println(orderDetailIds);
-		
+		System.out.println(orderDetailIds);
+
 		String status = request.getStatus();
-        
-        for(Integer orderDetail : orderDetailIds) {
-        	
-        	Order_DetailDTO order_DetailDTO = new Order_DetailDTO();
-        	
-        	order_DetailDTO.setOrderdetail_id(orderDetail);
-        	order_DetailDTO.setOrder_state(status);
-        	
-        	int statusUpdateResult = order_DetailService.orderDetailStatusUpdate(order_DetailDTO);
-        }
+
+		for (Integer orderDetail : orderDetailIds) {
+
+			Order_DetailDTO order_DetailDTO = new Order_DetailDTO();
+
+			order_DetailDTO.setOrderdetail_id(orderDetail);
+			order_DetailDTO.setOrder_state(status);
+
+			int statusUpdateResult = order_DetailService.orderDetailStatusUpdate(order_DetailDTO);
+		}
 		return "Update Success";
 	}
-	
-	//판매 주문 항목 일괄삭제
+
+	// 판매 주문 항목 일괄삭제
 	@PostMapping("/deleteOrderDetails")
 	@ResponseBody
 	public String deleteOrderDetails(@RequestBody OrderUpdateReqDTO request) {
 		List<Integer> orderDetailIds = request.getOrderDetailIds();
 		System.out.println(orderDetailIds);
-		for(Integer orderDetail : orderDetailIds) {
+		for (Integer orderDetail : orderDetailIds) {
 			int orderDetailDelResult = order_DetailService.orderDetailDelete(orderDetail);
 		}
-		
+
 		return "Delete Success";
 	}
-	
-	
-	//대여 주문 항목 일괄처리
+
+	// 대여 주문 항목 일괄처리
 	@PostMapping("/updateRentStatus")
 	@ResponseBody
 	public String updateRentStatus(@RequestBody OrderUpdateReqDTO request) {
 		List<Integer> rentDetailIds = request.getOrderDetailIds();
-		System.out.println("대여 일괄처리 대상 목록:"+rentDetailIds);
-		
+		System.out.println("대여 일괄처리 대상 목록:" + rentDetailIds);
+
 		String status = request.getStatus();
-		
-		for(Integer rentDetail : rentDetailIds) {
-			
+
+		for (Integer rentDetail : rentDetailIds) {
+
 			RentDetailDTO rentDatilDTO = new RentDetailDTO();
-			
+
 			rentDatilDTO.setRentdetail_id(rentDetail);
 			rentDatilDTO.setRent_state(status);
-			
-			int statusUpdateResult = rentDetailService.rentDetailStatusUpdate(rentDatilDTO);	
+
+			int statusUpdateResult = rentDetailService.rentDetailStatusUpdate(rentDatilDTO);
 		}
 		return "Update Success";
 	}
-	
-	//대여 주문 항목 일괄삭제
+
+	// 대여 주문 항목 일괄삭제
 	@PostMapping("/deleteRentDetails")
 	@ResponseBody
 	public String deleteRentDetails(@RequestBody OrderUpdateReqDTO request) {
 		List<Integer> rentDetailIds = request.getOrderDetailIds();
 		System.out.println(rentDetailIds);
-		for(Integer rentDetail : rentDetailIds) {
+		for (Integer rentDetail : rentDetailIds) {
 			int rentDetailDelResult = rentDetailService.rentDetailDelete(rentDetail);
 		}
 		return "Delete Success";
 	}
-	
-	
 
 	// 문의 목록 페이지 보여주기
 	@GetMapping("/Q&AList.do")
@@ -223,7 +225,7 @@ public class SellerPageController {
 
 	// 상품 수정 페이지
 	@GetMapping("/ModifyProduct.do")
-	public String modifyProduct(Model model1, Model model2, Model model3, Model model4,
+	public String modifyProduct(Model model1, Model model2, Model model3, Model model4, Model model5,
 			@RequestParam("stock_id") String stockID) throws UnsupportedEncodingException {
 
 		String stock_id = URLDecoder.decode(stockID, "UTF-8");// 한글로 변환
@@ -234,25 +236,42 @@ public class SellerPageController {
 			RentProdStockDTO rentProdStockDTO = rentProdStockService.selectById(stock_id);// 상품의 기본 정보를 끌어오기 위해 재고데이터에서
 																							// 상품ID를 가져온다.
 			String ProdID = rentProdStockDTO.getProd_id();
-
+			
+			Prod_ImageDTO mainImageDTO = new Prod_ImageDTO();
+			mainImageDTO.setProd_id(ProdID);
+			mainImageDTO.setImg_type(0);
+			
+			Prod_ImageDTO descImageDTO = new Prod_ImageDTO();
+			descImageDTO.setProd_id(ProdID);
+			descImageDTO.setImg_type(1);
+			
 			// 해당 재고의 상품ID와 연동되어 있는 상품이미지ID(=이미지 파일명) 목록을 가져온다.
-			List<String> prodImgList = imageService.findAllImgFileNameByProdID(ProdID);
+			List<String> prodMainImgList = imageService.findMainImgFileNameByProdID(mainImageDTO);
+			List<String> prodDescImgList = imageService.findDescImgFileNameByProdID(descImageDTO);
 
 			model1.addAttribute("StockInfo", rentProdStockDTO);
 			model2.addAttribute("ProductInfo", prodService.selectByProdId(ProdID));
-			model3.addAttribute("ProdImgList", prodImgList);
-			model4.addAttribute("ImgDirectory", uploadDir);
+			model3.addAttribute("ProdMainImgList", prodMainImgList);
+			model4.addAttribute("ProdDescImgList", prodDescImgList);
 		} else {// 판매상품 재고일 경우
 			String ProdID = seller_Prod_StockDTO.getProd_id();
+			Prod_ImageDTO mainImageDTO = new Prod_ImageDTO();
+			mainImageDTO.setProd_id(ProdID);
+			mainImageDTO.setImg_type(0);
+			
+			Prod_ImageDTO descImageDTO = new Prod_ImageDTO();
+			descImageDTO.setProd_id(ProdID);
+			descImageDTO.setImg_type(1);
+			
 			// 해당 재고의 상품ID와 연동되어 있는 상품이미지ID(=이미지 파일명) 목록을 가져온다.
-			List<String> prodImgList = imageService.findAllImgFileNameByProdID(ProdID);
-			System.out.println(uploadDir);
+			List<String> prodMainImgList = imageService.findMainImgFileNameByProdID(mainImageDTO);
+			List<String> prodDescImgList = imageService.findDescImgFileNameByProdID(descImageDTO);
 
-			System.out.println(uploadDir);
+			//System.out.println(uploadDir);
 			model1.addAttribute("StockInfo", seller_Prod_StockDTO);
 			model2.addAttribute("ProductInfo", prodService.selectByProdId(ProdID));
-			model3.addAttribute("ProdImgList", prodImgList);
-			model4.addAttribute("ImgDirectory", uploadDir);
+			model3.addAttribute("ProdMainImgList", prodMainImgList);
+			model4.addAttribute("ProdDescImgList", prodDescImgList);
 		}
 
 		return "/seller/seller_modifyPrd";
@@ -260,7 +279,7 @@ public class SellerPageController {
 
 	@PostMapping("/resetProdImg")
 	@ResponseBody
-	public String resetProdImg(){
+	public String resetProdImg() {
 		System.out.println("삭제 작업 시작");
 		String prod_id = "나이키%20반팔2_573-50-00882";
 		System.out.println(prod_id);

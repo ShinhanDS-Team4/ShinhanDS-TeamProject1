@@ -29,6 +29,18 @@
 		FROM PROD_IMAGE 
 		WHERE prod_id = #{prod_id}
 	</select>
+	
+	<select id="findMainImgFileNameByProdID" parameterType="prod_imageVO" resultType="string">
+		SELECT IMG_ID
+		FROM PROD_IMAGE 
+		WHERE prod_id = #{prod_id} AND img_type=#{img_type}
+	</select>
+	
+	<select id="findDescImgFileNameByProdID" parameterType="prod_imageVO" resultType="string">
+		SELECT IMG_ID
+		FROM PROD_IMAGE 
+		WHERE prod_id = #{prod_id} AND img_type=#{img_type}
+	</select>
 
 	<select id="selectAll" resultType="prod_imageVO">
 		SELECT *
