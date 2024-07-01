@@ -67,7 +67,7 @@
 	<insert id="seller_prod_stockInsert"
 		parameterType="seller_prod_stockVO">
 		INSERT
-		INTO SELLER_PROD_STOCK(s_stock_id, stock, total,
+		INTO SELL_PROD_STOCK(s_stock_id, stock, total,
 		prod_id, opt_id1, opt_id2, opt_id3, opt_id4, opt_id5)
 		VALUES(#{s_stock_id}, #{stock}, #{total}, #{prod_id}, #{opt_id1},
 		#{opt_id2}, #{opt_id3}, #{opt_id4}, #{opt_id5})

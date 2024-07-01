@@ -70,8 +70,8 @@
 
 	<insert id="prodInsert" parameterType="prodVO">
 		INSERT 
-		INTO PROD("prod_id", "prod_name", "prod_desc", "prod_price", 
-				  "prod_added_date", "category_id", "member_id") 
+		INTO PROD(prod_id, prod_name, prod_desc, prod_price, 
+				  prod_added_date, category_id, member_id) 
 		VALUES(#{prod_id}, #{prod_name}, #{prod_desc}, #{prod_price}, 
 			   #{prod_added_date}, #{category_id}, #{member_id})
 	</insert>
