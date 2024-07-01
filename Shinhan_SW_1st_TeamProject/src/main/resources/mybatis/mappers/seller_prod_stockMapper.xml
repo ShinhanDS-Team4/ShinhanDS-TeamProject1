@@ -73,7 +73,7 @@
 
 	<update id="seller_prod_stockUpdate"
 		parameterType="seller_prod_stockVO">
-		UPDATE SELLER_PROD_STOCK
+		UPDATE SELL_PROD_STOCK
 		SET
 		stock = #{stock}, total =
 		#{total},
@@ -85,9 +85,8 @@
 	</update>
 	
 	<!-- 판매상품 재고 수정 -->
-	<update id="sellStockUpdate"
-		parameterType="seller_prod_stockVO">
-		UPDATE SELLER_PROD_STOCK
+	<update id="sellStockUpdate" parameterType="seller_prod_stockVO">
+		UPDATE SELL_PROD_STOCK
 		SET stock = #{stock}
 		WHERE s_stock_id = #{s_stock_id}
 	</update>

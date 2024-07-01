@@ -30,7 +30,7 @@
 	<select id="selectBySellerID" parameterType="string" resultType="order_detailVO">
 		SELECT od.*
 		FROM ORDER_DETAIL od
-		JOIN SELLER_PROD_STOCK sps ON od.s_stock_id = sps.s_stock_id
+		JOIN SELL_PROD_STOCK sps ON od.s_stock_id = sps.s_stock_id
 		JOIN PROD p ON sps.prod_id = p.prod_id
 		WHERE p.member_id = #{member_id}
 	</select>
