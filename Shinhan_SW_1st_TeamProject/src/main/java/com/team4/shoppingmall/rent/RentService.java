@@ -1,19 +1,19 @@
 package com.team4.shoppingmall.rent;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.team4.shoppingmall.prod.ProductNewVO;
 import com.team4.shoppingmall.rent_detail.RentDetailDAOInterface;
 import com.team4.shoppingmall.rent_detail.RentDetailDTO;
-import com.team4.shoppingmall.util.DateUtil;
+import com.team4.shoppingmall.rent_prod_stock.RentProdStockDAOInterface;
+import com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO;
 
 import lombok.RequiredArgsConstructor;
-
-import com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +21,10 @@ public class RentService {
 
 	final RentDAOInterface rentDAO;
 	final RentDetailDAOInterface rentDetailDAO;
-
+	
+	@Autowired
+	RentProdStockDAOInterface rentProdStockDAO;
+	
 	public int searchRentId() {
 		return rentDAO.searchRentId();
 	}
@@ -35,45 +38,42 @@ public class RentService {
 	public List<RentDTO> selectAll() {
 		return rentDAO.selectAll();
 	}
-
-	// 대여하기 (대여insert, 대여ID 찾기, 대여상세 insert) ->세 기능 중 하나라도 실패하면 rollback
+	
 	@Transactional
-	public int rentInsert(String member_id, HashMap<String, String> map, Map<String, String> rentProductStockCheck) {
-
+	public int rentInsert2(ProductNewVO prodVO, String member_id) {
+		
 		RentDTO rent = new RentDTO();
-
-		rent.setRent_start_date(DateUtil.getSQLDate(map.get("rent_start_date")));
-		rent.setRent_end_date(DateUtil.getSQLDate(map.get("rent_end_date")));
+		
 		rent.setMember_id(member_id);
-		rent.setTotal_rent_price(Integer.parseInt(map.get("total_amount"))); //총 대여가격
+		rent.setRent_start_date(prodVO.getRent_start_date());
+		rent.setRent_end_date(prodVO.getRent_end_date());
+		//rent.setRental_code(); 시퀀스
+		rent.setTotal_rent_price(prodVO.getTotal_rent_price());
 		
+		//2.대여 생성
 		int result = rentDAO.rentInsert(rent);
-		System.out.println("rentInsert result = " + result);
-		int rentId = rentDAO.searchRentId();
 		
-		// 3.옵션에 해당하는 상품의 대여재고ID(r_stock_id) 구하고 대여상세 생성
-		String rentStockId = rentProductStockCheck.get("R_STOCK_ID");
-
+		//insert한 대여ID값 가져오기
+		int rental_code = rent.getRental_code();
+		
+		
+		//2.대여상세 생성
 		RentDetailDTO rentDetailDTO = new RentDetailDTO();
 
-		//대여가격을 넣기 (총 대여가격 말고) - 수정중
-		//int rentPrice = Integer.parseInt(map.get("total_amount")); 
-		//int rentNum = Integer.parseInt(map.get("rent_prod_quantity"));
-		//int detailPrice = rentPrice / rentNum;   //null
+		rentDetailDTO.setR_stock_id(prodVO.getR_stock_id()); //대여재고id
+		rentDetailDTO.setRent_num(prodVO.getRent_num()); // 대여 수
+		rentDetailDTO.setRent_product_price(prodVO.getRent_product_price()); //대여가격
+		rentDetailDTO.setRental_code(rental_code); //대여id
 		
-		//rentDetailDTO.setRent_product_price(detailPrice); //대여 가격 30,000들어가야하는데 null
-		
-		rentDetailDTO.setR_stock_id(rentStockId); // 대여재고id
-		rentDetailDTO.setRent_num(Integer.parseInt(map.get("rent_prod_quantity"))); // 대여 주문 수량
-		
-		
-		rentDetailDTO.setRental_code(rentId); // 대여id 
 		result = rentDetailDAO.rentDetailInsert(rentDetailDTO);
-		System.out.println("rentDetailInsert result = " + result);
-
+		
+		//3.대여 재고 수량 업데이트
+		rentProdStockDAO.rentProdStockUpdate(prodVO);
+		
 		return result;
-	}
+	};
 
+	
 	// 대여상태 수정
 	public int rentUpdate(Integer rental_code) {
 		return rentDAO.rentUpdate(rental_code);

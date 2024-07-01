@@ -93,6 +93,14 @@
 		VALUES(#{s_stock_id}, #{stock}, #{total}, #{prod_id}, #{opt_id1},
 		#{opt_id2}, #{opt_id3}, #{opt_id4}, #{opt_id5})
 	</insert>
+	
+	<!-- 주문 생성시 재고수 업데이트 -->
+	<update id="sellProdStockUpdate">
+		UPDATE SELLER_PROD_STOCK
+		SET
+		stock = stock - #{order_num}
+		WHERE s_stock_id =  #{s_stock_id}
+	</update>
 
 	<update id="seller_prod_stockUpdate"
 		parameterType="seller_prod_stockVO">

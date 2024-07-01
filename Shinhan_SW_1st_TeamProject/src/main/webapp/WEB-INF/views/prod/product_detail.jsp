@@ -25,9 +25,7 @@
 			$('.arrow').toggleClass('open');
 		});
 
-		//상품 상세 정보, 리뷰 버튼 조작  (수정필요! 리뷰버튼 클릭하고 상품정보버튼 클릭하면 상품정보내용이 안나타남)
-		//첫번째 button이 this클래스를 갖고있으면 컨테이너-디테일이 active클래스 붙음
-		//두번째 button이 this클래스를 갖고있으면 컨테이너-리뷰에 active클래스 붙음
+		//상품 상세 정보, 리뷰 버튼 조작  (동작 수정필요 - 리뷰버튼 클릭하고 상품정보버튼 클릭하면 상품정보내용이 안나타남)
 		$('.detailbtn_wrap button').click(function(e) {
 			e.preventDefault();
 			
@@ -74,25 +72,24 @@
 		});
 		
 		//상품 문의 버튼 클릭 이벤트
-    	$(document).ready(function() {
-            $('#prodQnaBtn').click(function() {
-                var formData = $('#productQnaForm').serialize();
-
-                $.ajax({
-                    url: '${path}/prod/productQnaInsert.do',
-                    type: 'POST',
-                    data: formData,
-                    success: function(response) {
-                        alert(response);
-                        location.reload(); 
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error:', error);
-                        alert('오류가 발생했습니다. 다시 시도해주세요.');
-                    }
-                });
-            });
-        });
+        $('#prodQnaBtn').click(function() {
+              var formData = $('#productQnaForm').serialize();
+			  console.log(formData);
+              $.ajax({
+                  url: '${path}/prod/productQnaInsert.do',
+                  type: 'POST',
+                  data: formData,
+                  success: function(response) {
+                      alert(response);
+                      location.reload(); 
+                  },
+                  error: function(xhr, status, error) {
+                      console.error('Error:', error);
+                      alert('오류가 발생했습니다. 다시 시도해주세요.');
+                  }
+              });
+         });
+       
 	});
 
 </script>
@@ -101,6 +98,15 @@
 	<%@ include file="../common/header.jsp" %>
 	<%-- prod폴더에서 작업중 --%>
 	
+	<%-- 대여 장바구니 팝업 창 --%>
+	<div class="popup-background" id="popupBackground_rent">
+	    <div class="popup-container">	       
+	        <div class="popup-icon">!</div>	       
+	        <p>장바구니로 이동하시겠습니까?</p>	        
+	        <button id="yesRentCartBtn" class="popup-button yes-button">네</button>
+	        <button id="noRentCartBtn" class="popup-button no-button">아니요</button>
+	    </div>
+	</div>
 	<%-- 대여버튼 팝업 창 --%>
 	<form id="rentPopupForm">
 		<div id="rentPopup" class="rent-prod-overlay">
@@ -114,10 +120,10 @@
 	                <p><strong>상품 명:</strong> (<strong class="blue-text">${prod_detail_info.BRAND}) ${prod_detail_info.PROD_NAME}</strong></p>
 	                <div class="rent-prod-option">
 	               		<strong>상품 옵션: </strong>
-						<c:forEach items="${prod_Options}" var="prodOption">
+						<c:forEach items="${prod_Options}" var="prodOption" varStatus="status">
 							<div>
 								<p>${prodOption.OPT_NAME} :</p>
-								<select id="product-option" name="${prodOption.OPT_NAME}">
+								<select id="rentOptions_${status.index}" name="${prodOption.OPT_NAME}">
 								   <option disabled selected>선택</option>
 							       <c:forTokens items="${prodOption.OPT_VALUE}" delims="," var="optValue" >
 									     <c:set var="position" value="${fn:indexOf(optValue,'-')}"/>
@@ -133,8 +139,10 @@
 					</div>
 	                <p>
 	                <strong>대여량:</strong> 
-	                <input type="number" id="rent_prod_quantity" class="rent-prod-quantity" 
-	                	   name="rent_prod_quantity" value="1" min="1">개
+	               <%--  <input type="number" id="rent_prod_quantity" class="rent-prod-quantity" 
+	                	   name="rent_prod_quantity" value="1" min="1">개 --%>
+	                	   <input type="number" id="rent_num" class="rent-prod-quantity" 
+	                	   name="rent_num" value="0" min="0">개
 	                </p>
 	                <p><strong>대여 시작일 선택:</strong> <span>대여 기간은 7일입니다.</span></p>
 	                
@@ -147,132 +155,33 @@
 	               
 	                <div class="rent-prod-total">
 	                    <p><strong>총 대여 금액</strong></p>
-	                    <p class="total-amount"><strong>30,000원</strong></p> <%-- js: 기간확인 후 가격붙이기 --%>
+	                    <p class="total-amount"><strong>30,000원</strong></p> 
 	                	
-	                	
-	                	<%--<input name="total_amount" type="hidden" value="30000">  자바로 넘길 대여가격 --%>
-	                	<%-- <input id="total_amount" name="total_amount" type="hidden" value=""> --%>
-	                	
-	                	<input id="total-price-hidden" name="total_amount" type="hidden" value=""> <%-- 자바로 넘길 대여가격 value="30000" --%>
-	                	<%-- 대여가격
-	                	<input id="basePrice" type="hidden" name="basePrice" value=""> --%>
-	                	
+	                	<%-- 자바로 값을 넘겨주는 hidden타입 input --%>
+	                	<input id="rent_product_price" name="rent_product_price" type="hidden" value="30000">
+	                	<input id="total-price-hidden" name="total_rent_price" type="hidden" value=""> 
 	                </div>
 	                <p class="rent-prod-warning">! 선택한 상품의 옵션을 확인하신 후 대여를 진행해 주세요.</p>
 		            <button type="button" class="rent-prod-button">대여하기</button> 
-		            <button type="button" class="rent-cart-button">장바구니</button> 
+		            <button id="rentCartButton" type="button" class="rent-cart-button">장바구니</button> 
 	            </div>
 	        </div>
 	    </div>
   	</form>
-    <script type="text/javascript">
-    $(document).ready(function() {
-    	
-    	//대여가격 기본 3만원
-       const basePrice = 30000;
-    	 
-       function formatDate(date) {
-           var day = String(date.getDate()).padStart(2, '0');
-           var month = String(date.getMonth() + 1).padStart(2, '0');
-           var year = date.getFullYear();
-
-           return year + '-' + month + '-' + day;
-       }
-	   //7일 후의 날짜 설정
-       function setReturnDate(startDate) {
-           var returnDate = new Date(startDate);
-           returnDate.setDate(returnDate.getDate() + 7);
-           return formatDate(returnDate);
-       }
-	   //대여 가격
-       function updateTotalPrice() {
-           var quantity = $('#rent_prod_quantity').val();
-           var totalPrice = basePrice * quantity;
-           $('.total-amount>strong').text(totalPrice.toLocaleString() + '원');
-           
-           /* 자바로 넘겨줄 input에 가격 붙이기 */
-           //기본 대여 가격
-           //$('#basePrice').val(basePrice);
-           //총 수량별 대여가격 
-           $('#total-price-hidden').val(totalPrice);
-           
-       }
-       var today = new Date();
-       var formattedToday = formatDate(today);
-       $('#rent_start_date').val(formattedToday);
-
-	   //초기 종료일 설정
-       var initialReturnDate = setReturnDate(today);
-       $('#rent_end_date').val(initialReturnDate);
-
-       //시작일 이벤트 
-       $('#rent_start_date').on('input', function() {
-           var selectedStartDate = new Date($(this).val());
-           var newReturnDate = setReturnDate(selectedStartDate);
-           $('#rent_end_date').val(newReturnDate);
-       });
-       // 종료일을 사용자가 직접 변경할 수 없음
-       $('#rent_end_date').on('input', function() {
-           var startDate = new Date($('#rent_start_date').val());
-           $(this).val(setReturnDate(startDate));
-       });
-       
-       $('#rent_prod_quantity').on('input', function() {
-           updateTotalPrice();
-       });
-       
-       updateTotalPrice(); // 초기 총 대여 금액 설정
-       
-       
-    	//대여 팝업창 대여하기 버튼 클릭 이벤트
-    	$('.rent-prod-button').on('click',function(){
-    		 var rentFormData = $('#rentPopupForm').serialize();
-    		 console.log("rentFormData: " + rentFormData);
-    		 
-	   		 //옵션 값이 null일 때 경고 띄우기
-   		     var allOptionsSelected = true;
-	   		 $('#product-option').each(function() {
-		            if ($(this).val() === null) {
-		                allOptionsSelected = false;
-		                
-		                return false; 
-		            }
-		     });
-	         if (!allOptionsSelected) {
-	            alert("모든 옵션을 선택해 주세요.");
-	            return;
-      		 }
-    		 
-    		 $.ajax({
-                 url: "${path}/prod/isProductRentable?"+rentFormData,
-                 type: 'POST',
-                 success: function(response) {
-                  	 if (response == 1) {
-                     	 alert("대여 가능");
-                 	 } else {
-                 		 alert("해당 옵션의 상품 재고가 없습니다");
-                 	 }
-                 	 
-                 },
-                 error: function(error) {
-                	 	alert("Error: "+error);
-                 }
-             });
-    	});
-       
-    });
-    </script>
-	<%-- 장바구니 팝업 창 --%>
+  
+	<%-- 상품 장바구니 팝업 창 --%>
 	<div class="popup-background" id="popupBackground">
 	    <div class="popup-container">	       
 	        <div class="popup-icon">!</div>	       
-	        <p>장바구니로 이동하시겠습니까?</p>	        
+	        <p>장바구니가 저장됩니다. 장바구니로 이동하시겠습니까?</p>	        
 	        <button class="popup-button yes-button">네</button>
 	        <button class="popup-button no-button">아니요</button>
 	    </div>
 	</div>
 	<%-- 상품 문의 모달 창 --%>
 	<form id="productQnaForm">
+		<input type="hidden" name="prod_id" var="${prod_detail_info.prod_id}">
+		
 		<div id="myModal" class="modal">
 			<div class="modal-content">
 				<span class="close">&times;</span>
@@ -316,22 +225,24 @@
 						<p class="rate">
 							★${prod_detail_info.AVERAGE_RATE} <span><a href="javascript:#void" class="review-rate-btn">리뷰 ${prod_detail_info.REVIEW_COUNT}건</a></span>
 						</p>
-						<form id="prodOptionFrom">
+						<form id="prodOptionForm">
 							<div class="choose_wrap">
 								<p class="option_name">상품 옵션</p>
 								<div class="select_choose">
 									<div>
-									    <c:forEach items="${prod_Options}" var="prodOption">
+									    <c:forEach items="${prod_Options}" var="prodOption"  varStatus="status">
 											<div>
 												<p>${prodOption.OPT_NAME} :</p>
-												<select id="product-option" name="${prodOption.OPT_NAME}">
+												<select id="options_${status.index}" name="${prodOption.OPT_NAME}">
 												   <option disabled selected>선택</option>
 											       <c:forTokens items="${prodOption.OPT_VALUE}" delims="," var="optValue" >
 													     <c:set var="position" value="${fn:indexOf(optValue,'-')}"/>
 													     <c:set var="optName" value="${fn:substring(optValue,0,position) }"/>
 													     <c:set var="optLength" value="${fn:length(optValue)}"/>
 													     <c:set var="optId" value="${fn:substring(optValue,position+1, optLength) }"/>
-													     <option value="${optName}">${optName}</option>
+													     
+													     <%-- <option value="${optName}">${optName}</option>  --%>
+													     <option value="${optId}">${optName}</option> 
 													</c:forTokens>
 											    </select> 
 											</div>
@@ -342,132 +253,145 @@
 							<div class="quantity-price">
 								<div class="quantity_wrap">
 									<p>수량 선택 :</p>
-									<input type="number" id="quantity" class="quantity"
-										name="quantity" value="1" min="1">
+									<input type="number" id="order_num" class="quantity"
+										name="order_num" value="0" min="0">
+										<%-- <input type="number" id="quantity" class="quantity"
+										name="quantity" value="0" min="0"> --%>
 								</div>
 								<p class="total"></p>  <%-- 총 상품 가격 --%>
 							</div>
 							
-							<%-- !!!!!!!!!! 자바로 넘겨 줄 단가와 상품ID !!!!!!!!!! --%>
+							<%-- 자바로 넘겨 줄 단가와 상품ID --%>
 							<input type="hidden" name="productPrice" value="${prod_detail_info.PROD_PRICE}">  
 							<input type="hidden" name="prod_id" value="${prod_detail_info.prod_id}">  
 						</form>
+						
+						
 						<div class="button-group">
 							<button id="cartButton" type="button" class="white_button">장바구니</button> 
 							<button id="orderButton" type="button" class="button">바로 구매</button>
 						</div>
 						
-						<script type="text/javascript">
-						
-							//구매하기 버튼 클릭
-							$('#orderButton').on('click', function(){
-
-								var param = $("#prodOptionForm").serialize();
-							    console.log(param);
-								
-						        // 컨트롤러에 상품 옵션 값 보내기
-							    //var formArray = $("#prodOptionForm").serializeArray();
-							    //var formData = {};
-								
-							    // 배열을 JSON 객체로 변환
-							    //$.each(formArray, function(index, item) {
-							    //   formData[item.name] = item.value;
-							    //});
-								//console.log("formData: " + formData);
-								
-								 // 선택한 옵션이 null인 경우 페이지 이동 X
-						        //if (Object.keys(formData).length > 0) {
-					        	if(param != null){
-						            $.ajax({
-						                url: "${path}/prod/productOrderInsert.do?"+param,
-						                type: 'POST',
-						                //contentType: 'application/json', // JSON 형식으로 전송
-						                //data: JSON.stringify(formData), // JSON 데이터 전송
-						                success: function(response) {
-						                    console.log(response);
-						                    alert("주문 저장 완료");
-						                },
-						                error: function(error) {
-						                    alert("Error: " + error);
-						                }
-						            });
-						        } else {
-						            alert("옵션을 선택해 주세요.");
-						        }
-							});
-						</script>
-						
-						<%-- 
-							대여 재고에 있는 상품이면 대여하기 버튼 활성화 시키기 (상품의 대여재고id를 찾기)
-						--%>
-						<c:if test="${not empty rentProductStockCheck}">
-						    <button type="button" class="noRent_btn">대여불가상품</button>
+						<%-- 대여 재고에 있는 상품이면 대여하기 버튼 활성화 --%>
+						<c:if test="${fn:length(rentProductStockCheck) > 0}">
+						     <button type="button" class="rent_btn">대여하기</button>
 						</c:if>
-						<c:if test="${empty rentProductStockCheck}">
-						    <button type="button" class="rent_btn">대여하기</button>
+						<c:if test="${fn:length(rentProductStockCheck) == 0}">
+						    <button type="button" class="noRent_btn">대여불가상품</button>
 						</c:if>
 					</div>
 				</div>
 			<script>
 		        $(document).ready(function() {
-		    		/* "장바구니 버튼" 선택 시 나타나는 팝업창 */ 
+		        	
+		    		/* 장바구니 버튼 클릭 시 나타나는 팝업창 */ 
 		    		$('#cartButton').on('click', function(e) {
-		    			
 		    			e.preventDefault();
-		    			
 		    			$('.popup-background').show();
-		    			
-		    			console.log("장바구니 버튼 클릭");
-		    			
 		    		});
 		    		
 		    		//네 선택 시 장바구니페이지로 이동
 	        		$('.yes-button').on('click', function(e) {
 	        			e.preventDefault();
-	        			
-	        			prodOption(); // 옵션 값을 컨트롤러로 넘겨주는 함수
-	        			
-	        			console.log("네 버튼");
-	        			
+	        			sendProdOption(); // 옵션 값을 컨트롤러로 넘겨주는 함수
 	        			$('.popup-background').hide();
 	        			
 	        		});
 	        		//아니요 선택 시 현재페이지 계속 쇼핑
 	        		$('.no-button').on('click', function(e) {
 	        			e.preventDefault();
-	        			prodOption();
-	        			
-	        			console.log("아니요 버튼");
+	        			sendProdOption();
 	        			
 	        			location.reload(); 
 	        		});
 	        		
 		        });
 				//버튼 클릭 -> 컨트롤러에 선택한 상품 옵션 값 넘김 (수정중)
-				function prodOption(){
-					//컨트롤러에 상품 옵션 값 보내기
-			   		var param =  $("#prodOptionFrom").serialize();
-		
-				 	//선택한 옵션이 null인 경우 페이지 이동 X
-					if(param != null){
+				function sendProdOption(){
+					
+				    var currentStock = {}; ////선택한 옵션 상품의 재고id
+					var previousValues = {};//수량, 가격 처리
+					// 상품 원래 가격 (숫자만 추출)
+				    var originalPrice = parseInt($('.productPrice').text().replace(/[^0-9]/g, ''));
+				    $('.total').text(originalPrice + '원');
+
+				    var previousValue = parseInt($('#order_num').val());
+
+				    // 수량 입력 필드가 변경될 때마다 실행
+				    $('#order_num').on('input', function() {
+				       var currentValue = parseInt($(this).val()); // 수량
+
+				       //확인용 (기능 구현 후 삭제)
+				       if (currentValue < previousValue) {
+				           console.log('수량이 감소 : ' + currentValue);
+				       } else {
+				           console.log('수량이 증가: ' + currentValue);
+				       }
+				       
+				       if (currentValue <= currentStock.stock){
+				       	// previousValue를 현재 값으로 업데이트
+				        previousValue = currentValue;
+				       	
+				    	// 총 가격 업데이트 
+				        var totalPrice = originalPrice * currentValue;
+				        $('.total').text(totalPrice.toLocaleString() + '원');
+				       } else {
+				       	alert("수량 초과");
+				       	//현재 재고까지만 수량 고르기 가능
+				       	$('#order_num').val(currentStock.stock);
+				       	return
+				       }
+				   });
+					
+									 	
+					var allOptionsSelected = true;
+			        $('#prodOptionForm select').each(function() {
+			            if ($(this).val() === null || $(this).val() === "선택") {
+			                allOptionsSelected = false;
+			                return false; // each 루프 중지
+			            }
+			        });
+
+			        if (!allOptionsSelected) {
+			            alert("모든 옵션을 선택해 주세요.");
+			            return;
+		      		  }
+				
+			        // 컨트롤러에 상품 옵션 값 보내기
+				    var formArray = $("#prodOptionForm").serializeArray();
+					var param = { };
+
+					// 배열을 JSON 객체로 변환
+				    $.each(formArray, function(index, item) {
+			            	param.s_stock_id =  currentStock.s_stock_id;
+					    	param[item.name] = item.value;
+				    });
+					
+					//모든 옵션이 선택된 경우 서버에 전송
+					if (allOptionsSelected) {	
 						
-						 $.ajax({
-			                    url: "${path}/prod/productCartInsert.do?" + param ,
-			                    type: 'GET',
-			                    success: function(response) {
-			                    	 console.log(response);
-			                    	 alert(response);
-			                    	 alert("장바구니에 저장 완료");
-			                    },
-			                    error: function(error) {
-			                   	 	alert("Error: "+error);
+		        		$.ajax({
+			                url: "${path}/prod/productCartInsert.do",
+			                type: 'POST',
+			                data:JSON.stringify(param),
+			                contentType:"application/json;charset=utf-8",
+			                success: function(response) {
+			                    console.log("장바구니 response: " + response);
+			                    if(response > 0 ){
+			                   	  alert("장바구니에 저장 완료(현재 남은 재고" + currentStock.stock + "개)");
+			                    }else{
+			                    	alert("상품 재고가 없습니다.");
 			                    }
-			                });
-					}else{
-						alert("옵션을 선택해 주세요.");
-					}
-					//location.href : Get요청
-					//location.href= "${path}/prod/productOption?" + param;
+			                },
+			                error: function(error) {
+			                    alert("Error: " + error);
+			                }
+			            });
+			        } else {
+			            alert("옵션을 선택해 주세요.");
+			        }
+				 	
+				 	
 				}
 		    </script>
 			
@@ -476,11 +400,13 @@
 				<button type="button" class="this" data-tab="container-detail">상품정보</button>
 				<button type="button" data-tab="container-review">리뷰</button>
 			</div>
+			
 			<%-- 상세 정보 --%>
 			<div class="container-detail active">
 				<h1 style="text-align: center;">상품 정보 이미지 등록할 부분</h1>
 				<div class="container-detail-here"></div>
 			</div>
+			
 			<%-- 리뷰 목록 --%>
 			<div id="container-review" class="container-review inner">
 			<h1>상품 리뷰</h1>
@@ -603,8 +529,6 @@
 			<script type="text/javascript">
 				$('#qnaBtn').on('click',function(e){
 					e.preventDefault();
-					
-					
 				});
 			</script>
 			<%-- 배송 정보 안내 --%>
@@ -656,35 +580,473 @@
 		</div>
 	</div>
 </div>
-	<%@ include file="../common/footer.jsp" %>
-	<script>
-        $(document).ready(function() {
-            // 원래 가격 (숫자만 추출)
-            var originalPrice = parseInt($('.productPrice').text().replace(/[^0-9]/g, ''));
+<%@ include file="../common/footer.jsp" %>
+<script type="text/javascript">
 
-            $('.total').text(originalPrice + '원');
+	/* 판매상품 구매 기능 */
+	
+	//선택한 옵션 상품의 재고id 변수 선언
+    var currentStock = {};
+	
+	//수량, 가격 처리
+	var previousValues = {};
+	// 상품 원래 가격 (숫자만 추출)
+    var originalPrice = parseInt($('.productPrice').text().replace(/[^0-9]/g, ''));
+    $('.total').text(originalPrice + '원');
 
-            var previousValue = parseInt($('.quantity').val());
+    var previousValue = parseInt($('#order_num').val());
 
-            // 수량 입력 필드가 변경될 때마다 실행
-            $('.quantity').on('input', function() {
-                var currentValue = parseInt($(this).val()); // 수량
+    // 수량 입력 필드가 변경될 때마다 실행
+    $('#order_num').on('input', function() {
+        var currentValue = parseInt($(this).val()); // 수량
 
-                if (currentValue < previousValue) {
-                    console.log('수량이 감소 : ' + currentValue);
-                } else {
-                    console.log('수량이 증가: ' + currentValue);
-                }
+        //확인용 (기능 구현 후 삭제)
+        if (currentValue < previousValue) {
+            console.log('수량이 감소 : ' + currentValue);
+        } else {
+            console.log('수량이 증가: ' + currentValue);
+        }
+        
+        if (currentValue <= currentStock.stock){
+        	// previousValue를 현재 값으로 업데이트
+	        previousValue = currentValue;
+        	
+	    	 // 총 가격 업데이트 
+	        var totalPrice = originalPrice * currentValue;
+	        $('.total').text(totalPrice.toLocaleString() + '원');
+        } else {
+        	alert("수량 초과");
 
-                // previousValue를 현재 값으로 업데이트
-                previousValue = currentValue;
+        	 //현재 재고까지만 수량 고르기 가능
+        	 $('#order_num').val(currentStock.stock);
+        	 return
+        }
+    });
 
-                // 할인된 가격과 총 가격 업데이트 
-                var totalPrice = originalPrice * currentValue;
-                $('.total').text(totalPrice.toLocaleString() + '원');
-            });
-    		
+    // 모든 select 요소에 change 이벤트 리스너 추가
+    $('#prodOptionForm select').on('change', function() {
+        var allOptionsSelected = true;
+        var isChanged = false;
+
+        //select 요소의 현재 값과 이전 값을 비교
+        $('#prodOptionForm select').each(function() {
+            var currentValue = $(this).val();
+            var name = $(this).attr('name');
+            //// 현재 값이 null이거나 "선택"이면 모든 옵션이 선택되지 않은 것
+            if (currentValue === null || currentValue === "선택") {
+                allOptionsSelected = false;
+                return false; // each 루프 중지
+            }
+            // 이전 값이 정의되어 있고 현재 값과 다르면 변경된 것으로 간주
+            if (previousValues[name] !== undefined && previousValues[name] !== currentValue) {
+                isChanged = true;
+            }
+
+            // 현재 값을 이전 값으로 저장
+            previousValues[name] = currentValue;
         });
-    </script>
+
+        if (isChanged) {
+            $('#order_num').val(1); // 값이 변경된 경우 order_num(수량)를 1로 설정
+            // 가격 초기화
+            var totalPrice = originalPrice;
+            $('.total').text(totalPrice.toLocaleString() + '원');
+        } else if (allOptionsSelected) {
+            var order_num = parseInt($('#order_num').val(), 10);
+            $('#order_num').val(order_num + 1); // 모든 옵션이 선택된 경우 order_num 값을 1 증가
+            // 총 가격 업데이트
+            var totalPrice = originalPrice * (order_num + 1);
+            $('.total').text(totalPrice.toLocaleString() + '원');
+        }
+        
+        			
+        if (allOptionsSelected) { //옵션 모두 선택 했을 경우
+        	
+	    	// 모든 옵션값에 해당하는 s_stock_id(재고ID) 찾아서 프론트에 저장하기
+	    	var stockData = `${stockList}`;
+	    	// var stockList = $.parseJSON('['+stockData+']')
+	    	var stockList =JSON.parse(stockData);
+	    	if(Array.isArray(stockList)){
+	    		stockList.forEach((item, idx) => {
+	    			
+	    		 //현재선택한 옵션 상품의 재고id 업데이트 
+	    		 //select id="options_0~5"
+	    		 var selectOption1 = $('#options_0').val(); //예:'4'
+    			 var selectOption2 = $('#options_1').val(); //예:'1'
+    			 var selectOption3 = $('#options_2').val();
+    			 var selectOption4 = $('#options_3').val();
+    			 var selectOption5 = $('#options_4').val();
+    			 
+    			 if(selectOption1 !== undefined && parseInt(selectOption1) !== item.opt_id1){
+    				 return;
+    			 } 
+    			 if(selectOption2 !== undefined && parseInt(selectOption2) !== item.opt_id2){
+    				 return;
+    			 } 
+    			 if(selectOption3 !== undefined && parseInt(selectOption3) !== item.opt_id3){
+    				 return;
+    			 } 
+    			 if(selectOption4 !== undefined && parseInt(selectOption4) !== item.opt_id4){
+    				 return;
+    			 } 
+    			 if(selectOption5 !== undefined && parseInt(selectOption5) !== item.opt_id5){
+    				 return;
+    			 } 
+    			 
+    			 currentStock = item;
+    		
+	    		 console.log(currentStock);
+    			 
+    			});
+	    		
+	    	}
+	    	
+        }
+        
+    });
+
+	//구매하기 버튼 클릭 
+	$('#orderButton').on('click', function(){
+		
+		var allOptionsSelected = true;
+        $('#prodOptionForm select').each(function() {
+            if ($(this).val() === null || $(this).val() === "선택") {
+                allOptionsSelected = false;
+                return false; // each 루프 중지
+            }
+        });
+
+        if (!allOptionsSelected) {
+            alert("모든 옵션을 선택해 주세요.");
+            return;
+     		  }
+	
+        // 컨트롤러에 상품 옵션 값 보내기
+	    var formArray = $("#prodOptionForm").serializeArray();
+		var param = { };
+
+		// 배열을 JSON 객체로 변환
+	    $.each(formArray, function(index, item) {
+            	param.s_stock_id =  currentStock.s_stock_id;
+		    	param[item.name] = item.value;
+	    });
+		console.log(formArray);
+		console.log("param: " + param);
+		 
+		//모든 옵션이 선택된 경우 서버에 전송
+  						if (allOptionsSelected) {	
+       		$.ajax({
+                url: "${path}/prod/productOrderInsert.do",
+                type: 'POST',
+                data:JSON.stringify(param),
+                contentType:"application/json;charset=utf-8",
+                success: function(response) {
+                    console.log(response);
+                    if(response > 0 ){
+	                   	  alert("주문 저장 완료");
+	                    }else{
+	                    	alert("상품 재고가 없습니다.");
+	                    }
+                },
+                error: function(error) {
+                    alert("Error: " + error);
+                }
+            });
+        } else {
+            alert("옵션을 선택해 주세요.");
+        }
+	});
+</script>
+<script type="text/javascript">
+  $(document).ready(function() {
+  	
+  	/*  대여하기 기능  */
+  	
+  	//대여가격 기본 3만원으로 설정
+     const basePrice = 30000;
+  	 
+     function formatDate(date) {
+         var day = String(date.getDate()).padStart(2, '0');
+         var month = String(date.getMonth() + 1).padStart(2, '0');
+         var year = date.getFullYear();
+
+         return year + '-' + month + '-' + day;
+     }
+  //7일 후의 날짜 설정
+     function setReturnDate(startDate) {
+         var returnDate = new Date(startDate);
+         returnDate.setDate(returnDate.getDate() + 7);
+         return formatDate(returnDate);
+     }
+  //대여 가격
+     function updateTotalPrice() {
+         var rent_num = $('#rent_num').val();
+         var totalPrice = basePrice * rent_num;
+         $('.total-amount>strong').text(totalPrice.toLocaleString() + '원');
+         
+         $('#rent_product_price').val(basePrice);
+         
+         //$('#basePrice').val(basePrice);  //기본 대여 가격
+         $('#total-price-hidden').val(totalPrice); //총 수량별 대여가격 
+         
+     }
+     var today = new Date();
+     var formattedToday = formatDate(today);
+     $('#rent_start_date').val(formattedToday);
+
+  //초기 종료일 설정
+     var initialReturnDate = setReturnDate(today);
+     $('#rent_end_date').val(initialReturnDate);
+
+     //시작일 이벤트 
+     $('#rent_start_date').on('input', function() {
+         var selectedStartDate = new Date($(this).val());
+         var newReturnDate = setReturnDate(selectedStartDate);
+         $('#rent_end_date').val(newReturnDate);
+     });
+     // 종료일을 사용자가 직접 변경할 수 없음
+     $('#rent_end_date').on('input', function() {
+         var startDate = new Date($('#rent_start_date').val());
+         $(this).val(setReturnDate(startDate));
+     });
+     
+     $('#rent_num').on('input', function() {
+         updateTotalPrice();
+     });
+     
+     updateTotalPrice(); // 초기 총 대여 금액 설정
+     
+  	//선택한 옵션 상품의 재고id 변수 선언
+    var currentStock = {};
+
+	//수량, 가격 처리
+	var previousValues = {};
+	// 상품 원래 가격 (숫자만 추출)
+    var originalPrice = parseInt($('.productPrice').text().replace(/[^0-9]/g, ''));
+    $('.total').text(originalPrice + '원');
+
+    var previousValue = parseInt($('#order_num').val());
+
+    // 수량 입력 필드가 변경될 때마다 실행
+    $('#rent_num').on('input', function() {
+       var currentValue = parseInt($(this).val()); // 수량
+
+       //확인용 (기능 구현 후 삭제)
+       if (currentValue < previousValue) {
+           console.log('수량이 감소 : ' + currentValue);
+       } else {
+           console.log('수량이 증가: ' + currentValue);
+       }
+       
+       if (currentValue <= currentStock.stock){
+       	// previousValue를 현재 값으로 업데이트
+        previousValue = currentValue;
+       	
+    	// 총 가격 업데이트 
+        var totalPrice = originalPrice * currentValue;
+        $('.total').text(totalPrice.toLocaleString() + '원');
+       } else {
+       	alert("수량 초과");
+       	//현재 재고까지만 수량 고르기 가능
+       	$('#rent_num').val(currentStock.stock);
+       	return
+       }
+   });
+
+   // 모든 select 요소에 change 이벤트 리스너 추가
+   $('#rentPopupForm select').on('change', function() {
+       var allOptionsSelected = true;
+       var isChanged = false;
+
+       //select 요소의 현재 값과 이전 값을 비교
+       $('#rentPopupForm select').each(function() {
+           var currentValue = $(this).val();
+           var name = $(this).attr('name');
+           //// 현재 값이 null이거나 "선택"이면 모든 옵션이 선택되지 않은 것
+           if (currentValue === null || currentValue === "선택") {
+               allOptionsSelected = false;
+               return false; // each 루프 중지
+           }
+           // 이전 값이 정의되어 있고 현재 값과 다르면 변경된 것으로 간주
+           if (previousValues[name] !== undefined && previousValues[name] !== currentValue) {
+               isChanged = true;
+           }
+
+           // 현재 값을 이전 값으로 저장
+           previousValues[name] = currentValue;
+       });
+
+       if (isChanged) {
+           $('#rent_num').val(1); // 값이 변경된 경우 rent_num(수량)를 1로 설정
+           // 가격 초기화
+           var totalPrice = originalPrice;
+           $('.total').text(totalPrice.toLocaleString() + '원');
+       } else if (allOptionsSelected) {
+           var rent_num = parseInt($('#rent_num').val(), 10);
+           $('#rent_num').val(order_num + 1); // 모든 옵션이 선택된 경우 rent_num 값을 1 증가
+           // 총 가격 업데이트
+           var totalPrice = originalPrice * (rent_num + 1);
+           $('.total').text(totalPrice.toLocaleString() + '원');
+       }
+       
+       // 현재 대여재고아이디 저장				
+       if (allOptionsSelected) { //옵션 모두 선택 했을 경우
+       	
+    	// 모든 옵션값에 해당하는 r_stock_id(대여재고ID) 찾아서 프론트에 저장
+    	var rStockData = `${rentStockList}`;
+    	var rStockList =JSON.parse(rStockData);
+    	if(Array.isArray(rStockList)){
+    		rStockList.forEach((item, idx) => {
+    			
+    		 //현재 옵션의 대여상품 재고id 업데이트 
+    		 //select id="rentOptions_0~5"
+    		 var selectOption1 = $('#rentOptions_0').val(); //예:'4'
+   			 var selectOption2 = $('#rentOptions_1').val(); //예:'1'
+   			 var selectOption3 = $('#rentOptions_2').val();
+   			 var selectOption4 = $('#rentOptions_3').val();
+   			 var selectOption5 = $('#rentOptions_4').val();
+   			 
+   			 if(selectOption1 !== undefined && parseInt(selectOption1) !== item.opt_id1){
+   				 return;
+   			 } 
+   			 if(selectOption2 !== undefined && parseInt(selectOption2) !== item.opt_id2){
+   				 return;
+   			 } 
+   			 if(selectOption3 !== undefined && parseInt(selectOption3) !== item.opt_id3){
+   				 return;
+   			 } 
+   			 if(selectOption4 !== undefined && parseInt(selectOption4) !== item.opt_id4){
+   				 return;
+   			 } 
+   			 if(selectOption5 !== undefined && parseInt(selectOption5) !== item.opt_id5){
+   				 return;
+   			 } 
+   			 
+   			 currentStock = item;
+   		
+    		 console.log(currentStock);
+   			 
+   			});
+    		
+    	}
+    	
+       }
+       
+   });
+  	
+   //[대여 팝업창] 대여하기 버튼 클릭 이벤트
+  	$('.rent-prod-button').on('click',function(){
+  		
+  		var allOptionsSelected = true;
+       $('#rentPopupForm select').each(function() {
+           if ($(this).val() === null || $(this).val() === "선택") {
+               allOptionsSelected = false;
+               return false; // each 루프 중지
+           }
+       });
+
+       if (!allOptionsSelected) {
+           alert("모든 옵션을 선택해 주세요.");
+           return;
+    		  }
+
+       // 컨트롤러에 상품 옵션 값 보내기
+    var rentFormArray = $("#rentPopupForm").serializeArray();
+	var rentFormParam = { };
+
+	// 배열을 JSON 객체로 변환
+    $.each(rentFormArray, function(index, item) {
+    	rentFormParam.r_stock_id =  currentStock.r_stock_id;
+           	
+	    	rentFormParam[item.name] = item.value;
+    });
+		 
+  		 //옵션 값이 null일 때 경고 띄우기
+ 		     var allOptionsSelected = true;
+  		 $('#rentPopupForm select').each(function() {
+            if ($(this).val() === null) {
+                allOptionsSelected = false;
+                return false; 
+            }
+     });
+        if (!allOptionsSelected) {
+           alert("모든 옵션을 선택해 주세요.");
+           return;
+    		 }
+        
+  		 $.ajax({
+               url: "${path}/prod/rentProductOrderInsert.do",
+               type: 'POST',
+               data:JSON.stringify(rentFormParam),
+               contentType:"application/json;charset=utf-8",
+               success: function(response) {
+              	 if(response > 0){
+              		 alert("대여 저장 완료");
+                   	 //location.href=""; 주문 페이지로 이동
+              	 }else{
+              		 alert("오류가 발생했습니다. 다시 시도해주세요.");
+              	 }
+               },
+               error: function(error) {
+              	 	 alert("Error: "+error);
+               }
+           });
+  	});
+   
+   //[대여 팝업창] 장바구니 버튼 클릭 이벤트
+   $('#rentCartButton').on('click',function(){
+   	
+   	var allOptionsSelected = true;
+       $('#rentPopupForm select').each(function() {
+           if ($(this).val() === null || $(this).val() === "선택") {
+               allOptionsSelected = false;
+               return false; // each 루프 중지
+           }
+       });
+
+       if (!allOptionsSelected) {
+           alert("모든 옵션을 선택해 주세요.");
+           return;
+    		  }
+
+       // 컨트롤러에 상품 옵션 값 보내기
+    var formArray = $("#rentPopupForm").serializeArray();
+	var param = { };
+
+	// 배열을 JSON 객체로 변환
+    $.each(formArray, function(index, item) {
+           	param.s_stock_id =  currentStock.s_stock_id;
+	    	param[item.name] = item.value;
+    });
+	
+	 
+	//모든 옵션이 선택된 경우 서버에 전송
+	if (allOptionsSelected) {	
+		
+      		$.ajax({
+               url: "${path}/prod/rentProductCartInsert.do",
+               type: 'POST',
+               data:JSON.stringify(param),
+               contentType:"application/json;charset=utf-8",
+               success: function(response) {
+                   console.log(response);
+                   if(response > 0){
+	                   alert("대여상품 장바구니 저장 완료(현재 남은 재고" + currentStock.stock + "개)");
+                   }else{
+                	   alert("현재 대여 재고가 없습니다.");
+                   }
+               },
+               error: function(error) {
+                   alert("Error: " + error);
+               }
+           });
+       } else {
+           alert("옵션을 선택해 주세요.");
+       }
+   	
+   });
+     
+  });
+  </script>						
 </body>
 </html>

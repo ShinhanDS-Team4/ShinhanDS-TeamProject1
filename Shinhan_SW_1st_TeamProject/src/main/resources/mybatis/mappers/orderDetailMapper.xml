@@ -15,11 +15,21 @@
 		FROM ORDER_DETAIL
 		WHERE "orderdetail_id" = #{orderdetail_id}
 	</select>
+	
+	<!-- 주문상세 생성 (주문상태 칼럼 추가) -->
 	<insert id="orderDetailInsert" parameterType="order_detailVO">
 		INSERT
-		INTO ORDER_DETAIL("orderdetail_id", "order_product_price", "order_num", "order_id", "stock_id")
-		VALUES(#{orderdetail_id}, #{order_product_price}, #{order_num}, #{order_id}, #{stock_id})
+		INTO ORDER_DETAIL(orderdetail_id, order_product_price, order_num, order_id, s_stock_id, order_state)
+		VALUES(
+				order_detail_sequence.nextval, 
+				#{order_product_price},
+				#{order_num}, 
+				#{order_id}, 
+				#{s_stock_id}, 
+				'결제대기'
+				)
 	</insert>
+	
 	<update id="orderDetailUpdate" parameterType="order_detailVO">
 		UPDATE ORDER_DETAIL
 		SET

@@ -28,14 +28,14 @@
 		resultType="cartVO">
 		SELECT *
 		FROM CART
-		WHERE "member_id" = #{member_id} and "sellstock_id" IS NOT NULL
+		WHERE member_id = #{member_id} and s_stock_id IS NOT NULL
 	</select>
 	
 	<select id="selectRentStockByMemberId" parameterType="string"
 		resultType="cartVO">
 		SELECT *
 		FROM CART
-		WHERE "member_id" = #{member_id} and "rentstock_id" IS NOT NULL
+		WHERE member_id = #{member_id} and rentstock_id IS NOT NULL
 	</select>
 
 	<select id="selectAllStockByMemberId" parameterType="string"
@@ -57,24 +57,61 @@
 		FROM CART
 	</select>
 
-	<!-- 장바구니에 같은 상품이 존재하는지 조회 -->
-	<select id="selectCartBySellstock" parameterType="map" resultType="cartVO">
+	<!-- 장바구니(구매상품)에 같은 상품이 존재하는지 조회 -->
+	 <select id="selectCartBySellStock" resultType="cartVO">
 	    select * 
 	    from CART
 	    where member_id = #{member_id}
 	    and s_stock_id = #{s_stock_id}
 	</select>
-	<!-- 장바구니에 추가 : cart_id에 시퀀스 사용함(cart_squence), 수정: 대여ID칼럼 제거  -->
+	<!-- 장바구니(대여상품)에 같은 상품이 존재하는지 조회 -->
+	 <select id="selectCartByRentStock" resultType="cartVO">
+	    select * 
+	    from CART
+	    where member_id = #{member_id}
+	    and s_stock_id is null
+	</select>
+	
+	<!-- 장바구니(구매상품) 생성 : 시퀀스 사용(cart_squence), product_type칼럼 추가  -->
 	<insert id="cartInsert" parameterType="cartVO">
 		INSERT 
-		INTO CART(cart_id, member_id, s_stock_id, cart_amount) 
-		VALUES(cart_squence.nextval, #{member_id}, #{s_stock_id}, #{cart_amount})
+		INTO CART(cart_id, member_id, s_stock_id, cart_amount, product_type) 
+		VALUES(cart_sequence.nextval, 
+			  #{member_id}, 
+			  #{s_stock_id}, 
+			  #{cart_amount}, 
+			  'sell')
+			  
+	    <selectKey keyProperty="cart_id" resultType="Integer" order="AFTER">
+	        SELECT cart_sequence.CURRVAL FROM DUAL
+	    </selectKey>
 	</insert>
-	<!-- 장바구니 속 중복 상품의 수량 업데이트 -->
-	<update id="updateCartBySellstock" parameterType="cartVO">
+	<!-- 장바구니(대여상품) 생성 -->
+	<insert id="cartRentProductInsert" parameterType="cartVO">
+		INSERT 
+		INTO CART(cart_id, member_id, s_stock_id, cart_amount, product_type) 
+		VALUES(cart_sequence.nextval, 
+			  #{member_id}, 
+			  #{s_stock_id}, 
+			  #{cart_amount}, 
+			  'rent')
+			  
+	   <selectKey keyProperty="cart_id" resultType="Integer" order="AFTER">
+	        SELECT cart_sequence.CURRVAL FROM DUAL
+	   </selectKey>
+	</insert>
+	
+	<!-- 장바구니(구매상품) 속 중복 상품의 수량 업데이트 -->
+	<update id="updateCartBySellStock" parameterType="cartVO">
 	    update cart
 	    set cart_amount = cart_amount + #{cart_amount} 
-	    where cart_id = #{cart_id}
+	    where cart_id = #{cart_id} and product_type = 'sell'
+	</update>
+	<!-- 장바구니(대여상품) 속 중복 상품의 수량 업데이트 -->
+	<update id="updateCartByRentStock" parameterType="cartVO">
+	    update cart
+	    set cart_amount = cart_amount + #{cart_amount} 
+	    where cart_id = #{cart_id} and product_type = 'rent'
 	</update>
 	
 	<update id="cartUpdate" parameterType="cartVO">

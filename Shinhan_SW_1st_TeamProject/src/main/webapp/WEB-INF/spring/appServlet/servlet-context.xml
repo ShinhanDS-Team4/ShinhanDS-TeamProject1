@@ -53,37 +53,17 @@
 		<property name="username" value="${jdbc.username}" />
 		<property name="password" value="${jdbc.password}" />
 	</bean>
-	
-<<<<<<< HEAD
-	<!-- Log4jdbc로 쿼리 로그 정렬 적용 
-	<bean id="dataSourceOriginal"
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName"
-			value="${jdbc.driverClassName}" />
-		<property name="url" value="${jdbc.url}" />
-		<property name="username" value="${jdbc.username}" />
-		<property name="password" value="${jdbc.password}" />
-	</bean>
-	<bean id="dataSource"  class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
-		<constructor-arg ref="dataSourceOriginal" />
-		<property name="logFormatter" >
-=======
-	<!-- 깔끔한 sql log 출력 -->
+
 	<bean id="dataSource"
 		class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
 		<constructor-arg ref="dataSourceOriginal" />
 		<property name="logFormatter">
->>>>>>> 3c6cac5a44bc0f13620e796f2c4a1035754a7e08
 			<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
 				<property name="loggingType" value="MULTI_LINE"></property>
 				<property name="sqlPrefix" value="[ SQL문장 ] "></property>
 			</bean>
 		</property>
 	</bean>
-<<<<<<< HEAD
-	-->
-=======
->>>>>>> 3c6cac5a44bc0f13620e796f2c4a1035754a7e08
 	
 	<bean id="sqlSessionFactory"
 		class="org.mybatis.spring.SqlSessionFactoryBean">

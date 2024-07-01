@@ -5,6 +5,16 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.team4.shoppingmall.order_detail.Order_DetailDAOInterface;
+import com.team4.shoppingmall.order_detail.Order_DetailDTO;
+import com.team4.shoppingmall.prod.ProductNewVO;
+import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockDAOInterface;
+import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockDAOMybatis;
+import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockDTO;
+import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestDAOInterface;
+import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestDTO;
 
 @Service
 public class OrderProdService {
@@ -12,6 +22,12 @@ public class OrderProdService {
 	@Autowired
 	OrderProdDAOInterface orderprodDAO;
 
+	@Autowired
+	Order_DetailDAOInterface orderDetailDAO;
+	
+	@Autowired
+	Seller_Prod_StockTestDAOInterface seller_Prod_StockTestDAO; //Test파일
+	
 	// 주문상세
 	public OrderProdDTO selectById(Integer order_id) {
 		return orderprodDAO.selectById(order_id);
@@ -22,11 +38,39 @@ public class OrderProdService {
 		return orderprodDAO.selectAll();
 	}
 
-	// 주문생성
-	public int orderprodInsert(OrderProdDTO orderprod) {
-		return orderprodDAO.orderprodInsert(orderprod);
-	}
 
+	// 주문생성, 주문상세 생성, 재고 업데이트
+	@Transactional
+	public int orderprodInsert(ProductNewVO prodVO, int total_price, String member_id) {
+		
+		OrderProdDTO order = new OrderProdDTO();
+		
+		order.setMember_id(member_id);
+		order.setTotal_price(total_price);
+		
+		//1.주문 생성 
+		int result = orderprodDAO.orderprodInsert(order);
+		
+		
+		//2.주문상세 생성 
+		Integer orderId = order.getOrder_id(); // insert한 orderId값을 가져온다
+		
+		Order_DetailDTO orderDetailDTO = new Order_DetailDTO();
+		
+		int productPrice = Integer.parseInt(prodVO.getProductPrice()); //상품 가격
+		
+		orderDetailDTO.setOrder_num(prodVO.getOrder_num());
+		orderDetailDTO.setOrder_product_price(productPrice);
+		orderDetailDTO.setOrder_id(orderId);
+		orderDetailDTO.setS_stock_id(prodVO.getS_stock_id());
+		
+		result = orderDetailDAO.orderDetailInsert(orderDetailDTO);
+		
+		//3.수량 업데이트
+		seller_Prod_StockTestDAO.sellProdStockUpdate(prodVO);
+		
+		return result;
+	}
 	// 주문수정
 	public int orderprodUpdate(OrderProdDTO orderprod) {
 		return orderprodDAO.orderprodUpdate(orderprod);
@@ -51,5 +95,7 @@ public class OrderProdService {
 	public int orderRefund(int orderId) {
 		return orderprodDAO.orderRefund(orderId);
 	}
+	
+	
 
 }

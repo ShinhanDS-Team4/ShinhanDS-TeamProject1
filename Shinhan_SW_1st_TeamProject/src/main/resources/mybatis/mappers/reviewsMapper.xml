@@ -25,7 +25,7 @@
 		    ORDER_PROD o ON od.ORDER_ID = o.ORDER_ID
         JOIN 
 		    SELLER_PROD_STOCK s ON od.S_STOCK_ID = s.S_STOCK_ID
-	    WHERE   s.PROD_ID = #{prod_id} and  od.ORDER_STATE = 'delievered'
+	    WHERE   s.PROD_ID = #{prod_id} and  od.ORDER_STATE = '대여신청완료'
 	</select>
 
 	<select id="selectById" parameterType="int"

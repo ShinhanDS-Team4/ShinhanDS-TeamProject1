@@ -14,6 +14,32 @@
 		and  opt_id1||','|| opt_id2||','||opt_id3 ||','||opt_id4||','||opt_id5 =  #{optionString} 
 
 	</select>
+	
+	<!-- 상품의 대여 재고id 조회 -->
+	<select id="selectRentStockByProdId2"  parameterType="string"
+		resultType="rent_prod_stockVO">
+		select r_stock_id
+		from rent_prod_stock
+		where  prod_id= #{prod_id}
+	</select>
+	
+	<!-- 상품ID로 대여 상품 옵션별 재고 조회 -->
+	<select id="selectRpsOptionByProdId" parameterType="string"
+		resultType="rent_prod_stockVO">
+		SELECT 
+			r_stock_id,
+		    prod_id,
+		    opt_id1,
+		    opt_id2,
+		    opt_id3,
+		    opt_id4,
+		    opt_id5,
+		    stock
+		FROM 
+		    RENT_PROD_STOCK 
+		WHERE 
+		    prod_id = #{prod_id}
+	</select>
 
 	<!-- 대여상품상세 -->
 	<select id="selectById" parameterType="string"
@@ -35,6 +61,14 @@
 		INTO RENT_PROD_STOCK("prod_id", "opt_id1", "opt_id2", "opt_id3", "opt_id4", "opt_id5")
 		VALUES(#{prod_id}, #{opt_id1}, #{opt_id2}, #{opt_id3}, #{opt_id4}, #{opt_id5})
 	</insert>
+		
+	<!-- 대여 생성시 대여 수량 업데이트 -->
+	<update id="rentProdStockUpdate">
+		UPDATE RENT_PROD_STOCK
+		SET
+		stock = stock - #{rent_num}
+		WHERE r_stock_id =  #{r_stock_id}
+	</update>
 
 	<!-- 대여상품수정 -->
 	<update id="rentProdUpdate" parameterType="com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO">

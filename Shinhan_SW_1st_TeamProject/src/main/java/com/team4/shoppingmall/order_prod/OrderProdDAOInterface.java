@@ -3,6 +3,7 @@ package com.team4.shoppingmall.order_prod;
 import java.util.List;
 import java.util.Map;
 
+import com.team4.shoppingmall.prod.ProductNewVO;
 import com.team4.shoppingmall.prod_option.Prod_OptionDTO; 
 
 public interface OrderProdDAOInterface {
@@ -15,7 +16,7 @@ public interface OrderProdDAOInterface {
 	
 	// 林巩积己
 	public int orderprodInsert(OrderProdDTO orderprod); 
-	
+
 	// 林巩荐沥
 	public int orderprodUpdate(OrderProdDTO orderprod);
 	
@@ -28,5 +29,7 @@ public interface OrderProdDAOInterface {
 	public int orderCancel(int orderId);
 
 	public int orderRefund(int orderId);
+
+	
 	
 }
