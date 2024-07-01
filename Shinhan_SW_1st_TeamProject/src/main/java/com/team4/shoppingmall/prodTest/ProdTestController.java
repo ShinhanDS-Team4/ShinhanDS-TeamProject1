@@ -2,9 +2,12 @@ package com.team4.shoppingmall.prodTest;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -24,10 +27,15 @@ import com.team4.shoppingmall.cart.CartDTO;
 import com.team4.shoppingmall.cart.CartService;
 import com.team4.shoppingmall.prod_option.Prod_OptionDTO;
 import com.team4.shoppingmall.prod_optionTest.Prod_OptionTestService;
+import com.team4.shoppingmall.rent.RentDTO;
+import com.team4.shoppingmall.rent.RentService;
+import com.team4.shoppingmall.rent_detail.RentDetailDTO;
+import com.team4.shoppingmall.rent_detail.RentDetailService;
 import com.team4.shoppingmall.rent_prod_stock.RentProdStockService;
 import com.team4.shoppingmall.reviews.ReviewsService;
 import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestDTO;
 import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestService;
+import com.team4.shoppingmall.util.DateUtil;
 
 @Controller
 @RequestMapping("/prod")
@@ -54,7 +62,13 @@ public class ProdTestController {
 	ReviewsService reviewsService; //리뷰
 	
 	@Autowired
-	RentProdStockService rentProdStockService; //대여상품재고 서비스
+	RentService rentService; //대여
+	
+	@Autowired
+	RentProdStockService rentProdStockService; //대여상품재고 
+	
+	@Autowired
+	RentDetailService rentDetailService; //대여 상세
 	
 	/* 상품 목록 페이지 */
 	@GetMapping("/productlistTest")
@@ -72,38 +86,36 @@ public class ProdTestController {
 		/* 상품의 정보와 옵션 조회 */
 		//옵션명과 값 전부 조회
 		List<Object> prod_Options = prod_OptionSerTestService.selectAllOptionsByProdId(prod_id);
-		System.out.println("옵션 조회 : "+ prod_Options);
 		model.addAttribute("prod_Options", prod_Options);
-		
+		//System.out.println("옵션 조회 : "+ prod_Options);
+		 
 		//판매 상품 옵션별 재고량 조회
 		List<Seller_Prod_StockTestDTO> seller_prod_stockDTO = seller_Prod_StockTestService.selectSpsOptionByProdId(prod_id);
 		model.addAttribute("seller_prod_stockDTO", seller_prod_stockDTO);
 
 		//상품 정보 조회
-		List<Map<String,Object>> prod_detail_info = prodTestService.selectProdDetailInfoByProdId(prod_id);
+		Map<String,Object> prod_detail_info = prodTestService.selectProdDetailInfoByProdId(prod_id);
+		prod_detail_info.put("prod_id", prod_id); 
 		model.addAttribute("prod_detail_info", prod_detail_info);
-		
-		System.out.println("상품 상세 정보 조회 : "+ prod_detail_info);
-		System.out.println("---재고 데이터----");
-		System.out.println(seller_prod_stockDTO);
+		//System.out.println("상품 상세 정보 조회 : "+ prod_detail_info);
 		
 		
 		/* 상품 전체 리뷰 목록 */		
 		List<Map<String,String>> productReviews = reviewsService.selectAllProductReviewByProdId(prod_id);
 		model.addAttribute("productReviews", productReviews);
-		System.out.println("상품 전체 리뷰 목록 : " + productReviews);
+		//System.out.println("상품 전체 리뷰 목록 : " + productReviews);
 		
 		//리뷰 상품의 옵션 목록
 		List<Prod_OptionDTO> prodOptions = prod_OptionSerTestService.productAllOptionsByProdId(prod_id);
 		model.addAttribute("prodOptions", prodOptions);
 		
 		
-		System.out.println("리뷰 상품 옵션 목록 : " + prodOptions);
+		//System.out.println("리뷰 상품 옵션 목록 : " + prodOptions);
 		
 		/* 상품 전체 문의 목록 */
 		List<Buyer_InqDTO> buyer_inqList = buyer_InqService.selectByProdId(prod_id);
 		model.addAttribute("buyer_inqList", buyer_inqList);
-		System.out.println("상품 전체 문의 목록 : " + buyer_inqList);
+		//System.out.println("상품 전체 문의 목록 : " + buyer_inqList);
 		
 	}
 	
@@ -130,11 +142,6 @@ public class ProdTestController {
         //param이 null이 아닌 경우
         if(param != null) {
         	System.out.println("(옵션존재)Selected option: " + param);
-        	/*
-        	color=white&size=L&quantity=1&productPrice=40000&prod_id=%EB%82%98%EC%9D%B4%ED%82%A4%20%EB%B0%98%ED%8C%94_1234-1234
-        	{quantity=1, color=black, size=L, productPrice=40000, prod_id=나이키 반팔_1234-1234}
-            color=black, size=L, prod_id=나이키 반팔_1234-1234
-        	*/
         	
 			//(1)param으로 넘어온 선택 옵션들 저장
         	HashMap<String, String> map = new HashMap<>(); 
@@ -204,48 +211,158 @@ public class ProdTestController {
 	//결제가 된 후에 주문상세테이블에 저장되는것? 
 	//@GetMapping("/?")
 	//public void productOrderInsert(String productOption) {
-		
+	
+	//주문테이블 insert 1 : 주문상세테이블 insert  n
+	
+	
+	//
 	//}
 
-	/* 상품 대여 가능한지 체크 */
+	/* 상품 대여 가능한지 체크 => 대여하기 진행 */
 	@PostMapping("/isProductRentable")
 	@ResponseBody
-	public void isProductRentable(HttpServletRequest request) {
+	public int isProductRentable(HttpServletRequest request, Model model) {
 		
+		//회원 세션에서 읽기
+		String member_id = "testid";
+    	 
 		String param = request.getQueryString();
-		System.out.println("!!상품 대여 옵션: " + param);
+		String prod_id="";
+		
+		String rent_prod_quantity = "";
+		String rent_start_date = "";
+		String rent_end_date = "";
+		String total_amount = "";
 		
 		//1.상품이 대여재고에 존재하는지 찾기
-		//(1)param으로 넘어온 선택 옵션들 저장
+		//{color=4, size=1, rent_prod_quantity=1, rent_start_date=2024-06-27, rent_end_date=2024-07-04, prod_id=%EB%82%98%EC%9D%B4%ED%82%A4%20%EB%B0%98%ED%8C%94_1234-1234, total_amount=30000}
+		
     	HashMap<String, String> map = new HashMap<>(); 
-    	HashMap<String, String> optionMap = new HashMap<>(); //옵션Map-키(옵션명):값(옵션값)
+    	HashMap<String, String> optionMap = new HashMap<>(); //옵션Map
     	String[] propertis = param.split("&");
+    	
+    	List<Integer> optList = new ArrayList<>();   
+    	
+    	int index=0;
+    	
     	for(String pro: propertis) {
     		String[] keyValue = pro.split("=");
     		
     		map.put(keyValue[0], keyValue[1]);
     		
-    		if(!keyValue[0].contains("rent-prod-quantity")&& !keyValue[0].contains("rent_start_date") &&  !keyValue[0].contains("rent_end_date"))
-    			optionMap.put(keyValue[0], keyValue[1]);
+    		//상품id
+    		if(keyValue[0].equals("prod_id")) prod_id = keyValue[1];
+    		
+    		//대여 수
+    		if(keyValue[0].equals("rent_prod_quantity")) rent_prod_quantity = keyValue[1];  //수량
+    		//대여 시작일
+    		if(keyValue[0].equals(("rent_start_date"))) rent_start_date = keyValue[1]; 
+    		//대여 마감일
+    		if(keyValue[0].equals(("rent_end_date"))) rent_end_date = keyValue[1];
+    		//대여가
+    		if(keyValue[0].equals(("total_amount"))) total_amount = keyValue[1]; //대여가
+    		
+    		//옵션들
+    		if(!keyValue[0].contains("prod_id")&& 
+			  !keyValue[0].contains("rent_prod_quantity")&& 
+			  !keyValue[0].contains("rent_start_date") &&  
+			  !keyValue[0].contains("rent_end_date") && 
+			  !keyValue[0].contains("total_amount")) {
+    			
+    			optList.add( Integer.parseInt(keyValue[1])); 
+    			index++; //예) 1,4,,,
+    		}
     	}
-    	System.out.println("(대여)param으로 넘어온 전체 값 map : " + map);
-    	//{color=black, size=L, rent-prod-quantity=1, rent_start_date=2024-06-26, rent_end_date=2024-07-03}
     	
-    	String prod_id = "나이키 반팔_1234-1234";
-       
-        //2.옵션에 해당하는 상품 재고id (판매상품재고)
-        //String sellStockId = cartService.searchStockId(optionMap, map.get("prod_id"));
-        String rentStockId = rentProdStockService.selectRentStockByProdId(prod_id);
- 
-		//jsp에서 입력한 값들 저장하기
+	    // Option list 정렬
+    	optList.sort((a,b)->a-b);
+    	List<String> result = optList.stream().map(i->i.toString()).collect(Collectors.toList());
+    	String optionString = String.join("," , result);
+    	for(int i=1; i<=5-index;i++) { optionString += ","; }
+		 
+        //옵션 값이 콤마로 구분된 문자열을 생성
+        map.put("prod_id", prod_id);
+        map.put("optionString", optionString);
+
+        System.out.println(prod_id + ":" + optionString);
+        
+		try {
+			prod_id = URLDecoder.decode(map.get("prod_id"), "utf-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 		
+		System.out.println(prod_id +":" + optionString); 
+		
+		//해당 옵션의 대여 상품 재고 조회
+		Map<String, String> rentProductStockCheck = rentProdStockService.selectRentStockByProdId(prod_id, optionString);
+        model.addAttribute("rentProductStockCheck",rentProductStockCheck);
+        //rentProductStockCheck => {OPT_ID2=4, OPT_ID1=1, R_STOCK_ID=나이키 반팔_1234-1234_RENT_1, STOCK=50}
+        
+        
+        /* 대여 */
+        // 2.대여재고가 존재하는 경우 대여하기 가능
+         if (rentProductStockCheck != null) { 
+        	
+        	 RentDTO rent = new RentDTO();
+        	
+        	 rent.setRent_start_date( DateUtil.getSQLDate(rent_start_date)  );
+        	 rent.setRent_end_date(DateUtil.getSQLDate(rent_end_date));
+             rent.setMember_id(member_id);
+             rent.setTotal_rent_price(Integer.parseInt(total_amount));
+            
+        	 int rentProdInsert = rentService.rentInsert(rent);
+        	 
+        	 
+        	 /* 대여 상세 -------------------------||진행중||---------------------------------------- 
+        	 // 삽입된 대여ID를 찾는 select문 RENT테이블에 삽입되는 RENTAL_CODE 찾기
+             int rentalCode = rentService.selectInsertRentalCode();
+    	 	
+        	 //3.옵션에 해당하는 상품의 대여재고ID(r_stock_id) 구하고 대여상세 생성
+             if (rentProductStockCheck != null && rentProductStockCheck.containsKey("R_STOCK_ID")) {
+                 String rentStockId = rentProductStockCheck.get("R_STOCK_ID");
+                 System.out.println("R_STOCK_ID: " + rentStockId);
+                 
+                 //대여ID는 어떻게 찾지?
+                 
+                 RentDetailDTO rentDetailDTO = new RentDetailDTO();
+                 
+                 //rentDetailDTO.setRentdetail_id(); 	//시퀀ㅅ
+                 rentDetailDTO.setRent_product_price(Integer.parseInt(total_amount)); //일단 대여가격 넣음
+                 rentDetailDTO.setR_stock_id(rentStockId);  //대여재고id
+                 rentDetailDTO.setRent_num(Integer.parseInt(rent_prod_quantity)); //대여 주문 수량
+                 
+                 rentDetailDTO.setRental_code(rentalCode); //대여id (시퀀스)
+                 
+                 
+                 //대여상세 생성 Insert (대여id, 대여재고id, 주문수량, 상품가격(대여가), 주문상세번호(시퀀스) )
+                 //맵핑된 sql문 못찾음 이슈
+                 int rentDetailInsert = rentDetailService.rentDetailInsert(rentDetailDTO);
+                 
+                 System.out.println("rentDetailInsert: " + rentDetailInsert);
+                 
+                 
+             } else {
+                 System.out.println("R_STOCK_ID 값이 존재하지 않습니다.");
+             }
+             //------------------------------------------------------------------------
+        	 */
+        	
+        	 
+        	 
+             return 1; // 대여 성공
+             
+         } else{
+        	 
+        	 return 0; //대여실패 (재고없음)
+         }
+         
+         
 		
 	}
 	
 	
-	/* 대여팝업창 - 대여하기 진행 (주문페이지로 넘김) */
-	//@PostMapping("/?")
-	//public void test2() {}
+	
 	
 	
 	

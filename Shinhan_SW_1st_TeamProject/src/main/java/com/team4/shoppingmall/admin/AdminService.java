@@ -19,4 +19,8 @@ public class AdminService {
 	public String findByPw(String admin_id, String admin_name, String admin_phone) {
 		return adminDAOMybatis.findByPw(admin_id, admin_name, admin_phone);
 	}
+	
+	public boolean updateByPw(String admin_id, String new_admin_pw) {
+        return adminDAOMybatis.updateByPw(admin_id, new_admin_pw);
+    }
 }

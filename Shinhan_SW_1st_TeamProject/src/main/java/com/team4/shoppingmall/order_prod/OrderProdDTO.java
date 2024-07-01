@@ -15,7 +15,7 @@ import lombok.ToString;
 public class OrderProdDTO {
 	Integer order_id;
 	Date order_date;
-	Integer member_id;
+	String member_id;
 	Integer addr_num;
 	Integer total_price;
 }

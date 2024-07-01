@@ -5,33 +5,90 @@
 <mapper namespace="com.saren.rent">
 
 	<!-- 대여상세 -->
-	<select id="selectById" parameterType="string" resultType="com.team4.shoppingmall.rent.RentDTO">
+	<select id="selectById" parameterType="int" resultType="rentVO">
 		SELECT *
-		FROM MEMBER
-		WHERE "member_id" = #{member_id}
+		FROM RENT
+		WHERE RENTAL_CODE = #{aa}
 	</select>
 
 	<!-- 대여목록 -->
-	<select id="selectAll" resultType="com.team4.shoppingmall.rent.RentDTO">
+	<select id="selectAll" resultType="rentVO">
 		SELECT *
 		FROM RENT
 	</select>
 
-	<!-- 대여하기 -->
-	<insert id="memberInsert" parameterType="com.team4.shoppingmall.rent.RentDTO">
+	<!-- 대여하기 (주문상태 칼럼 삭제) -->
+	<insert id="rentInsert" parameterType="com.team4.shoppingmall.rent.RentDTO">
 		INSERT
-		INTO RENT("member_id", "member_pw", "member_name", "email", "phone",
-					"brand", "birth_date", "last_access", "member_type", "gender")
-		VALUES(#{member_id}, #{member_pw}, #{member_name}, #{email}, #{phone},
-			   #{brand}, #{birth_date}, #{last_access}, #{member_type}, #{gender})
+		INTO RENT(rental_code, rent_start_date, rent_end_date, member_id, total_rent_price)
+		VALUES(
+			rent_sequence.nextval, 
+			#{rent_start_date}, 
+			#{rent_end_date}, 
+			#{member_id}, 
+			#{total_rent_price}
+		)
 	</insert>
 
 	<!-- 대여상태 수정 -->
-	<update id="memberUpdate" parameterType="com.team4.shoppingmall.rent.RentDTO">
+	<update id="memberUpdate" parameterType="rentVO">
 		UPDATE RENT
 		SET
 		"rent_state" = #{rent_state}
 		WHERE "rental_code" = #{rental_code}
-	</update> 
+	</update>
+
+	<!-- orderlist.jsp에서, 상세상품 옵션 출력시, 모든 옵션 가져오기 -->
+	<select id="selectOptions" resultType="prod_optionVO">
+		SELECT *
+	    FROM PROD_OPTION 
+	</select>
+
+	<!-- orderlist.jsp에 출력할 대여상품 상세정보 -->
+	<select id="selectById2" parameterType="int" resultType="map">
+		SELECT P.prod_name,
+		   	   M.brand, 
+			   SPS.opt_id1,
+			   SPS.opt_id2,
+			   SPS.opt_id3,
+			   SPS.opt_id4,
+			   SPS.opt_id5,
+			   RD.rent_product_price,			   
+			   PI.img_url			   
+		FROM
+			RENT R
+		JOIN
+			RENT_DETAIL RD ON R.rental_code = RD.rental_code
+		JOIN
+			RENT_PROD_STOCK SPS ON RD.stock_id = SPS.stock_id
+		JOIN
+			PROD P ON SPS.prod_id = P.prod_id
+		JOIN
+			MEMBER M ON P.member_id = M.member_id
+		JOIN
+			PROD_IMAGE PI ON P.prod_id = PI.prod_id
+		where
+			r.rental_code = #{aa}
+	</select>
 	
+	<!-- rentlist.jsp에서, 대여취소 -->
+	<update id="cancelRent" parameterType="int">
+		UPDATE 
+			RENT
+		SET
+			rent_state = 'cancelled'
+		WHERE 
+			rental_code = #{aa}
+	</update>
+	
+	<!-- rentlist.jsp에서, 반납 -->
+	<update id="returnRent" parameterType="int">
+		UPDATE 
+			RENT
+		SET
+			rent_state = 'returned'
+		WHERE
+	    	rental_code = #{aa}
+	</update>
+
 </mapper>

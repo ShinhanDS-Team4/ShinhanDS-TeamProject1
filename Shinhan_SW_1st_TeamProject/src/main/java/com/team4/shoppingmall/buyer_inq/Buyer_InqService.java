@@ -14,7 +14,7 @@ public class Buyer_InqService {
 	Buyer_InqDAOInterface buyer_inqDAO;
 	
 
-	//상품 ID의 전체 문의 목록 조회
+	//�긽�뭹 ID�쓽 �쟾泥� 臾몄쓽 紐⑸줉 議고쉶
 	public List<Buyer_InqDTO> selectByProdId(String prod_id){
 		return buyer_inqDAO.selectByProdId(prod_id);
 	};
@@ -25,7 +25,7 @@ public class Buyer_InqService {
 	}
 	
 	public Buyer_InqDetailDTO selectByInqIdFORseller(Integer buyer_inq_id){
-		System.out.println("selectByInqIdFORseller Service ¼öÇà");
+		System.out.println("selectByInqIdFORseller Service 쩌철횉횪");
 		return buyer_inqDAO.selectByInqIdFORseller(buyer_inq_id);
 	}
 	
@@ -38,7 +38,7 @@ public class Buyer_InqService {
 	}
 	
 
-	//insert 타입 수정
+	//insert ���엯 �닔�젙
 	public int buyer_inqInsert(Map<String,String> buyer_inq_map) {
 		return buyer_inqDAO.buyer_inqInsert(buyer_inq_map);
 	}
