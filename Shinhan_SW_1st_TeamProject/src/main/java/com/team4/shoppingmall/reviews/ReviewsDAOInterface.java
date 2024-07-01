@@ -19,4 +19,6 @@ public interface ReviewsDAOInterface {
 	public int reviewsUpdate(ReviewsDTO reviews);
 	
 	public int reviewsDelete(Integer review_id);
+
+	public List<ReviewsDTO> selectBymemId(String member_id);
 }

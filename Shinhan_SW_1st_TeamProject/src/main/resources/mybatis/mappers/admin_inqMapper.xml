@@ -33,16 +33,16 @@
 	<update id="admin_inqUpdate" parameterType="admin_inqVO">
 		UPDATE ADMIN_INQ
 		SET
-		"admin_inq_title" = #{admin_inq_title}, "admin_inq_content" = #{admin_inq_content}, 
-		"admin_inq_date" = #{admin_inq_date}, "admin_reply" = #{admin_reply}, 
-		"member_id" = #{member_id}
-		WHERE "admin_inq_id" = #{admin_inq_id}
+		admin_inq_title = #{admin_inq_title}, "admin_inq_content" = #{admin_inq_content}, 
+		admin_inq_date = #{admin_inq_date}, "admin_reply" = #{admin_reply}, 
+		member_id = #{member_id}
+		WHERE admin_inq_id = #{admin_inq_id}
 	</update>
 
 	<delete id="admin_inqDelete" parameterType="int">
 		DELETE
 		FROM ADMIN_INQ
-		WHERE "admin_inq_id" = #{admin_inq_id}
+		WHERE admin_inq_id = #{admin_inq_id}
 	</delete>
 	
 </mapper>

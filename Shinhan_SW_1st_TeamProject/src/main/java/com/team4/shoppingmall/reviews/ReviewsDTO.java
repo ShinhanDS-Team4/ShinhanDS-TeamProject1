@@ -20,4 +20,5 @@ public class ReviewsDTO {
 	String review_img;
 	String review_content;
 	Integer orderdetail_id;
+	String member_id;
 }

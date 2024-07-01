@@ -44,4 +44,9 @@ public class ReviewsDAOMybatis implements ReviewsDAOInterface {
 	public int reviewsDelete(Integer review_id) {
 		return sqlSession.delete(namespace+"reviewsDelete", review_id);
 	}
+
+	@Override
+	public List<ReviewsDTO> selectBymemId(String member_id) {
+		return sqlSession.selectList(namespace+"selectBymemId", member_id);
+	}
 }
