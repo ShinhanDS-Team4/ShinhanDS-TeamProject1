@@ -43,9 +43,9 @@
 	<insert id="reviewsInsert" parameterType="reviewsVO">
 		INSERT
 		INTO REVIEWS(review_id, review_title, rate, review_date, 
-					 review_img, review_content, orderdetail_id)
+					 review_img, review_content, orderdetail_id, member_id)
 		VALUES(#{review_id}, #{review_title}, #{rate}, #{review_date}, 
-			   #{review_img}, #{review_content}, #{orderdetail_id})
+			   #{review_img}, #{review_content}, #{orderdetail_id}, #{member_id})
 	</insert>
 
 	<update id="reviewsUpdate" parameterType="reviewsVO">
@@ -62,5 +62,11 @@
 		FROM REVIEWS
 		WHERE review_id = #{review_id}
 	</delete>
+	
+	<select id="selectBymemId" parameterType="String" resultType="reviewsVO">
+		SELECT *
+		FROM REVIEWS
+		WHERE member_id = #{member_id}
+	</select>
 	
 </mapper>

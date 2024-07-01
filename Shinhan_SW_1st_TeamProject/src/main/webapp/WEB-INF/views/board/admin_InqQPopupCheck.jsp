@@ -12,20 +12,6 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
-	function submitForm(){
-		$.ajax({
-			url:'/shoppingmall/qna/writeqna.do',
-			data:$("#registerAQ").serialize(),
-			type:'POST',
-			success: function(responseData){
-				alert("등록이 완료되었습니다.");
-				window.close();
-			},error:function(responseData){
-				alert("실패");
-			}
-		});
-	}
-
 	function closePopUp() {
 		window.close();
 	}
@@ -107,20 +93,26 @@ h1 {
 			<div class="info">
 				<div>
 					<label>회원ID</label>
-					<input type="text" name="member_id" id="member_id" value="${member.member_id}" />
+					<input type="text" name="member_id" id="member_id" value="${adminInq.member_id}" readonly/>
+				</div>
+			</div>
+			<div class="info">
+				<div>
+					<label>답변여부</label> <input type="text" name="member_id"
+						id="member_id" value="${member.member_id}" readonly />
+					<button>답변확인</button>
 				</div>
 			</div>
 			<div class="input-group">
 				<label for="subject">제목</label>
-				<input type="text" id="admin_inq_title" name="admin_inq_title"/>
+				<input type="text" id="admin_inq_title" name="admin_inq_title" value="${adminInq.admin_inq_title}" readonly/>
 			</div>
 			<div class="input-group">
 				<label for="content">내용작성</label>
-				<textarea id="admin_inq_content" rows="10" name="admin_inq_content"></textarea>
+				<textarea id="admin_inq_content" rows="10" name="admin_inq_content" readonly>${adminInq.admin_inq_content}</textarea>
 			</div>
 			<div class="buttons">
-				<button type="button" onclick="submitForm()">등록</button>
-				<button type="button" onclick="closePopUp()">닫기</button>
+				<button type="button" onclick="closePopUp()">확인</button>
 			</div>
 		</form>
 	</div>

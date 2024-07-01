@@ -247,28 +247,7 @@ public class ProdTestController {
 	//@PostMapping("/?")
 	//public void test2() {}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	/* 상품 문의하기 (구매자=>판매자) */
 	@PostMapping(value = "/productQnaInsert.do", produces = "text/plain;charset=utf-8")
