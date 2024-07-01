@@ -25,7 +25,7 @@
 		    (SELECT COUNT(BI.buyer_inq_id) 
 		     FROM BUYER_INQ BI 
 		     WHERE BI.prod_id = P.prod_id) AS inquiry_count
-		FROM PROD P                                                                       
+		FROM PROD P
 		JOIN MEMBER M ON P.member_id = M.member_id
 		JOIN CATEGORY C ON P.CATEGORY_ID = C.category_id
 		LEFT JOIN CATEGORY PC ON C.parent_category_id = PC.category_id
@@ -36,14 +36,14 @@
 		resultType="prodVO">
 		SELECT * 
 		FROM PROD 
-		WHERE "prod_id" = #{prod_id}
+		WHERE prod_id = #{prod_id}
 	</select>
-
+	
 	<select id="selectByMemberId" parameterType="string"
 		resultType="prodVO">
 		SELECT * 
 		FROM PROD 
-		WHERE "member_id" = #{member_id}
+		WHERE member_id = #{member_id}
 	</select>
 
 	<select id="selectAll" resultType="prodVO">
@@ -51,27 +51,10 @@
 		FROM PROD
 	</select>
 
-	<select id="selectByCategory" parameterType="int" resultType="map">
-		SELECT
-			M.brand,
-			P.prod_name,
-			P.prod_price,
-			PI.img_url
-		FROM
-			PROD P
-		JOIN
-			MEMBER M ON P.member_id = M.member_id
-		LEFT JOIN
-			PROD_IMAGE PI ON P.prod_id = PI.prod_id
-		WHERE
-			P.category_id = #{aa}
-
-	</select>
-
 	<insert id="prodInsert" parameterType="prodVO">
 		INSERT 
-		INTO PROD("prod_id", "prod_name", "prod_desc", "prod_price", 
-				  "prod_added_date", "category_id", "member_id") 
+		INTO PROD(prod_id, prod_name, prod_desc, prod_price, 
+				  prod_added_date, category_id, member_id) 
 		VALUES(#{prod_id}, #{prod_name}, #{prod_desc}, #{prod_price}, 
 			   #{prod_added_date}, #{category_id}, #{member_id})
 	</insert>
@@ -79,7 +62,7 @@
 	<update id="prodUpdate" parameterType="prodVO">
 		UPDATE PROD
 		SET
-		"prod_name" = #{prod_name}, "prod_desc" = #{prod_desc}, 
+		prod_name = #{prod_name}, prod_desc = #{prod_desc}, 
 		"prod_price" = #{prod_price}, "prod_added_date" = #{prod_added_date}, 
 		"category_id" = #{category_id}, "member_id" = #{member_id}
 		WHERE "prod_id" = #{prod_id}
@@ -97,19 +80,7 @@
 	<delete id="prodDelete" parameterType="int">
 		DELETE
 		FROM PROD
-		WHERE
-		"prod_id" = #{prod_id}
+		WHERE "prod_id" = #{prod_id}
 	</delete>
-
-	<select id="selectAll2" resultType="map">
-		SELECT
-		M.brand,
-		P.prod_name,
-		P.prod_price
-		FROM
-		MEMBER M
-		JOIN
-		PROD P ON M.member_id = P.member_id
-	</select>
 
 </mapper>

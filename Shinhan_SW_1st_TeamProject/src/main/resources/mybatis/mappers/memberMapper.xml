@@ -187,8 +187,6 @@
 		TO_CHAR(member_last_access, 'YYYY-MM-DD')
 		ORDER BY day;
 	</select>
-		WHERE member_id = #{member_id}
-	</delete>
 	
 	<update id="memberUpdatePassword" parameterType="memberVO">
 		UPDATE MEMBER

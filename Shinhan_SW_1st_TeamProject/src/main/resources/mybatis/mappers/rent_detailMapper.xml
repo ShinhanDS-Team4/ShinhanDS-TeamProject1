@@ -38,21 +38,6 @@
 		JOIN PROD p ON rps.prod_id = p.prod_id
 		WHERE p.member_id = #{member_id}
 	</select>
-
-	<!-- 대여상세 생성 -->
-	<insert id="rentDetailInsert" parameterType="rent_detailVO">
-		INSERT
-		INTO
-		RENT_DETAIL(
-		rentdetail_id, rent_product_price, rent_num,
-		rental_code,
-		r_stock_id, rent_state
-		)
-		VALUES(
-		#{rentdetail_id}, #{rent_product_price},
-		#{rent_num},
-		#{rental_code}, #{r_stock_id}, #{rent_state})
-	</insert>
   
 	<!-- 대여상세 생성 (시퀀스 사용, 주문상태 칼럼 추가) -->
 	<insert id="rentDetailInsert" parameterType="com.team4.shoppingmall.rent_detail.RentDetailDTO">

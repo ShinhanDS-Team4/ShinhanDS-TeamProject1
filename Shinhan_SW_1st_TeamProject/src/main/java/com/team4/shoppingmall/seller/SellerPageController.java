@@ -240,8 +240,9 @@ public class SellerPageController {
 		Seller_Prod_StockDTO seller_Prod_StockDTO = seller_Prod_StockService.selectByStockId(stock_id);// 재고 데이터를 전부 끌어옴
 		System.out.println("확인결과:"+seller_Prod_StockDTO);
 		if (Objects.isNull(seller_Prod_StockDTO)) {// 대여상품 재고일 경우
-			RentProdStockDTO rentProdStockDTO = rentProdStockService.selectById(stock_id);// 상품의 기본 정보를 끌어오기 위해 재고데이터에서
-																							// 상품ID를 가져온다.
+			RentProdStockDTO rentProdStockDTO = rentProdStockService.selectById(stock_id);// 재고의 기본 정보 끌어오기
+			System.out.println("재고ID:"+rentProdStockDTO);
+			
 			String ProdID = rentProdStockDTO.getProd_id();
 
 			Prod_ImageDTO mainImageDTO = new Prod_ImageDTO();
