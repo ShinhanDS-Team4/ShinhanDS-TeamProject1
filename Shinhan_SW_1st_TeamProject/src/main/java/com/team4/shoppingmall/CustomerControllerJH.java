@@ -24,7 +24,7 @@ import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestService
 public class CustomerControllerJH {
 	
 	@Autowired
-	AddrService addrService; //회원 주소 
+	Addr_ListService addrService; //회원 주소 
 	
 	/*마이페이지 메인*/
 	@GetMapping("/myPage.do")
