@@ -13,8 +13,7 @@
 <link rel="stylesheet" href="${path}/resources/css/header_footer.css">
 
 <!-- jquery 연결 -->
-    <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 <!-- 페이지용 css -->
 <link rel="stylesheet" href="${path}/resources/css/seller_prdList.css" />

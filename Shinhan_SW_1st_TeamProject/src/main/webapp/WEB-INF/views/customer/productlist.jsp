@@ -230,7 +230,7 @@
             prod_price: parseInt('${product.PROD_PRICE}')
         });
     </c:forEach>
-
+    console.log(products);
     const productsPerPage = 12;
     let currentPage = 1;
     let sortedProducts = [...products];

@@ -22,5 +22,7 @@ public interface Seller_Prod_StockDAOInterface {
 	
 	public int seller_prod_stockDelete(String s_stock_id);
 
+	public int sellStockUpdate(Seller_Prod_StockDTO seller_prod_stock);
+
 	
 }
