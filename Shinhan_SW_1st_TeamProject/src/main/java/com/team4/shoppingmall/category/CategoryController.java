@@ -67,45 +67,45 @@ public class CategoryController {
 		
 		Long tmp;
 		int stock;
-//		for(Object prod_id :prod_list.keySet()) {
-//			prod = new ProdDTO();
-//			prod_detail = (JSONObject) prod_list.get((String) prod_id);
-//			
-//			prod.setProd_id((String) prod_id);
-//			prod.setMember_id((String) prod_detail.get("bm_num"));
-//			prod.setProd_name((String) prod_detail.get("img_name"));
-//			tmp = (Long) prod_detail.get("category");
-//			prod.setCategory_id(tmp.intValue());
-//			prod.setProd_price(Integer.parseInt((String) prod_detail.get("price")));
-//			prod.setProd_added_date(DateUtil.getSQLDate("2023-1"+String.valueOf((int) (Math.random()*3)) + "-" + String.valueOf((int) (Math.random()*17+10))));
-//			
-//			prodService.prodInsert(prod);
-//			
-//			for(String size :sizes) {
-//				prod_option = new Prod_OptionDTO();
-//				prod_option.setOpt_name("사이즈");
-//				prod_option.setOpt_value(size);
-//				prod_option.setProd_id((String) prod_id);
-//				prod_optionService.optionInsert(prod_option);
-//			}
-//			
-//		}
+		for(Object prod_id :prod_list.keySet()) {
+			prod = new ProdDTO();
+			prod_detail = (JSONObject) prod_list.get((String) prod_id);
+			
+			prod.setProd_id((String) prod_id);
+			prod.setMember_id((String) prod_detail.get("bm_num"));
+			prod.setProd_name((String) prod_detail.get("img_name"));
+			tmp = (Long) prod_detail.get("category");
+			prod.setCategory_id(tmp.intValue());
+			prod.setProd_price(Integer.parseInt((String) prod_detail.get("price")));
+			prod.setProd_added_date(DateUtil.getSQLDate("2023-1"+String.valueOf((int) (Math.random()*3)) + "-" + String.valueOf((int) (Math.random()*17+10))));
+			
+			prodService.prodInsert(prod);
+			
+			for(String size :sizes) {
+				prod_option = new Prod_OptionDTO();
+				prod_option.setOpt_name("사이즈");
+				prod_option.setOpt_value(size);
+				prod_option.setProd_id((String) prod_id);
+				prod_optionService.optionInsert(prod_option);
+			}
+			
+		}
 		
-//		System.out.println("prod, prod_option table set end.");
-//		
-//		for(Prod_OptionDTO po :prod_optionService.selectAll()) {
-//			sps = new Seller_Prod_StockDTO();
-//			sps.setS_stock_id(po.getProd_id() + "_SELL_" + po.getOpt_id());
-//			stock = (int) (Math.random()*300);
-//			sps.setStock(stock);
-//			sps.setTotal((int) (Math.random()*stock));
-//			sps.setProd_id(po.getProd_id());
-//			sps.setOpt_id1(po.getOpt_id());
-//			spsService.seller_prod_stockInsert(sps);
-//		}
-//		
-//		System.out.println("sell_prod_stock table set end.");
-//
+		System.out.println("prod, prod_option table set end.");
+		
+		for(Prod_OptionDTO po :prod_optionService.selectAll()) {
+			sps = new Seller_Prod_StockDTO();
+			sps.setS_stock_id(po.getProd_id() + "_SELL_" + po.getOpt_id());
+			stock = (int) (Math.random()*300);
+			sps.setStock(stock);
+			sps.setTotal((int) (Math.random()*stock));
+			sps.setProd_id(po.getProd_id());
+			sps.setOpt_id1(po.getOpt_id());
+			spsService.seller_prod_stockInsert(sps);
+		}
+		
+		System.out.println("sell_prod_stock table set end.");
+
 		for(Object brand :bm_list.keySet()) {
 			member = new MemberDTO();
 			member.setMember_id((String) bm_list.get(brand));
@@ -125,23 +125,23 @@ public class CategoryController {
 		
 		System.out.println("member(seller) table set end.");
 		
-//		String parent;
-//		for(CategoryEnum ce :CategoryEnum.values()) {
-//			if(ce.name().equals("highest")) continue;
-//			category = new CategoryDTO();
-//			tmp = (Long) ctg_list.get(ce.name());
-//			category.setCategory_id(tmp.intValue());
-//			category.setCategory_depth(ce.name().split("_").length);
-//			category.setCategory_name(ce.getNameKor().split("_")[0]);
-//			
-//			parent = ce.getParent();
-//			
-//			tmp = parent!=null ? ((Long) ctg_list.get(parent)) : null;
-//			category.setParent_category_id(tmp!=null ? tmp.intValue() : null);
-//			categoryService.categoryInsert(category);
-//		}
-//		
-//		System.out.println("category table set end.");
+		String parent;
+		for(CategoryEnum ce :CategoryEnum.values()) {
+			if(ce.name().equals("highest")) continue;
+			category = new CategoryDTO();
+			tmp = (Long) ctg_list.get(ce.name());
+			category.setCategory_id(tmp.intValue());
+			category.setCategory_depth(ce.name().split("_").length);
+			category.setCategory_name(ce.getNameKor().split("_")[0]);
+			
+			parent = ce.getParent();
+			
+			tmp = parent!=null ? ((Long) ctg_list.get(parent)) : null;
+			category.setParent_category_id(tmp!=null ? tmp.intValue() : null);
+			categoryService.categoryInsert(category);
+		}
+		
+		System.out.println("category table set end.");
 	}
 	
 }
