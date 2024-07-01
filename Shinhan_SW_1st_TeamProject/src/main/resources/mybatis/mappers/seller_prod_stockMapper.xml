@@ -23,10 +23,9 @@
 		    SPS.prod_id = #{prod_id}
 	</select>
 
-	<select id="selectByStockId" parameterType="string"
-resultType="seller_prod_stockVO">
+	<select id="selectByStockId" parameterType="string" resultType="seller_prod_stockVO">
 		SELECT *
-		FROM SELLER_PROD_STOCK
+		FROM SELL_PROD_STOCK
 		WHERE s_stock_id = #{s_stock_id}
 	</select>
 
