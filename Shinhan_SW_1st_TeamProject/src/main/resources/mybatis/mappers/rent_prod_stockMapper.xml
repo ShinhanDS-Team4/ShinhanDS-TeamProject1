@@ -13,8 +13,7 @@
 	</select>
 
 	<!-- 대여상품상세 -->
-	<select id="selectById" parameterType="string"
-		resultType="memberVO">
+	<select id="selectById" parameterType="string" resultType="rent_prod_stockVO">
 		SELECT *
 		FROM RENT_PROD_STOCK
 		WHERE r_stock_id = #{r_stock_id}
@@ -62,6 +61,14 @@
 		stock = #{stock}, total = #{total}, opt_id1 = #{opt_id1},
 		opt_id2 = #{opt_id2}, opt_id3 = #{opt_id3}, opt_id4 = #{opt_id4},
 		opt_id5 = #{opt_id5}
+		WHERE r_stock_id = #{r_stock_id}
+	</update>
+	
+	<!-- 대여상품재고수정 -->
+	<update id="rentStockUpdate" parameterType="rent_prod_stockVO">
+		UPDATE RENT_PROD_STOCK
+		SET
+		stock = #{stock}
 		WHERE r_stock_id = #{r_stock_id}
 	</update>
 

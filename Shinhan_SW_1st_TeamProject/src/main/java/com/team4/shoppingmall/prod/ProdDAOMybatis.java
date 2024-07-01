@@ -43,4 +43,9 @@ public class ProdDAOMybatis implements ProdDAOInterface {
 	public int prodDelete(Integer prod_id) {
 		return sqlSession.delete(namespace+"prodDelete", prod_id);
 	}
+
+	@Override
+	public int prodModify(ProdDTO prod) {
+		return sqlSession.update(namespace+"prodModify", prod);
+	}
 }

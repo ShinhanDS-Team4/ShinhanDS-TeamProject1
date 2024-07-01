@@ -41,6 +41,8 @@ import com.team4.shoppingmall.order_detail.Order_DetailService;
 import com.team4.shoppingmall.prod.ProdService;
 import com.team4.shoppingmall.prod_image.Prod_ImageDTO;
 import com.team4.shoppingmall.prod_image.Prod_ImageService;
+import com.team4.shoppingmall.prod_option.Prod_OptionDTO;
+import com.team4.shoppingmall.prod_option.Prod_OptionService;
 import com.team4.shoppingmall.rent.RentDTO;
 import com.team4.shoppingmall.rent_detail.RentDetailDTO;
 import com.team4.shoppingmall.rent_detail.RentDetailService;
@@ -85,6 +87,9 @@ public class SellerPageController {
 
 	@Autowired
 	RentDetailService rentDetailService;
+
+	@Autowired
+	Prod_OptionService prod_OptionService;
 
 	String member_id = "573-50-00882";// 임시로 사용할 판매자ID(사업자등록번호)
 
@@ -229,70 +234,93 @@ public class SellerPageController {
 			@RequestParam("stock_id") String stockID) throws UnsupportedEncodingException {
 
 		String stock_id = URLDecoder.decode(stockID, "UTF-8");// 한글로 변환
+		System.out.println("가져온 stock_id:"+stock_id);
 
 		// 재고ID가 어느 재고 테이블에 속하는지 확인
 		Seller_Prod_StockDTO seller_Prod_StockDTO = seller_Prod_StockService.selectByStockId(stock_id);// 재고 데이터를 전부 끌어옴
+		System.out.println("확인결과:"+seller_Prod_StockDTO);
 		if (Objects.isNull(seller_Prod_StockDTO)) {// 대여상품 재고일 경우
 			RentProdStockDTO rentProdStockDTO = rentProdStockService.selectById(stock_id);// 상품의 기본 정보를 끌어오기 위해 재고데이터에서
 																							// 상품ID를 가져온다.
 			String ProdID = rentProdStockDTO.getProd_id();
-			
+
 			Prod_ImageDTO mainImageDTO = new Prod_ImageDTO();
 			mainImageDTO.setProd_id(ProdID);
 			mainImageDTO.setImg_type(0);
-			
+
 			Prod_ImageDTO descImageDTO = new Prod_ImageDTO();
 			descImageDTO.setProd_id(ProdID);
 			descImageDTO.setImg_type(1);
-			
+
 			// 해당 재고의 상품ID와 연동되어 있는 상품이미지ID(=이미지 파일명) 목록을 가져온다.
 			List<String> prodMainImgList = imageService.findMainImgFileNameByProdID(mainImageDTO);
 			List<String> prodDescImgList = imageService.findDescImgFileNameByProdID(descImageDTO);
+
+			List<Integer> optionList = new ArrayList<Integer>();
+
+			optionList.add(rentProdStockDTO.getOpt_id1());
+			optionList.add(rentProdStockDTO.getOpt_id2());
+			optionList.add(rentProdStockDTO.getOpt_id3());
+			optionList.add(rentProdStockDTO.getOpt_id4());
+			optionList.add(rentProdStockDTO.getOpt_id5());
+
+			List<Prod_OptionDTO> optionDTOList = new ArrayList<Prod_OptionDTO>();
+
+			for (Integer option : optionList) {
+				System.out.println(option);
+				if (!Objects.isNull(option)) {
+					Prod_OptionDTO prod_OptionDTO = prod_OptionService.selectByOptionId(option);
+					optionDTOList.add(prod_OptionDTO);
+				}
+			}
 
 			model1.addAttribute("StockInfo", rentProdStockDTO);
 			model2.addAttribute("ProductInfo", prodService.selectByProdId(ProdID));
 			model3.addAttribute("ProdMainImgList", prodMainImgList);
 			model4.addAttribute("ProdDescImgList", prodDescImgList);
+			
+			return "/seller/seller_RentStock_modifyPrd";
 		} else {// 판매상품 재고일 경우
 			String ProdID = seller_Prod_StockDTO.getProd_id();
 			Prod_ImageDTO mainImageDTO = new Prod_ImageDTO();
 			mainImageDTO.setProd_id(ProdID);
 			mainImageDTO.setImg_type(0);
-			
+
 			Prod_ImageDTO descImageDTO = new Prod_ImageDTO();
 			descImageDTO.setProd_id(ProdID);
 			descImageDTO.setImg_type(1);
-			
+
 			// 해당 재고의 상품ID와 연동되어 있는 상품이미지ID(=이미지 파일명) 목록을 가져온다.
 			List<String> prodMainImgList = imageService.findMainImgFileNameByProdID(mainImageDTO);
 			List<String> prodDescImgList = imageService.findDescImgFileNameByProdID(descImageDTO);
 
-			//System.out.println(uploadDir);
+			List<Integer> optionList = new ArrayList<Integer>();
+
+			optionList.add(seller_Prod_StockDTO.getOpt_id1());
+			optionList.add(seller_Prod_StockDTO.getOpt_id2());
+			optionList.add(seller_Prod_StockDTO.getOpt_id3());
+			optionList.add(seller_Prod_StockDTO.getOpt_id4());
+			optionList.add(seller_Prod_StockDTO.getOpt_id5());
+
+			List<Prod_OptionDTO> optionDTOList = new ArrayList<Prod_OptionDTO>();
+
+			for (Integer option : optionList) {
+				System.out.println(option);
+				if (!Objects.isNull(option)) {
+					Prod_OptionDTO prod_OptionDTO = prod_OptionService.selectByOptionId(option);
+					optionDTOList.add(prod_OptionDTO);
+				}
+			}
+
+			// System.out.println(uploadDir);
 			model1.addAttribute("StockInfo", seller_Prod_StockDTO);
 			model2.addAttribute("ProductInfo", prodService.selectByProdId(ProdID));
 			model3.addAttribute("ProdMainImgList", prodMainImgList);
 			model4.addAttribute("ProdDescImgList", prodDescImgList);
+			model5.addAttribute("optionList", optionDTOList);
+			
+			return "/seller/seller_SellStock_modifyPrd";
 		}
-
-		return "/seller/seller_modifyPrd";
-	}
-
-	@PostMapping("/resetProdImg")
-	@ResponseBody
-	public String resetProdImg() {
-		System.out.println("삭제 작업 시작");
-		String prod_id = "나이키%20반팔2_573-50-00882";
-		System.out.println(prod_id);
-		int imgDeleteResult = imageService.prod_imageDelete(prod_id);
-		System.out.println("수행 완료");
-
-		/*
-		 * List if(imgDeleteResult>0) { Path filePath =
-		 * Paths.get(uploadDir).resolve(prod_id); Files.delete(filePath);
-		 * System.out.println(file_name+"삭제 완료"); } else
-		 * System.out.println(file_name+"삭제 실패");
-		 */
-		return "resetImgSuccess";
 	}
 
 	// 구매자문의 답변 팝업

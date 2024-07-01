@@ -14,4 +14,6 @@ public interface ProdDAOInterface {
 	public int prodUpdate(ProdDTO prod);
 	
 	public int prodDelete(Integer prod_id);
+
+	public int prodModify(ProdDTO prod);
 }

@@ -262,7 +262,7 @@
 						<label>상품설명</label>
 					</div>
 					<div class="form-group">
-						<textarea rows="5" name="prdDescription"></textarea>
+						<textarea rows="5" id="prdDescription" name="prdDescription"></textarea>
 					</div>
 					<div class="form-group options">
 						<div class="form-option-title">

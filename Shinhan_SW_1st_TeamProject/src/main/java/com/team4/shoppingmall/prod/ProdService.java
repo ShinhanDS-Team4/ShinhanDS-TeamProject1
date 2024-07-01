@@ -34,4 +34,8 @@ public class ProdService {
 	public int prodDelete(Integer prod_id) {
 		return prodDAO.prodDelete(prod_id);
 	}
+	
+	public int prodModify(ProdDTO prod) {
+		return prodDAO.prodModify(prod);
+	}
 }

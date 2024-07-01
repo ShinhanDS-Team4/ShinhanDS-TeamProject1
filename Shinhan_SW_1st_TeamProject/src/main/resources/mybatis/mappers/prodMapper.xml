@@ -67,6 +67,15 @@
 		"category_id" = #{category_id}, "member_id" = #{member_id}
 		WHERE "prod_id" = #{prod_id}
 	</update>
+	
+	<update id="prodModify" parameterType="prodVO">
+		UPDATE PROD
+		SET
+		prod_desc = #{prod_desc}, 
+		prod_price = #{prod_price},  
+		category_id = #{category_id}
+		WHERE prod_id = #{prod_id}
+	</update>
 
 	<delete id="prodDelete" parameterType="int">
 		DELETE
