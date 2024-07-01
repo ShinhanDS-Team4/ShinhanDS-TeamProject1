@@ -40,7 +40,7 @@
 		INSERT
 
 		INTO MEMBER(member_id, member_pw, member_name, email, phone,
-					brand, birth_date, last_access, member_type, gender)
+					brand, birth_date, last_access, member_type, gender, seller_authority, create_date)
 		VALUES(#{member_id}, #{member_pw}, #{member_name}, #{email}, #{phone},
 		        <choose>
 		            <when test="brand == null">
@@ -50,7 +50,7 @@
 		                #{brand}
 		            </otherwise>
 		        </choose>,
-				#{birth_date}, #{last_access}, #{member_type}, #{gender})
+				#{birth_date}, #{last_access}, #{member_type}, #{gender}, #{seller_authority}, #{create_date})
 	</insert>
 
 	<update id="memberUpdate" parameterType="memberVO">

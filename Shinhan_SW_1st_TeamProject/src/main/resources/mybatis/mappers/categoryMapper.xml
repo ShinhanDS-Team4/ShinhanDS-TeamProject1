@@ -25,8 +25,8 @@
 
 	<insert id="categoryInsert" parameterType="categoryVO">
 		INSERT 
-		INTO CATEGORY("category_id", "category_name", 
-					  "category_depth", "parent_category_id") 
+		INTO CATEGORY(category_id, category_name, 
+					  category_depth, parent_category_id) 
 		VALUES(#{category_id}, #{category_name}, 
 			   #{category_depth}, #{parent_category_id})
 	</insert>
