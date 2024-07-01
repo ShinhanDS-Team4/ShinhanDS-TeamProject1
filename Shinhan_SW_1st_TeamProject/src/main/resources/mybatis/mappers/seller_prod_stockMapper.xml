@@ -18,30 +18,28 @@
 		    SPS.opt_id5,
 		    SPS.stock
 		FROM 
-		    SELLER_PROD_STOCK SPS
+		    SELL_PROD_STOCK SPS
 		WHERE 
 		    SPS.prod_id = #{prod_id}
 	</select>
 
-	<select id="selectByStockId" parameterType="string"
-
-		resultType="seller_prod_stockVO">
+	<select id="selectByStockId" parameterType="string" resultType="seller_prod_stockVO">
 		SELECT *
-		FROM SELLER_PROD_STOCK
+		FROM SELL_PROD_STOCK
 		WHERE s_stock_id = #{s_stock_id}
 	</select>
 
 	<select id="selectByProdId" parameterType="string"
 		resultType="seller_prod_stockVO">
 		SELECT *
-		FROM SELLER_PROD_STOCK
+		FROM SELL_PROD_STOCK
 		WHERE prod_id = #{prod_id}
 	</select>
 
 	<select id="findMaxStockNumber" parameterType="string"
 		resultType="integer">
 		SELECT max(to_number(REGEXP_SUBSTR(s.s_stock_id,'_([0-9]+)$', 1, 1, null, 1)))
-		FROM SELLER_PROD_STOCK s
+		FROM SELL_PROD_STOCK s
 		WHERE s.prod_id = #{prod_id}
 	</select>
 
@@ -53,7 +51,7 @@
 			p.prod_added_date,
 			p.prod_price
 		FROM
-			SELLER_PROD_STOCK s
+			SELL_PROD_STOCK s
 		JOIN
 			PROD p ON s.prod_id = p.prod_id
 		WHERE
@@ -67,7 +65,7 @@
 	<insert id="seller_prod_stockInsert"
 		parameterType="seller_prod_stockVO">
 		INSERT
-		INTO SELLER_PROD_STOCK(s_stock_id, stock, total,
+		INTO SELL_PROD_STOCK(s_stock_id, stock, total,
 		prod_id, opt_id1, opt_id2, opt_id3, opt_id4, opt_id5)
 		VALUES(#{s_stock_id}, #{stock}, #{total}, #{prod_id}, #{opt_id1},
 		#{opt_id2}, #{opt_id3}, #{opt_id4}, #{opt_id5})
@@ -85,11 +83,19 @@
 		#{opt_id5}
 		WHERE s_stock_id = #{s_stock_id}
 	</update>
+	
+	<!-- 판매상품 재고 수정 -->
+	<update id="sellStockUpdate"
+		parameterType="seller_prod_stockVO">
+		UPDATE SELLER_PROD_STOCK
+		SET stock = #{stock}
+		WHERE s_stock_id = #{s_stock_id}
+	</update>
 
 	<delete id="seller_prod_stockDelete" parameterType="string">
 		DELETE
 		FROM
-		SELLER_PROD_STOCK
+		SELL_PROD_STOCK
 		WHERE s_stock_id = #{s_stock_id}
 	</delete>
 

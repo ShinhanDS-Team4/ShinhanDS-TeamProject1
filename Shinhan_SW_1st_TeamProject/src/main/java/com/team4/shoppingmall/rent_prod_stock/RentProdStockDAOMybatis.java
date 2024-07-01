@@ -1,12 +1,12 @@
 package com.team4.shoppingmall.rent_prod_stock;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import com.team4.shoppingmall.coupon.CouponDTO;
 
 @Repository
 public class RentProdStockDAOMybatis implements RentProdStockDAOInterface {
@@ -18,8 +18,11 @@ public class RentProdStockDAOMybatis implements RentProdStockDAOInterface {
 
 	
 	//선택 옵션 상품의 대여 재고id 찾기
-	public RentProdStockDTO selectRentStockByProdId(String prod_id) {
-		return sqlSession.selectOne(namespace + "selectRentStockByProdId", prod_id);
+	public Map<String,String> selectRentStockByProdId(String prod_id, String optionString) {
+		Map<String, String> map = new HashMap<>();
+		map.put("prod_id", prod_id);
+		map.put("optionString", optionString);
+		return sqlSession.selectOne(namespace + "selectRentStockByProdId", map);
 	};
 	
 	// 대여상품상세
@@ -55,6 +58,12 @@ public class RentProdStockDAOMybatis implements RentProdStockDAOInterface {
 	@Override
 	public int rentProdUpdate(RentProdStockDTO rentprod) {
 		return sqlSession.update(namespace + "rentProdUpdate", rentprod);
+	}
+	
+	// 대여상품재고수정
+	@Override
+	public int rentStockUpdate(RentProdStockDTO rentprod) {
+		return sqlSession.update(namespace + "rentStockUpdate", rentprod);
 	}
 
 	// 대여상품삭제

@@ -14,31 +14,44 @@ public class RentDetailDAOMybatis implements RentDetailDAOInterface {
 	@Autowired
 	SqlSession sqlSession;
 
-	String namespace = "com.saren.rentdetail.";
+	String namespace = "com.saren.rent_detail."; //ìˆ˜ì •
 
-	// ´ë¿©»ó¼¼ »ó¼¼
+	// ëŒ€ì—¬ìƒì„¸ ìƒì„¸
 	@Override
 	public RentDetailDTO selectById(Integer rentdetail_id) {
 		return sqlSession.selectOne(namespace+"selectById", rentdetail_id);
 	}
 
-	// ´ë¿©»ó¼¼ ¸ñ·Ï
+	// ëŒ€ì—¬ìƒì„¸ ëª©ë¡
 	@Override
 	public List<RentDetailDTO> selectAll() {
 		return sqlSession.selectList(namespace+"selectAll");
 	}
 
-	// ´ë¿©»ó¼¼ »ı¼º
+	@Override
+	public List<RentDetailDTO> selectBySellerID(String member_id) {
+		return sqlSession.selectList(namespace+"selectBySellerID", member_id);
+	}
+	
+	// ëŒ€ì—¬ìƒì„¸ ìƒì„±
 	@Override
 	public int rentDetailInsert(RentDetailDTO rentdetail) {
 		return sqlSession.insert(namespace+"rentDetailInsert", rentdetail);
 	}
 	
-	// ´ë¿©»ó¼¼ ¼öÁ¤
+	// ëŒ€ì—¬ìƒì„¸ ìˆ˜ì •
 	@Override
 	public int rentDetailUpdate(RentDetailDTO rentdetail) {
-		return sqlSession.update(namespace+"rentDetailInsert", rentdetail);
+		return sqlSession.update(namespace+"rentDetailUpdate", rentdetail);
+	}
+	
+	@Override
+	public int rentDetailStatusUpdate(RentDetailDTO rentdetail) {
+		return sqlSession.update(namespace+"rentDetailStatusUpdate", rentdetail);
 	}
 
-
+	@Override
+	public int rentDetailDelete(int rentdetail_id) {
+		return sqlSession.delete(namespace+"rentDetailDelete", rentdetail_id);
+	}
 }

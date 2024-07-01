@@ -45,13 +45,25 @@
 		<property name="fileEncoding" value="UTF-8" />
 	</bean>
 	
-	<bean id="dataSource"
+	<bean id="dataSourceOriginal"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName"
 			value="${jdbc.driverClassName}" />
 		<property name="url" value="${jdbc.url}" />
 		<property name="username" value="${jdbc.username}" />
 		<property name="password" value="${jdbc.password}" />
+	</bean>
+	
+	<!-- 깔끔한 sql log 출력 -->
+	<bean id="dataSource"
+		class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+		<constructor-arg ref="dataSourceOriginal" />
+		<property name="logFormatter">
+			<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+				<property name="loggingType" value="MULTI_LINE"></property>
+				<property name="sqlPrefix" value="[ SQL문장 ] "></property>
+			</bean>
+		</property>
 	</bean>
 	
 	<bean id="sqlSessionFactory"
@@ -62,7 +74,7 @@
 		<property name="mapperLocations"
 			value="classpath:mybatis/mappers/*Mapper.xml" />
 	</bean>
-
+	
 	<bean id="sqlSession"
 		class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg ref="sqlSessionFactory"></constructor-arg>

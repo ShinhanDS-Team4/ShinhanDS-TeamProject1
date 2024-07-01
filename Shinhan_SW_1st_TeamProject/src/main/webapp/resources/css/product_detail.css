@@ -44,8 +44,8 @@
 	width: 100%;
 }
 /* 대여버튼 팝업 창 */
-.rent-prod-button{
-	background-color: black;
+.rent-prod-button,
+.rent-cart-button{
     border: none;
     font-weight: bold;
     color: #fff;
@@ -54,7 +54,15 @@
     border-radius: 5px;
     transition: 0.3s;
 }
-.rent-prod-button:hover{
+.rent-prod-button{
+	background-color: black;
+}
+.rent-cart-button{
+	background-color: #666;
+}
+
+.rent-prod-button:hover,
+.rent-cart-button:hover{
 	background-color: #5C3BFE;
 }
 .rent-prod-quantity{
@@ -338,6 +346,9 @@
 }
 .button:hover {
     background-color: var(--accent-color);
+}
+#cartButton:hover{
+	background-color: #666;
 }
 .white_button{
     display: inline-block;

@@ -1,7 +1,5 @@
 package com.team4.shoppingmall.customer;
 
-import java.sql.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

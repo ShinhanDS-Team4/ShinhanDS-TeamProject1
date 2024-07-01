@@ -4,16 +4,18 @@ import java.util.List;
 
 public interface CustomerDAOInterface {
 	
-	// °í°´»ó¼¼
+	// ï¿½ï¿½ï¿½ï¿½
 	public CustomerDTO selectById(Integer rental_code);
 	
-	// °í°´¸ñ·Ï
+	// ï¿½ï¿½ï¿½ï¿½ï¿½
 	public List<CustomerDTO> selectAll();
 	
-	// °í°´µî·Ï
+	// ï¿½ï¿½ï¿½ï¿½ï¿½
 	public int customerInsert(CustomerDTO customer);
 	
-	// °í°´¼öÁ¤
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	public int customerUpdate(Integer rental_code);
+
+	public Long TotalMoneyAmount();
 	
 }

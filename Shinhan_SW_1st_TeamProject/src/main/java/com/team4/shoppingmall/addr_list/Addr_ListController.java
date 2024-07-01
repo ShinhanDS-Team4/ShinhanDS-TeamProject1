@@ -14,38 +14,38 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class Addr_ListController {
 	
 	@Autowired
-	AddrService addrService;
+	Addr_ListService addrService;
 	
-	/* ¹è¼ÛÁö */
-	//³ªÀÇ ¹è¼ÛÁö Á¶È¸
+	/* ï¿½ï¿½ï¿½ï¿½ï¿½ */
+	//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸
 	@GetMapping("/customer/myAddrSelectAll")
 	public String myAddrSelectAll(Model model, HttpServletRequest request) {
 		
-		//1-·Î±×ÀÎ È¸¿ø Á¤º¸
+		//1-ï¿½Î±ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		//List<MemberDTO> memberlist = MemberService.selectAll();
 		//model.addAttribute("memberlist", memberlist);
 		
-		//2-ÁÖ¼Ò ¸ñ·Ï
+		//2-ï¿½Ö¼ï¿½ ï¿½ï¿½ï¿½
 		//List<Addr_ListDTO> addrlist = addrService.selectByMember_Id(member_id);
 		//model.addAttribute("addrlist", addrlist);
 		
-		//System.out.println("--³ªÀÇ ¹è¼ÛÁö Á¶È¸" + addrlist);
+		//System.out.println("--ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸" + addrlist);
 		
 		//return "redirect:customer/myInfoUpdate";
 		
 		return null;
 	}
 	
-	//¹è¼ÛÁö Ãß°¡
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
 	@GetMapping("/customer/myAddrInsert")
 	public String myAddrInsert() {
 		
-		System.out.println("ÁÖ¼Ò ÁÖ°¡");
+		System.out.println("ï¿½Ö¼ï¿½ ï¿½Ö°ï¿½");
 		
 		return "redirect:customer/myInfoUpdate";
 	}
 	
-	//¹è¼ÛÁö »èÁ¦
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	@GetMapping("/customer/myAddrDelete")
 	public String myAddrDelete() {
 		
@@ -53,11 +53,11 @@ public class Addr_ListController {
 		return "redirect:customer/myInfoUpdate";
 	}
 	
-	//¹è¼ÛÁö ¼öÁ¤
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	@GetMapping("/customer/myAddrUpdate")
 	public String myAddrUpdate() {
 		
-		System.out.println("ÁÖ¼Ò ¼öÁ¤");
+		System.out.println("ï¿½Ö¼ï¿½ ï¿½ï¿½ï¿½ï¿½");
 		
 		return "redirect:customer/myInfoUpdate";
 	}

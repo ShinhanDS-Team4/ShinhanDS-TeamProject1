@@ -13,7 +13,7 @@ public class ProdTestService {
 	ProdDAOTestInterface prodDAO;
 	
 	//상품 상세 정보 조회
-	public List<Map<String,Object>> selectProdDetailInfoByProdId(String prod_id) {
+	public Map<String,Object> selectProdDetailInfoByProdId(String prod_id) {
 		return prodDAO.selectProdDetailInfoByProdId(prod_id);
 	}
 	

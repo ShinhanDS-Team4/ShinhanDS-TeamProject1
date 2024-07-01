@@ -5,32 +5,87 @@
 <mapper namespace="com.saren.orderprod">
 
 	<!-- 주문상세 -->
-	<select id="selectById" parameterType="com.team4.shoppingmall.order_prod.OrderProdDTO">
-		resultType="orderprodVO">
+	<select id="selectById" parameterType="int" resultType="order_prodVO"> 
 		SELECT *
 		FROM ORDER_PROD
-		WHERE "order_id" = #{order_id}
+		WHERE order_id = #{order_id}
 	</select>
 
 	<!-- 주문목록 -->
-	<select id="selectAll" resultType="com.team4.shoppingmall.order_prod.OrderProdDTO">
+	<select id="selectAll" resultType="order_prodVO">
 		SELECT *
 		FROM ORDER_PROD
 	</select>
 
 	<!-- 주문생성 -->
-	<insert id="orderprodInsert" parameterType="com.team4.shoppingmall.order_prod.OrderProdDTO">
+	<insert id="orderprodInsert" parameterType="order_prodVO">
 		INSERT
-		INTO ORDER_PROD("member_id", "addr_num", "total_price")
-		VALUES(#{member_id}, #{addr_num}, #{total_price})
+		INTO ORDER_PROD(order_id, order_date, member_id, addr_num, total_price)
+		VALUES(#{order_id}, #{order_date}, #{member_id}, #{addr_num}, #{total_price})
 	</insert>
 
 	<!-- 주문수정 -->
-	<update id="orderprodUpdate" parameterType="com.team4.shoppingmall.order_prod.OrderProdDTO">
+	<update id="orderprodUpdate" parameterType="order_prodVO">
 		UPDATE ORDER_PROD
 		SET
-		"addr_num" = #{addr_num}, "total_price" = #{total_price}
-		WHERE "order_id" = #{order_id}
-	</update> 
+		order_date=#{order_date},
+		addr_num = #{addr_num},
+		total_price = #{total_price}
+		WHERE order_id = #{order_id}
+	</update>
+
+	<!-- orderlist.jsp에서, 상세상품 옵션 출력시, 모든 옵션 가져오기 -->
+    <select id="selectOptions" resultType="prod_optionVO">
+	    SELECT *
+	    FROM PROD_OPTION 
+    </select>
+ 
+	<!-- orderlist.jsp에 출력할 상품명, 브랜드, 옵션, 상품가격, 이미지URL -->
+	<select id="selectById2" parameterType="int" resultType="map"> 
+		SELECT
+			P.prod_name,
+		   	M.brand, 
+			S.opt_id1,
+			S.opt_id2,
+			S.opt_id3,
+			S.opt_id4,
+			S.opt_id5,
+			OD.order_product_price,
+			PI.img_url
+		FROM
+			ORDER_DETAIL OD
+		JOIN
+			ORDER_PROD OP ON OD.order_id = OP.order_id
+		JOIN
+			SELLER_PROD_STOCK S ON OD.stock_id = S.stock_id
+		JOIN
+			PROD P ON S.prod_id = P.prod_id
+		JOIN
+			MEMBER M ON P.member_id = M.member_id
+		JOIN
+			PROD_IMAGE PI ON P.prod_id = PI.prod_id
+		where 
+			OD.ORDER_ID = #{aa}
+	</select>
+	
+	<!-- orderlist.jsp에서, 주문취소 -->
+	<update id="orderCancel" parameterType="int">
+		UPDATE 
+			ORDER_PROD 
+		SET 
+			order_state = 'cancelled' 
+		WHERE 
+			order_id = #{aa} 
+	</update>
+	
+	<!-- ordrlist.jsp에서, 환불 -->
+	<update id="orderRefund" parameterType="int">
+		UPDATE 
+			ORDER_PROD 
+		SET 
+			order_state = 'refunded' 
+		WHERE 
+			order_id = #{aa} 
+	</update>
 	
 </mapper>

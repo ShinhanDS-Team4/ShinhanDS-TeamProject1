@@ -1,11 +1,12 @@
 package com.team4.shoppingmall.rent_prod_stock;
 
 import java.util.List;
+import java.util.Map;
 
 public interface RentProdStockDAOInterface {
 	
 	//선택 옵션 상품의 대여 재고id 찾기
-	public RentProdStockDTO selectRentStockByProdId(String prod_id);
+	public Map<String,String> selectRentStockByProdId(String prod_id, String optionString);
 
 	// 대여상품상세
 	public RentProdStockDTO selectById(String r_stock_id);
@@ -25,6 +26,8 @@ public interface RentProdStockDAOInterface {
 
 	// 대여상품삭제
 	public int rentProdDelete(String r_stock_id);
+
+	public int rentStockUpdate(RentProdStockDTO rentprod);
 
 	
 

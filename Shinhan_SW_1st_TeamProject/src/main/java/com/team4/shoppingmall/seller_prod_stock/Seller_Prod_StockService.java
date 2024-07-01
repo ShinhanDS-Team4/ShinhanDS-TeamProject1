@@ -39,7 +39,12 @@ public class Seller_Prod_StockService {
 		return seller_prod_stockDAO.seller_prod_stockUpdate(seller_prod_stock);
 	}
 	
+	public int sellStockUpdate(Seller_Prod_StockDTO seller_prod_stock) {
+		return seller_prod_stockDAO.sellStockUpdate(seller_prod_stock);
+	}
+	
 	public int seller_prod_stockDelete(String s_stock_id) {
 		return seller_prod_stockDAO.seller_prod_stockDelete(s_stock_id);
 	}
+	
 }

@@ -23,6 +23,16 @@ public class Prod_ImageService {
 		return prod_imageDAO.findAllImgsByProdID(prod_id);
 	}
 	
+	public List<String> findMainImgFileNameByProdID(Prod_ImageDTO prod_image){
+		return prod_imageDAO.findMainImgFileNameByProdID(prod_image);
+	}
+	public List<String> findDescImgFileNameByProdID(Prod_ImageDTO prod_image){
+		return prod_imageDAO.findDescImgFileNameByProdID(prod_image);
+	}
+	public List<String> findAllImgFileNameByProdID(String prod_id){
+		return prod_imageDAO.findAllImgFileNameByProdID(prod_id);
+	}
+	
 	public List<Prod_ImageDTO> selectAll() {
 		return prod_imageDAO.selectAll();
 	}
