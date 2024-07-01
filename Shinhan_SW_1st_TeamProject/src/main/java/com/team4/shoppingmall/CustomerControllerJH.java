@@ -2,28 +2,48 @@ package com.team4.shoppingmall;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.team4.shoppingmall.addr_list.Addr_ListDTO;
 import com.team4.shoppingmall.addr_list.Addr_ListService;
+import com.team4.shoppingmall.member.MemberDTO;
+import com.team4.shoppingmall.member.MemberService;
 
-//@Controller
-//@RequestMapping("/customer")
+@Controller
+@RequestMapping("/customer")
 public class CustomerControllerJH {
 	
 	@Autowired
-	Addr_ListService addrService; //�쉶�썝 二쇱냼 
+	Addr_ListService addrService; 
+	
+	@Autowired
+	MemberService memberService;
 	
 	/*留덉씠�럹�씠吏� 硫붿씤*/
 	@GetMapping("/myPage.do")
-	public String myPage() {
-		//1.�굹�쓽 二쇰Ц 紐⑸줉 遺덈윭�삤湲� (紐⑸줉�� 1媛쒕쭔 蹂댁씤�떎) 
+	public String myPage(HttpSession session, Model model) {
 		
-		//2.�굹�쓽 ���뿬 紐⑸줉 遺덈윭�삤湲�
+		//MemberDTO member =  session.getAttribute("member");
+		//String member_id = member.getMember_id();
+		String member_id = "testid";
+		
+		//1.회원정보 조회
+		MemberDTO member = memberService.selectById(member_id);
+		model.addAttribute("member", member);
+		
+		//2.주문 내역
+		
+		
+		//3.대여 내역
+		
 		
 		return "customer/myPage";
 	}

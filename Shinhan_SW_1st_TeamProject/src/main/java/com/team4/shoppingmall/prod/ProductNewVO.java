@@ -12,7 +12,7 @@ import lombok.ToString;
 @Getter@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductNewVO {//상세페이지에서 json으로 받는 값
+public class ProductNewVO {//상세페이지에서 json으로 받는 값 저장
 	//판매
 	String s_stock_id;
 	int order_num;

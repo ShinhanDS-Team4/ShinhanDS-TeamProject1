@@ -180,6 +180,7 @@
 	</div>
 	<%-- 상품 문의 모달 창 --%>
 	<form id="productQnaForm">
+		
 		<input type="hidden" name="prod_id" var="${prod_detail_info.prod_id}">
 		
 		<div id="myModal" class="modal">
@@ -772,13 +773,13 @@
 
          return year + '-' + month + '-' + day;
      }
-  //7일 후의 날짜 설정
+ 	 //7일 후의 날짜 설정
      function setReturnDate(startDate) {
          var returnDate = new Date(startDate);
          returnDate.setDate(returnDate.getDate() + 7);
          return formatDate(returnDate);
      }
-  //대여 가격
+ 	 //대여 가격
      function updateTotalPrice() {
          var rent_num = $('#rent_num').val();
          var totalPrice = basePrice * rent_num;
@@ -794,7 +795,7 @@
      var formattedToday = formatDate(today);
      $('#rent_start_date').val(formattedToday);
 
-  //초기 종료일 설정
+   	//초기 종료일 설정
      var initialReturnDate = setReturnDate(today);
      $('#rent_end_date').val(initialReturnDate);
 
@@ -928,7 +929,7 @@
    			 
    			});
     		
-    	}
+    	 }
     	
        }
        
@@ -948,7 +949,7 @@
        if (!allOptionsSelected) {
            alert("모든 옵션을 선택해 주세요.");
            return;
-    		  }
+    	}
 
        // 컨트롤러에 상품 옵션 값 보내기
     var rentFormArray = $("#rentPopupForm").serializeArray();

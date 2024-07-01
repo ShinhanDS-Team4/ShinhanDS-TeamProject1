@@ -1,12 +1,10 @@
 package com.team4.shoppingmall.prodTest;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -25,8 +23,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqDTO;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqService;
-import com.team4.shoppingmall.cart.CartDTO;
 import com.team4.shoppingmall.cart.CartService;
+import com.team4.shoppingmall.member.MemberDTO;
 import com.team4.shoppingmall.order_detail.Order_DetailService;
 import com.team4.shoppingmall.order_prod.OrderProdService;
 import com.team4.shoppingmall.prod.ProductNewVO;
@@ -35,7 +33,6 @@ import com.team4.shoppingmall.prod_optionTest.Prod_OptionTestService;
 import com.team4.shoppingmall.rent.RentService;
 import com.team4.shoppingmall.rent_detail.RentDetailService;
 import com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO;
-import com.team4.shoppingmall.rent_prod_stock.RentProdStockListDTO;
 import com.team4.shoppingmall.rent_prod_stock.RentProdStockService;
 import com.team4.shoppingmall.reviews.ReviewsService;
 import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestDTO;
@@ -151,6 +148,8 @@ public class ProdTestController {
 								 @RequestBody ProductNewVO prodVO) 
 	{
 		//session에서 읽을 예정 
+		//MemberDTO member =  session.getAttribute("member");
+		//String member_id = member.getMember_id();
         String member_id = "testid";
         prod_id = "";
         
@@ -174,6 +173,8 @@ public class ProdTestController {
 								 @RequestBody ProductNewVO prodVO) 
 	{
 		//session에서 읽을 예정 
+		//MemberDTO member =  session.getAttribute("member");
+		//String member_id = member.getMember_id();
         String member_id = "testid";
         prod_id = "";
         
@@ -198,6 +199,8 @@ public class ProdTestController {
 								  HttpSession session) throws UnsupportedEncodingException
 	{
     	//session에서 읽을 예정 
+		//MemberDTO member =  session.getAttribute("member");
+		//String member_id = member.getMember_id();
         String member_id = "testid";
         //상품ID
         String prod_id = "";
@@ -216,7 +219,7 @@ public class ProdTestController {
 		return orderProdInsert; 
     }
 	
-	/* 대여하기 공사중 */
+	/* 대여하기 */
 	@PostMapping("/rentProductOrderInsert.do")
 	@ResponseBody
 	public int rentProductOrderInsert(HttpServletRequest request, 
@@ -225,16 +228,20 @@ public class ProdTestController {
 								  HttpSession session) 
 	{
 		//session에서 읽을 예정 
+		//MemberDTO member =  session.getAttribute("member");
+		//String member_id = member.getMember_id();
 		String member_id = "testid";	 
+		
 		//상품ID
         String prod_id = "";
         
         if(prodVO.getR_stock_id() == null || prodVO == null) {
-        	return 0; //대여 실패
+        	return 0; 
         }
         
         //1.대여, 대여상세 생성 (서비스에서 로직 처리)
         int rentProdInsert = rentService.rentInsert2(prodVO, member_id);
+        
         
         return rentProdInsert; 
         
@@ -256,6 +263,11 @@ public class ProdTestController {
 		System.out.println("문의 제목: "+qnaTitle);
 		System.out.println("문의 내용: "+qnaTestarea);
 		
+		//session에서 가져오기
+		//MemberDTO member =  session.getAttribute("member");
+		//String member_id = member.getMember_id();
+		String member_id = "testid";
+		
 		//prod_id = "";
 		//String prod_id = "";
 		prod_id = "나이키 반팔_1234-1234";
@@ -267,8 +279,6 @@ public class ProdTestController {
         //문의내용 
 		 buyer_inq_map.put("buyer_inq_content", qnaTestarea); 
 		 
-		//회원ID 테스트 - 실제로는 세션에서 가져와야 함
-		 String member_id = "testid";
 		 
 		 buyer_inq_map.put("member_id", member_id); 
 		 
