@@ -10,11 +10,20 @@
 		FROM ORDER_DETAIL
 	</select>
 
+	<!-- 주문 상세 하나에 대한 데이터 가져오기 -->
 	<select id="selectByOrderDetail_Id" parameterType="int"
 		resultType="order_detailVO">
 		SELECT *
 		FROM ORDER_DETAIL
 		WHERE orderdetail_id =#{orderdetail_id}
+	</select>
+	
+	<!-- 주문 ID 단위로 주문 상세 데이터 목록 가져오기 -->
+	<select id="selectByOrder_Id" parameterType="int"
+		resultType="order_detailVO">
+		SELECT *
+		FROM ORDER_DETAIL
+		WHERE order_id=#{order_id}
 	</select>
 
 	<!-- 판매자ID 단위로 주문 상세 데이터 목록 가져오기 -->

@@ -18,7 +18,7 @@
 		    SPS.opt_id5,
 		    SPS.stock
 		FROM 
-		    SELLER_PROD_STOCK SPS
+		    SELL_PROD_STOCK SPS
 		WHERE 
 		    SPS.prod_id = #{prod_id}
 	</select>
@@ -33,14 +33,14 @@ resultType="seller_prod_stockVO">
 	<select id="selectByProdId" parameterType="string"
 		resultType="seller_prod_stockVO">
 		SELECT *
-		FROM SELLER_PROD_STOCK
+		FROM SELL_PROD_STOCK
 		WHERE prod_id = #{prod_id}
 	</select>
 
 	<select id="findMaxStockNumber" parameterType="string"
 		resultType="integer">
 		SELECT max(to_number(REGEXP_SUBSTR(s.s_stock_id,'_([0-9]+)$', 1, 1, null, 1)))
-		FROM SELLER_PROD_STOCK s
+		FROM SELL_PROD_STOCK s
 		WHERE s.prod_id = #{prod_id}
 	</select>
 
@@ -52,7 +52,7 @@ resultType="seller_prod_stockVO">
 			p.prod_added_date,
 			p.prod_price
 		FROM
-			SELLER_PROD_STOCK s
+			SELL_PROD_STOCK s
 		JOIN
 			PROD p ON s.prod_id = p.prod_id
 		WHERE
@@ -96,7 +96,7 @@ resultType="seller_prod_stockVO">
 	<delete id="seller_prod_stockDelete" parameterType="string">
 		DELETE
 		FROM
-		SELLER_PROD_STOCK
+		SELL_PROD_STOCK
 		WHERE s_stock_id = #{s_stock_id}
 	</delete>
 
