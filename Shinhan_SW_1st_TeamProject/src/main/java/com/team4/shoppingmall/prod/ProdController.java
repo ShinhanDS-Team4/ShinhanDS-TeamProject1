@@ -21,7 +21,5 @@ public class ProdController {
 		// 선택된 옵션 값 확인 
         System.out.println("Selected option1: " + productSize);
         System.out.println("Selected option2: " + productColor);
-
-		
 	}
 }

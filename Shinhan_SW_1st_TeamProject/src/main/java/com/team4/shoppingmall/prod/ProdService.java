@@ -43,4 +43,8 @@ public class ProdService {
 	public List<Map<String, Object>> selectByCategory(int categoryId) {
 		return prodDAO.selectByCategory(categoryId); 
 	}
+	
+	public int prodModify(ProdDTO prod) {
+		return prodDAO.prodModify(prod);
+	}
 }

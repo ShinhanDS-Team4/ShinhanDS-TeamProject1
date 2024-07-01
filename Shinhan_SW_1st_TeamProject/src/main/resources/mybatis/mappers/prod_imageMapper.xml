@@ -23,6 +23,24 @@
 		FROM PROD_IMAGE 
 		WHERE prod_id = #{prod_id}
 	</select>
+	
+	<select id="findAllImgFileNameByProdID" parameterType="string" resultType="string">
+		SELECT IMG_ID
+		FROM PROD_IMAGE 
+		WHERE prod_id = #{prod_id}
+	</select>
+	
+	<select id="findMainImgFileNameByProdID" parameterType="prod_imageVO" resultType="string">
+		SELECT IMG_ID
+		FROM PROD_IMAGE 
+		WHERE prod_id = #{prod_id} AND img_type=#{img_type}
+	</select>
+	
+	<select id="findDescImgFileNameByProdID" parameterType="prod_imageVO" resultType="string">
+		SELECT IMG_ID
+		FROM PROD_IMAGE 
+		WHERE prod_id = #{prod_id} AND img_type=#{img_type}
+	</select>
 
 	<select id="selectAll" resultType="prod_imageVO">
 		SELECT *
@@ -41,10 +59,10 @@
 		WHERE prod_id = #{prod_id}
 	</update>
 
-	<delete id="prod_imageDelete" parameterType="int">
+	<delete id="prod_imageDelete" parameterType="string">
 		DELETE
 		FROM PROD_IMAGE
-		WHERE "img_id" = #{img_id}
+		WHERE prod_id = #{prod_id}
 	</delete>
 	
 </mapper>

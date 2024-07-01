@@ -59,6 +59,12 @@ public class RentProdStockDAOMybatis implements RentProdStockDAOInterface {
 	public int rentProdUpdate(RentProdStockDTO rentprod) {
 		return sqlSession.update(namespace + "rentProdUpdate", rentprod);
 	}
+	
+	// 대여상품재고수정
+	@Override
+	public int rentStockUpdate(RentProdStockDTO rentprod) {
+		return sqlSession.update(namespace + "rentStockUpdate", rentprod);
+	}
 
 	// 대여상품삭제
 	@Override

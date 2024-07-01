@@ -11,10 +11,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order_DetailDTO {
-	int orderdetail_id;   	 	//ÁÖ¹®»ó¼¼¹øÈ£
-	int order_product_price;	//»óÇ°°¡°İ
-	int order_num;				//ÁÖ¹®¼ö·®
-	int order_id;				//ÁÖ¹®ID
-	String s_stock_id;			//Àç°íID (¼öÁ¤)
-	String order_state; 		//ÁÖ¹®»óÅÂ (¼öÁ¤)
+	int orderdetail_id;   	 	//ì£¼ë¬¸ìƒì„¸ë²ˆí˜¸
+	int order_product_price;	//ìƒí’ˆê°€ê²©
+	int order_num;				//ì£¼ë¬¸ìˆ˜ëŸ‰
+	String order_state;			//ì£¼ë¬¸ìƒíƒœ
+	int order_id;				//ì£¼ë¬¸ID
+	String s_stock_id;			//ì¬ê³ ID (ìˆ˜ì •)
+	String order_state; 		//ì£¼ë¬¸ìƒíƒœ (ìˆ˜ì •)
 }

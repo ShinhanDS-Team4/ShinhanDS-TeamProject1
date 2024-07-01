@@ -8,8 +8,7 @@
 	<select id="selectById" parameterType="int" resultType="order_prodVO"> 
 		SELECT *
 		FROM ORDER_PROD
-		WHERE
-		"order_id" = #{order_id}
+		WHERE order_id = #{order_id}
 	</select>
 
 	<!-- 주문목록 -->
@@ -21,17 +20,18 @@
 	<!-- 주문생성 -->
 	<insert id="orderprodInsert" parameterType="order_prodVO">
 		INSERT
-		INTO ORDER_PROD("member_id", "addr_num", "total_price")
-		VALUES(#{member_id}, #{addr_num}, #{total_price})
+		INTO ORDER_PROD(order_id, order_date, member_id, addr_num, total_price)
+		VALUES(#{order_id}, #{order_date}, #{member_id}, #{addr_num}, #{total_price})
 	</insert>
 
 	<!-- 주문수정 -->
 	<update id="orderprodUpdate" parameterType="order_prodVO">
 		UPDATE ORDER_PROD
 		SET
-			"addr_num" = #{addr_num},
-			"total_price" = #{total_price}
-		WHERE "order_id" = #{order_id}
+		order_date=#{order_date},
+		addr_num = #{addr_num},
+		total_price = #{total_price}
+		WHERE order_id = #{order_id}
 	</update>
 
 	<!-- orderlist.jsp에서, 상세상품 옵션 출력시, 모든 옵션 가져오기 -->
@@ -88,6 +88,4 @@
 			order_id = #{aa} 
 	</update>
 	
-
-
 </mapper>
