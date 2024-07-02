@@ -7,7 +7,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 @ToString
-@Getter@Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class RentDetailDTO {
@@ -16,5 +17,5 @@ public class RentDetailDTO {
 	Integer rent_num;
 	Integer rental_code;
 	String r_stock_id;
-	String rent_state;  //ÁÖ¹®»óÅÂ ¿Å±è
+	String rent_state;  //ëŒ€ì—¬ìƒíƒœ
 }

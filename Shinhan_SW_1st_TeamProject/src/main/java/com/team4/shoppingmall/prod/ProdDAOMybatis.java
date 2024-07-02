@@ -45,6 +45,10 @@ public class ProdDAOMybatis implements ProdDAOInterface {
 		return sqlSession.delete(namespace+"prodDelete", prod_id);
 	}
 
+	@Override
+	public int prodModify(ProdDTO prod) {
+		return sqlSession.update(namespace+"prodModify", prod);
+  }
 
 	@Override
 	public List<Map<String, Object>> selectAll2() {
@@ -54,6 +58,5 @@ public class ProdDAOMybatis implements ProdDAOInterface {
 	@Override
 	public List<Map<String, Object>> selectByCategory(int categoryId) {
 		return sqlSession.selectList(namespace+"selectByCategory", categoryId); 
-
 	}
 }

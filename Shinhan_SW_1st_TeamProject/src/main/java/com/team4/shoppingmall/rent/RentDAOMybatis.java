@@ -16,6 +16,11 @@ public class RentDAOMybatis implements RentDAOInterface {
 	SqlSession sqlSession;
 
 	String namespace = "com.saren.rent.";
+	
+	@Override
+	public int searchRentId() {
+		return sqlSession.selectOne(namespace+"searchRentId");
+	}
 
 	// 대여상세
 	@Override

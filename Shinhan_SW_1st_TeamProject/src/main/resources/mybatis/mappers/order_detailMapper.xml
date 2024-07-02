@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.saren.order_detail">
+	<select id="selectAll" resultType="order_detailVO">
+		SELECT *
+		FROM ORDER_DETAIL
+	</select>
+
+	<!-- 주문 상세 하나에 대한 데이터 가져오기 -->
+	<select id="selectByOrderDetail_Id" parameterType="int"
+		resultType="order_detailVO">
+		SELECT *
+		FROM ORDER_DETAIL
+		WHERE orderdetail_id = #{orderdetail_id}
+	</select>
+	
+	<!-- 주문상세 생성 - 결제대기상태 (주문상태 칼럼 추가) -->
+	<insert id="orderDetailInsert" parameterType="order_detailVO">
+		INSERT
+		INTO ORDER_DETAIL(orderdetail_id, order_product_price, order_num, order_id, s_stock_id, order_state)
+		VALUES(
+				order_detail_sequence.nextval, 
+				#{order_product_price},
+				#{order_num}, 
+				#{order_id}, 
+				#{s_stock_id}, 
+				'결제대기'
+				)
+	</insert>
+	
+	<!-- 주문 ID 단위로 주문 상세 데이터 목록 가져오기 -->
+	<select id="selectByOrder_Id" parameterType="int"
+		resultType="order_detailVO">
+		SELECT *
+		FROM ORDER_DETAIL
+		WHERE order_id=#{order_id}
+	</select>
+
+	<!-- 판매자ID 단위로 주문 상세 데이터 목록 가져오기 -->
+	<select id="selectBySellerID" parameterType="string" resultType="order_detailVO">
+		SELECT od.*
+		FROM ORDER_DETAIL od
+		JOIN SELLER_PROD_STOCK sps ON od.s_stock_id = sps.s_stock_id
+		JOIN PROD p ON sps.prod_id = p.prod_id
+		WHERE p.member_id = #{member_id}
+	</select>
+
+	<update id="orderDetailUpdate" parameterType="order_detailVO">
+		UPDATE ORDER_DETAIL
+		SET
+		orderdetail_id = #{orderdetail_id},
+		order_product_price = #{order_product_price},
+		order_num = #{order_num},
+		order_state = #{order_state},
+		order_id = #{order_id},
+		s_stock_id = #{s_stock_id}
+		WHERE orderdetail_id = #{orderdetail_id}
+	</update>
+	
+	<update id="orderDetailStatusUpdate" parameterType="order_detailVO">
+		UPDATE ORDER_DETAIL
+		SET order_state = #{order_state}
+		WHERE orderdetail_id = #{orderdetail_id}
+	</update>
+
+	<delete id="orderDetailDelete" parameterType="int">
+		DELETE
+		FROM
+		ORDER_DETAIL
+		WHERE orderdetail_id = #{orderdetail_id}
+	</delete>
+
+</mapper>

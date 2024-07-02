@@ -8,6 +8,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.team4.shoppingmall.prod.ProductNewVO;
+
 @Repository
 public class RentProdStockDAOMybatis implements RentProdStockDAOInterface {
 
@@ -23,6 +25,21 @@ public class RentProdStockDAOMybatis implements RentProdStockDAOInterface {
 		map.put("prod_id", prod_id);
 		map.put("optionString", optionString);
 		return sqlSession.selectOne(namespace + "selectRentStockByProdId", map);
+	};
+	
+	//상품의 대여 재고id 조회
+	public List<RentProdStockDTO> selectRentStockByProdId2(String prod_id){
+		return sqlSession.selectList(namespace + "selectRentStockByProdId2", prod_id);
+	};
+	
+	//대여 생성시 대여 수량 업데이트
+	public int rentProdStockUpdate(ProductNewVO prodVO) {
+		return sqlSession.update(namespace + "rentProdStockUpdate", prodVO);
+	};
+	
+	//대여 상품 옵션별 재고 조회
+	public List<RentProdStockDTO> selectRpsOptionByProdId(String prod_id){
+		return sqlSession.selectList(namespace + "selectRpsOptionByProdId" , prod_id);
 	};
 	
 	// 대여상품상세
@@ -58,6 +75,12 @@ public class RentProdStockDAOMybatis implements RentProdStockDAOInterface {
 	@Override
 	public int rentProdUpdate(RentProdStockDTO rentprod) {
 		return sqlSession.update(namespace + "rentProdUpdate", rentprod);
+	}
+	
+	// 대여상품재고수정
+	@Override
+	public int rentStockUpdate(RentProdStockDTO rentprod) {
+		return sqlSession.update(namespace + "rentStockUpdate", rentprod);
 	}
 
 	// 대여상품삭제

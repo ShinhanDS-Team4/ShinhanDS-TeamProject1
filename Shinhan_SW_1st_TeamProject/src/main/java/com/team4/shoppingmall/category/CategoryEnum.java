@@ -869,7 +869,7 @@ public enum CategoryEnum {
 			
 			sports_soccer_supplies("sports_soccer_supplies", "축구용품", null),
 			
-	bagAndShoes("bagAndShoes", "백&슈즈",
+	bagAndShoes("bagAndShoes", "백＆슈즈",
 	Arrays.asList("bagAndShoes_womanBag", "bagAndShoes_womanPurse", "bagAndShoes_womanShoes", "bagAndShoes_manBag", "bagAndShoes_manPurse", "bagAndShoes_manShoes")),
 	
 		bagAndShoes_womanBag("bagAndShoes_womanBag", "여성 가방",

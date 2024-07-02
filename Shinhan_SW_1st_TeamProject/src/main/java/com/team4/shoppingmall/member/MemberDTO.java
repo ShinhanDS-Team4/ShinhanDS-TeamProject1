@@ -23,6 +23,6 @@ public class MemberDTO {
 	Date last_access;
 	Integer member_type;
 	String gender;
-	String seller_authority;	
+	String seller_authority;
 	Date create_date;
 }

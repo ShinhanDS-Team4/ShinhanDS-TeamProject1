@@ -56,5 +56,10 @@ public class Seller_Prod_StockDAOMybatis implements Seller_Prod_StockDAOInterfac
 		return sqlSession.delete(namespace+"seller_prod_stockDelete", s_stock_id);
 	}
 
+	@Override
+	public int sellStockUpdate(Seller_Prod_StockDTO seller_prod_stock) {
+		return sqlSession.update(namespace+"sellStockUpdate", seller_prod_stock);
+	}
+
 	
 }

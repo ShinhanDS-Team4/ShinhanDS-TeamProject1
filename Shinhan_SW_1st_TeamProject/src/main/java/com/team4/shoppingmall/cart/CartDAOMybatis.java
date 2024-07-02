@@ -27,11 +27,27 @@ public class CartDAOMybatis implements CartDAOInterface {
 		return sqlSession.selectOne(namespace + "searchStockId", datas);
 	}
 	
-	//장바구니에 같은 상품이 존재하는지 조회
-	public CartDTO  selectCartBySellstock(Map<String,String> map) {
-		return sqlSession.selectOne(namespace + "selectCartBySellstock", map);
+	//장바구니(구매상품)에 같은 상품이 존재하는지 조회
+	public CartDTO  selectCartBySellStock(CartDTO cart) {
+		return sqlSession.selectOne(namespace + "selectCartBySellStock", cart);
 	}
+	//장바구니(구매상품) 수량 업데이트
+	public int updateCartBySellStock(CartDTO cart) {
+		return sqlSession.update(namespace + "updateCartBySellStock", cart);
+	};
 	
+	//장바구니(대여상품) 조회
+	public CartDTO selectCartByRentStock(CartDTO cart) {
+		return sqlSession.selectOne(namespace + "selectCartByRentStock", cart);
+	};
+	//장바구니(대여상품) 생성
+	public int cartRentProductInsert(CartDTO cart) {
+		return sqlSession.insert(namespace + "cartRentProductInsert", cart);
+	};
+	// 장바구니(대여상품) 수량 업데이트
+	public int updateCartByRentStock(CartDTO cart) {
+		return sqlSession.update(namespace + "updateCartByRentStock", cart);
+	};
 	@Override
 	public List<CartDTO> selectSellStockByMemberId(String member_id) {
 		return sqlSession.selectList(namespace + "selectSellStockByMemberId", member_id);
@@ -56,7 +72,7 @@ public class CartDAOMybatis implements CartDAOInterface {
 	public List<CartDTO> selectAll() {
 		return sqlSession.selectList(namespace + "selectAll");
 	}
-
+	//장바구니(구매상품) 생성
 	@Override
 	public int cartInsert(CartDTO cart) {
 		return sqlSession.insert(namespace + "cartInsert", cart);
@@ -72,10 +88,7 @@ public class CartDAOMybatis implements CartDAOInterface {
 		return sqlSession.delete(namespace + "cartDelete", cart_id);
 	}
 	
-	//장바구니 상품 수량 업데이트
-	public int updateCartBySellstock(CartDTO cart) {
-		return sqlSession.update(namespace + "updateCartBySellstock", cart);
-	};
+	
 
 
 }
