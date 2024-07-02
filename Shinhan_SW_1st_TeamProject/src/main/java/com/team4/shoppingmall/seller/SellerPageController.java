@@ -278,6 +278,9 @@ public class SellerPageController {
 			List<String> prodMainImgList = imageService.findMainImgFileNameByProdID(mainImageDTO);
 			List<String> prodDescImgList = imageService.findDescImgFileNameByProdID(descImageDTO);
 
+			System.out.println(prodMainImgList);
+			System.out.println(prodDescImgList);
+			
 			List<Integer> optionList = new ArrayList<Integer>();
 
 			optionList.add(rentProdStockDTO.getOpt_id1());

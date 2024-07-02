@@ -264,6 +264,7 @@
 						</div>
 						<div id="prdMainImgFileContainer">
 							<c:forEach var="mainImgName" items="${ProdMainImgList}">
+								
 								<img
 									src="http://localhost:9090/saren/ProdImgFile/main/${mainImgName}"
 									width="200" height="200">

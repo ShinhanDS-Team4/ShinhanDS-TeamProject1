@@ -12,7 +12,8 @@
 <!-- 헤더,푸터 css -->
 <link rel="stylesheet" href="${path}/resources/css/header_footer.css">
 <!-- jquery 연결 -->
-<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!-- Slick 불러오기 -->
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
@@ -28,16 +29,24 @@
 <script src="${path}/resources/slick/slick.min.js"></script>
 <script>
 	function addAdminQAPopUp(){
-		window.open("addAdminQA.do","_blank","width=1000,height=1000,scrollbars=yes");
+		var popup = window.open("addAdminQA.do","_blank","width=1000,height=1000,scrollbars=yes");
+		popup.onbeforeunload = function() {
+            window.location.reload();
+        };
 	}
 	
 	function answerCustomerPopUp(buyer_inq_id){
-		alert(buyer_inq_id);
-		window.open("answerCustomer.do?buyer_inq_id="+buyer_inq_id,"_blank","width=1000,height=1000,scrollbars=yes");
+		var popup = window.open("answerCustomer.do?buyer_inq_id="+buyer_inq_id,"_blank","width=1000,height=1000,scrollbars=yes");
+		popup.onbeforeunload = function() {
+            window.location.reload();
+        };
 	}
 	
 	function adminAnswerPopUp(admin_inq_id){
-		window.open("answerAdmin.do?admin_inq_id="+admin_inq_id,"_blank","width=1000,height=1000,scrollbars=yes");
+		var popup = window.open("answerAdmin.do?admin_inq_id="+admin_inq_id,"_blank","width=1000,height=1000,scrollbars=yes");
+		popup.onbeforeunload = function() {
+            window.location.reload();
+        };
 	}
 </script>
 </head>
@@ -48,17 +57,20 @@
 		<aside>
 			<ul>
 				<li><a onclick="location.href='${path}/seller/MainPage.do'">통계</a></li>
-				<li><a onclick="location.href='${path}/seller/PrdList.do'">판매/대여 상품 목록</a></li>
+				<li><a onclick="location.href='${path}/seller/PrdList.do'">판매/대여
+						상품 목록</a></li>
 				<li><a onclick="location.href='${path}/seller/DeliveryList.do'">주문/배송</a></li>
-				<li><a onclick="location.href='${path}/seller/Q&AList.do'">문의 목록</a></li>
+				<li><a onclick="location.href='${path}/seller/Q&AList.do'">문의
+						목록</a></li>
 			</ul>
 		</aside>
 		<section>
 			<h2>마이페이지</h2>
 			<hr />
 			<div class="user-info">
-				<input type="text" name="member_name" id="member_name" placeholder="김철수">
-				<input type="text" name="member_id" id="member_id" placeholder="573-50-00882">
+				<input type="text" name="member_name" id="member_name"
+					placeholder="김철수"> <input type="text" name="member_id"
+					id="member_id" placeholder="573-50-00882">
 			</div>
 			<!-- 고객 문의글 -->
 			<div class="product-list">
@@ -78,45 +90,15 @@
 								<td>${buyer_qa.buyer_inq_id}</td>
 								<td>${buyer_qa.buyer_inq_title}</td>
 								<td>${buyer_qa.buyer_inq_date}</td>
-								<td><input type="text" placeholder="답변상태"/></td>
+								<td>
+									<c:choose>
+										<c:when test="${buyer_qa.buyer_reply == null}">답변 대기중</c:when>
+									<c:otherwise>답변 완료</c:otherwise>
+									</c:choose>
+								</td>
 								<td><button onclick="answerCustomerPopUp(${buyer_qa.buyer_inq_id})">답변작성</button></td>
 							</tr>
 						</c:forEach>
-						<tr>
-							<td><input type="text" placeholder="문의번호" /></td>
-							<td><input type="text" placeholder="문의제목1" /></td>
-							<td><input type="date" placeholder="2024-05-01" /></td>
-							<td><input type="text" placeholder="답변상태" /></td>
-							<td><button onclick="answerCustomerPopUp()">답변작성</button></td>
-						</tr>
-						<tr>
-							<td><input type="text" placeholder="문의번호" /></td>
-							<td><input type="text" placeholder="문의제목1" /></td>
-							<td><input type="date" placeholder="2024-05-01" /></td>
-							<td><input type="text" placeholder="답변상태" /></td>
-							<td><button>답변작성</button></td>
-						</tr>
-						<tr>
-							<td><input type="text" placeholder="문의번호" /></td>
-							<td><input type="text" placeholder="문의제목1" /></td>
-							<td><input type="date" placeholder="2024-05-01" /></td>
-							<td><input type="text" placeholder="답변상태" /></td>
-							<td><button>답변작성</button></td>
-						</tr>
-						<tr>
-							<td><input type="text" placeholder="문의번호" /></td>
-							<td><input type="text" placeholder="문의제목1" /></td>
-							<td><input type="date" placeholder="2024-05-01" /></td>
-							<td><input type="text" placeholder="답변상태" /></td>
-							<td><button>답변작성</button></td>
-						</tr>
-						<tr>
-							<td><input type="text" placeholder="문의번호" /></td>
-							<td><input type="text" placeholder="문의제목1" /></td>
-							<td><input type="date" placeholder="2024-05-01" /></td>
-							<td><input type="text" placeholder="답변상태" /></td>
-							<td><button>답변작성</button></td>
-						</tr>
 					</tbody>
 				</table>
 			</div>
@@ -137,45 +119,15 @@
 								<td>${admin_qa.admin_inq_id}</td>
 								<td>${admin_qa.admin_inq_title}</td>
 								<td>${admin_qa.admin_inq_date}</td>
-								<td><input type="text" placeholder="답변상태"/></td>
+								<td>
+									<c:choose>
+										<c:when test="${admin_qa.admin_reply == null}">답변 대기중</c:when>
+									<c:otherwise>답변 완료</c:otherwise>
+									</c:choose>
+								</td>
 								<td><button onclick="adminAnswerPopUp(${admin_qa.admin_inq_id})">조회</button></td>
 							</tr>
 						</c:forEach>
-						<tr>
-							<td><input type="text" placeholder="문의번호" /></td>
-							<td><input type="text" placeholder="문의제목1" /></td>
-							<td><input type="date" placeholder="2024-05-01" /></td>
-							<td><input type="text" placeholder="답변상태" /></td>
-							<td><button onclick="adminAnswerPopUp()">조회</button></td>
-						</tr>
-						<tr>
-							<td><input type="text" placeholder="문의번호" /></td>
-							<td><input type="text" placeholder="문의제목1" /></td>
-							<td><input type="date" placeholder="2024-05-01" /></td>
-							<td><input type="text" placeholder="답변상태" /></td>
-							<td><button>조회</button></td>
-						</tr>
-						<tr>
-							<td><input type="text" placeholder="문의번호" /></td>
-							<td><input type="text" placeholder="문의제목1" /></td>
-							<td><input type="date" placeholder="2024-05-01" /></td>
-							<td><input type="text" placeholder="답변상태" /></td>
-							<td><button>조회</button></td>
-						</tr>
-						<tr>
-							<td><input type="text" placeholder="문의번호" /></td>
-							<td><input type="text" placeholder="문의제목1" /></td>
-							<td><input type="date" placeholder="2024-05-01" /></td>
-							<td><input type="text" placeholder="답변상태" /></td>
-							<td><button>조회</button></td>
-						</tr>
-						<tr>
-							<td><input type="text" placeholder="문의번호" /></td>
-							<td><input type="text" placeholder="문의제목1" /></td>
-							<td><input type="date" placeholder="2024-05-01" /></td>
-							<td><input type="text" placeholder="답변상태" /></td>
-							<td><button>조회</button></td>
-						</tr>
 					</tbody>
 				</table>
 				<div class="actions">
