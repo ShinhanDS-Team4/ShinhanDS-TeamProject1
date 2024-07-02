@@ -23,7 +23,7 @@ public interface RentDAOInterface {
 	public int rentUpdate(Integer rental_code);
 
 	// rentlist.jsp에 출력할 대여상품 상세정보(브랜드명, 상품명, 옵션, 대여가격, 이미지URL)
-	public Map<String, Object> selectById2(int rental_code);
+	public List<RentSelectDTO> selectById2(int rental_code);
 
 	// rentlist.jsp에서, 상세상품 옵션 출력시, 모든 옵션 가져오기
 	public List<RentProdStockDTO> selectOptions();
