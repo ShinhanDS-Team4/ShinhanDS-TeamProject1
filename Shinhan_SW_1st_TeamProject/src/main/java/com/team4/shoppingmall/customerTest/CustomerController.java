@@ -44,6 +44,14 @@ import com.team4.shoppingmall.order_detail.Order_DetailDTO;
 import com.team4.shoppingmall.order_detail.Order_DetailService;
 import com.team4.shoppingmall.order_prod.OrderProdDTO;
 import com.team4.shoppingmall.order_prod.OrderProdService;
+import com.team4.shoppingmall.rent.RentDTO;
+import com.team4.shoppingmall.rent.RentService;
+import com.team4.shoppingmall.rent_detail.RentDetailDTO;
+import com.team4.shoppingmall.rent_detail.RentDetailService;
+import com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO;
+import com.team4.shoppingmall.rent_prod_stock.RentProdStockService;
+import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockDTO;
+import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockService;
 
 @Controller
 @RequestMapping("/customer")
@@ -51,9 +59,15 @@ public class CustomerController {
 
 	@Autowired
 	private OrderProdService orderProdService;
+	
+	@Autowired
+	private RentService rentService;
 
 	@Autowired
 	private Order_DetailService orderDetailService;
+	
+	@Autowired
+	private RentDetailService rentDetailService;
 
 	@Autowired
 	private CouponService couponService;
@@ -69,32 +83,40 @@ public class CustomerController {
 	
 	@Autowired
 	private CustomerService customerService;
+
+	@Autowired
+	private Seller_Prod_StockService seller_Prod_StockService;
 	
-	String customerID = "bih63879";// ÀÓ½Ã °í°´ ID. Session¿¡¼­ ¹Þ¾Æ¿Ã °ÍÀÓ
+	@Autowired
+	private RentProdStockService rentProdStockService;
+	
+	
+	String customerID = "bih63879";// ï¿½Ó½ï¿½ ï¿½ï¿½ ID. Sessionï¿½ï¿½ï¿½ï¿½ ï¿½Þ¾Æ¿ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-	Integer orderID = 1;// ÁÖ¹®ID, ÁÖ¹®ÇÏ±â ¹öÆ°À» ´©¸¦ ½Ã »ý¼ºµÇ´Â °ªÀ» °¡Á®¿Ã °ÍÀÓ
+	
 
-	// »óÇ°°áÁ¦ÆäÀÌÁö
+	// ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	@GetMapping("/orderPay")
 	public String orderPayPage(Model model1, Model model2, Model model3, Model model4, Model model5, Model model6) {
-
-		// ÁÖ¹® Ç×¸ñ µ¥ÀÌÅÍ °¡Á®¿À±â
+		Integer orderID = 1;// ï¿½Ö¹ï¿½ID(ï¿½Ó½ï¿½), ï¿½ï¿½ï¿½ï¿½ï¿½Î´ï¿½ ï¿½Ö¹ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½Æ° Å¬ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç´ï¿½ ï¿½Ö¹ï¿½IDï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½.
+		
+		// ï¿½Ö¹ï¿½ ï¿½×¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		OrderProdDTO orderProdDTO = orderProdService.selectById(orderID);
 
-		// »ó¼¼ ÁÖ¹® ³»¿ª ¸ñ·Ï
+		// ï¿½ï¿½ ï¿½Ö¹ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 		List<Order_DetailDTO> orderDetailList = orderDetailService.selectByOrder_Id(orderID);
 
-		// È¸¿øÁ¤º¸
+		// È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		MemberDTO memberDTO = memberService.selectById(customerID);
 		
-		// È¸¿øÀÇ ÁÖ¼Ò ¸ñ·Ï
+		// È¸ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¼ï¿½ ï¿½ï¿½ï¿½
 		List<Addr_ListDTO> addr_ListDTOs=addr_ListService.selectByMember_Id(customerID);
 
-		// È¸¿øÀÌ ÁÖ¹® È­¸é¿¡¼­ »ç¿ë °¡´ÉÇÑ ÄíÆù ¸ñ·Ï
+		// È¸ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¹ï¿½ È­ï¿½é¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 		List<CouponDTO> usableCouponList = couponService.selectCustomerCouponList(customerID);
 
 		CustomerDTO customerDTO = customerService.selectById(customerID);
-		System.out.println("°í°´Ãß°¡Á¤º¸:"+customerDTO);
+		System.out.println("ï¿½ï¿½ï¿½ß°ï¿½ï¿½ï¿½ï¿½ï¿½:"+customerDTO);
 		model1.addAttribute("orderInfo", orderProdDTO);
 		model2.addAttribute("orderDetailList", orderDetailList);
 		model3.addAttribute("memberInfo", memberDTO);
@@ -104,7 +126,104 @@ public class CustomerController {
 
 		return "customer/customerPay";
 	}
+	
+	// ï¿½ï¿½Ç° ï¿½ë¿© ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	@GetMapping("/rentPay")
+	public String rentPayPage(Model model1, Model model2, Model model3, Model model4, Model model5, Model model6) {
+		Integer rental_code = 2;//ï¿½ë¿©ID(ï¿½Ó½ï¿½) ï¿½ï¿½ï¿½ï¿½ï¿½Î´ï¿½ ï¿½ë¿©ï¿½Ï±ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç´ï¿½ ï¿½ë¿©IDï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½.
+		
+		// ï¿½ë¿© ï¿½×¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		RentDTO rentDTO = rentService.selectById(rental_code);
+		
+		// ï¿½ï¿½ ï¿½Ö¹ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+		List<RentDetailDTO> rentDetailList = rentDetailService.selectByRental_code(rental_code);
+		
+		// È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		MemberDTO memberDTO = memberService.selectById(customerID);
+		
+		// È¸ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¼ï¿½ ï¿½ï¿½ï¿½
+		List<Addr_ListDTO> addr_ListDTOs=addr_ListService.selectByMember_Id(customerID);
+		
+		// È¸ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¹ï¿½ È­ï¿½é¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+		List<CouponDTO> usableCouponList = couponService.selectCustomerCouponList(customerID);
+		
+		CustomerDTO customerDTO = customerService.selectById(customerID);
+		System.out.println("ï¿½ï¿½ï¿½ß°ï¿½ï¿½ï¿½ï¿½ï¿½:"+customerDTO);
+		model1.addAttribute("rentInfo", rentDTO);
+		model2.addAttribute("rentDetailList", rentDetailList);
+		model3.addAttribute("memberInfo", memberDTO);
+		model4.addAttribute("couponList", usableCouponList);
+		model5.addAttribute("customerInfo",customerDTO);
+		
+		return "customer/rentPay";
+	}
 
+	@PostMapping("/applyRentCoupon")
+	@ResponseBody
+	public String applyRentCoupon(@RequestBody CouponRequestDTO couponRequestDTO) {
+		
+		String couponid = couponRequestDTO.getCouponid();
+		int orderid = couponRequestDTO.getOrderid();
+		
+		if("ï¿½ï¿½ï¿½Ã¾ï¿½ï¿½ï¿½".equals(couponid)) {
+			return "Coupon applied";
+		}else {
+			// ï¿½Ö¹ï¿½ ï¿½×¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			RentDTO rentDTO = rentService.selectById(orderid);
+			int totalPrice = rentDTO.getTotal_rent_price();
+			
+			System.out.println("ï¿½ï¿½ï¿½ï¿½ID:" + couponid);
+			CouponDTO selectCouponDTO = couponService.selectById(couponid);
+			
+			System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:" + selectCouponDTO);
+			double discountRate = selectCouponDTO.getDiscount_rate();
+			
+			int discountAmount = (int) Math.round(totalPrice * (discountRate / 100.0));
+			
+			int discountedPrice = totalPrice - discountAmount;
+			
+			System.out.println("ï¿½ï¿½ï¿½ï¿½:" + discountAmount);
+			System.out.println("ï¿½ï¿½ï¿½Î°ï¿½ï¿½ï¿½:" + discountedPrice);
+			
+			int couponAmount = selectCouponDTO.getQuantity();
+			selectCouponDTO.setQuantity(couponAmount-1);
+			
+			int couponUpdate = couponService.couponUse(selectCouponDTO);
+			
+			rentDTO.setTotal_rent_price(discountedPrice);
+			
+			int appliedResult = rentService.updateRent(rentDTO);
+			
+			return "Coupon applied";
+		}
+		
+	}
+	
+	@PostMapping("/applyRentPoint")
+	@ResponseBody
+	public String applyRentPoint(@RequestBody PointRequestDTO pointRequestDTO) {
+		int point = pointRequestDTO.getPoint();
+		System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®:"+point);
+		int orderid = pointRequestDTO.getOrderid();
+		
+		RentDTO rentDTO = rentService.selectById(orderid);
+		int totalPrice = rentDTO.getTotal_rent_price();
+		
+		int pointAppliedPrice = totalPrice - point;
+		System.out.println("ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:"+pointAppliedPrice);
+		
+		rentDTO.setTotal_rent_price(pointAppliedPrice);
+		
+		int appliedResult = rentService.updateRent(rentDTO);
+		
+		CustomerDTO customerDTO = customerService.selectById(customerID);
+		int existPoint = customerDTO.getPoint();
+		customerDTO.setPoint(existPoint - point);
+		
+		int CustomerPointUpdate = customerService.customerUpdate(customerDTO);
+		
+		return "Point Used";
+	}
 	@PostMapping("/applyCoupon")
 	@ResponseBody
 	public String applyCoupon(@RequestBody CouponRequestDTO couponRequestDTO) {
@@ -112,25 +231,25 @@ public class CustomerController {
 		String couponid = couponRequestDTO.getCouponid();
 		int orderid = couponRequestDTO.getOrderid();
 
-		if("¼±ÅÃ¾ÈÇÔ".equals(couponid)) {
+		if("ï¿½ï¿½ï¿½Ã¾ï¿½ï¿½ï¿½".equals(couponid)) {
 			return "Coupon applied";
 		}else {
-			// ÁÖ¹® Ç×¸ñ µ¥ÀÌÅÍ °¡Á®¿À±â
+			// ï¿½Ö¹ï¿½ ï¿½×¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			OrderProdDTO orderProdDTO = orderProdService.selectById(orderid);
 			int totalPrice = orderProdDTO.getTotal_price();
 			
-			System.out.println("ÄíÆùID:" + couponid);
+			System.out.println("ï¿½ï¿½ï¿½ï¿½ID:" + couponid);
 			CouponDTO selectCouponDTO = couponService.selectById(couponid);
 
-			System.out.println("ÄíÆùÁ¤º¸:" + selectCouponDTO);
+			System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:" + selectCouponDTO);
 			double discountRate = selectCouponDTO.getDiscount_rate();
 
 			int discountAmount = (int) Math.round(totalPrice * (discountRate / 100.0));
 
 			int discountedPrice = totalPrice - discountAmount;
 
-			System.out.println("ÇÒÀÎ:" + discountAmount);
-			System.out.println("ÇÒÀÎ°¡°Ý:" + discountedPrice);
+			System.out.println("ï¿½ï¿½ï¿½ï¿½:" + discountAmount);
+			System.out.println("ï¿½ï¿½ï¿½Î°ï¿½ï¿½ï¿½:" + discountedPrice);
 			
 			int couponAmount = selectCouponDTO.getQuantity();
 			selectCouponDTO.setQuantity(couponAmount-1);
@@ -152,14 +271,14 @@ public class CustomerController {
 	@ResponseBody
 	public String applyCoupon(@RequestBody PointRequestDTO pointRequestDTO) {
 		int point = pointRequestDTO.getPoint();
-		System.out.println("»ç¿ëÇÒ Æ÷ÀÎÆ®:"+point);
+		System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®:"+point);
 		int orderid = pointRequestDTO.getOrderid();
 		
 		OrderProdDTO orderProdDTO = orderProdService.selectById(orderid);
 		int totalPrice = orderProdDTO.getTotal_price();
 		
 		int pointAppliedPrice = totalPrice - point;
-		System.out.println("Æ÷ÀÎÆ® »ç¿ë ÈÄ °áÁ¦°ª:"+pointAppliedPrice);
+		System.out.println("ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:"+pointAppliedPrice);
 		
 		OrderProdDTO updatedPrice = new OrderProdDTO();
 		updatedPrice.setOrder_id(orderid);
@@ -185,7 +304,7 @@ public class CustomerController {
 		int order_id=request.getOrder_id();
 		
 		OrderProdDTO orderProdDTO = orderProdService.selectById(order_id);
-		System.out.println("ÁÖ¹®Á¤º¸:"+orderProdDTO);
+		System.out.println("ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½:"+orderProdDTO);
 		orderProdDTO.setAddr_num(addr_num);
 		
 		int addrUpdateResult = orderProdService.orderprodUpdate(orderProdDTO);
@@ -193,20 +312,83 @@ public class CustomerController {
 		return "Address Saved";
 	}
 
-	// »óÇ° °áÁ¦ ¿Ï·áÆäÀÌÁö
-	@GetMapping("/orderSuccess")
-	public String orderSuccessPage() {
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	@GetMapping("/sellPaySuccess")
+	public String sellPaySuccess(@RequestParam("order_id") Integer order_id) {
+		
+		List<Order_DetailDTO> orderDetailDTOs = orderDetailService.selectByOrder_Id(order_id);
+		
+		for (Order_DetailDTO order_DetailDTO : orderDetailDTOs) {
+			
+			//ï¿½Ö¹ï¿½ ï¿½ï¿½ - ï¿½ï¿½ï¿½Â¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+			order_DetailDTO.setOrder_state("ï¿½ï¿½ï¿½ï¿½ï¿½Ï·ï¿½");
+			
+			String s_stock_id = order_DetailDTO.getS_stock_id();
+			
+			Seller_Prod_StockDTO seller_Prod_StockDTO = seller_Prod_StockService.selectByStockId(s_stock_id);
+			int currentStock = seller_Prod_StockDTO.getStock();
+			int currentSell = seller_Prod_StockDTO.getTotal();
+			
+			//ï¿½Ö¹ï¿½ ï¿½ó¼¼ºï¿½ ï¿½Ö¹ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			int orderAmount= order_DetailDTO.getOrder_num();
+			int orderPrice = order_DetailDTO.getOrder_product_price();
+			
+			int orderTotal = orderAmount*orderPrice;
+			
+			//ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ 1 ï¿½ï¿½ï¿½ï¿½, ï¿½Ç¸Å·ï¿½ 1 ï¿½ï¿½ï¿½ï¿½
+			seller_Prod_StockDTO.setStock(currentStock-orderAmount);
+			seller_Prod_StockDTO.setTotal(currentSell+orderTotal);
+			
+			int updateOrderStatus = orderDetailService.orderDetailUpdate(order_DetailDTO);
+			int updateStock = seller_Prod_StockService.seller_prod_stockUpdate(seller_Prod_StockDTO);
+			
+		}
+		
+		return "customer/customerOrderSuccess";
+	}
+	
+	// ï¿½ë¿© ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	@GetMapping("/rentPaySuccess")
+	public String rentPaySuccess(@RequestParam("rental_code") Integer rental_code) {
+		
+		List<RentDetailDTO> rentDetailDTOs = rentDetailService.selectByRental_code(rental_code);
+		
+		for(RentDetailDTO rentDetailDTO : rentDetailDTOs) {
+
+			//ï¿½ë¿© ï¿½ï¿½ - ï¿½ï¿½ï¿½Â¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+			rentDetailDTO.setRent_state("ï¿½ï¿½ï¿½ï¿½ï¿½Ï·ï¿½");
+			String r_stock_id = rentDetailDTO.getR_stock_id();
+			
+			//ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			RentProdStockDTO rentProdStockDTO = rentProdStockService.selectById(r_stock_id);
+			int currentStock=rentProdStockDTO.getStock();
+			int currentRent=rentProdStockDTO.getTotal();
+			
+			//ï¿½Ö¹ï¿½ ï¿½ó¼¼ºï¿½ ï¿½Ö¹ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			int rentAmount= rentDetailDTO.getRent_num();
+			int rentPrice = rentDetailDTO.getRent_product_price();
+			
+			int rentTotal = rentAmount*rentPrice;
+			
+			rentProdStockDTO.setStock(currentStock - rentAmount); 
+			rentProdStockDTO.setTotal(currentRent + rentTotal); 
+			
+			int updateOrderStatus = rentDetailService.rentDetailUpdate(rentDetailDTO);
+			int updateStock = rentProdStockService.rentProdUpdate(rentProdStockDTO);
+			
+		}
+		
 		return "customer/customerOrderSuccess";
 	}
 
-	// °áÁ¦ Àü »çÀü °ËÁõÀ» À§ÇÑ °áÁ¦±Ý¾× »çÀüµî·Ï
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ý¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	@PostMapping("/preparePayment")
 	@ResponseBody
 	public String preparePayment(@RequestParam String merchantUid, @RequestParam int amount) {
 		return paymentService.registerPaymentAmount(merchantUid, amount);
 	}
 
-	// °áÁ¦ ³»¿ë¿¡ ´ëÇÑ °ËÁõ
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ë¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	@PostMapping("/verifyPayment")
 	@ResponseBody
 	public String verifyPayment(@RequestParam("imp_uid") String impUid,
