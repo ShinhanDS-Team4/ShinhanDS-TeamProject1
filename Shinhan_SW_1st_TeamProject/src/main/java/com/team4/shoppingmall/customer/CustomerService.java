@@ -11,22 +11,23 @@ public class CustomerService {
 	@Autowired
 	CustomerDAOInterface customerDAO;
 	
-	// 占쏙옙占쏙옙 
+	// 고객상세 
 	public CustomerDTO selectById(String customerID) {
 		return customerDAO.selectById(customerID);
 	}
 	
-	// 占쏙옙占쏙옙占� 
+	// 고객목록
 	public List<CustomerDTO> selectAll() {
 		return customerDAO.selectAll();
 	}
 	
-	// 占쏙옙占쏙옙占� 
+
+	// 고객등록
 	public int customerInsert(CustomerDTO customer) {
 		return customerDAO.customerInsert(customer);
 	}
 	
-	// 占쏙옙占쏙옙占쏙옙 
+	// 고객수정
 	public int customerUpdate(CustomerDTO customer) {
 		return customerDAO.customerUpdate(customer);
 	}

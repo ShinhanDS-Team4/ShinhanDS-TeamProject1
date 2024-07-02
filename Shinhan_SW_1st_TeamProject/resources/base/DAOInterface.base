@@ -1,0 +1,14 @@
+import java.util.List;
+
+public interface ?DAOInterface {
+	
+	public ?DTO selectBy?(?);
+	
+	public List<?> selectAll();
+	
+	public int ?Insert(?DTO ?);
+	
+	public int ?Update(?DTO ?);
+	
+	public int ?Delete(?);
+}

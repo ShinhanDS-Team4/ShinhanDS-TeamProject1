@@ -228,6 +228,24 @@ footer .footer-links a {
 				: 'password';
 		passwordInput.setAttribute('type', type);
 	}
+	
+    $(document).ready(function() {
+        // 고객 탭 클릭 시
+        $('#customer-tab').click(function() {
+            $('#customer-tab').addClass('active');
+            $('#seller-tab').removeClass('active');
+            $('#customer-form').addClass('active');
+            $('#seller-form').removeClass('active');
+        });
+
+        // 판매자 탭 클릭 시
+        $('#seller-tab').click(function() {
+            $('#seller-tab').addClass('active');
+            $('#customer-tab').removeClass('active');
+            $('#seller-form').addClass('active');
+            $('#customer-form').removeClass('active');
+        });
+    });
 </script>
 </head>
 <body>
@@ -246,7 +264,7 @@ footer .footer-links a {
 						placeholder="아이디">
 					<div class="password-container">
 						<input type="password" id="member_pw" name="member_pw"
-							placeholder="비밀번호"> <img src="eye-icon.png"
+							placeholder="비밀번호"> <img src="${path}/resources/images/eye-icon.png"
 							class="toggle-password" onclick="togglePassword('member_pw')">
 					</div>
 				</div>
@@ -263,7 +281,7 @@ footer .footer-links a {
 					<input type="text" name="sellerId" placeholder="사업자등록번호">
 					<div class="password-container">
 						<input type="password" id="sellerPassword" name="sellerPassword"
-							placeholder="비밀번호"> <img src="lower_half.png"
+							placeholder="비밀번호"> <img src="${path}/resources/images/eye-icon.png"
 							class="toggle-password"
 							onclick="togglePassword('sellerPassword')">
 					</div>
@@ -275,7 +293,7 @@ footer .footer-links a {
 					name="rememberMeSeller"> <label for="remember-me-seller">사업자등록번호
 					저장</label>
 			</div>
-
+		</form>
 			<!-- 경고 메시지 출력 -->
 			<c:if test="${not empty sessionScope.loginResult}">
 				<script>
@@ -283,11 +301,11 @@ footer .footer-links a {
 					<c:remove var="loginResult" scope="session"/>
 				</script>
 			</c:if>
-		</form>
+
 		<div class="links">
 			<a href="${path }/member_test/findid">아이디 찾기</a> <a
 				href="${path }/member_test/findpassword">비밀번호 찾기</a> <a
-				href="${path }/member_test/signup.do">회원가입</a>
+				href="${path }/member_test/signup">회원가입</a>
 		</div>
 		
 		

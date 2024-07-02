@@ -38,9 +38,9 @@
 	</select>
 
 	<insert id="memberInsert" parameterType="memberVO">
-		INSERT INTO MEMBER(member_id, member_pw, member_name, email, phone,
+		INSERT
+		INTO MEMBER(member_id, member_pw, member_name, email, phone,
 					brand, birth_date, last_access, member_type, gender, seller_authority, create_date)
-
 		VALUES(#{member_id}, #{member_pw}, #{member_name}, #{email}, #{phone},
 		        <choose>
 		            <when test="brand == null">
@@ -50,9 +50,19 @@
 		                #{brand}
 		            </otherwise>
 		        </choose>,
-				#{birth_date}, #{last_access}, #{member_type}, #{gender}, #{seller_authority}, #{create_date})
+				#{birth_date}, #{last_access}, #{member_type}, #{gender}, 
+				<choose>
+					<when test="member_type == 1">
+						'U'
+					</when>
+					<otherwise>
+						'N'
+					</otherwise>
+				</choose>,
+				#{create_date})
 	</insert>
-
+	
+	
 	<update id="memberUpdate" parameterType="memberVO">
 		UPDATE MEMBER
 		SET
@@ -60,6 +70,13 @@
 		phone = #{phone}, brand = #{brand}, birth_date = #{birth_date},
 		last_access = #{last_access}, member_type = #{member_type}, 
 		gender = #{gender}
+		WHERE member_id = #{member_id}
+	</update>
+
+	<update id="memberUpdateAccess" parameterType="memberVO">
+		UPDATE MEMBER
+		SET
+		last_access = #{last_access}
 		WHERE member_id = #{member_id}
 	</update>
 

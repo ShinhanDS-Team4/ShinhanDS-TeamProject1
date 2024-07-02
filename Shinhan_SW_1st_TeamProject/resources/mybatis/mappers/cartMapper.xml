@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.saren.cart">
+
+	<!-- CART테이블에 넣을 선택한 옵션 상품의 재고ID 찾기(parameterType = 동적VO)  -->
+    <select id="searchStockId" parameterType="com.team4.shoppingmall.cart.CartDynamicVO" 
+    		resultType="string">
+		SELECT seller_prod_stock.s_stock_id 
+		FROM seller_prod_stock
+		WHERE opt_id1||','|| opt_id2||','||opt_id3 ||','||opt_id4||','||opt_id5   
+		LIKE 	 
+		( 
+	  		SELECT 
+	        listAgg(opt_id,',') within group(order by opt_id)
+			FROM PROD_OPTION PO
+			WHERE  PO.PROD_ID = #{prod_id}
+	        and (
+	       <foreach collection="mapData" item="opt_value" index="opt_name" separator="or">
+	       	 (opt_name = #{opt_name} and opt_value=#{opt_value})  
+	       </foreach>
+       		)
+	 	)||'%'
+    </select>
+
+	<select id="selectSellStockByMemberId" parameterType="string"
+		resultType="cartVO">
+		SELECT *
+		FROM CART
+		WHERE "member_id" = #{member_id} and "sellstock_id" IS NOT NULL
+	</select>
+	
+	<select id="selectRentStockByMemberId" parameterType="string"
+		resultType="cartVO">
+		SELECT *
+		FROM CART
+		WHERE "member_id" = #{member_id} and "rentstock_id" IS NOT NULL
+	</select>
+
+	<select id="selectAllStockByMemberId" parameterType="string"
+		resultType="cartVO">
+		SELECT *
+		FROM CART
+		WHERE "member_id" = #{member_id}
+	</select>
+	
+	<select id="selectByCartId" parameterType="int"
+		resultType="cartVO">
+		SELECT * 
+		FROM CART 
+		WHERE "cart_id" = #{cart_id}
+	</select>
+
+	<select id="selectAll" resultType="cartVO">
+		SELECT *
+		FROM CART
+	</select>
+
+	<!-- 장바구니에 같은 상품이 존재하는지 조회 -->
+	<select id="selectCartBySellstock" parameterType="map" resultType="cartVO">
+	    select * 
+	    from CART
+	    where member_id = #{member_id}
+	    and s_stock_id = #{s_stock_id}
+	</select>
+	<!-- 장바구니에 추가 : cart_id에 시퀀스 사용함(cart_squence), 수정: 대여ID칼럼 제거  -->
+	<insert id="cartInsert" parameterType="cartVO">
+		INSERT 
+		INTO CART(cart_id, member_id, s_stock_id, cart_amount) 
+		VALUES(cart_squence.nextval, #{member_id}, #{s_stock_id}, #{cart_amount})
+	</insert>
+	<!-- 장바구니 속 중복 상품의 수량 업데이트 -->
+	<update id="updateCartBySellstock" parameterType="cartVO">
+	    update cart
+	    set cart_amount = cart_amount + #{cart_amount} 
+	    where cart_id = #{cart_id}
+	</update>
+	
+	<update id="cartUpdate" parameterType="cartVO">
+		UPDATE CART
+		SET
+		"member_id" = #{member_id}, "sellstock_id" = #{sellstock_id}, 
+		"cart_amount" = #{cart_amount}
+		WHERE "cart_id" = #{cart_id}
+	</update>
+	
+	<delete id="cartDelete" parameterType="int">
+		DELETE
+		FROM CART
+		WHERE "cart_id" = #{cart_id}
+	</delete>
+	
+</mapper>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.saren.admin_inq">
+
+	<select id="selectByInqId" parameterType="int"
+		resultType="admin_inqVO">
+		SELECT * 
+		FROM ADMIN_INQ 
+		WHERE admin_inq_id = #{admin_inq_id}
+	</select>
+	
+	<select id="selectByMemberId" parameterType="string" resultType="admin_inqVO">
+		SELECT *
+		FROM ADMIN_INQ 
+		WHERE member_id = #{member_id}
+	</select>
+
+	<select id="selectAll" resultType="admin_inqVO">
+		SELECT *
+		FROM ADMIN_INQ
+	</select>
+
+	<insert id="admin_inqInsert" parameterType="admin_inqVO">
+		INSERT 
+		INTO ADMIN_INQ(admin_inq_id, admin_inq_title, admin_inq_content, 
+					   admin_inq_date, member_id) 
+		VALUES(#{admin_inq_id}, #{admin_inq_title}, #{admin_inq_content},  
+			   #{admin_inq_date}, #{member_id})
+	</insert>
+
+	<update id="admin_inqUpdate" parameterType="admin_inqVO">
+		UPDATE ADMIN_INQ
+		SET
+		admin_inq_title = #{admin_inq_title}, "admin_inq_content" = #{admin_inq_content}, 
+		admin_inq_date = #{admin_inq_date}, "admin_reply" = #{admin_reply}, 
+		member_id = #{member_id}
+		WHERE admin_inq_id = #{admin_inq_id}
+	</update>
+
+	<delete id="admin_inqDelete" parameterType="int">
+		DELETE
+		FROM ADMIN_INQ
+		WHERE admin_inq_id = #{admin_inq_id}
+	</delete>
+	
+</mapper>
