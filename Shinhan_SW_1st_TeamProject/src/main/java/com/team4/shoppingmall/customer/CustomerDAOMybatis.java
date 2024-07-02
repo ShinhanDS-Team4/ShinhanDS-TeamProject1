@@ -16,8 +16,8 @@ public class CustomerDAOMybatis implements CustomerDAOInterface {
 
 	// ����
 	@Override
-	public CustomerDTO selectById(Integer rental_code) {
-		return sqlSession.selectOne(namespace+"selectById", rental_code);
+	public CustomerDTO selectById(String member_id) {
+		return sqlSession.selectOne(namespace+"selectById", member_id);
 	}
 	
 	// �����

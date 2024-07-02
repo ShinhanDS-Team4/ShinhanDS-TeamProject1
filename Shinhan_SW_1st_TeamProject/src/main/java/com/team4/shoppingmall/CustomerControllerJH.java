@@ -15,12 +15,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.team4.shoppingmall.addr_list.Addr_ListService;
+import com.team4.shoppingmall.buyer_inq.Buyer_InqDTO;
+import com.team4.shoppingmall.buyer_inq.Buyer_InqService;
+import com.team4.shoppingmall.customer.CustomerDTO;
+import com.team4.shoppingmall.customer.CustomerService;
 import com.team4.shoppingmall.member.MemberDTO;
 import com.team4.shoppingmall.member.MemberService;
 import com.team4.shoppingmall.order_prod.OrderProdDTO;
 import com.team4.shoppingmall.order_prod.OrderProdService;
 import com.team4.shoppingmall.prod_option.Prod_OptionDTO;
 import com.team4.shoppingmall.prod_option.Prod_OptionService;
+import com.team4.shoppingmall.rent.RentService;
 
 @Controller
 @RequestMapping("/customer")
@@ -38,10 +43,18 @@ public class CustomerControllerJH {
 	@Autowired
     Prod_OptionService prod_OptionService;
 	
+	@Autowired
+    RentService rentService;
+	
+	@Autowired
+	Buyer_InqService buyer_InqService;
+	
+	@Autowired
+	CustomerService customerService;
+	
 	/*마이페이지 메인*/
 	@GetMapping("/myPage.do")
 	public String myPage(HttpSession session, Model model) {
-		
 		
 		//MemberDTO member =  session.getAttribute("member");
 		//String member_id = member.getMember_id();
@@ -52,26 +65,29 @@ public class CustomerControllerJH {
 		model.addAttribute("member", member);
 		
 		//2.나의 주문 내역
-		
-		// 나의 모든 주문 정보 가져오기
 	    //List<OrderProdDTO> myAllOrders = orderProdService.orderProductById(member_id);
 		List<Map<String,Object>> myAllOrders = orderProdService.orderProductById(member_id);
 	    model.addAttribute("myAllOrders", myAllOrders);
+	    model.addAttribute("orderCount", myAllOrders.size());
 	    System.out.println("전체 주문 목록: " + myAllOrders);
-
 	    
-	    //String prod_id = "";
-	    //상품의 옵션 (opt_id에 해당하는 옵션명 화면에서 읽기)
-	    //List<Prod_OptionDTO> prodOptionList = prod_OptionService.selectByProdId(prod_id);
-	    //model.addAttribute("prodOptionList", prodOptionList);
+		//3.나의 대여 내역
+	    List<Map<String,Object>> myAllRentOrders = rentService.rentProductById(member_id);
+	    model.addAttribute("myAllRentOrders", myAllRentOrders);
+	    model.addAttribute("rentCount", myAllRentOrders.size());
+	    System.out.println("전체 대여 목록: " + myAllRentOrders);
+		
+	    //4.나의 문의 내역
+	    List<Buyer_InqDTO> myInqList =  buyer_InqService.selectByMemberId(member_id);
+	    model.addAttribute("inqCount", myInqList.size());
 	    
-
+	    //5.포인트, 등급 조회
+	    CustomerDTO customer =customerService.selectById(member_id);
+	    model.addAttribute("myPoints", customer);
+	   
+	    System.out.println("myPoints--" + customer);
 	 
 	    
-	    
-		//3.대여 내역
-		
-		
 		return "customer/myPage";
 	}
 
@@ -97,12 +113,6 @@ public class CustomerControllerJH {
 	public String myInfoUpdate(Model model) {
 		
 		
-		//로그인 한 회원의 주소 조회
-		//List<Addr_ListDTO> addrlist = addrService.selectAll();
-		//model.addAttribute("addrlist", addrlist);
-		
-		
-		
 		return "customer/myInfoUpdate";
 	}
 	
@@ -116,9 +126,11 @@ public class CustomerControllerJH {
 	
 	//비밀번호 체크 후 다음 스텝(step3)
 	@GetMapping("/myInfoUpdatePwCheck.do")
-	public String myInfoUpdatePwCheck(@RequestParam("password") String password) {
+	public String myInfoUpdatePwCheck(HttpSession session,
+									  @RequestParam("password") String password) {
 		
-		//濡쒓렇�씤 �쉶�썝 鍮꾨�踰덊샇 泥댄겕(session�뿉�꽌 �씫�쓣 �삁�젙)
+		//MemberDTO member =  session.getAttribute("member");
+		//String member_id = member.getMember_id();
         String member_id = "testid"; //pw = 1111
         
 		if(password.equals("aaa")) {
@@ -143,7 +155,7 @@ public class CustomerControllerJH {
 		
 		return "customer/memberDelete.do";
 	}
-	//鍮꾨�踰덊샇 泥댄겕 �썑 �쉶�썝 �깉�눜
+
 	@GetMapping("/memberDeletePwCheck.do")
 	public String memberDeletePwCheck(@RequestParam("password") String password) {
 		if(password.equals("aaa")) {

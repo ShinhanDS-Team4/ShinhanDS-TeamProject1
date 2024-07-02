@@ -22,7 +22,6 @@
 }
 </style>
 <body>
-
 	<%@ include file="../common/header.jsp" %>
 	<%-- 마이페이지 : 메인 --%>
 	<div class="mypage_wrap">
@@ -79,20 +78,20 @@
 								</h3>
 								<div class="profile_text_box">
 									<p>
-										보유포인트: <span>5000p</span>
+										보유포인트: <span>${myPoints.point != 0 ? myPoints.point : 0 }p</span>
 									</p>
 									<p>
-										회원등급: <span>Gold</span>
+										회원등급: <span>${myPoints.member_level}</span>
 									</p>
 									<button class="detail_btn">자세히 보기</button>
 								</div>
 								<p>
-									<a href="${path}/board/reviewjsp" class="go_review">작성한 리뷰 보기</a>
+									<a href="${path}/board/myreview.do" class="go_review">작성한 리뷰 보기</a>
 								</p>
 								<div class="links">
-									<a href="#">주문내역 <span>1 건</span></a> 
-									<a href="#">대여내역 <span>1 건</span></a> 
-									<a href="#">문의내역 <span>1 건</span></a>
+									<a href="javascript:#void">주문내역 <span>${orderCount != 0 ? orderCount : 0} 건</span></a> 
+									<a href="javascript:#void">대여내역 <span>${rentCount} 건</span></a>
+									<a href="javascript:#void">문의내역 <span>${inqCount != 0 ? inqCount : 0} 건</span></a>
 								</div>
 							</div>
 						</div>
@@ -102,10 +101,6 @@
 				<div class="profile_wrap">
 					<h1 class="myinfo_title">주문 내역</h1>
 					<div class="info_text">
-						<%-- 주문 내역 없을 경우 --%>
-						<p class="hidden">현재 진행중인 주문 내역이 없습니다.</p>
-						<%-- 주문 내역 있는 경우 --%>
-					
 						<table class="order_table">
 							<thead>
 								<tr>
@@ -155,9 +150,47 @@
 				<div class="profile_wrap">
 					<h1 class="myinfo_title">대여 내역</h1>
 					<div class="info_text">
-						<%-- 대여 내역 없을 경우 --%>
-						<p>현재 진행중인 대여 내역이 없습니다.</p>
-						<%-- 대여 내역 있을 경우 table 생성 --%>
+						<table class="order_table">
+							<thead>
+								<tr>
+									<th>대여 번호</th>
+									<th>대여 가격</th>
+									<th>상품 정보</th>
+									<th>주문 기간</th>
+									<th>총 대여 금액</th>
+								</tr>
+							</thead>
+							<tbody>
+					            <c:set var="maxOrders" value="2" />
+						        <c:choose>
+						            <c:when test="${not empty myAllRentOrders}">
+						                <!-- JSTL로 정렬된 결과를 상위 2개만 추출하는 방법은 없으므로 컨트롤러에서 정렬하여 전달 -->
+						                <c:forEach items="${myAllRentOrders}" var="rent" varStatus="status">
+						                    <c:if test="${status.index lt maxOrders}">
+						                        <tr>
+						                        	<td>${rent.RENTAL_CODE}</td>
+						                            <td class="product-info">
+						                                <strong>${rent.BRAND}</strong><br>
+						                                ${rent.PROD_NAME}<br>
+						                                <span>${rent.RENT_NUM}개</span>
+						                            </td>
+						                            <td>${rent.RENT_PRODUCT_PRICE}원<br></td>
+						                            <td>
+						                            	${rent.RENT_START_DATE} ~ ${rent.RENT_END_DATE}
+						                            </td>
+						                            <td class="price">${rent.TOTAL_RENT_PRICE}원</td>
+						                        </tr>
+						                    </c:if>
+						                </c:forEach>
+						            </c:when>
+						            <c:otherwise>
+						                <tr>
+						                    <td colspan="5">대여 내역이 없습니다.</td>
+						                </tr>
+						            </c:otherwise>
+						        </c:choose>
+							</tbody>
+						</table>
 					</div>
 				</div>
 			</div>

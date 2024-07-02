@@ -12,8 +12,8 @@ public class CustomerService {
 	CustomerDAOInterface customerDAO;
 	
 	// ���� 
-	public CustomerDTO selectById(Integer rental_code) {
-		return customerDAO.selectById(rental_code);
+	public CustomerDTO selectById(String member_id) {
+		return customerDAO.selectById(member_id);
 	}
 	
 	// ����� 

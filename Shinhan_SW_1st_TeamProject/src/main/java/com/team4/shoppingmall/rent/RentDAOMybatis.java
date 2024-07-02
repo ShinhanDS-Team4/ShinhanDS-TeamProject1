@@ -19,7 +19,7 @@ public class RentDAOMybatis implements RentDAOInterface {
 	
 	//대여 신청 완료된 대여 상품 목록
 	public List<Map<String,Object>> rentProductById(String member_id){
-		return sqlSession.selectOne(namespace+"rentProductById", member_id);
+		return sqlSession.selectList(namespace+"rentProductById", member_id);
 	};
 	
 	

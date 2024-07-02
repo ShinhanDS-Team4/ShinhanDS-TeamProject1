@@ -30,7 +30,7 @@
 		    op.member_id = #{member_id}            
 	    AND od.order_state = '결제완료'
 	</select>
-	<!-- 윤재야 사용이 안돼~ㅜ -->
+	<!--  
 	<select id="selectById2" parameterType="int" 
 		resultType="com.team4.shoppingmall.order_prod.OrderProdDetailDTO"> 
 		SELECT
@@ -59,7 +59,7 @@
 		where 
 			OD.ORDER_ID = #{aa}
 	</select>
-
+	-->
 	<!-- 주문상세 -->
 	<select id="selectById" parameterType="int" resultType="order_prodVO"> 
 		SELECT *

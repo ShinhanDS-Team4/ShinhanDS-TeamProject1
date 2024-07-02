@@ -5,7 +5,7 @@ import java.util.List;
 public interface CustomerDAOInterface {
 	
 	// ����
-	public CustomerDTO selectById(Integer rental_code);
+	public CustomerDTO selectById(String member_id);
 	
 	// �����
 	public List<CustomerDTO> selectAll();
