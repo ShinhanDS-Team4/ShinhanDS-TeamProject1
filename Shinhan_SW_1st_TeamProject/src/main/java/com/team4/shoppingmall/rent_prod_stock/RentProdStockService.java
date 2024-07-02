@@ -14,25 +14,25 @@ public class RentProdStockService {
 	@Autowired
 	RentProdStockDAOInterface rentProdStockDAO;
 
-	//¼±ÅÃ ¿É¼Ç »óÇ°ÀÇ ´ë¿© Àç°íid Ã£±â
+	//ì„ íƒ ì˜µì…˜ ìƒí’ˆì˜ ëŒ€ì—¬ ì¬ê³ id ì°¾ê¸°
 	public Map<String,String> selectRentStockByProdId(String prod_id, String optionString) {
 		return rentProdStockDAO.selectRentStockByProdId(prod_id, optionString);
 	};
-	//»óÇ°ÀÇ ´ë¿© Àç°íid Á¶È¸
+	//ìƒí’ˆì˜ ëŒ€ì—¬ ì¬ê³ id ì¡°íšŒ
 	public List<RentProdStockDTO> selectRentStockByProdId2(String prod_id){
 		return rentProdStockDAO.selectRentStockByProdId2(prod_id);
 	}
-	//´ë¿© »ı¼º½Ã ´ë¿© ¼ö·® ¾÷µ¥ÀÌÆ®
+	//ëŒ€ì—¬ ìƒì„±ì‹œ ëŒ€ì—¬ ìˆ˜ëŸ‰ ì—…ë°ì´íŠ¸
 	public int rentProdStockUpdate(ProductNewVO prodVO) {
 		return rentProdStockDAO.rentProdStockUpdate(prodVO);
 	};
 	
-	//´ë¿© »óÇ° ¿É¼Çº° Àç°í Á¶È¸
+	//ëŒ€ì—¬ ìƒí’ˆ ì˜µì…˜ë³„ ì¬ê³  ì¡°íšŒ
 	public List<RentProdStockDTO> selectRpsOptionByProdId(String prod_id){
 		return rentProdStockDAO.selectRpsOptionByProdId(prod_id);
 	};
 	
-	// ´ë¿©»óÇ°»ó¼¼
+	// ëŒ€ì—¬ìƒí’ˆìƒì„¸
 	public RentProdStockDTO selectById(String r_stock_id) {
 		return rentProdStockDAO.selectById(r_stock_id);
  	}
@@ -42,21 +42,21 @@ public class RentProdStockService {
 	}
 	
 	public List<RentProdStockListDTO> findRentStockList(String member_id){
-		System.out.println("service Á¤»ó ¼öÇàµÊ");
+		System.out.println("service ì •ìƒ ìˆ˜í–‰ë¨");
 		return rentProdStockDAO.findRentStockList(member_id);
 	}
 
-	// ´ë¿©»óÇ°¸ñ·Ï 
+	// ï¿½ë¿©ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ 
 	public List<RentProdStockDTO> selectAll() {
 		return rentProdStockDAO.selectAll();	
  	}
 
-	// ´ë¿©»óÇ°µî·Ï 
+	// ï¿½ë¿©ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ 
 	public int rentProdInsert(RentProdStockDTO rentprod) {
 		return rentProdStockDAO.rentProdInsert(rentprod);	
  	}
 
-	// ´ë¿©»óÇ°¼öÁ¤ 
+	// ï¿½ë¿©ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ 
 	public int rentProdUpdate(RentProdStockDTO rentprod) {
 		return rentProdStockDAO.rentProdUpdate(rentprod);
  	}
@@ -65,7 +65,7 @@ public class RentProdStockService {
 		return rentProdStockDAO.rentStockUpdate(rentprod);
 	}
 
-	// ´ë¿©»óÇ°»èÁ¦ 
+	// ï¿½ë¿©ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ 
 	public int rentProdDelete(String r_stock_id) {
 		return rentProdStockDAO.rentProdDelete(r_stock_id);
  	}

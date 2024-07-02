@@ -48,21 +48,6 @@
 		WHERE p.member_id = #{member_id}
 	</select>
 
-<<<<<<< HEAD
-	<insert id="orderDetailInsert" parameterType="order_detailVO">
-		INSERT
-		INTO
-		ORDER_DETAIL(
-		orderdetail_id, order_product_price, order_num, order_id, s_stock_id
-		)
-		VALUES(
-		#{orderdetail_id},
-		#{order_product_price}, #{order_num}, #{order_id},
-		#{s_stock_id}
-		)
-	</insert>
-=======
->>>>>>> 7c7ed3140e9942e8a524a88889d41a0dbfdbc008
 	<update id="orderDetailUpdate" parameterType="order_detailVO">
 		UPDATE ORDER_DETAIL
 		SET
@@ -74,11 +59,11 @@
 		WHERE orderdetail_id = #{orderdetail_id}
 	</update>
 	
-<!-- 	<update id="orderDetailStatusUpdate" parameterType="order_detailVO">
+	<update id="orderDetailStatusUpdate" parameterType="order_detailVO">
 		UPDATE ORDER_DETAIL
 		SET order_state = #{order_state}
 		WHERE orderdetail_id = #{orderdetail_id}
-	</update> -->
+	</update>
 
 	<delete id="orderDetailDelete" parameterType="int">
 		DELETE

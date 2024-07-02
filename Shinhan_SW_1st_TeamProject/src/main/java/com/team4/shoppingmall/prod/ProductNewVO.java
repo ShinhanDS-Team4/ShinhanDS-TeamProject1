@@ -12,15 +12,15 @@ import lombok.ToString;
 @Getter@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductNewVO {//»ó¼¼ÆäÀÌÁö¿¡¼­ jsonÀ¸·Î ¹Ş´Â °ª ÀúÀå
-	//ÆÇ¸Å
+public class ProductNewVO {//ìƒì„¸í˜ì´ì§€ì—ì„œ jsonìœ¼ë¡œ ë°›ëŠ” ê°’ ì €ì¥
+	//íŒë§¤
 	String s_stock_id;
 	int order_num;
 	String productPrice;
 	String prod_id;
 	int stock; 
 	
-	//´ë¿©
+	//ëŒ€ì—¬
 	String r_stock_id;
 	int rent_num;
 	Date rent_start_date;

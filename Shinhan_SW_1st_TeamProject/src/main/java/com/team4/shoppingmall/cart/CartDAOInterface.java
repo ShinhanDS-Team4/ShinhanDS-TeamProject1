@@ -6,23 +6,23 @@ import java.util.Map;
 
 public interface CartDAOInterface {
 	
-	//¼±ÅÃÇÑ ¿É¼Ç »óÇ°ÀÇ Àç°íID Á¶È¸
+	//ì„ íƒí•œ ì˜µì…˜ ìƒí’ˆì˜ ì¬ê³ ID ì¡°íšŒ
 	public String searchStockId(HashMap<String, String> map, String prod_id);
 
-	//Àå¹Ù±¸´Ï¿¡ °°Àº »óÇ°ÀÌ Á¸ÀçÇÏ´ÂÁö Á¶È¸
+	//ì¥ë°”êµ¬ë‹ˆì— ê°™ì€ ìƒí’ˆì´ ì¡´ì¬í•˜ëŠ”ì§€ ì¡°íšŒ
 //	public CartDTO selectCartBySellstock(Map<String, String> map);
 	public CartDTO selectCartBySellStock(CartDTO cart);
 	
-	//Àå¹Ù±¸´Ï(±¸¸Å»óÇ°) ¼ö·® ¾÷µ¥ÀÌÆ®
+	//ì¥ë°”êµ¬ë‹ˆ(êµ¬ë§¤ìƒí’ˆ) ìˆ˜ëŸ‰ ì—…ë°ì´íŠ¸
 	public int updateCartBySellStock(CartDTO cart);
 	
-	//Àå¹Ù±¸´Ï(´ë¿©»óÇ°) Á¶È¸
+	//ì¥ë°”êµ¬ë‹ˆ(ëŒ€ì—¬ìƒí’ˆ) ì¡°íšŒ
 	public CartDTO selectCartByRentStock(CartDTO cart);
 	
-	//Àå¹Ù±¸´Ï(´ë¿©»óÇ°) »ı¼º
+	//ì¥ë°”êµ¬ë‹ˆ(ëŒ€ì—¬ìƒí’ˆ) ìƒì„±
 	public int cartRentProductInsert(CartDTO cart);
 	
-	// Àå¹Ù±¸´Ï(´ë¿©»óÇ°) ¼ö·® ¾÷µ¥ÀÌÆ®
+	// ì¥ë°”êµ¬ë‹ˆ(ëŒ€ì—¬ìƒí’ˆ) ìˆ˜ëŸ‰ ì—…ë°ì´íŠ¸
 	public int updateCartByRentStock(CartDTO cart);
 	
 	public List<CartDTO> selectSellStockByMemberId(String member_id);
@@ -37,7 +37,7 @@ public interface CartDAOInterface {
 	
 //	public List<MemberDTO> selectByCondition();
 	
-	//Àå¹Ù±¸´Ï(±¸¸Å»óÇ°) »ı¼º
+	//ì¥ë°”êµ¬ë‹ˆ(êµ¬ë§¤ìƒí’ˆ) ìƒì„±
 	public int cartInsert(CartDTO cart);
 	
 	public int cartUpdate(CartDTO cart);

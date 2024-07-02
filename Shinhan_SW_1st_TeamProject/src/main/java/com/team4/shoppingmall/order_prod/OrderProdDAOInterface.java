@@ -8,7 +8,8 @@ import com.team4.shoppingmall.prod_option.Prod_OptionDTO;
 
 public interface OrderProdDAOInterface {
 	
-
+	public int sequenceOrderId();
+	
 	// �ֹ���
 	public OrderProdDTO selectById(Integer order_id);
 	

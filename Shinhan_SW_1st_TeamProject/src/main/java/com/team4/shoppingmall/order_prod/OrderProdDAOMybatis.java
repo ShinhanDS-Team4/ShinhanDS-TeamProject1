@@ -17,6 +17,9 @@ public class OrderProdDAOMybatis implements OrderProdDAOInterface {
 
 	String namespace = "com.saren.orderprod.";
 
+	public int sequenceOrderId() {
+		return sqlSession.selectOne(namespace+"sequenceOrderId");
+	};
 
 	// �ֹ���
 	@Override

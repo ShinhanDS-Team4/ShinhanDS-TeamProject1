@@ -46,7 +46,7 @@ public class CategoryController {
 	@GetMapping("/dbset")
 	public void dbSet() throws IOException, ParseException {
 		String[] sizes = new String[] {"S", "M", "L"};
-		String[] names = new String[] {"±èÁ¤Çö", "¹é»óÈ£", "ÀÌÁ¾°æ", "¹éÀÎÇõ", "ÀÌÀçÈ¯", "Á¶À±Àç"};
+		String[] names = new String[] {"ê¹€ì •í˜„", "ë°±ìƒí˜¸", "ì´ì¢…ê²½", "ë°±ì¸í˜", "ì´ì¬í™˜", "ì¡°ìœ¤ì¬"};
 		String[] emails = new String[] {"jh441122jh@gmail.com", "baeksh0118@gmail.com", " ljk5252525@gmail.com", "baekinhyeok998@gmail.com", "1nth2bleakmidwinter@gmail.com", "dbrmfgks@gmail.com"};
 		String[] phones = new String[] {"010-6349-3464", "010-9723-4740", "010-2717-9614", "010-7552-8293", "010-4590-9812", "010-7137-8144"};
 		
@@ -83,7 +83,7 @@ public class CategoryController {
 			
 			for(String size :sizes) {
 				prod_option = new Prod_OptionDTO();
-				prod_option.setOpt_name("»çÀÌÁî");
+				prod_option.setOpt_name("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 				prod_option.setOpt_value(size);
 				prod_option.setProd_id((String) prod_id);
 				prod_optionService.optionInsert(prod_option);

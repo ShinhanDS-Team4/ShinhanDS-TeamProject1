@@ -21,7 +21,6 @@ public class RentDetailDAOMybatis implements RentDetailDAOInterface {
 		return sqlSession.selectOne(namespace+"selectById", rentdetail_id);
 	}
 
-	// ���뿬�긽�꽭 紐⑸줉
 	@Override
 	public List<RentDetailDTO> selectAll() {
 		return sqlSession.selectList(namespace+"selectAll");
@@ -32,13 +31,13 @@ public class RentDetailDAOMybatis implements RentDetailDAOInterface {
 		return sqlSession.selectList(namespace+"selectBySellerID", member_id);
 	}
 	
-	// ���뿬�긽�꽭 �깮�꽦
+	// 대여상세 생성
 	@Override
 	public int rentDetailInsert(RentDetailDTO rentdetail) {
 		return sqlSession.insert(namespace+"rentDetailInsert", rentdetail);
 	}
 	
-	// ���뿬�긽�꽭 �닔�젙
+	// 대여상세 수정
 	@Override
 	public int rentDetailUpdate(RentDetailDTO rentdetail) {
 		return sqlSession.update(namespace+"rentDetailUpdate", rentdetail);

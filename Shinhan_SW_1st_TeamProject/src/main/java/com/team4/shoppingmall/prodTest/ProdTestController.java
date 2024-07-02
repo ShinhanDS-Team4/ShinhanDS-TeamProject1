@@ -87,7 +87,7 @@ public class ProdTestController {
 		
 	}
 		
-		/* 상품 상세 페이지 */
+	/* 상품 상세 페이지 */
 	@GetMapping("/product_detail")
 	public void productDetail(String prod_id, Model model) throws JsonProcessingException {
 		

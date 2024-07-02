@@ -16,7 +16,7 @@ public class Buyer_InqDAOMybatis implements Buyer_InqDAOInterface {
 	
 	String namespace = "com.saren.buyer_inq.";
 	
-	//»óÇ°IDÀÇ ÀüÃ¼ ¹®ÀÇ ¸ñ·Ï Á¶È¸ 
+	//ìƒí’ˆIDì˜ ì „ì²´ ë¬¸ì˜ ëª©ë¡ ì¡°íšŒ 
 	public List<Buyer_InqDTO> selectByProdId(String prod_id) {
 		return sqlSession.selectList(namespace+"selectByProdId", prod_id);
 	}
@@ -28,7 +28,7 @@ public class Buyer_InqDAOMybatis implements Buyer_InqDAOInterface {
 	
 	@Override
 	public Buyer_InqDetailDTO selectByInqIdFORseller(Integer buyer_inq_id) {
-		System.out.println("selectByInqIdFORseller DAOMybatis ¼öÇà");
+		System.out.println("selectByInqIdFORseller DAOMybatis ï¿½ï¿½ï¿½ï¿½");
 		return sqlSession.selectOne(namespace+"selectByInqIdFORseller", buyer_inq_id);
 	}
 
@@ -47,7 +47,7 @@ public class Buyer_InqDAOMybatis implements Buyer_InqDAOInterface {
 		return sqlSession.selectList(namespace+"selectInqList",member_id);
 	}
 
-	//insert Å¸ÀÔ ¼öÁ¤
+	//insert íƒ€ì… ìˆ˜ì •
 	@Override
 	public int buyer_inqInsert(Map<String,String> buyer_inq_map) {
 		return sqlSession.insert(namespace+"buyer_inqInsert", buyer_inq_map);
