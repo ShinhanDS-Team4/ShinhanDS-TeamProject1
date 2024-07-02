@@ -20,13 +20,10 @@
 	</select>
 
 	<!-- 고객등록 -->
-	<insert id="customerInsert"
-		parameterType="com.team4.shoppingmall.customer.CustomerDTO">
+	<insert id="customerInsert" parameterType="CustomerVO">
 		INSERT
-		INTO CUSTOMER("member_id", "point",
-		"member_level", "account_amount")
-		VALUES(#{member_id}, #{point},
-		#{member_level})
+		INTO CUSTOMER(member_id, point, member_level, accum_amount)
+		VALUES(#{member_id}, #{point}, #{member_level}, #{accum_amount})
 	</insert>
 
 	<!-- 고객수정 -->

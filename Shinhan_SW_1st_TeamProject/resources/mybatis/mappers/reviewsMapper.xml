@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.saren.reviews">
+
+	<!-- 배송완료된 주문 상품의 리뷰정보 -->
+	<select id="selectAllProductReviewByProdId" parameterType="string"
+		resultType="map">
+		SELECT 
+		    r.REVIEW_ID, 
+		    r.RATE, 
+		    r.REVIEW_DATE, 
+		    r.REVIEW_IMG, 
+		    r.REVIEW_CONTENT, 
+		    od.ORDERDETAIL_ID, 
+		    od.S_STOCK_ID,
+		    o.ORDER_ID,
+		    o.ORDER_STATE, s.opt_id1
+		, s.opt_id2, s.opt_id3, s.opt_id4, s.opt_id5 
+		FROM REVIEWS r
+		JOIN 
+		    ORDER_DETAIL od ON r.ORDERDETAIL_ID = od.ORDERDETAIL_ID
+		JOIN 
+		    ORDER_PROD o ON od.ORDER_ID = o.ORDER_ID
+        JOIN 
+		    SELLER_PROD_STOCK s ON od.S_STOCK_ID = s.S_STOCK_ID
+	    WHERE   s.PROD_ID = #{prod_id} and  o.ORDER_STATE = 'delievered'
+	</select>
+
+	<select id="selectById" parameterType="int"
+		resultType="reviewsVO">
+		SELECT *
+		FROM REVIEWS
+		WHERE review_id = #{review_id}
+	</select>
+
+	<select id="selectAll" resultType="reviewsVO">
+		SELECT *
+		FROM REVIEWS
+	</select>
+
+	<insert id="reviewsInsert" parameterType="reviewsVO">
+		INSERT
+		INTO REVIEWS(review_id, review_title, rate, review_date, 
+					 review_img, review_content, orderdetail_id, member_id)
+		VALUES(#{review_id}, #{review_title}, #{rate}, #{review_date}, 
+			   #{review_img}, #{review_content}, #{orderdetail_id}, #{member_id})
+	</insert>
+
+	<update id="reviewsUpdate" parameterType="reviewsVO">
+		UPDATE REVIEWS
+		SET
+		review_title = #{review_title}, rate = #{rate}, review_date = #{review_date},
+		review_img = #{review_img}, review_content = #{review_content},
+		orderdetail_id = #{orderdetail_id}
+		WHERE review_id = #{review_id}
+	</update>
+
+	<delete id="reviewsDelete" parameterType="int">
+		DELETE
+		FROM REVIEWS
+		WHERE review_id = #{review_id}
+	</delete>
+	
+	<select id="selectBymemId" parameterType="String" resultType="reviewsVO">
+		SELECT *
+		FROM REVIEWS
+		WHERE member_id = #{member_id}
+	</select>
+	
+</mapper>

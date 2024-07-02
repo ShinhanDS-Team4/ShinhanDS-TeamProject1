@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.saren.event">
+
+	<select id="selectById" parameterType="int"
+		resultType="eventVO">
+		SELECT *
+		FROM EVENT
+		WHERE "event_id" = #{event_id}
+	</select>
+
+	<select id="selectAll" resultType="eventVO">
+		SELECT *
+		FROM EVENT
+	</select>
+
+	<insert id="eventInsert" parameterType="eventVO">
+		INSERT
+		INTO EVENT("event_id", "event_title", "event_content", "event_img_url", "event_date")
+		VALUES(#{event_id}, #{event_title}, #{event_content}, #{event_img_url}, #{event_date})
+	</insert>
+
+	<update id="eventUpdate" parameterType="eventVO">
+		UPDATE EVENT
+		SET
+		"event_title" = #{event_title}, "event_content" = #{event_content},
+		"event_img_url" = #{event_img_url}, "event_date" = #{event_date}
+		WHERE "event_id" = #{event_id}
+	</update>
+
+	<delete id="eventDelete" parameterType="int">
+		DELETE
+		FROM EVENT
+		WHERE "event_id" = #{event_id}
+	</delete>
+	
+</mapper>

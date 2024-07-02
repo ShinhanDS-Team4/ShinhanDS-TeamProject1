@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.saren.prod_image">
+
+	<select id="selectByImageId" parameterType="int"
+		resultType="prod_imageVO">
+		SELECT *
+		FROM PROD_IMAGE
+		WHERE img_id = #{img_id}
+	</select>
+	
+	<select id="selectByProdId" parameterType="int"
+		resultType="prod_imageVO">
+		SELECT *
+		FROM PROD_IMAGE 
+		WHERE prod_id = #{prod_id}
+	</select>
+	
+	<select id="findAllImgsByProdID" parameterType="string" resultType="prod_imageVO">
+		SELECT *
+		FROM PROD_IMAGE 
+		WHERE prod_id = #{prod_id}
+	</select>
+
+	<select id="selectAll" resultType="prod_imageVO">
+		SELECT *
+		FROM PROD_IMAGE
+	</select>
+
+	<insert id="prod_imageInsert" parameterType="prod_imageVO">
+		INSERT
+		INTO PROD_IMAGE(img_id, prod_id) 
+		VALUES(#{img_id}, #{prod_id})
+	</insert>
+
+	<update id="prod_imageUpdate" parameterType="prod_imageVO">
+		UPDATE PROD_IMAGE
+		SET img_id = #{img_id}
+		WHERE prod_id = #{prod_id}
+	</update>
+
+	<delete id="prod_imageDelete" parameterType="int">
+		DELETE
+		FROM PROD_IMAGE
+		WHERE "img_id" = #{img_id}
+	</delete>
+	
+</mapper>
