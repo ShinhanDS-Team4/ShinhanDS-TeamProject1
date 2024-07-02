@@ -20,5 +20,5 @@ public class Seller_Prod_StockTestDTO {
 	Integer opt_id3;
 	Integer opt_id4;
 	Integer opt_id5;
-	Integer review_id;
+	Integer review_id; //ªË¡¶
 }

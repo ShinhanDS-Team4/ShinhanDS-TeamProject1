@@ -25,4 +25,5 @@ public class MemberDTO {
 	String gender;
 	String seller_authority;
 	Date create_date;
+
 }

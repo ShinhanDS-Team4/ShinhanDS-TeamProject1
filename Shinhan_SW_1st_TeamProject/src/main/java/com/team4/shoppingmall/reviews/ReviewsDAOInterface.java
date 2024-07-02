@@ -5,8 +5,11 @@ import java.util.Map;
 
 public interface ReviewsDAOInterface {
 	
-	//ÁÖ¹®ÇÑ »óÇ°ÀÇ ¸®ºäÁ¤º¸
+	//ìƒí’ˆ ë¦¬ë·° ëª©ë¡
 	public List<Map<String,String>> selectAllProductReviewByProdId(String prod_id);
+	
+	//ë¦¬ë·° í‰ê· ê³¼ ë¦¬ë·° ìˆ˜
+	public ReviewsDTO reviewAvgByProdId(String prod_id);
 	
 	public ReviewsDTO selectById(Integer review_id);
 	
