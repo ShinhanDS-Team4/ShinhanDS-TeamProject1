@@ -153,7 +153,7 @@ public class CustomerControllerJH {
 	@GetMapping("/memberDelete.do")
 	public String memberDelete() {
 		
-		return "customer/memberDelete.do";
+		return "customer/memberDelete";
 	}
 
 	@GetMapping("/memberDeletePwCheck.do")

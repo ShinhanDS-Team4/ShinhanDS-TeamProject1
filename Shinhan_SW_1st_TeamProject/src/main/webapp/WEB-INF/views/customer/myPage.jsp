@@ -161,10 +161,9 @@
 								</tr>
 							</thead>
 							<tbody>
-					            <c:set var="maxOrders" value="2" />
+					            <c:set var="maxOrders" value="5" />
 						        <c:choose>
 						            <c:when test="${not empty myAllRentOrders}">
-						                <!-- JSTL로 정렬된 결과를 상위 2개만 추출하는 방법은 없으므로 컨트롤러에서 정렬하여 전달 -->
 						                <c:forEach items="${myAllRentOrders}" var="rent" varStatus="status">
 						                    <c:if test="${status.index lt maxOrders}">
 						                        <tr>
@@ -196,5 +195,6 @@
 			</div>
 		</div>
 	</div>
+	<%@ include file="../common/footer.jsp" %>
 </body>
 </html>
