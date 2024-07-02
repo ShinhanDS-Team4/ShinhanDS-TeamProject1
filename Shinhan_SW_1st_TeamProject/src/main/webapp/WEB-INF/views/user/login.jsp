@@ -275,7 +275,7 @@ footer .footer-links a {
 					for="remember-me">아이디 저장</label>
 			</div>
 		</form>
-		<form id="seller-form" action="sellerLogin.html" method="post">
+		<form id="seller-form" action="${path }/member_test/login.do" method="post">
 			<div class="input-group">
 				<div class="input-fields">
 					<input type="text" name="sellerId" placeholder="사업자등록번호">
