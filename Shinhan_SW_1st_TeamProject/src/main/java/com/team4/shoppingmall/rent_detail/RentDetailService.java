@@ -21,6 +21,11 @@ public class RentDetailService {
 		return rentDetailDAO.selectAll();
 	}
 	
+	// 대여 ID별 대여상세 목록
+	public List<RentDetailDTO> selectByRental_code(int rental_code){
+		return rentDetailDAO.selectByRental_code(rental_code);
+	}
+	
 	//판매자의 대여 상세 목록 가져오기
 	public List<RentDetailDTO> selectBySellerID(String member_id){
 		return rentDetailDAO.selectBySellerID(member_id);

@@ -11,12 +11,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Addr_ListDTO {
-	int addrNum;
-    String memberId;
+	int addr_num;
+    String member_id;
     String zipcode;
-    String mainAddress;
-    String detailAddress;
-    Boolean isMasterAddr; //е╦ют Boolean
-    String subAddress;
-	
+    String main_address;
+    String detail_address;
+    String is_master_addr;
+    String sub_address;
 }

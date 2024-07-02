@@ -111,5 +111,9 @@ public class RentService {
 	public int returnRent(int rentalCode) {
         return rentDAO.returnRent(rentalCode);
 	}
+	
+	public int updateRent(RentDTO rent) {
+		return rentDAO.updateRent(rent);
+	}
 
 }

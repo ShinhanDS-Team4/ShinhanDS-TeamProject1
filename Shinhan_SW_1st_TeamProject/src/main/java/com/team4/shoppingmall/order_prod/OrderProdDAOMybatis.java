@@ -65,6 +65,11 @@ public class OrderProdDAOMybatis implements OrderProdDAOInterface {
 	@Override
 	public int orderRefund(int orderId) {
         return sqlSession.update(namespace + "orderRefund", orderId); 
+	}
+
+	@Override
+	public int updateOrderPrice(OrderProdDTO orderprod) {
+		return sqlSession.update(namespace+"updateOrderPrice", orderprod);
 	} 
 
 }

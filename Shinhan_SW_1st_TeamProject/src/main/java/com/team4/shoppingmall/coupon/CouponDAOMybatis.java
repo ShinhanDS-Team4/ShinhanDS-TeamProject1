@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class CouponDAOMybatis implements CouponDAOInterface {
 
-	//@Autowired
+	@Autowired
 	SqlSession sqlSession;
 	
 	String namespace = "com.saren.coupon.";
@@ -28,13 +28,13 @@ public class CouponDAOMybatis implements CouponDAOInterface {
 	
 	// ÄíÆù»ç¿ë
 	@Override
-	public int couponUse(String coupon_id) {
-		return sqlSession.update(namespace+"couponUse", coupon_id);
+	public int couponUse(CouponDTO couponDTO) {
+		return sqlSession.update(namespace+"couponUse", couponDTO);
 	}
 
 	@Override
 	public List<CouponDTO> selectCustomerCouponList(String member_id) {
-		return sqlSession.selectList(namespace+"selectCustomerCouponList",member_id);
+		return sqlSession.selectList(namespace+"selectCustomerCouponList", member_id);
 	}
 	 
 }

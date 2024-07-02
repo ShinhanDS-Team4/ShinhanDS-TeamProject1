@@ -33,5 +33,7 @@ public interface RentDAOInterface {
 
 	// rentlist.jsp����, �ݳ�
 	public int returnRent(int rentalCode);
+
+	public int updateRent(RentDTO rent);
 	
 }

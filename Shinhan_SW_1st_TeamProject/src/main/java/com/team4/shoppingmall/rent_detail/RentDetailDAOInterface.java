@@ -22,5 +22,8 @@ public interface RentDetailDAOInterface {
 	
 	// 대여상세 삭제
 	public int rentDetailDelete(int rentdetail_id);
+
+	// 대여ID별 대여상세 목록
+	public List<RentDetailDTO> selectByRental_code(int rental_code);
 	
 }

@@ -45,11 +45,24 @@
 		"rent_state" = #{rent_state}
 		WHERE "rental_code" = #{rental_code}
 	</update>
+	
+	<!--대여 수정 -->
+	<update id="updateRent" parameterType="rentVO">
+		UPDATE RENT
+		SET
+    		rent_start_date = #{rent_start_date},
+    		rent_end_date = #{rent_end_date},
+    		member_id = #{member_id},
+    		total_rent_price = #{total_rent_price}
+    	WHERE rental_code=#{rental_code}
+    </update>
+    
+     
 
 	<!-- orderlist.jsp에서, 상세상품 옵션 출력시, 모든 옵션 가져오기 -->
 	<select id="selectOptions" resultType="prod_optionVO">
 		SELECT *
-	    FROM PROD_OPTION 
+	    FROM PROD_OPTION
 	</select>
 
 	<!-- orderlist.jsp에 출력할 대여상품 상세정보 -->
