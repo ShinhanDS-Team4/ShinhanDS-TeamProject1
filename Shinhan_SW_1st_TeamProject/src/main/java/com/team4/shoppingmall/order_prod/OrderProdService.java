@@ -32,6 +32,11 @@ public class OrderProdService {
 		return orderprodDAO.orderprodUpdate(orderprod);
 	}
 	
+	//할인 적용 업데이트
+	public int updateOrderPrice(OrderProdDTO orderprod) {
+		return orderprodDAO.updateOrderPrice(orderprod);
+	}
+	
 	// orderlist.jsp에 출력할 상품명, 브랜드, 옵션, 상품가격, 이미지URL
 	public Map<String, Object> selectById2(int order_id) {
         return orderprodDAO.selectById2(order_id);

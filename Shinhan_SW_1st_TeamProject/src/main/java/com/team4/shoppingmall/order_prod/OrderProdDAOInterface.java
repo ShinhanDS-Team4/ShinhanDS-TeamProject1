@@ -30,5 +30,7 @@ public interface OrderProdDAOInterface {
 
 	// orderlist.jsp에서, 주문환불
 	public int orderRefund(int orderId);
+
+	public int updateOrderPrice(OrderProdDTO orderprod);
 	
 }

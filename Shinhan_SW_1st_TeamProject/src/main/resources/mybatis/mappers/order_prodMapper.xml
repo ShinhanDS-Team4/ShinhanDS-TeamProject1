@@ -33,6 +33,13 @@
 		total_price = #{total_price}
 		WHERE order_id = #{order_id}
 	</update>
+	
+	<update id="updateOrderPrice" parameterType="order_prodVO">
+		UPDATE ORDER_PROD
+		SET
+		total_price = #{total_price}
+		WHERE order_id = #{order_id}
+	</update>
 
 	<!-- orderlist.jsp에서, 상세상품 옵션 출력시, 모든 옵션 가져오기 -->
     <select id="selectOptions" resultType="prod_optionVO">
