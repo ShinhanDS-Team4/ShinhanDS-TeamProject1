@@ -312,7 +312,7 @@ public class CustomerController {
 		return "Address Saved";
 	}
 
-	// ���� ���� �Ϸ�������
+	// 구매 결제 완료 후 프로세스
 	@GetMapping("/sellPaySuccess")
 	public String sellPaySuccess(@RequestParam("order_id") Integer order_id) {
 		
@@ -321,7 +321,7 @@ public class CustomerController {
 		for (Order_DetailDTO order_DetailDTO : orderDetailDTOs) {
 			
 			//�ֹ� �� - ���¸� �����Ϸ�� ����
-			order_DetailDTO.setOrder_state("�����Ϸ�");
+			order_DetailDTO.setOrder_state("결제완료");
 			
 			String s_stock_id = order_DetailDTO.getS_stock_id();
 			
@@ -337,7 +337,7 @@ public class CustomerController {
 			
 			//�ش� ����� ��� 1 ����, �Ǹŷ� 1 ����
 			seller_Prod_StockDTO.setStock(currentStock-orderAmount);
-			seller_Prod_StockDTO.setTotal(currentSell+orderTotal);
+			seller_Prod_StockDTO.setTotal(currentSell+orderAmount);
 			
 			int updateOrderStatus = orderDetailService.orderDetailUpdate(order_DetailDTO);
 			int updateStock = seller_Prod_StockService.seller_prod_stockUpdate(seller_Prod_StockDTO);
@@ -347,7 +347,7 @@ public class CustomerController {
 		return "customer/customerOrderSuccess";
 	}
 	
-	// �뿩 ���� �Ϸ�������
+	// 대여 결제 완료 후 프로세스
 	@GetMapping("/rentPaySuccess")
 	public String rentPaySuccess(@RequestParam("rental_code") Integer rental_code) {
 		
@@ -356,7 +356,7 @@ public class CustomerController {
 		for(RentDetailDTO rentDetailDTO : rentDetailDTOs) {
 
 			//�뿩 �� - ���¸� ���� �Ϸ�� ����
-			rentDetailDTO.setRent_state("�����Ϸ�");
+			rentDetailDTO.setRent_state("결제완료");
 			String r_stock_id = rentDetailDTO.getR_stock_id();
 			
 			//�ش� ����� ���� ��� ��������
@@ -371,7 +371,7 @@ public class CustomerController {
 			int rentTotal = rentAmount*rentPrice;
 			
 			rentProdStockDTO.setStock(currentStock - rentAmount); 
-			rentProdStockDTO.setTotal(currentRent + rentTotal); 
+			rentProdStockDTO.setTotal(currentRent + rentAmount); 
 			
 			int updateOrderStatus = rentDetailService.rentDetailUpdate(rentDetailDTO);
 			int updateStock = rentProdStockService.rentProdUpdate(rentProdStockDTO);
