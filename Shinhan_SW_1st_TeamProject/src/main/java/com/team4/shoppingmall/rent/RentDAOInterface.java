@@ -7,25 +7,23 @@ import com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO;
 
 public interface RentDAOInterface {
 	
-	//´ë¿©Àç°í¿¡ ÀÖ´Â »óÇ°ÀÇ ´ë¿©ID Ã£±â
+	//ëŒ€ì—¬ ì‹ ì²­ ì™„ë£Œëœ ëŒ€ì—¬ ìƒí’ˆ ëª©ë¡
+	public List<Map<String,Object>> rentProductById(String member_id);
+	
 	public int searchRentId();
-	// ´ë¿©»ó¼¼
+	
 	public RentDTO selectById(Integer rental_code);
 	
-	// ´ë¿©¸ñ·Ï
 	public List<RentDTO> selectAll();
 	
-	// ´ë¿©ÇÏ±â 
 	public int rentInsert(RentDTO rent);
 	
-	
-	// ´ë¿©»óÅÂ ¼öÁ¤
 	public int rentUpdate(Integer rental_code);
 
-	// rentlist.jsp¿¡ Ãâ·ÂÇÒ ´ë¿©»óÇ° »ó¼¼Á¤º¸(ºê·£µå¸í, »óÇ°¸í, ¿É¼Ç, ´ë¿©°¡°İ, ÀÌ¹ÌÁöURL)
+	// rentlist.jsp
 	public Map<String, Object> selectById2(int rental_code);
 
-	// rentlist.jsp¿¡¼­, »ó¼¼»óÇ° ¿É¼Ç Ãâ·Â½Ã, ¸ğµç ¿É¼Ç °¡Á®¿À±â
+	// rentlist.jsp
 	public List<RentProdStockDTO> selectOptions();
 	
 }

@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.team4.shoppingmall.order_prod.OrderProdDetailDTO;
+
 @Service
 public class Order_DetailService {
 	@Autowired
@@ -14,7 +16,7 @@ public class Order_DetailService {
 	 * public Order_DetailDTO selectByOrder_Id(int order_id) { return
 	 * order_DetailDAO.selectByOrder_Id?(order_id); }
 	 */
-	
+
 	public List<Order_DetailDTO> selectAll() {
 		return order_DetailDAO.selectAll();
 	}

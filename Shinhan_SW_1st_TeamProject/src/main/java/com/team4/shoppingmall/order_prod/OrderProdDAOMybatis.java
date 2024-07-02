@@ -16,11 +16,21 @@ public class OrderProdDAOMybatis implements OrderProdDAOInterface {
 	SqlSession sqlSession;
 
 	String namespace = "com.saren.orderprod.";
-
 	
+	//결제 완료된 주문 상품 목록
+	public List<Map<String,Object>> orderProductById(String member_id){
+		return sqlSession.selectList(namespace+"orderProductById", member_id);
+	};
+	
+	public List<OrderProdDetailDTO> selectById2(int order_id){
+		return sqlSession.selectList(namespace+"selectById2", order_id);
+	};
+	
+	//나의 주문 상품 정보 조회
 	public int sequenceOrderId() {
 		return sqlSession.selectOne(namespace+"sequenceOrderId");
 	};
+	
 	// �ֹ���
 	@Override
 	public OrderProdDTO selectById(Integer order_id) {
@@ -46,10 +56,10 @@ public class OrderProdDAOMybatis implements OrderProdDAOInterface {
 	}
 	
 	// orderlist.jsp�� ����� ��ǰ��, �귣��, �ɼ�, ��ǰ����, �̹���URL
-	@Override
-	public Map<String, Object> selectById2(int order_id) { 
-        return sqlSession.selectOne(namespace + "selectById2", order_id);
-    } 
+//	@Override
+//	public Map<String, Object> selectById2(int order_id) { 
+//        return sqlSession.selectOne(namespace + "selectById2", order_id);
+//    } 
 	
 	// orderlist.jsp����, �󼼻�ǰ �ɼ� ��½�, ��� �ɼ� ��������
 	@Override

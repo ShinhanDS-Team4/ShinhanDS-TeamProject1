@@ -1,6 +1,8 @@
 package com.team4.shoppingmall;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
@@ -12,10 +14,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.team4.shoppingmall.addr_list.Addr_ListDTO;
 import com.team4.shoppingmall.addr_list.Addr_ListService;
 import com.team4.shoppingmall.member.MemberDTO;
 import com.team4.shoppingmall.member.MemberService;
+import com.team4.shoppingmall.order_prod.OrderProdDTO;
+import com.team4.shoppingmall.order_prod.OrderProdService;
+import com.team4.shoppingmall.prod_option.Prod_OptionDTO;
+import com.team4.shoppingmall.prod_option.Prod_OptionService;
 
 @Controller
 @RequestMapping("/customer")
@@ -27,58 +32,81 @@ public class CustomerControllerJH {
 	@Autowired
 	MemberService memberService;
 	
-	/*留덉씠�럹�씠吏� 硫붿씤*/
+	@Autowired
+	OrderProdService orderProdService;
+	
+	@Autowired
+    Prod_OptionService prod_OptionService;
+	
+	/*마이페이지 메인*/
 	@GetMapping("/myPage.do")
 	public String myPage(HttpSession session, Model model) {
+		
 		
 		//MemberDTO member =  session.getAttribute("member");
 		//String member_id = member.getMember_id();
 		String member_id = "testid";
-		
+
 		//1.회원정보 조회
 		MemberDTO member = memberService.selectById(member_id);
 		model.addAttribute("member", member);
 		
-		//2.주문 내역
+		//2.나의 주문 내역
 		
-		
+		// 나의 모든 주문 정보 가져오기
+	    //List<OrderProdDTO> myAllOrders = orderProdService.orderProductById(member_id);
+		List<Map<String,Object>> myAllOrders = orderProdService.orderProductById(member_id);
+	    model.addAttribute("myAllOrders", myAllOrders);
+	    System.out.println("전체 주문 목록: " + myAllOrders);
+
+	    
+	    //String prod_id = "";
+	    //상품의 옵션 (opt_id에 해당하는 옵션명 화면에서 읽기)
+	    //List<Prod_OptionDTO> prodOptionList = prod_OptionService.selectByProdId(prod_id);
+	    //model.addAttribute("prodOptionList", prodOptionList);
+	    
+
+	 
+	    
+	    
 		//3.대여 내역
 		
 		
 		return "customer/myPage";
 	}
 
-	//�굹�쓽 二쇰Ц 由ъ뒪�듃
-	@GetMapping("/orderlist")
+	//나의 주문 페이지
+	//@GetMapping("/orderlist.do")
 	public String orderlist() {
 		
-		return "customer/orderlist";
+		return "customer/orderlist.do";
 	}
 	
-	//�굹�쓽 ���뿬 由ъ뒪�듃
-	@GetMapping("/rentlist")
+	//나의 대여 페이지
+	//@GetMapping("/rentlist.do")
 	public String rentlist() {
-		//���뿬 紐⑸줉 議고쉶
 		
-		return "customer/rentlist";
+		
+		return "customer/rentlist.do";
 	}
 
 	
-	/* �쉶�썝�젙蹂댁닔�젙 */
+	/* 회원정보수정 */
 	//step1
 	@GetMapping("/myInfoUpdate.do")
 	public String myInfoUpdate(Model model) {
 		
-		//諛곗넚吏� 紐⑸줉 議고쉶 �뀒�뒪�듃 以�
-		List<Addr_ListDTO> addrlist = addrService.selectAll();
-		model.addAttribute("addrlist", addrlist);
 		
-		System.out.println("--�굹�쓽 諛곗넚吏� 議고쉶" + addrlist);
+		//로그인 한 회원의 주소 조회
+		//List<Addr_ListDTO> addrlist = addrService.selectAll();
+		//model.addAttribute("addrlist", addrlist);
+		
+		
 		
 		return "customer/myInfoUpdate";
 	}
 	
-	//step2 - 鍮꾨�踰덊샇 �솗�씤 李�
+	//step2 - 비밀번호 확인 창
 	@GetMapping("/myInfoUpdatePw.do")
 	public String myInfoUpdatePw() {
 		
@@ -86,7 +114,7 @@ public class CustomerControllerJH {
 	}
 	
 	
-	//鍮꾨�踰덊샇 泥댄겕 �썑 �떎�쓬 �뒪�뀦(step3)
+	//비밀번호 체크 후 다음 스텝(step3)
 	@GetMapping("/myInfoUpdatePwCheck.do")
 	public String myInfoUpdatePwCheck(@RequestParam("password") String password) {
 		
@@ -96,36 +124,32 @@ public class CustomerControllerJH {
 		if(password.equals("aaa")) {
 			return "customer/myInfoUpdate_step3";
 		}else {
-			System.out.println("留덉씠�럹�씠吏� �쉶�썝 鍮꾨�踰덊샇 �솗�씤 �떎�뙣");
 			return "redirect:customer/myInfoUpdate_step2";
 		}
 		
 	}
 	
-	//step3 - �닔�젙�븷 �쉶�썝 �젙蹂� �엯�젰李�	
+	//step3 - 수정할 회원 정보 입력창	
 	@PostMapping("/myInfoUpdateForm.do")
 	public String myInfoUpdateForm() {
-		System.out.println("諛곗넚吏� 議고쉶");
 		
 		return "customer/myPage";
 	}
 	
 	
-	/* �쉶�썝 �깉�눜 */
+	/* 회원 탈퇴 */
 	@GetMapping("/memberDelete.do")
 	public String memberDelete() {
 		
-		return "customer/memberDelete";
+		return "customer/memberDelete.do";
 	}
 	//鍮꾨�踰덊샇 泥댄겕 �썑 �쉶�썝 �깉�눜
 	@GetMapping("/memberDeletePwCheck.do")
 	public String memberDeletePwCheck(@RequestParam("password") String password) {
-		//濡쒓렇�씤 �쉶�썝 鍮꾨�踰덊샇 泥댄겕
 		if(password.equals("aaa")) {
 			return "customer/myPage";
 		}else {
-			System.out.println("�쉶�썡 �깉�눜 �떎�뙣");
-			return "redirect:customer/memberDelete";
+			return "redirect:customer/memberDelete.do";
 		}
 		
 	}

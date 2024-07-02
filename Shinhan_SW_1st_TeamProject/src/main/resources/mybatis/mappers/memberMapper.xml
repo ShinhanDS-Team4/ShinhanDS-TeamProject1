@@ -5,7 +5,7 @@
 <mapper namespace="com.saren.member">
 
 	<!-- (확인 필요) 로그인한 회원의 비밀번호체크  -->
-	<select id="selectByPw" parameterType="string"
+	<select id="memberCheckByPw" parameterType="string"
 		resultType="memberVO">
 		SELECT *
 		FROM MEMBER

@@ -6,7 +6,7 @@ public interface Prod_OptionDAOInterface {
 	
 	public Prod_OptionDTO selectByOptionId(Integer opt_id);
 	
-	public List<Prod_OptionDTO> selectByProdId(Integer prod_id);
+	public List<Prod_OptionDTO> selectByProdId(String prod_id);
 	
 	public Integer findMaxOptId();
 	

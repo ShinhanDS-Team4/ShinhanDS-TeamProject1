@@ -20,6 +20,7 @@ public class ReviewsDTO {
 	String review_img;
 	String review_content;
 	Integer orderdetail_id;
+	String member_id; //칼럼추가
 	
 	//필드추가
 	int avg_rate;

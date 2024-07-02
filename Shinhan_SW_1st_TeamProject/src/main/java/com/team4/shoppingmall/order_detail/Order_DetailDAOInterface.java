@@ -6,9 +6,12 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.team4.shoppingmall.order_prod.OrderProdDTO;
+import com.team4.shoppingmall.order_prod.OrderProdDetailDTO;
+
 
 public interface Order_DetailDAOInterface {
-
+	
 	public Order_DetailDTO selectByOrderDetail_Id(int orderdetail_id);
 
 	public List<Order_DetailDTO> selectAll();

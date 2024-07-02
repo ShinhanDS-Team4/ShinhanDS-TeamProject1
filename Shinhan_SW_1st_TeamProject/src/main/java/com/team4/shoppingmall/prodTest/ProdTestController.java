@@ -44,7 +44,7 @@ import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestService
 @RequestMapping("/prod")
 public class ProdTestController {
 	
-/* 나중에 서비스,DTO 등 이름에서 Test빼고, 파일 내용 옮기기 */
+	/* Test패키지로 작업  */
 	
 	@Autowired
 	Seller_Prod_StockTestService seller_Prod_StockTestService; //판매 상품 재고
@@ -165,8 +165,6 @@ public class ProdTestController {
         if(prodVO.getS_stock_id() == null || prodVO == null) {
     		return 0; 
 		}
-        
-        //프론트에서 재고id 저장이 안돼고 못넘어오는중
         
         
         int cart_amount = prodVO.getOrder_num();

@@ -6,6 +6,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.team4.shoppingmall.order_prod.OrderProdDetailDTO;
+
 @Repository
 public class Order_DetailDAOMybatis implements Order_DetailDAOInterface{
 	
@@ -13,6 +15,7 @@ public class Order_DetailDAOMybatis implements Order_DetailDAOInterface{
 	SqlSession sqlSession;
 	
 	String namespace = "com.saren.order_detail.";
+	
 	
 	@Override
 	public Order_DetailDTO selectByOrderDetail_Id(int orderdetail_id) {

@@ -14,27 +14,27 @@ public class RentDetailDAOMybatis implements RentDetailDAOInterface {
 	@Autowired
 	SqlSession sqlSession;
 
-	String namespace = "com.saren.rent_detail."; //ÀÌ¸§ ¼öÁ¤
+	String namespace = "com.saren.rent_detail."; 
 
-	// ´ë¿©»ó¼¼ »ó¼¼
+	// ëŒ€ì—¬ìƒì„¸ ìƒì„¸
 	@Override
 	public RentDetailDTO selectById(Integer rentdetail_id) {
 		return sqlSession.selectOne(namespace+"selectById", rentdetail_id);
 	}
 
-	// ´ë¿©»ó¼¼ ¸ñ·Ï
+	// ëŒ€ì—¬ìƒì„¸ ëª©ë¡
 	@Override
 	public List<RentDetailDTO> selectAll() {
 		return sqlSession.selectList(namespace+"selectAll");
 	}
 
-	// ´ë¿©»ó¼¼ »ı¼º
+	// ëŒ€ì—¬ìƒì„¸ ìƒì„±
 	@Override
 	public int rentDetailInsert(RentDetailDTO rentdetail) {
 		return sqlSession.insert(namespace+"rentDetailInsert", rentdetail);
 	}
 	
-	// ´ë¿©»ó¼¼ ¼öÁ¤
+	// ëŒ€ì—¬ìƒì„¸ ìˆ˜ì •
 	@Override
 	public int rentDetailUpdate(RentDetailDTO rentdetail) {
 		return sqlSession.update(namespace+"rentDetailInsert", rentdetail);
