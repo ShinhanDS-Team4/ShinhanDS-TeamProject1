@@ -210,7 +210,7 @@ hr {
 							<a href="${path}/board/review.do">나의글</a>
 						</h3>
 						<ul class="myinfo_submenu">
-							<li><a href="${path}/adminqna/myqna.do">문의글</a></li>
+							<li><a href="${path}/qna/myqna.do">문의글</a></li>
 							<li><a href="${path}/board/reviewjsp">리뷰</a></li>
 						</ul>
 					</li>
@@ -232,8 +232,8 @@ hr {
 					<a href="javascript:void(0)" onclick="openPopup()">+</a>
 				</div>
 				<ul class="faq-list">
-					<c:forEach items="${adminInq}" var="admin">
-						<li><a href="${path}/adminqna/updateqna.do?admin_inq_id=${admin.admin_inq_id}">${admin.admin_inq_title}</a>
+					<c:forEach items="${buyerInq}" var="buyer">
+						<li><a href="#">${buyer.buyer_inq_title}</a>
 							<hr></li>
 					</c:forEach>
 					<li><a href="#">아이디와 비밀번호가 기억나지 않아요.</a>

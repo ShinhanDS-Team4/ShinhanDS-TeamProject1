@@ -16,7 +16,7 @@ public class Addr_ListDTO {
     String zipcode;
     String mainAddress;
     String detailAddress;
-    Boolean isMasterAddr; //е╦ют Boolean
+    String isMasterAddr;
     String subAddress;
 	
 }

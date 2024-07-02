@@ -3,27 +3,7 @@
       PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.seller_prod_stock">
-	
-	<!-- ORDER_PROD테이블에 넣을 선택한 옵션 이름으로 상품의 재고ID 찾기(parameterType = 동적VO)  
-		 carMapper.xml 같은 select문임 -->
-    <select id="searchStockId" parameterType="com.team4.shoppingmall.cart.CartDynamicVO" 
-    		resultType="string">
-		SELECT sell_prod_stock.s_stock_id 
-		FROM sell_prod_stock
-		WHERE opt_id1||','|| opt_id2||','||opt_id3 ||','||opt_id4||','||opt_id5   
-		LIKE 	 
-		( 
-	  		SELECT 
-	        listAgg(opt_id,',') within group(order by opt_id)
-			FROM PROD_OPTION PO
-			WHERE  PO.PROD_ID = #{prod_id}
-	        and (
-	       <foreach collection="mapData" item="opt_value" index="opt_name" separator="or">
-	       	 (opt_name = #{opt_name} and opt_value=#{opt_value})  
-	       </foreach>
-       		)
-	 	)||'%'
-    </select>
+
 
 	<!-- 상품ID로 판매 상품 옵션별 재고 조회 -->
 	<select id="selectSpsOptionByProdId" parameterType="string"
@@ -38,28 +18,29 @@
 		    SPS.opt_id5,
 		    SPS.stock
 		FROM 
-		    SELL_PROD_STOCK SPS
+		    SELLER_PROD_STOCK SPS
 		WHERE 
 		    SPS.prod_id = #{prod_id}
 	</select>
 
-	<select id="selectByStockId" parameterType="string" resultType="seller_prod_stockVO">
+	<select id="selectByStockId" parameterType="string"
+resultType="seller_prod_stockVO">
 		SELECT *
-		FROM SELL_PROD_STOCK
+		FROM SELLER_PROD_STOCK
 		WHERE s_stock_id = #{s_stock_id}
 	</select>
 
 	<select id="selectByProdId" parameterType="string"
 		resultType="seller_prod_stockVO">
 		SELECT *
-		FROM SELL_PROD_STOCK
+		FROM SELLER_PROD_STOCK
 		WHERE prod_id = #{prod_id}
 	</select>
 
 	<select id="findMaxStockNumber" parameterType="string"
 		resultType="integer">
 		SELECT max(to_number(REGEXP_SUBSTR(s.s_stock_id,'_([0-9]+)$', 1, 1, null, 1)))
-		FROM SELL_PROD_STOCK s
+		FROM SELLER_PROD_STOCK s
 		WHERE s.prod_id = #{prod_id}
 	</select>
 
@@ -71,7 +52,7 @@
 			p.prod_added_date,
 			p.prod_price
 		FROM
-			SELL_PROD_STOCK s
+			SELLER_PROD_STOCK s
 		JOIN
 			PROD p ON s.prod_id = p.prod_id
 		WHERE
@@ -79,7 +60,7 @@
 	</select>
 	<select id="selectAll" resultType="seller_prod_stockVO">
 		SELECT *
-		FROM SELL_PROD_STOCK
+		FROM SELLER_PROD_STOCK
 	</select>
 
 	<insert id="seller_prod_stockInsert"
@@ -90,18 +71,10 @@
 		VALUES(#{s_stock_id}, #{stock}, #{total}, #{prod_id}, #{opt_id1},
 		#{opt_id2}, #{opt_id3}, #{opt_id4}, #{opt_id5})
 	</insert>
-	
-	<!-- 주문 생성시 재고수 업데이트 -->
-	<update id="sellProdStockUpdate">
-		UPDATE SELL_PROD_STOCK
-		SET
-		stock = stock - #{order_num}
-		WHERE s_stock_id =  #{s_stock_id}
-	</update>
 
 	<update id="seller_prod_stockUpdate"
 		parameterType="seller_prod_stockVO">
-		UPDATE SELL_PROD_STOCK
+		UPDATE SELLER_PROD_STOCK
 		SET
 		stock = #{stock}, total =
 		#{total},
@@ -123,7 +96,7 @@
 	<delete id="seller_prod_stockDelete" parameterType="string">
 		DELETE
 		FROM
-		SELL_PROD_STOCK
+		SELLER_PROD_STOCK
 		WHERE s_stock_id = #{s_stock_id}
 	</delete>
 

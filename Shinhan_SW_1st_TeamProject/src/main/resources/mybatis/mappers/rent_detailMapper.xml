@@ -49,7 +49,7 @@
 			#{rent_num}, 
 			#{r_stock_id}, 
 			#{rental_code},
-			'대여신청완료'
+			'rent_requested'
 		)
 	</insert>
 

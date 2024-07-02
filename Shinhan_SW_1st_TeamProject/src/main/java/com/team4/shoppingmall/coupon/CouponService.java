@@ -21,10 +21,13 @@ public class CouponService {
 		return couponDAO.selectAll();
 	}
 	
-	//회원별 보유 쿠폰 목록
-	public List<CouponDTO> selectCustomerCouponList(String member_id){
-		return couponDAO.selectCustomerCouponList(member_id);
-	}
+//	public int couponInsert(CouponDTO coupon) {
+//		return couponDAO.couponInsert(coupon);
+//	}
+	
+//	public int couponUpdate(CouponDTO coupon) {
+//		return couponDAO.couponUpdate(coupon);
+//	}
 	
 	// 쿠폰사용
 	public int couponUse(String coupon_id) {

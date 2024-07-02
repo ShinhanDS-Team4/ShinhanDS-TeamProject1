@@ -17,7 +17,6 @@ public class Order_DetailService {
 	public List<Order_DetailDTO> selectBySellerID(String member_id){
 		return order_DetailDAO.selectBySellerID(member_id);
 	}
-	
 
 	public List<Order_DetailDTO> selectAll() {
 		return order_DetailDAO.selectAll();

@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@ page session="false" %>
 <c:set var="path" value="${pageContext.servletContext.contextPath}" />
 <html>
 <head>
@@ -21,8 +21,7 @@
     <link rel="stylesheet" href="${path}/resources/slick/slick.css">
     <script src="${path}/resources/slick/slick.min.js"></script>
 </head>
-<body>	 
- 
+<body>	  
   	  <%@ include file="./common/header.jsp" %>
       <div id="container">
        <div class="inner">

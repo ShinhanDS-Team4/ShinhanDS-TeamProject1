@@ -18,7 +18,7 @@
 			data:$("#registerAQ").serialize(),
 			type:'POST',
 			success: function(responseData){
-				alert("등록이 완료되었습니다.");
+				alert(responseData);
 				window.close();
 			},error:function(responseData){
 				alert("실패");
@@ -102,21 +102,25 @@ h1 {
 <body>
 	<div class="container">
 		<h1>관리자 문의 작성</h1>
-		<form id="registerAQ" method="post" action="${path}/adminqna/writeqna.do"
+		<form id="registerAQ" method="post" action="${path}/qna/writeqna.do"
 			enctype="multipart/form-data" accept-charset="UTF-8">
 			<div class="info">
 				<div>
 					<label>회원ID</label>
 					<input type="text" name="member_id" id="member_id" value="${member.member_id}" />
 				</div>
+				<div>
+					<label>상품ID</label>
+					<input type="text" name="prod_id" id="prod_id" value="예시티셔츠" />
+				</div>
 			</div>
 			<div class="input-group">
 				<label for="subject">제목</label>
-				<input type="text" id="admin_inq_title" name="admin_inq_title"/>
+				<input type="text" id="seller_inq_title" name="seller_inq_title"/>
 			</div>
 			<div class="input-group">
 				<label for="content">내용작성</label>
-				<textarea id="admin_inq_content" rows="10" name="admin_inq_content"></textarea>
+				<textarea id="buyer_inq_content" rows="10" name="seller_inq_content"></textarea>
 			</div>
 			<div class="buttons">
 				<button type="button" onclick="submitForm()">등록</button>

@@ -1,22 +1,21 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>판매자 정보</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<meta charset="UTF-8">
+<title>판매자 정보</title>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="${pageContext.servletContext.contextPath}/resources/css/admin/admin_page.css" rel="stylesheet">
 </head>
 <body>
 <jsp:include page="common.jsp" />
-    <div class="content">
+	<div class="content">
         <div class="container-fluid">
             <h1>판매자 정보</h1>
             <form>
                 <div class="form-group">
-                    <label for="sellerId">판매자 아이디</label>
+                    <label for="sellerName">판매자 아이디</label>
                     <input type="text" class="form-control" id="sellerId" value="${member_info.member_id}" readonly="readonly">
                 </div>
                 <div class="form-group">
@@ -24,33 +23,42 @@
                     <input type="text" class="form-control" id="sellerName" value="${member_info.member_name}" readonly>
                 </div>
                 <div class="form-group">
-                    <label for="sellerEmail">판매자 이메일</label>
+                    <label for="sellerName">판매자 이메일</label>
                     <input type="text" class="form-control" id="sellerEmail" value="${member_info.member_email}" readonly>
                 </div>
                 <div class="form-group">
-                    <label for="sellerPhone">판매자 연락처</label>
+                    <label for="sellerName">판매자 연락처</label>
                     <input type="text" class="form-control" id="sellerPhone" value="${member_info.member_phone}" readonly>
                 </div>
                 <div class="form-group">
-                    <label for="sellerBrand">판매자 브랜드</label>
+                    <label for="sellerName">판매자 브랜드</label>
                     <input type="text" class="form-control" id="sellerBrand" value="${member_info.member_brand}" readonly>
                 </div>
+                
                 <div class="form-group">
-                    <label for="sellerBirthDate">판매자 생년월일</label>
+                    <label for="sellerBrand">판매자 생년월일</label>
                     <input type="text" class="form-control" id="sellerBirthDate" value="${member_info.member_birth_date}" readonly>
                 </div>
                 <div class="form-group">
-                    <label for="sellerGender">판매자 성별</label>
+                    <label for="sellerExt">판매자 성별</label>
                     <input type="text" class="form-control" id="sellerGender" value="${member_info.member_gender}" readonly>
                 </div>
                 <div class="form-group">
-                    <label for="sellerCreateDate">판매 가능 여부</label>
-                    <input type="text" class="form-control" id="sellerMember_seller_authority" value="${member_info.member_seller_authority}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="sellerCreateDate">판매자 등록 신청일</label>
+                    <label for="sellerCity">판매자 등록 신청일</label>
                     <input type="text" class="form-control" id="sellerCreateDate" value="${member_info.member_seller_create_date}" readonly>
                 </div>
+                <!-- <div class="form-group">
+                    <label for="sellerStatus">Status</label>
+                    <select class="form-control" id="sellerStatus">
+                        <option>access</option>
+                        <option>deny</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="sellerStartDate">Start Date</label>
+                    <input type="date" class="form-control" id="sellerStartDate">
+                </div>
+                <button type="submit" class="btn btn-primary">등록</button> -->
             </form>
         </div>
     </div>

@@ -1,10 +1,13 @@
 package com.team4.shoppingmall.prodTest;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,279 +17,424 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqDTO;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqService;
+import com.team4.shoppingmall.cart.CartDTO;
 import com.team4.shoppingmall.cart.CartService;
-import com.team4.shoppingmall.category.CategoryDTO;
-import com.team4.shoppingmall.category.CategoryService;
-import com.team4.shoppingmall.order_detail.Order_DetailService;
-import com.team4.shoppingmall.order_prod.OrderProdService;
-import com.team4.shoppingmall.prod.ProductNewVO;
 import com.team4.shoppingmall.prod_option.Prod_OptionDTO;
 import com.team4.shoppingmall.prod_optionTest.Prod_OptionTestService;
+import com.team4.shoppingmall.rent.RentDTO;
 import com.team4.shoppingmall.rent.RentService;
+import com.team4.shoppingmall.rent_detail.RentDetailDTO;
 import com.team4.shoppingmall.rent_detail.RentDetailService;
-import com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO;
 import com.team4.shoppingmall.rent_prod_stock.RentProdStockService;
-import com.team4.shoppingmall.reviews.ReviewsDTO;
 import com.team4.shoppingmall.reviews.ReviewsService;
 import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestDTO;
 import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestService;
+import com.team4.shoppingmall.util.DateUtil;
 
 @Controller
 @RequestMapping("/prod")
 public class ProdTestController {
 	
+	/* ³ªÁß¿¡ ¼­ºñ½º,DTO µî ÀÌ¸§¿¡¼­ Test»©°í, ÆÄÀÏ ³»¿ë ¿Å±â±â */
 	
 	@Autowired
-	Seller_Prod_StockTestService seller_Prod_StockTestService; 
+	Seller_Prod_StockTestService seller_Prod_StockTestService; //ÆÇ¸Å »óÇ° Àç°í
 	
 	@Autowired
-	ProdTestService prodTestService; 
+	ProdTestService prodTestService;  //»óÇ°
 	
 	@Autowired
-	Prod_OptionTestService prod_OptionSerTestService; 
+	Prod_OptionTestService prod_OptionSerTestService;  //»óÇ° ¿É¼Ç
 	
 	@Autowired
-	Buyer_InqService buyer_InqService; 
+	Buyer_InqService buyer_InqService; //±¸¸ÅÀÚ ¹®ÀÇ(±¸¸ÅÀÚ-ÆÇ¸ÅÀÚ)
 	
 	@Autowired
-	CartService cartService;
+	CartService cartService; //Àå¹Ù±¸´Ï
 	
 	@Autowired
-	ReviewsService reviewsService;
+	ReviewsService reviewsService; //¸®ºä
 	
 	@Autowired
-	RentService rentService;
+	RentService rentService; //´ë¿©
 	
 	@Autowired
-	RentProdStockService rentProdStockService;
+	RentProdStockService rentProdStockService; //´ë¿©»óÇ°Àç°í 
 	
 	@Autowired
-	RentDetailService rentDetailService; 
-  
-	@Autowired
-	OrderProdService orderProdService;
+	RentDetailService rentDetailService; //´ë¿© »ó¼¼
 	
-	@Autowired
-	Order_DetailService order_DetailService; 
-	
-	@Autowired
-	CategoryService categoryService; 
-	
-	
+	/* »óÇ° ¸ñ·Ï ÆäÀÌÁö */
 	@GetMapping("/productlistTest")
 	public void productList() {
 		
 	}
 		
-		/* ìƒí’ˆ ìƒì„¸ í˜ì´ì§€ */
+	/* »óÇ° »ó¼¼ ÆäÀÌÁö */
 	@GetMapping("/product_detail")
-	public void productDetail(String prod_id, Model model) throws JsonProcessingException {
+	public void productDetail(String prod_id, Model model) {
 		
-		//ë‚˜ì¤‘ì— ì‚­ì œí•˜ê¸°
-		//prod_id = "ë…¼ì•„ì´ë¡  ì‚¬í‹´ ì†”ë¦¬ë“œ ë“œë ˆìŠ¤ ì…”ì¸  - í™”ì´íŠ¸_199-81-22242"; //ëŒ€ì—¬ì¬ê³ ì—†ëŠ”ìƒí’ˆ test
-		prod_id = "ììˆ˜ ë¯¸ë‹ˆ ì›í”¼ìŠ¤ - í™”ì´íŠ¸_199-81-21909";
+		//³ªÁß¿¡ »èÁ¦ÇÏ±â
+		prod_id = "³ªÀÌÅ° ¹İÆÈ_1234-1234";
 		
-		//ìƒí’ˆì˜ ì •ë³´ì™€ ì˜µì…˜ ì¡°íšŒ
-		//ì˜µì…˜ëª…ê³¼ ê°’ ì „ë¶€ ì¡°íšŒ
-		ArrayList<Object> prod_Options = (ArrayList<Object>) prod_OptionSerTestService.selectAllOptionsByProdId(prod_id);
+		/* »óÇ°ÀÇ Á¤º¸¿Í ¿É¼Ç Á¶È¸ */
+		//¿É¼Ç¸í°ú °ª ÀüºÎ Á¶È¸
+		List<Object> prod_Options = prod_OptionSerTestService.selectAllOptionsByProdId(prod_id);
 		model.addAttribute("prod_Options", prod_Options);
+		//System.out.println("¿É¼Ç Á¶È¸ : "+ prod_Options);
 		 
-		//íŒë§¤ ìƒí’ˆ ì˜µì…˜ë³„ ì¬ê³ ëŸ‰ ì¡°íšŒ
+		//ÆÇ¸Å »óÇ° ¿É¼Çº° Àç°í·® Á¶È¸
 		List<Seller_Prod_StockTestDTO> seller_prod_stockDTO = seller_Prod_StockTestService.selectSpsOptionByProdId(prod_id);
 		model.addAttribute("seller_prod_stockDTO", seller_prod_stockDTO);
-		ObjectMapper mapper = new ObjectMapper();
-		String jsonText = mapper.writeValueAsString( seller_prod_stockDTO );
-		model.addAttribute( "stockList", jsonText );
 
-		//ìƒí’ˆ ì •ë³´ ì¡°íšŒ (ì¿¼ë¦¬ ìˆ˜ì •)
+		//»óÇ° Á¤º¸ Á¶È¸
 		Map<String,Object> prod_detail_info = prodTestService.selectProdDetailInfoByProdId(prod_id);
 		prod_detail_info.put("prod_id", prod_id); 
 		model.addAttribute("prod_detail_info", prod_detail_info);
+		//System.out.println("»óÇ° »ó¼¼ Á¤º¸ Á¶È¸ : "+ prod_detail_info);
 		
-		//ìƒí’ˆ ì¹´í…Œê³ ë¦¬ ì¡°íšŒ
-		CategoryDTO category = categoryService.productCategoryByProdId(prod_id);
-		model.addAttribute("category", category);
 		
-		//ë¦¬ë·° í‰ê· ê³¼ ë¦¬ë·° ìˆ˜
-		ReviewsDTO reviewInfo = reviewsService.reviewAvgByProdId(prod_id); 
-		model.addAttribute("reviewInfo", reviewInfo);
-		
-		//ëŒ€ì—¬ ìƒí’ˆ ì˜µì…˜ë³„ ì¬ê³ ëŸ‰ ì¡°íšŒ
-		List<RentProdStockDTO> rentStockList = rentProdStockService.selectRpsOptionByProdId(prod_id);
-		model.addAttribute("rentStockList", rentStockList);
-		ObjectMapper rentMapper = new ObjectMapper();
-		String jsonTextRent = rentMapper.writeValueAsString( rentStockList );
-		model.addAttribute( "rentStockList", jsonTextRent );
-		
-		/* ìƒí’ˆ ì „ì²´ ë¦¬ë·° ëª©ë¡ */			
+		/* »óÇ° ÀüÃ¼ ¸®ºä ¸ñ·Ï */		
 		List<Map<String,String>> productReviews = reviewsService.selectAllProductReviewByProdId(prod_id);
 		model.addAttribute("productReviews", productReviews);
+		//System.out.println("»óÇ° ÀüÃ¼ ¸®ºä ¸ñ·Ï : " + productReviews);
 		
-		//ë¦¬ë·° ëª©ë¡ì— ë¶ˆëŸ¬ì˜¬ ìƒí’ˆì˜ ì˜µì…˜ ëª©ë¡
+		//¸®ºä »óÇ°ÀÇ ¿É¼Ç ¸ñ·Ï
 		List<Prod_OptionDTO> prodOptions = prod_OptionSerTestService.productAllOptionsByProdId(prod_id);
 		model.addAttribute("prodOptions", prodOptions);
 		
-		/* ìƒí’ˆ ì „ì²´ ë¬¸ì˜ ëª©ë¡ */
+		
+		//System.out.println("¸®ºä »óÇ° ¿É¼Ç ¸ñ·Ï : " + prodOptions);
+		
+		/* »óÇ° ÀüÃ¼ ¹®ÀÇ ¸ñ·Ï */
 		List<Buyer_InqDTO> buyer_inqList = buyer_InqService.selectByProdId(prod_id);
 		model.addAttribute("buyer_inqList", buyer_inqList);
-		
-		//ìƒí’ˆì˜ ëŒ€ì—¬ì¬ê³ ID ì¡°íšŒ - ëŒ€ì—¬ ë²„íŠ¼ í™œì„±í™”
-		List<RentProdStockDTO> rentProductStockCheck = rentProdStockService.selectRentStockByProdId2(prod_id);
-		model.addAttribute("rentProductStockCheck", rentProductStockCheck);
+		//System.out.println("»óÇ° ÀüÃ¼ ¹®ÀÇ ¸ñ·Ï : " + buyer_inqList);
 		
 	}
 	
-	
-  //ì¥ë°”êµ¬ë‹ˆ - ìƒí’ˆ(íŒë§¤)
-	@PostMapping("/productCartInsert.do")
-	@ResponseBody
-	public int productCartInsert(String prod_id,
-								 HttpServletRequest request, 
-								 HttpSession session, 
-								 Model model,
-								 @RequestBody ProductNewVO prodVO) 
-	{
-		//session
-		//MemberDTO member =  session.getAttribute("member");
-		//String member_id = member.getMember_id();
-        String member_id = "testid";
-        prod_id = "";
-        
-        if(prodVO.getS_stock_id() == null || prodVO == null) {
-    		return 0; 
-		}
-       
-        
-    int cart_amount = prodVO.getOrder_num();
-		int sellProdCartInsert = cartService.cartInsert(prodVO, member_id, cart_amount);
-		
-		return sellProdCartInsert;
-		
-	}
-	//ì¥ë°”êµ¬ë‹ˆ - ìƒí’ˆ(ëŒ€ì—¬)
-	@PostMapping("/rentProductCartInsert.do")
-	@ResponseBody
-	public int rentProductCartInsert(String prod_id,
-								 HttpServletRequest request, 
-								 HttpSession session, 
-								 Model model,
-								 @RequestBody ProductNewVO prodVO) 
-	{
-		//session
-		//MemberDTO member =  session.getAttribute("member");
-		//String member_id = member.getMember_id();
-        String member_id = "testid";
-        prod_id = "";
-        
-        if(prodVO == null || prodVO.getR_stock_id() == null) {
-    		return 0; 
-		}
-        
-		int cartRentProductInsert = cartService.cartRentProductInsert(prodVO, member_id);
-		
-		return cartRentProductInsert;
-		
-	}
-	    
-	/* êµ¬ë§¤í•˜ê¸° */ 
-	//ProductNewVO ìƒì„±
-	@PostMapping("/productOrderInsert.do")
-	@ResponseBody
-	public int productOrderInsert(HttpServletRequest request, 
-								  Model model,
-								  @RequestBody ProductNewVO prodVO,
-								  HttpSession session) throws UnsupportedEncodingException
-	{
-    	//session
-		//MemberDTO member =  session.getAttribute("member");
-		//String member_id = member.getMember_id();
-        String member_id = "testid";
-        String prod_id = "";
-		
-      //ì¬ê³  ì²´í¬ (í”„ë¡ íŠ¸ì—ì„œ ì²´í¬ í–ˆëŠ”ë° ë°±ë„ ë‚˜ì¤‘ì— ì¶”ê°€)
-    	if(prodVO.getS_stock_id() == null || prodVO == null) {
-    		return 0; 
-		}
-    	
-		int productPrice = Integer.parseInt(prodVO.getProductPrice());
-		int total_price = productPrice * prodVO.getOrder_num();   //ì£¼ë¬¸ ì´ê¸ˆì•¡
-		
-		//1.ì£¼ë¬¸,ì£¼ë¬¸ìƒì„¸ ìƒì„± (ì„œë¹„ìŠ¤ì—ì„œ ë¡œì§ ì²˜ë¦¬)
-		int orderProdInsert =  orderProdService.orderprodInsert(prodVO, total_price, member_id);
-		
-		return orderProdInsert; 
-    }
-	
-	/* ëŒ€ì—¬í•˜ê¸° */
-	@PostMapping("/rentProductOrderInsert.do")
-	@ResponseBody
-	public int rentProductOrderInsert(HttpServletRequest request, 
-								  Model model,
-								  @RequestBody ProductNewVO prodVO,
-								  HttpSession session) 
-	{
-		//MemberDTO member =  session.getAttribute("member");
-		//String member_id = member.getMember_id();
-		String member_id = "testid";	 
-        String prod_id = "";
-        
-        if(prodVO.getR_stock_id() == null || prodVO == null) {
-        	return 0; 
-        }
-        
-      
-        int rentProdInsert = rentService.rentInsert2(prodVO, member_id);
-        
-        
-        return rentProdInsert; 
-        
-	}
+	/* Àå¹Ù±¸´Ï */
+	//»óÇ° ¼±ÅÃÇÑ ¿É¼Ç °ª ÀúÀåÇÏ±â -> Àå¹Ù±¸´Ï·Î insert
+	@GetMapping(value = "/productCartInsert.do", produces = "text/plain;charset=utf-8")
+	public @ResponseBody String productCartInsert(HttpServletRequest request) throws UnsupportedEncodingException {
 
+		HttpSession session = request.getSession();
+    	
+		//³ªÁß¿¡ »èÁ¦ÇÏ±â
+		String prod_id = "³ªÀÌÅ° ¹İÆÈ_1234-1234";
+		
+    	//1.session¿¡¼­ ÀĞÀ» ¿¹Á¤ 
+        String member_id = "testid";
+		//String memberId = (String) session.getAttribute("member_id"); ³ªÁß¿¡ ÁÖ¼® Ç®±â
+		
+		//¼±ÅÃµÈ ¿É¼Ç °ª È®ÀÎ 
+		String param = request.getQueryString();
+        System.out.println("Selected option(param): " + param);
+        
+        String message = null;
+        
+        //paramÀÌ nullÀÌ ¾Æ´Ñ °æ¿ì
+        if(param != null) {
+        	System.out.println("(¿É¼ÇÁ¸Àç)Selected option: " + param);
+        	
+			//(1)paramÀ¸·Î ³Ñ¾î¿Â ¼±ÅÃ ¿É¼Çµé ÀúÀå
+        	HashMap<String, String> map = new HashMap<>(); 
+        	HashMap<String, String> optionMap = new HashMap<>(); //¿É¼ÇMap-Å°(¿É¼Ç¸í):°ª(¿É¼Ç°ª)
+        	String[] propertis = param.split("&");
+        	for(String pro: propertis) {
+        		String[] keyValue = pro.split("=");
+        		
+        		//»óÇ°ID ÇÑ±Û ƒÆÁü ÇØ°á decode
+        		map.put(keyValue[0], URLDecoder.decode(keyValue[1], "utf-8"));
+        		
+        		//discountPrice´Â Àå¹Ù±¸´Ï¿¡ ÇÊ¿ä¾øÀ½(paramÀ¸·Î ³Ñ¾î¿Ã ÇÊ¿ä¾øÀ½) - ¼öÁ¤ ÇÊ¿ä
+        		//if(!keyValue[0].contains("quantity")&& !keyValue[0].contains("discountPrice") &&  !keyValue[0].contains("prod_id"))
+        		if(!keyValue[0].contains("quantity")&& !keyValue[0].contains("productPrice") &&  !keyValue[0].contains("prod_id"))
+        			optionMap.put(keyValue[0], keyValue[1]);
+        	}
+        	System.out.println("paramÀ¸·Î ³Ñ¾î¿Â ÀüÃ¼ °ª map : " + map);
+        	
+           
+            //2.¿É¼Ç¿¡ ÇØ´çÇÏ´Â »óÇ° Àç°íid (ÆÇ¸Å»óÇ°Àç°í)
+            String sellStockId = cartService.searchStockId(optionMap, map.get("prod_id"));
+            
+            if(sellStockId != null) {
+            	
+                //1.select¹® - Àå¹Ù±¸´Ï¿¡ °°Àº »óÇ° ÀÖ´ÂÁö Á¶È¸
+                Map<String,String> map2 = new HashMap<>();
+                map2.put("member_id", member_id);
+                map2.put("sellstock_id", sellStockId);
+                
+                CartDTO cartBySellstockDTO = cartService.selectCartBySellstock(map2);
+            	
+                if(cartBySellstockDTO != null) {
+                	//2.update¹® - °°Àº »óÇ° Á¸Àç ½Ã ¼ö·® ¾÷µ¥ÀÌÆ® 
+                	
+                	CartDTO cart = new CartDTO();
+                	
+                	//select·Î Á¶È¸ÇÑ °á°ú¿¡ ÀÖ´Â cart_id¸¦ °¡Á®¿Í¼­ ÀúÀå
+                	cart.setCart_id(cartBySellstockDTO.getCart_id()); 
+                	//cart_amount º¯¼ö ÀúÀå => ±âÁ¸¿¡ ÀÖ´Â cart_amount + ¼ö·®(quantity)	
+                	cart.setCart_amount(Integer.parseInt(map.get("quantity")));
+                	
+                	//int updateResult = cartService.updateCartBySellstock(cart);
+                	cartService.updateCartBySellstock(cart);
+                	
+                } else {
+                	//3.insert¹® - Àå¹Ù±¸´Ï Å×ÀÌºí¿¡ »õ·Î µî·Ï
+                	//¿©±â¼­ ¾²ÀÎ cart_id = 0Àº ÀÇ¹Ì¾øÀ½. ½ÃÄö½º »ç¿ëÁß
+                	CartDTO cartDTO = new CartDTO(0, member_id, sellStockId, Integer.parseInt(map.get("quantity")));
+                	cartService.cartInsert(cartDTO);
+                }
+         
+            }
+            message = "Àå¹Ù±¸´Ï¿¡ ÀúÀåµÇ¾ú½À´Ï´Ù.";
+            System.out.println("Àç°íID: "+ sellStockId);
+            
+            return message; //Àå¹Ù±¸´Ï ÆäÀÌÁö ¾ÆÁ÷ ¿¬°á X
+            
+        }else {//(2)paramÀÌ nullÀÎ °æ¿ì
+				System.out.println("(¿É¼Çnull)Selected option: " + param);
+				message = "¿É¼ÇÀ» ¼±ÅÃÇØ ÁÖ¼¼¿ä";
+				return message;  
+			  }
+    }
+	    
+	/* ±¸¸ÅÇÏ±â */
+	//»óÇ° ¼±ÅÃÇÑ ¿É¼Ç °ª ÀúÀåÇÏ±â -> ÁÖ¹®ÆäÀÌÁö
+	//°áÁ¦°¡ µÈ ÈÄ¿¡ ÁÖ¹®»ó¼¼Å×ÀÌºí¿¡ ÀúÀåµÇ´Â°Í? 
+	//@GetMapping("/?")
+	//public void productOrderInsert(String productOption) {
 	
-	/* ìƒí’ˆ ë¬¸ì˜í•˜ê¸° (êµ¬ë§¤ì=>íŒë§¤ì) */
+	//ÁÖ¹®Å×ÀÌºí insert 1 : ÁÖ¹®»ó¼¼Å×ÀÌºí insert  n
+	
+	
+	//
+	//}
+
+	/* »óÇ° ´ë¿© °¡´ÉÇÑÁö Ã¼Å© => ´ë¿©ÇÏ±â ÁøÇà */
+	@PostMapping("/isProductRentable")
+	@ResponseBody
+	public int isProductRentable(HttpServletRequest request, Model model) {
+		
+		//È¸¿ø ¼¼¼Ç¿¡¼­ ÀĞ±â
+		String member_id = "testid";
+    	 
+		String param = request.getQueryString();
+		String prod_id="";
+		
+		String rent_prod_quantity = "";
+		String rent_start_date = "";
+		String rent_end_date = "";
+		String total_amount = "";
+		
+		//1.»óÇ°ÀÌ ´ë¿©Àç°í¿¡ Á¸ÀçÇÏ´ÂÁö Ã£±â
+		//{color=4, size=1, rent_prod_quantity=1, rent_start_date=2024-06-27, rent_end_date=2024-07-04, prod_id=%EB%82%98%EC%9D%B4%ED%82%A4%20%EB%B0%98%ED%8C%94_1234-1234, total_amount=30000}
+		
+    	HashMap<String, String> map = new HashMap<>(); 
+    	HashMap<String, String> optionMap = new HashMap<>(); //¿É¼ÇMap
+    	String[] propertis = param.split("&");
+    	
+    	List<Integer> optList = new ArrayList<>();   
+    	
+    	int index=0;
+    	
+    	for(String pro: propertis) {
+    		String[] keyValue = pro.split("=");
+    		
+    		map.put(keyValue[0], keyValue[1]);
+    		
+    		//»óÇ°id
+    		if(keyValue[0].equals("prod_id")) prod_id = keyValue[1];
+    		
+    		//´ë¿© ¼ö
+    		if(keyValue[0].equals("rent_prod_quantity")) rent_prod_quantity = keyValue[1];  //¼ö·®
+    		//´ë¿© ½ÃÀÛÀÏ
+    		if(keyValue[0].equals(("rent_start_date"))) rent_start_date = keyValue[1]; 
+    		//´ë¿© ¸¶°¨ÀÏ
+    		if(keyValue[0].equals(("rent_end_date"))) rent_end_date = keyValue[1];
+    		//´ë¿©°¡
+    		if(keyValue[0].equals(("total_amount"))) total_amount = keyValue[1]; //´ë¿©°¡
+    		
+    		//¿É¼Çµé
+    		if(!keyValue[0].contains("prod_id")&& 
+			  !keyValue[0].contains("rent_prod_quantity")&& 
+			  !keyValue[0].contains("rent_start_date") &&  
+			  !keyValue[0].contains("rent_end_date") && 
+			  !keyValue[0].contains("total_amount")) {
+    			
+    			optList.add( Integer.parseInt(keyValue[1])); 
+    			index++; //¿¹) 1,4,,,
+    		}
+    	}
+    	
+	    // Option list Á¤·Ä
+    	optList.sort((a,b)->a-b);
+    	List<String> result = optList.stream().map(i->i.toString()).collect(Collectors.toList());
+    	String optionString = String.join("," , result);
+    	for(int i=1; i<=5-index;i++) { optionString += ","; }
+		 
+        //¿É¼Ç °ªÀÌ ÄŞ¸¶·Î ±¸ºĞµÈ ¹®ÀÚ¿­À» »ı¼º
+        map.put("prod_id", prod_id);
+        map.put("optionString", optionString);
+
+        System.out.println(prod_id + ":" + optionString);
+        
+		try {
+			prod_id = URLDecoder.decode(map.get("prod_id"), "utf-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println(prod_id +":" + optionString); 
+		
+		//ÇØ´ç ¿É¼ÇÀÇ ´ë¿© »óÇ° Àç°í Á¶È¸
+		Map<String, String> rentProductStockCheck = rentProdStockService.selectRentStockByProdId(prod_id, optionString);
+        model.addAttribute("rentProductStockCheck",rentProductStockCheck);
+        //rentProductStockCheck => {OPT_ID2=4, OPT_ID1=1, R_STOCK_ID=³ªÀÌÅ° ¹İÆÈ_1234-1234_RENT_1, STOCK=50}
+        
+        
+        /* ´ë¿© */
+        // 2.´ë¿©Àç°í°¡ Á¸ÀçÇÏ´Â °æ¿ì ´ë¿©ÇÏ±â °¡´É
+         if (rentProductStockCheck != null) { 
+        	
+        	 RentDTO rent = new RentDTO();
+        	
+        	 rent.setRent_start_date( DateUtil.getSQLDate(rent_start_date)  );
+        	 rent.setRent_end_date(DateUtil.getSQLDate(rent_end_date));
+             rent.setMember_id(member_id);
+             rent.setTotal_rent_price(Integer.parseInt(total_amount));
+            
+        	 int rentProdInsert = rentService.rentInsert(rent);
+        	 
+        	 
+        	 /* ´ë¿© »ó¼¼ -------------------------||ÁøÇàÁß||---------------------------------------- 
+        	 // »ğÀÔµÈ ´ë¿©ID¸¦ Ã£´Â select¹® RENTÅ×ÀÌºí¿¡ »ğÀÔµÇ´Â RENTAL_CODE Ã£±â
+             int rentalCode = rentService.selectInsertRentalCode();
+    	 	
+        	 //3.¿É¼Ç¿¡ ÇØ´çÇÏ´Â »óÇ°ÀÇ ´ë¿©Àç°íID(r_stock_id) ±¸ÇÏ°í ´ë¿©»ó¼¼ »ı¼º
+             if (rentProductStockCheck != null && rentProductStockCheck.containsKey("R_STOCK_ID")) {
+                 String rentStockId = rentProductStockCheck.get("R_STOCK_ID");
+                 System.out.println("R_STOCK_ID: " + rentStockId);
+                 
+                 //´ë¿©ID´Â ¾î¶»°Ô Ã£Áö?
+                 
+                 RentDetailDTO rentDetailDTO = new RentDetailDTO();
+                 
+                 //rentDetailDTO.setRentdetail_id(); 	//½ÃÄö¤µ
+                 rentDetailDTO.setRent_product_price(Integer.parseInt(total_amount)); //ÀÏ´Ü ´ë¿©°¡°İ ³ÖÀ½
+                 rentDetailDTO.setR_stock_id(rentStockId);  //´ë¿©Àç°íid
+                 rentDetailDTO.setRent_num(Integer.parseInt(rent_prod_quantity)); //´ë¿© ÁÖ¹® ¼ö·®
+                 
+                 rentDetailDTO.setRental_code(rentalCode); //´ë¿©id (½ÃÄö½º)
+                 
+                 
+                 //´ë¿©»ó¼¼ »ı¼º Insert (´ë¿©id, ´ë¿©Àç°íid, ÁÖ¹®¼ö·®, »óÇ°°¡°İ(´ë¿©°¡), ÁÖ¹®»ó¼¼¹øÈ£(½ÃÄö½º) )
+                 //¸ÊÇÎµÈ sql¹® ¸øÃ£À½ ÀÌ½´
+                 int rentDetailInsert = rentDetailService.rentDetailInsert(rentDetailDTO);
+                 
+                 System.out.println("rentDetailInsert: " + rentDetailInsert);
+                 
+                 
+             } else {
+                 System.out.println("R_STOCK_ID °ªÀÌ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+             }
+             //------------------------------------------------------------------------
+        	 */
+        	
+        	 
+        	 
+             return 1; // ´ë¿© ¼º°ø
+             
+         } else{
+        	 
+        	 return 0; //´ë¿©½ÇÆĞ (Àç°í¾øÀ½)
+         }
+         
+         
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/* »óÇ° ¹®ÀÇÇÏ±â (±¸¸ÅÀÚ=>ÆÇ¸ÅÀÚ) */
 	@PostMapping(value = "/productQnaInsert.do", produces = "text/plain;charset=utf-8")
 	@ResponseBody
 	public String productQnaInsert( 
-			@RequestParam("prod_id") String prod_id,
-			@RequestParam String qnaTitle,	
-			@RequestParam String qnaTestarea, 
-			HttpSession session 
+			@RequestParam String qnaTitle,	//¹®ÀÇ Á¦¸ñ
+			@RequestParam String qnaTestarea, //¹®ÀÇ ³»¿ë
+			HttpSession session //session¿¡¼­ ·Î±×ÀÎ Á¤º¸ ÀĞ±â
 	){
 		Buyer_InqDTO buyer_InqDTO = new Buyer_InqDTO();
 		
 		Map<String,String> buyer_inq_map = new HashMap<String,String>();
 		
-		//MemberDTO member =  session.getAttribute("member");
-		//String member_id = member.getMember_id();
-		String member_id = "testid";
-		 prod_id = "ììˆ˜ ë¯¸ë‹ˆ ì›í”¼ìŠ¤ - í™”ì´íŠ¸_199-81-21909";
-		//prod_id = "ë…¼ì•„ì´ë¡  ì‚¬í‹´ ì†”ë¦¬ë“œ ë“œë ˆìŠ¤ ì…”ì¸  - í™”ì´íŠ¸_199-81-22242";
+		System.out.println("¹®ÀÇ Á¦¸ñ: "+qnaTitle);
+		System.out.println("¹®ÀÇ ³»¿ë: "+qnaTestarea);
 		
-         buyer_inq_map.put("buyer_inq_title", qnaTitle); 
+		
+		/* ¾÷·Îµå */
+        //¹®ÀÇ Á¦¸ñ 
+        //buyer_InqDTO.setBuyer_inq_title(qnaTitle); 
+        buyer_inq_map.put("buyer_inq_title", qnaTitle); 
+
+        //¹®ÀÇ³»¿ë 
+		//buyer_InqDTO.setBuyer_inq_content(qnaTestarea); 
 		 buyer_inq_map.put("buyer_inq_content", qnaTestarea); 
-		 buyer_inq_map.put("member_id", member_id); 
-		 buyer_inq_map.put("prod_id", prod_id); 
 		 
+		//È¸¿øID Å×½ºÆ® - ½ÇÁ¦·Î´Â ¼¼¼Ç¿¡¼­ °¡Á®¿Í¾ß ÇÔ
+		 String member_id = "testid";
+		//String memberId = (String) session.getAttribute("member_id"); 
+		 
+		 buyer_inq_map.put("member_id", member_id); 
+		 
+		//»óÇ°ID Å×½ºÆ® - ½ÇÁ¦ prod_id °ªÀ» ¼³Á¤Çì¾ß ÇÔ
+		 String prod_id = "³ªÀÌÅ° ¹İÆÈ_1234-1234";
+		 buyer_inq_map.put("prod_id", prod_id); 
+		
+		 
+		//insert¹® - Buyer_InAÅ×ÀÌºí 
 		int result = buyer_InqService.buyer_inqInsert(buyer_inq_map);
 		
 		String message;
 		
-    if(result > 0) {
-			message = "ë¬¸ì˜ê°€ ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤.";
+		if(result > 0) {
+			message = "¹®ÀÇ°¡ µî·ÏµÇ¾ú½À´Ï´Ù.";
 			
 			return  message;		
 			
 		}else {
-			message = "ì˜¤ë¥˜ê°€ ë°œìƒí–ˆìŠµë‹ˆë‹¤. ë‹¤ì‹œ ì‹œë„í•´ì£¼ì„¸ìš”.";
+			message = "¿À·ù°¡ ¹ß»ıÇß½À´Ï´Ù. ´Ù½Ã ½ÃµµÇØÁÖ¼¼¿ä.";
 			return  message;
 		}
 		

@@ -1,7 +1,7 @@
 package com.team4.shoppingmall.prod_optionTest;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ public class Prod_OptionTestService {
 	Prod_OptionTestDAOInterface prod_optionDAO;
 	
 	//옵션명과 옵션값을 함께 조회
-	public List<Object> selectAllOptionsByProdId(String prod_id){
+	public  List<Object> selectAllOptionsByProdId(String prod_id){
 		return prod_optionDAO.selectAllOptionsByProdId(prod_id);
 	};
 	//상품의 옵션조회

@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.team4.shoppingmall.member.MemberDTO;
-
 @Controller
 @RequestMapping("/review")
 public class ReviewsController {
@@ -40,9 +38,7 @@ public class ReviewsController {
 
 	// 여러 파일을 업로드하는 메서드
     @PostMapping("/upload")
-    public String uploadFiles(HttpServletRequest request,
-    		@RequestParam("files") MultipartFile[] files,
-    		RedirectAttributes redirectAttributes) throws Exception {
+    public String uploadFiles(HttpServletRequest request, @RequestParam("files") MultipartFile[] files, RedirectAttributes redirectAttributes) throws Exception {
         List<String> imageUrls = new ArrayList<>();  // 업로드된 파일의 URL을 저장할 리스트
 
         // 업로드된 각 파일을 처리
@@ -79,39 +75,16 @@ public class ReviewsController {
         return "board/displayImage";  // 이미지 표시 페이지로 이동
     }
 	
-	@GetMapping("myreview.do")
-	public String myReview(Model model, HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		MemberDTO mem = (MemberDTO)session.getAttribute("member");
-		//나중에 필터링 하겠지만 우선은 임시방편으로 분기점 만들어놓음
-		if(mem == null) {
-			return "redirect:/member_test/login.do";
-		}
-		String member_Id = mem.getMember_id();
-		
-		List<ReviewsDTO> reviews = reviewsService.selectBymemId(member_Id);
-		model.addAttribute("reviews", reviews);
-		return "board/myreview";
-	}
+	
 	
 
 	@GetMapping("/write.do")
-	public String writeReview(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		MemberDTO mem = (MemberDTO)session.getAttribute("member");
-		//나중에 필터링 하겠지만 우선은 임시방편으로 분기점 만들어놓음
-		if(mem == null) {
-			return "redirect:/member_test/login.do";
-		}
-		
+	public String writeReview() {
 		return "board/reviewWrite";
 	}
 
 	@PostMapping("/write.do")
-	public String postReview(ReviewsDTO review, HttpServletRequest request,
-			@RequestParam("reviewImg") MultipartFile review_img,
-			RedirectAttributes redirectAttributes) throws Exception {
-		
+	public String postReview(ReviewsDTO review, HttpServletRequest request, @RequestParam("reviewImg") MultipartFile review_img, RedirectAttributes redirectAttributes) throws Exception {
 	    if (!review_img.isEmpty()) {
 	     // =========파일명 받아옴=====================//
 	        String originalFileName = review_img.getOriginalFilename();
@@ -122,20 +95,10 @@ public class ReviewsController {
 	        String fileUrl = s3Service.uploadObject(review_img, uuidFileName);
 	        review.setReview_img(fileUrl);  // ReviewsDTO에 URL 설정
 	    }
-	    HttpSession session = request.getSession();
-	    MemberDTO mem = (MemberDTO)session.getAttribute("member");
-		//나중에 필터링 하겠지만 우선은 임시방편으로 분기점 만들어놓음
-		if(mem == null) {
-			return "redirect:/member_test/login.do";
-		}
-		String id = mem.getMember_id();
-		System.out.println(mem);//로그인 한 세션이 불러와지는지 테스트용
-		review.setMember_id(id);
-		
+
 	    // 리뷰 데이터 저장
 	    reviewsService.reviewsInsert(review);
-		
-	    return "redirect:/customer/myPage.do";
+	    return "board/qa_board";
 	}
 	
 	

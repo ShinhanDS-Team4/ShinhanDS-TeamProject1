@@ -12,14 +12,11 @@ public class ReviewsService {
 	@Autowired
 	ReviewsDAOInterface reviewsDAO;
 	
-	//ÏÉÅÌíà Î¶¨Î∑∞ Î™©Î°ù
+	//¡÷πÆ«— ªÛ«∞¿« ∏Æ∫‰¡§∫∏
 	public List<Map<String,String>> selectAllProductReviewByProdId(String prod_id){
 		return reviewsDAO.selectAllProductReviewByProdId(prod_id);
 	};
-	//Î¶¨Î∑∞ ÌèâÍ∑†Í≥º Î¶¨Î∑∞ Ïàò
-	public ReviewsDTO reviewAvgByProdId(String prod_id) {
-		return reviewsDAO.reviewAvgByProdId(prod_id);
-	};
+	
 	public ReviewsDTO selectById(Integer review_id) {
 		return reviewsDAO.selectById(review_id);
 	}
@@ -38,10 +35,5 @@ public class ReviewsService {
 	
 	public int reviewsDelete(Integer review_id) {
 		return reviewsDAO.reviewsDelete(review_id);
-	}
-	
-	//≥ª ∏Æ∫‰ ∫“∑Øø¿±‚∏¶ ¿ß«— memberId∑Œ select«œ±‚
-	public List<ReviewsDTO> selectBymemId(String member_id){
-		return reviewsDAO.selectBymemId(member_id);
 	}
 }

@@ -57,15 +57,9 @@ public class MemberController {
 			session.setAttribute("loginResult", "로그인 성공");
 			session.setAttribute("member", member);
 		}
-		return "redirect:/customer/myPage.do";
+		return "redirect:/";
 	}
 	
-    // 로그아웃
-    @GetMapping("/logout.do")
-    public String logout(HttpSession session) {
-        session.invalidate(); // 세션 무효화
-        return "redirect:/"; // 로그아웃 후 메인 페이지로 리디렉션
-    }
 	
 	//회원가입
 	@GetMapping("/signup.do")
@@ -74,13 +68,8 @@ public class MemberController {
 	}
 	
 	@PostMapping("/signup.do")
-	public String sendSignup(MemberDTO member, Model model) {
+	public String sendSignup(MemberDTO member) {
 		System.out.println(member);
-		if(member.getMember_type().equals(2)) {
-			model.addAttribute("model", model);
-			return "redirect:/";
-			//임시로 이 위치로 뒀지만 관리자 확인페이지로 이동되어야 한다.
-		}
 		memberService.memberInsert(member);
 		return "redirect:login.do";
 	}

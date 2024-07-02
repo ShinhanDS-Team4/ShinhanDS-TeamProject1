@@ -15,8 +15,4 @@ public class CategoryDTO {
 	String category_name;
 	Integer category_depth;
 	Integer parent_category_id;
-	
-	//필드 추가
-	String currentCategoryName;
-	String parentCategoryName;
 }

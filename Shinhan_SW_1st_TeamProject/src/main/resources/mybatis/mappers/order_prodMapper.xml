@@ -17,26 +17,13 @@
 		FROM ORDER_PROD
 	</select>
 
-	
-	<!-- product_detail.jsp 주문생성 -->
-	<!-- DB세팅하고 CURRVAL안될 경우 수정.
-		SELECT last_number-1 FROM user_sequences WHERE sequence_name = 'ORDER_PROD_SEQUENCE' 
-		<selectKey keyProperty="order_id" resultType="Integer" order="AFTER">
-       		SELECT ORDER_PROD_SEQUENCE.CURRVAL FROM DUAL
- 		</selectKey>
-	-->
-	<insert id="orderprodInsert" parameterType="com.team4.shoppingmall.order_prod.OrderProdDTO">
-		INSERT INTO ORDER_PROD (order_id, order_date, member_id, addr_num, total_price)
-		SELECT ORDER_PROD_SEQUENCE.NEXTVAL, sysdate, #{member_id}, addr_num, #{total_price}
-		FROM addr_list 
-		WHERE member_id = #{member_id} AND IS_MASTER_ADDR = 'Y'
+	<!-- 주문생성 -->
+	<insert id="orderprodInsert" parameterType="order_prodVO">
+		INSERT
+		INTO ORDER_PROD(order_id, order_date, member_id, addr_num, total_price)
+		VALUES(#{order_id}, #{order_date}, #{member_id}, #{addr_num}, #{total_price})
 	</insert>
-	
-	<select id="sequenceOrderId" resultType="int">
-		SELECT last_number-1 FROM user_sequences WHERE sequence_name = 'ORDER_PROD_SEQUENCE' 
-	</select>
-	
-	
+
 	<!-- 주문수정 -->
 	<update id="orderprodUpdate" parameterType="order_prodVO">
 		UPDATE ORDER_PROD

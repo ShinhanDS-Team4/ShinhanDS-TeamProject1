@@ -1,8 +1,7 @@
 package com.team4.shoppingmall;
 
 import java.util.List;
-
-import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,77 +11,62 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.team4.shoppingmall.addr_list.Addr_ListDTO;
 import com.team4.shoppingmall.addr_list.Addr_ListService;
-import com.team4.shoppingmall.member.MemberDTO;
-import com.team4.shoppingmall.member.MemberService;
+import com.team4.shoppingmall.addr_list.Addr_ListDTO;
+import com.team4.shoppingmall.cart.CartDTO;
+import com.team4.shoppingmall.prod.ProdService;
+import com.team4.shoppingmall.prod_optionTest.Prod_OptionTestService;
+import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestDTO;
+import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestService;
 
-@Controller
-@RequestMapping("/customer")
+//@Controller
+//@RequestMapping("/customer")
 public class CustomerControllerJH {
 	
-	//@Autowired
-	Addr_ListService addrService; 
-	
 	@Autowired
-	Addr_ListService addrService; //회원 주소 
-  
-  @Autowired
-	MemberService memberService;
-
+	AddrService addrService; //회원 주소 
 	
-	/*留덉씠�럹�씠吏� 硫붿씤*/
+	/*마이페이지 메인*/
 	@GetMapping("/myPage.do")
-	public String myPage(HttpSession session, Model model) {
+	public String myPage() {
+		//1.나의 주문 목록 불러오기 (목록은 1개만 보인다) 
 		
-		//MemberDTO member =  session.getAttribute("member");
-		//String member_id = member.getMember_id();
-		String member_id = "testid";
-		
-		//1.회원정보 조회
-		MemberDTO member = memberService.selectById(member_id);
-		model.addAttribute("member", member);
-		
-		//2.주문 내역
-		
-		
-		//3.대여 내역
-		
+		//2.나의 대여 목록 불러오기
 		
 		return "customer/myPage";
 	}
 
-	//�굹�쓽 二쇰Ц 由ъ뒪�듃
+	//나의 주문 리스트
 	@GetMapping("/orderlist")
 	public String orderlist() {
 		
 		return "customer/orderlist";
 	}
 	
-	//�굹�쓽 ���뿬 由ъ뒪�듃
+	//나의 대여 리스트
 	@GetMapping("/rentlist")
 	public String rentlist() {
-		//���뿬 紐⑸줉 議고쉶
+		//대여 목록 조회
 		
 		return "customer/rentlist";
 	}
 
 	
-	/* �쉶�썝�젙蹂댁닔�젙 */
+	/* 회원정보수정 */
 	//step1
 	@GetMapping("/myInfoUpdate.do")
 	public String myInfoUpdate(Model model) {
 		
-		//諛곗넚吏� 紐⑸줉 議고쉶 �뀒�뒪�듃 以�
+		//배송지 목록 조회 테스트 중
 		List<Addr_ListDTO> addrlist = addrService.selectAll();
 		model.addAttribute("addrlist", addrlist);
 		
-		System.out.println("--�굹�쓽 諛곗넚吏� 議고쉶" + addrlist);
+		System.out.println("--나의 배송지 조회" + addrlist);
 		
 		return "customer/myInfoUpdate";
 	}
 	
-	//step2 - 鍮꾨�踰덊샇 �솗�씤 李�
+	//step2 - 비밀번호 확인 창
 	@GetMapping("/myInfoUpdatePw.do")
 	public String myInfoUpdatePw() {
 		
@@ -90,45 +74,45 @@ public class CustomerControllerJH {
 	}
 	
 	
-	//鍮꾨�踰덊샇 泥댄겕 �썑 �떎�쓬 �뒪�뀦(step3)
+	//비밀번호 체크 후 다음 스텝(step3)
 	@GetMapping("/myInfoUpdatePwCheck.do")
 	public String myInfoUpdatePwCheck(@RequestParam("password") String password) {
 		
-		//濡쒓렇�씤 �쉶�썝 鍮꾨�踰덊샇 泥댄겕(session�뿉�꽌 �씫�쓣 �삁�젙)
+		//로그인 회원 비밀번호 체크(session에서 읽을 예정)
         String member_id = "testid"; //pw = 1111
         
 		if(password.equals("aaa")) {
 			return "customer/myInfoUpdate_step3";
 		}else {
-			System.out.println("留덉씠�럹�씠吏� �쉶�썝 鍮꾨�踰덊샇 �솗�씤 �떎�뙣");
+			System.out.println("마이페이지 회원 비밀번호 확인 실패");
 			return "redirect:customer/myInfoUpdate_step2";
 		}
 		
 	}
 	
-	//step3 - �닔�젙�븷 �쉶�썝 �젙蹂� �엯�젰李�	
+	//step3 - 수정할 회원 정보 입력창	
 	@PostMapping("/myInfoUpdateForm.do")
 	public String myInfoUpdateForm() {
-		System.out.println("諛곗넚吏� 議고쉶");
+		System.out.println("배송지 조회");
 		
 		return "customer/myPage";
 	}
 	
 	
-	/* �쉶�썝 �깉�눜 */
+	/* 회원 탈퇴 */
 	@GetMapping("/memberDelete.do")
 	public String memberDelete() {
 		
 		return "customer/memberDelete";
 	}
-	//鍮꾨�踰덊샇 泥댄겕 �썑 �쉶�썝 �깉�눜
+	//비밀번호 체크 후 회원 탈퇴
 	@GetMapping("/memberDeletePwCheck.do")
 	public String memberDeletePwCheck(@RequestParam("password") String password) {
-		//濡쒓렇�씤 �쉶�썝 鍮꾨�踰덊샇 泥댄겕
+		//로그인 회원 비밀번호 체크
 		if(password.equals("aaa")) {
 			return "customer/myPage";
 		}else {
-			System.out.println("�쉶�썡 �깉�눜 �떎�뙣");
+			System.out.println("회월 탈퇴 실패");
 			return "redirect:customer/memberDelete";
 		}
 		

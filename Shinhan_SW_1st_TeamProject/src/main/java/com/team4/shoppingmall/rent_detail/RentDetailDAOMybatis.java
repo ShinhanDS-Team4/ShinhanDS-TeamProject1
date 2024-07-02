@@ -14,9 +14,7 @@ public class RentDetailDAOMybatis implements RentDetailDAOInterface {
 	@Autowired
 	SqlSession sqlSession;
 
-
 	String namespace = "com.saren.rent_detail."; //수정
-
 
 	// 대여상세 상세
 	@Override

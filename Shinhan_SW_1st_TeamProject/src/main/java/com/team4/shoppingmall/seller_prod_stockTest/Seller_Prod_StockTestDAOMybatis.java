@@ -6,9 +6,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.team4.shoppingmall.prod.ProductNewVO;
-import com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO;
-
 @Repository
 public class Seller_Prod_StockTestDAOMybatis implements Seller_Prod_StockTestDAOInterface {
 
@@ -22,11 +19,6 @@ public class Seller_Prod_StockTestDAOMybatis implements Seller_Prod_StockTestDAO
 	public List<Seller_Prod_StockTestDTO> selectSpsOptionByProdId(String prod_id){
 		return sqlSession.selectList(namespace+"selectSpsOptionByProdId", prod_id);
 	}
-	//주문 생성시 재고수 업데이트
-	@Override
-	public int sellProdStockUpdate(ProductNewVO prodVO) {
-		return sqlSession.update(namespace+"sellProdStockUpdate", prodVO);
-	};
 	
 	@Override
 	public Seller_Prod_StockTestDTO selectByStockId(String stock_id) {
