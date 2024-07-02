@@ -91,7 +91,6 @@
          });
        
 	});
-
 </script>
 </head>
 <body>
@@ -207,7 +206,7 @@
 	<%-- 본문 --%>
 	<div class="container">
 		<div class="product_detail-inner">
-				<p>home > ${prod_detail_info.PARENT_CATEGORY_NAME} > ${prod_detail_info.SUB_CATEGORY_NAME}</p>
+				<p>home > ${category.parentCategoryName} > ${category.currentCategoryName}</p>
 				<div class="product-detail_wrap">
 				
 					<%-- 메인 상품 사진 :판매자가 등록한 이미지 중 첫번째 --%>
@@ -224,7 +223,7 @@
 							</p>
 						</div>
 						<p class="rate">
-							★${prod_detail_info.AVERAGE_RATE} <span><a href="javascript:#void" class="review-rate-btn">리뷰 ${prod_detail_info.REVIEW_COUNT}건</a></span>
+							★${reviewInfo.avg_rate} <span><a href="javascript:#void" class="review-rate-btn">리뷰 ${reviewInfo.review_count}건</a></span>
 						</p>
 						<form id="prodOptionForm">
 							<div class="choose_wrap">
@@ -242,7 +241,6 @@
 													     <c:set var="optLength" value="${fn:length(optValue)}"/>
 													     <c:set var="optId" value="${fn:substring(optValue,position+1, optLength) }"/>
 													     
-													     <%-- <option value="${optName}">${optName}</option>  --%>
 													     <option value="${optId}">${optName}</option> 
 													</c:forTokens>
 											    </select> 
@@ -256,8 +254,6 @@
 									<p>수량 선택 :</p>
 									<input type="number" id="order_num" class="quantity"
 										name="order_num" value="0" min="0">
-										<%-- <input type="number" id="quantity" class="quantity"
-										name="quantity" value="0" min="0"> --%>
 								</div>
 								<p class="total"></p>  <%-- 총 상품 가격 --%>
 							</div>
@@ -284,7 +280,11 @@
 				</div>
 			<script>
 		        $(document).ready(function() {
-		        	
+		        	var currentStock = {}; ////선택한 옵션 상품의 재고id
+					    
+					var previousValues = {};//수량, 가격 처리
+						
+						
 		    		/* 장바구니 버튼 클릭 시 나타나는 팝업창 */ 
 		    		$('#cartButton').on('click', function(e) {
 		    			e.preventDefault();
@@ -309,9 +309,8 @@
 		        });
 				//버튼 클릭 -> 컨트롤러에 선택한 상품 옵션 값 넘김 (수정중)
 				function sendProdOption(){
-					
-				    var currentStock = {}; ////선택한 옵션 상품의 재고id
-					var previousValues = {};//수량, 가격 처리
+				
+				   
 					// 상품 원래 가격 (숫자만 추출)
 				    var originalPrice = parseInt($('.productPrice').text().replace(/[^0-9]/g, ''));
 				    $('.total').text(originalPrice + '원');
@@ -337,14 +336,16 @@
 				        var totalPrice = originalPrice * currentValue;
 				        $('.total').text(totalPrice.toLocaleString() + '원');
 				       } else {
-				       	alert("수량 초과");
+				       		alert("수량 초과");
 				       	//현재 재고까지만 수량 고르기 가능
 				       	$('#order_num').val(currentStock.stock);
 				       	return
 				       }
+				      
 				   });
 					
-									 	
+				    console.log(currentStock);
+				    
 					var allOptionsSelected = true;
 			        $('#prodOptionForm select').each(function() {
 			            if ($(this).val() === null || $(this).val() === "선택") {
@@ -368,6 +369,7 @@
 					    	param[item.name] = item.value;
 				    });
 					
+					
 					//모든 옵션이 선택된 경우 서버에 전송
 					if (allOptionsSelected) {	
 						
@@ -380,6 +382,7 @@
 			                    console.log("장바구니 response: " + response);
 			                    if(response > 0 ){
 			                   	  alert("장바구니에 저장 완료(현재 남은 재고" + currentStock.stock + "개)");
+			                      location.reload(); 
 			                    }else{
 			                    	alert("상품 재고가 없습니다.");
 			                    }
@@ -616,10 +619,9 @@
 	        var totalPrice = originalPrice * currentValue;
 	        $('.total').text(totalPrice.toLocaleString() + '원');
         } else {
-        	alert("수량 초과");
-
         	 //현재 재고까지만 수량 고르기 가능
         	 $('#order_num').val(currentStock.stock);
+        	 alert("수량 초과");
         	 return
         }
     });
@@ -667,9 +669,12 @@
 	    	var stockData = `${stockList}`;
 	    	// var stockList = $.parseJSON('['+stockData+']')
 	    	var stockList =JSON.parse(stockData);
+			console.log(stockList);
+
 	    	if(Array.isArray(stockList)){
 	    		stockList.forEach((item, idx) => {
 	    			
+
 	    		 //현재선택한 옵션 상품의 재고id 업데이트 
 	    		 //select id="options_0~5"
 	    		 var selectOption1 = $('#options_0').val(); //예:'4'
@@ -695,7 +700,7 @@
     			 } 
     			 
     			 currentStock = item;
-    		
+
 	    		 console.log(currentStock);
     			 
     			});
@@ -708,7 +713,7 @@
 
 	//구매하기 버튼 클릭 
 	$('#orderButton').on('click', function(){
-		
+	
 		var allOptionsSelected = true;
         $('#prodOptionForm select').each(function() {
             if ($(this).val() === null || $(this).val() === "선택") {
@@ -726,6 +731,7 @@
 	    var formArray = $("#prodOptionForm").serializeArray();
 		var param = { };
 
+	
 		// 배열을 JSON 객체로 변환
 	    $.each(formArray, function(index, item) {
             	param.s_stock_id =  currentStock.s_stock_id;
@@ -733,9 +739,9 @@
 	    });
 		console.log(formArray);
 		console.log("param: " + param);
-		 
+		
 		//모든 옵션이 선택된 경우 서버에 전송
-  						if (allOptionsSelected) {	
+  		if (allOptionsSelected) {	
        		$.ajax({
                 url: "${path}/prod/productOrderInsert.do",
                 type: 'POST',
@@ -745,6 +751,8 @@
                     console.log(response);
                     if(response > 0 ){
 	                   	  alert("주문 저장 완료");
+	                   	  //주문페이지로 이동
+	                   	  //location.href
 	                    }else{
 	                    	alert("상품 재고가 없습니다.");
 	                    }
@@ -951,25 +959,25 @@
            return;
     	}
 
-       // 컨트롤러에 상품 옵션 값 보내기
-    var rentFormArray = $("#rentPopupForm").serializeArray();
-	var rentFormParam = { };
-
-	// 배열을 JSON 객체로 변환
-    $.each(rentFormArray, function(index, item) {
-    	rentFormParam.r_stock_id =  currentStock.r_stock_id;
-           	
-	    	rentFormParam[item.name] = item.value;
-    });
-		 
+	    // 컨트롤러에 상품 옵션 값 보내기
+	    var rentFormArray = $("#rentPopupForm").serializeArray();
+		var rentFormParam = { };
+	
+		// 배열을 JSON 객체로 변환
+	    $.each(rentFormArray, function(index, item) {
+	    		rentFormParam.r_stock_id =  currentStock.r_stock_id;
+		    	rentFormParam[item.name] = item.value;
+	    });
+			 
   		 //옵션 값이 null일 때 경고 띄우기
- 		     var allOptionsSelected = true;
+		 var allOptionsSelected = true;
   		 $('#rentPopupForm select').each(function() {
             if ($(this).val() === null) {
                 allOptionsSelected = false;
                 return false; 
             }
-     });
+    	 });
+	  		 
         if (!allOptionsSelected) {
            alert("모든 옵션을 선택해 주세요.");
            return;
@@ -982,8 +990,9 @@
                contentType:"application/json;charset=utf-8",
                success: function(response) {
               	 if(response > 0){
-              		 alert("대여 저장 완료");
+              		 alert("대여 저장 완료 (현재 남은 재고" + currentStock.stock + "개)");
                    	 //location.href=""; 주문 페이지로 이동
+                   	 
               	 }else{
               		 alert("오류가 발생했습니다. 다시 시도해주세요.");
               	 }
@@ -1010,16 +1019,18 @@
            return;
     		  }
 
-       // 컨트롤러에 상품 옵션 값 보내기
+     // 컨트롤러에 상품 옵션 값 보내기
     var formArray = $("#rentPopupForm").serializeArray();
 	var param = { };
 
 	// 배열을 JSON 객체로 변환
     $.each(formArray, function(index, item) {
-           	param.s_stock_id =  currentStock.s_stock_id;
-	    	param[item.name] = item.value;
+	       	param.r_stock_id =  currentStock.r_stock_id;    	
+           	//param.s_stock_id =  currentStock.s_stock_id;
+           	param[item.name] = item.value;
     });
 	
+	 console.log(param);
 	 
 	//모든 옵션이 선택된 경우 서버에 전송
 	if (allOptionsSelected) {	
@@ -1033,6 +1044,7 @@
                    console.log(response);
                    if(response > 0){
 	                   alert("대여상품 장바구니 저장 완료(현재 남은 재고" + currentStock.stock + "개)");
+	                   location.reload();
                    }else{
                 	   alert("현재 대여 재고가 없습니다.");
                    }

@@ -21,7 +21,7 @@ import com.team4.shoppingmall.member.MemberService;
 @RequestMapping("/customer")
 public class CustomerControllerJH {
 	
-	@Autowired
+	//@Autowired
 	Addr_ListService addrService; 
 	
 	@Autowired

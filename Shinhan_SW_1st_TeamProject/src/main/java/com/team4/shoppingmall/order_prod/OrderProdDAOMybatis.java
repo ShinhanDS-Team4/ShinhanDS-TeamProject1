@@ -17,37 +17,41 @@ public class OrderProdDAOMybatis implements OrderProdDAOInterface {
 
 	String namespace = "com.saren.orderprod.";
 
-	// ÁÖ¹®»ó¼¼
+	
+	public int sequenceOrderId() {
+		return sqlSession.selectOne(namespace+"sequenceOrderId");
+	};
+	// ï¿½Ö¹ï¿½ï¿½ï¿½
 	@Override
 	public OrderProdDTO selectById(Integer order_id) {
 		return sqlSession.selectOne(namespace+"selectById", order_id);
 	}
 
-	// ÁÖ¹®¸ñ·Ï
+	// ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½
 	@Override
 	public List<OrderProdDTO> selectAll() {
 		return sqlSession.selectList(namespace+"selectAll");
 	}
 
-	// ÁÖ¹®»ý¼º
+	// ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½
 	@Override
 	public int orderprodInsert(OrderProdDTO orderprod) {
 		return sqlSession.insert(namespace+"orderprodInsert", orderprod);
 	}
 	
-	// ÁÖ¹®¼öÁ¤
+	// ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½
 	@Override
 	public int orderprodUpdate(OrderProdDTO orderprod) {
 		return sqlSession.update(namespace+"orderprodUpdate", orderprod);
 	}
 	
-	// orderlist.jsp¿¡ Ãâ·ÂÇÒ »óÇ°¸í, ºê·£µå, ¿É¼Ç, »óÇ°°¡°Ý, ÀÌ¹ÌÁöURL
+	// orderlist.jspï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç°ï¿½ï¿½, ï¿½ê·£ï¿½ï¿½, ï¿½É¼ï¿½, ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½, ï¿½Ì¹ï¿½ï¿½ï¿½URL
 	@Override
 	public Map<String, Object> selectById2(int order_id) { 
         return sqlSession.selectOne(namespace + "selectById2", order_id);
     } 
 	
-	// orderlist.jsp¿¡¼­, »ó¼¼»óÇ° ¿É¼Ç Ãâ·Â½Ã, ¸ðµç ¿É¼Ç °¡Á®¿À±â
+	// orderlist.jspï¿½ï¿½ï¿½ï¿½, ï¿½ó¼¼»ï¿½Ç° ï¿½É¼ï¿½ ï¿½ï¿½Â½ï¿½, ï¿½ï¿½ï¿½ ï¿½É¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	@Override
 	public List<Prod_OptionDTO> selectOptions() { 
 		List<Prod_OptionDTO> optlist = sqlSession.selectList(namespace + "selectOptions"); 

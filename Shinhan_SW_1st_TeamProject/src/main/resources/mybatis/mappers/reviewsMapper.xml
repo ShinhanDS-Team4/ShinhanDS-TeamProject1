@@ -4,7 +4,7 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.reviews">
 
-	<!-- 배송완료(delievered)된 주문 상품의 리뷰정보 -->
+	<!-- 배송완료(delievered)된 주문 상품의 리뷰정보
 	<select id="selectAllProductReviewByProdId" parameterType="string"
 		resultType="map">
 	    SELECT 
@@ -24,10 +24,39 @@
 		JOIN 
 		    ORDER_PROD o ON od.ORDER_ID = o.ORDER_ID
         JOIN 
-		    SELLER_PROD_STOCK s ON od.S_STOCK_ID = s.S_STOCK_ID
-	    WHERE   s.PROD_ID = #{prod_id} and  od.ORDER_STATE = '대여신청완료'
+		    SELL_PROD_STOCK s ON od.S_STOCK_ID = s.S_STOCK_ID
+	    WHERE   s.PROD_ID = #{prod_id} 
+	  	and  od.ORDER_STATE = '배송완료'
 	</select>
-
+ -->
+	<select id="selectAllProductReviewByProdId" parameterType="string"
+		resultType="map">
+		SELECT R.*  
+		FROM REVIEWS R
+		JOIN ORDER_DETAIL OD ON (R.ORDERDETAIL_ID = OD.ORDERDETAIL_ID)
+		JOIN SELL_PROD_STOCK SPS ON (OD.S_STOCK_ID = SPS.S_STOCK_ID)
+		JOIN PROD P ON (P.PROD_ID = SPS.PROD_ID)
+		WHERE P.PROD_ID = #{prod_id} 
+		and ORDER_STATE = '배송완료'
+	</select>
+	<!-- 리뷰 평균과 리뷰 수 -->
+	<select id="reviewAvgByProdId" parameterType="string"
+		resultType="reviewsVO">
+		SELECT DISTINCT
+		    r.*,
+		    AVG(r.RATE) OVER() AS avg_rate,
+    		COUNT(r.review_id) OVER() AS review_count
+		FROM 
+		    REVIEWS r
+		JOIN 
+		    ORDER_DETAIL od ON r.orderdetail_id = od.orderdetail_id
+		JOIN 
+		    SELL_PROD_STOCK sp ON od.s_stock_id = sp.s_stock_id
+		WHERE 
+		    sp.prod_id = #{prod_id} 
+		    AND od.order_state = '배송완료'
+	</select>
+	
 	<select id="selectById" parameterType="int"
 		resultType="reviewsVO">
 		SELECT *

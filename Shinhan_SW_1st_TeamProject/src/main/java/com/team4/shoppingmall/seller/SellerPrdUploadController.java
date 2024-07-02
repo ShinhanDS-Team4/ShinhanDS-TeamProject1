@@ -60,7 +60,7 @@ public class SellerPrdUploadController {
 	@Autowired
 	RentProdStockService rentProdStockService;
 
-	@Value("${file.upload-dir}")
+	@Value("${file.main-img-upload-dir}")
 	private String uploadDir;
 
 	@PostMapping("/uploadPrd")
@@ -71,9 +71,9 @@ public class SellerPrdUploadController {
 			@RequestParam("prdStock") int prdStock, RedirectAttributes redirectAttributes)
 			throws UnsupportedEncodingException {
 
-		String member_id = "573-50-00882";// ÀÓ½Ã·Î »ç¿ëÇÒ ÆÇ¸ÅÀÚID(»ç¾÷ÀÚµî·Ï¹øÈ£) >> ÀÌ°Ç ·Î±×ÀÎ ±â´ÉÀÌ ÆäÀÌÁö¿Í ¿¬°áµÇ¸é Session¿¡¼­ °¡Á®¿Ã °ÅÀÓ
+		String member_id = "573-50-00882";// ï¿½Ó½Ã·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¸ï¿½ï¿½ï¿½ID(ï¿½ï¿½ï¿½ï¿½Úµï¿½Ï¹ï¿½È£) >> ï¿½Ì°ï¿½ ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç¸ï¿½ Sessionï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-		// ÇÑ±Û ±úÁö´Â ¹®Á¦ ÇØ°á
+		// ï¿½Ñ±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ø°ï¿½
 		String productType = URLDecoder.decode(prdType, "UTF-8");
 		String productName = URLDecoder.decode(prdName, "UTF-8");
 		// String productCategory = URLDecoder.decode(prdCategory,"UTF-8");
@@ -84,25 +84,25 @@ public class SellerPrdUploadController {
 		// System.out.println(productCategory);
 		System.out.println(productDescription);
 
-		List<String> fileUrls = new ArrayList<>();// »çÁøµéÀÇ URLµéÀ» ÀúÀåÇÒ ¸®½ºÆ®
+		List<String> fileUrls = new ArrayList<>();// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ URLï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
 
-		/*----------¿©±âºÎÅÍ´Â »óÇ° µ¥ÀÌÅÍ¸¦ DB¿¡ ÀúÀåÇÏ´Â °úÁ¤À» ÁøÇà----------*/
+		/*----------ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í´ï¿½ ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½----------*/
 
-		// ¾÷·Îµå ³¯Â¥
-		// ¿À´Ã ³¯Â¥¸¦ LocalDate·Î °¡Á®¿È
+		// ï¿½ï¿½ï¿½Îµï¿½ ï¿½ï¿½Â¥
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Â¥ï¿½ï¿½ LocalDateï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		LocalDate localDate = LocalDate.now();
 
-		// LocalDate¸¦ java.sql.Date·Î º¯È¯
+		// LocalDateï¿½ï¿½ java.sql.Dateï¿½ï¿½ ï¿½ï¿½È¯
 		Date sqlDate = Date.valueOf(localDate);
 
-		// 1.»óÇ°(Product) Å×ÀÌºí ÀúÀå : µ¿ÀÏ »óÇ° ID Á¸Àç ¿©ºÎ È®ÀÎ ÇÊ¿ä
-		String prod_id = productName + "_" + member_id; // »óÇ°ID : »óÇ°¸í_ÆÇ¸ÅÀÚID
+		// 1.ï¿½ï¿½Ç°(Product) ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ï¿½ï¿½ : ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç° ID ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ ï¿½Ê¿ï¿½
+		String prod_id = productName + "_" + member_id; // ï¿½ï¿½Ç°ID : ï¿½ï¿½Ç°ï¿½ï¿½_ï¿½Ç¸ï¿½ï¿½ï¿½ID
 
-		System.out.println("»óÇ°ID : " + prod_id);
+		System.out.println("ï¿½ï¿½Ç°ID : " + prod_id);
 
-		// PROD¿¡¼­ »óÇ° ID¸¦ °Ë»öÇÏ¿© µ¿ÀÏÇÑ °ªÀÌ Á¸ÀçÇÏ´ÂÁö ¿ì¼± È®ÀÎ
-		// if(Á¸ÀçÇÏÁö ¾ÊÀ¸¸é) »óÇ° µî·Ï & »çÁø µî·Ï ÈÄ Àç°í µî·Ï
-		// else(Á¸ÀçÇÏ¸é) => Àç°í(Stock) µ¥ÀÌÅÍ¸¸ ¸¸µé¸é µÊ
+		// PRODï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç° IDï¿½ï¿½ ï¿½Ë»ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ï¿½ï¿½ ï¿½ì¼± È®ï¿½ï¿½
+		// if(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½) ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ & ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+		// else(ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½) => ï¿½ï¿½ï¿½(Stock) ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 		ProdDTO prodDTO = new ProdDTO();
 				
 		prodDTO = prodService.selectByProdId(prod_id);
@@ -110,7 +110,7 @@ public class SellerPrdUploadController {
 		System.out.println(prodDTO);
 
 		if (Objects.isNull(prodDTO)) {
-			// »óÇ° µî·Ï
+			// ï¿½ï¿½Ç° ï¿½ï¿½ï¿½
 			ProdDTO prodDTO2 = new ProdDTO();
 			
 			prodDTO2.setProd_id(prod_id);
@@ -124,38 +124,38 @@ public class SellerPrdUploadController {
 			int prdRegResult = prodService.prodInsert(prodDTO2);
 			System.out.println(prdRegResult);
 
-			// »óÇ° Å×ÀÌºí µî·Ï Á¾·á
+			// ï¿½ï¿½Ç° ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-			// 2.»óÇ° ÀÌ¹ÌÁö(PROD_IMAGE) Å×ÀÌºí µ¥ÀÌÅÍ ÀúÀå
-			int fileIndex = 1; // ÆÄÀÏ ÀÎµ¦½º¸¦ 1·Î ÃÊ±âÈ­
+			// 2.ï¿½ï¿½Ç° ï¿½Ì¹ï¿½ï¿½ï¿½(PROD_IMAGE) ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+			int fileIndex = 1; // ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ 1ï¿½ï¿½ ï¿½Ê±ï¿½È­
 
 			for (MultipartFile file : files) {
-				// ÆÄÀÏ Å¸ÀÔ Ã¼Å©
+				// ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ Ã¼Å©
 				String contentType = file.getContentType();
 				System.out.println(contentType);
 				if (!"image/jpeg".equals(contentType) && !"image/png".equals(contentType)) {
-					redirectAttributes.addFlashAttribute("PrdRegisterResult", "ÀÌ¹ÌÁö ÆÄÀÏÀÌ ¾Æ´Õ´Ï´Ù.");
-					return "/seller/sellerPrdList";// ¿À·ùÆäÀÌÁö·Î ¸®´ÙÀÌ·º¼Ç(ÆÀÇÁ·ÎÁ§Æ®¿¡¼­´Â alertÀ¸·Î ¿¡·¯¸¦ ¶ç¿ì°í ÆÇ¸ÅÀÚ-¹°Ç° ¸®½ºÆ®·Î ¸®´ÙÀÌ·ºÆ®)
+					redirectAttributes.addFlashAttribute("PrdRegisterResult", "ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´Õ´Ï´ï¿½.");
+					return "/seller/sellerPrdList";// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì·ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ alertï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¸ï¿½ï¿½ï¿½-ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì·ï¿½Æ®)
 				}
 
-				// ÆÄÀÏ Ã³¸®(URL·Î º¯È¯)
+				// ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½(URLï¿½ï¿½ ï¿½ï¿½È¯)
 				try {
-					// ÆÄÀÏ¸íÀº '»óÇ°¸í_ÆÇ¸ÅÀÚID_image_x'(x´Â sequence)
+					// ï¿½ï¿½ï¿½Ï¸ï¿½ï¿½ï¿½ 'ï¿½ï¿½Ç°ï¿½ï¿½_ï¿½Ç¸ï¿½ï¿½ï¿½ID_image_x'(xï¿½ï¿½ sequence)
 					String filename = prod_id + "_image_" + fileIndex+".png";
 					Path filePath = Paths.get(uploadDir).resolve(filename);
-					Files.createDirectories(filePath.getParent()); // µð·ºÅä¸®°¡ Á¸ÀçÇÏÁö ¾ÊÀ¸¸é »ý¼º
-					Files.write(filePath, file.getBytes()); // ÆÄÀÏ ÀúÀå
+					Files.createDirectories(filePath.getParent()); // ï¿½ï¿½ï¿½ä¸®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+					Files.write(filePath, file.getBytes()); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-					// ÆÄÀÏ URL »ý¼º >> ÁÖÀÇ!!) ÇØ´ç ÆÄÀÏURLÀº »ý¼º ½ÃÁ¡¿¡¼­ »ç¿ë ÁßÀÎ ¼­¹ö¿¡¼­¸¸ À¯È¿ÇÔ
+					// ï¿½ï¿½ï¿½ï¿½ URL ï¿½ï¿½ï¿½ï¿½ >> ï¿½ï¿½ï¿½ï¿½!!) ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½URLï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¿ï¿½ï¿½
 					String fileUrl = "/images/" + filename;
-					System.out.println("ÀÌ¹ÌÁöÆÄÀÏURL : " + fileUrl);
+					System.out.println("ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½URL : " + fileUrl);
 					fileUrls.add(fileUrl);
 
-					// DB¿¡ ÀúÀå
+					// DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 					Prod_ImageDTO imageDTO = new Prod_ImageDTO();
 
-					imageDTO.setImg_id(filename);//»óÇ°¸í_ÆÇ¸ÅÀÚID_image_fileindex
-					imageDTO.setProd_id(prod_id);//»óÇ°_ÆÇ¸ÅÀÚID
+					imageDTO.setImg_id(filename);//ï¿½ï¿½Ç°ï¿½ï¿½_ï¿½Ç¸ï¿½ï¿½ï¿½ID_image_fileindex
+					imageDTO.setProd_id(prod_id);//ï¿½ï¿½Ç°_ï¿½Ç¸ï¿½ï¿½ï¿½ID
 					
 					System.out.println(imageDTO);
 
@@ -165,21 +165,21 @@ public class SellerPrdUploadController {
 
 				} catch (IOException e) {
 					e.printStackTrace();
-					redirectAttributes.addFlashAttribute("PrdRegisterResult", "»óÇ° Á¤º¸ ¾÷·Îµå¿¡ ½ÇÆÐÇÏ¿´½À´Ï´Ù.");
-					return "/seller/sellerPrdList";// ¿À·ùÆäÀÌÁö·Î ¸®´ÙÀÌ·º¼Ç(ÆÀÇÁ·ÎÁ§Æ®¿¡¼­´Â alertÀ¸·Î ¿¡·¯¸¦ ¶ç¿ì°í ÆÇ¸ÅÀÚ-¹°Ç° ¸®½ºÆ®·Î ¸®´ÙÀÌ·ºÆ®)
+					redirectAttributes.addFlashAttribute("PrdRegisterResult", "ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Îµå¿¡ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
+					return "/seller/sellerPrdList";// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì·ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ alertï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¸ï¿½ï¿½ï¿½-ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì·ï¿½Æ®)
 				}
 			}
 		}
 
-		// 3.Àç°í(Stock) µî·Ï
-		// ¿©±â¼­ºÎÅÍ productType º°·Î StockDTO¸¦ µû·Îµû·Î »ý¼ºÇØ¼­ Ã³¸®ÇÑ´Ù
-		if (productType.equals("ÆÇ¸Å")) {// ÆÇ¸Å¿ë Àç°í¿¡ µé¾î°¡¾ß ÇÏ´Â °æ¿ì(SELLER_PROD_STOCK)
-			// µî·ÏÇÏ·Á´Â Àç°í¿Í ÀÏÄ¡ÇÏ´Â »óÇ°ID¸¦ °¡Áø ÆÇ¸Å Àç°íµé Áß Àç°íID ³¡ÀÚ¸® ¼ýÀÚ°¡ Á¦ÀÏ Å« Àç°íIDÀÇ ³¡ÀÚ¸® ¼ö¸¦ °¡Á®¿Â´Ù.
-			// ex)³ªÀÌÅ° ¹ÝÆÈ_550-398-22934_1~5 >> 5
+		// 3.ï¿½ï¿½ï¿½(Stock) ï¿½ï¿½ï¿½
+		// ï¿½ï¿½ï¿½â¼­ï¿½ï¿½ï¿½ï¿½ productType ï¿½ï¿½ï¿½ï¿½ StockDTOï¿½ï¿½ ï¿½ï¿½ï¿½Îµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ Ã³ï¿½ï¿½ï¿½Ñ´ï¿½
+		if (productType.equals("ï¿½Ç¸ï¿½")) {// ï¿½Ç¸Å¿ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½î°¡ï¿½ï¿½ ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½(SELLER_PROD_STOCK)
+			// ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Ï´ï¿½ ï¿½ï¿½Ç°IDï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ID ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½ï¿½ï¿½Ú°ï¿½ ï¿½ï¿½ï¿½ï¿½ Å« ï¿½ï¿½ï¿½IDï¿½ï¿½ ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½.
+			// ex)ï¿½ï¿½ï¿½ï¿½Å° ï¿½ï¿½ï¿½ï¿½_550-398-22934_1~5 >> 5
 			Integer maxSellStockNum=seller_Prod_StockService.findMaxStockNumber(prod_id);
 			System.out.println(maxSellStockNum);
 			if(Objects.isNull(maxSellStockNum)) maxSellStockNum=0;
-			maxSellStockNum++;// ex) 6À¸·Î ¿Ã¸²
+			maxSellStockNum++;// ex) 6ï¿½ï¿½ï¿½ï¿½ ï¿½Ã¸ï¿½
 			
 			System.out.println(maxSellStockNum);
 			
@@ -190,8 +190,8 @@ public class SellerPrdUploadController {
 			seller_Prod_StockDTO.setTotal(0);
 			seller_Prod_StockDTO.setProd_id(prod_id);
 
-			// ¿É¼Ç¸í & ¿É¼Ç°ª Ã³¸®
-			// for¹®À» ÀÌ¿ëÇÑ opt_id Ãß°¡
+			// ï¿½É¼Ç¸ï¿½ & ï¿½É¼Ç°ï¿½ Ã³ï¿½ï¿½
+			// forï¿½ï¿½ï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½ï¿½ opt_id ï¿½ß°ï¿½
 			for (int i = 0; i < optNames.size(); i++) {
 				String optionName = URLDecoder.decode(optNames.get(i), "UTF-8");
 				String optionValue = URLDecoder.decode(optValues.get(i), "UTF-8");
@@ -199,7 +199,7 @@ public class SellerPrdUploadController {
 				System.out.println(optionName);
 				System.out.println(optionValue);
 
-				// ÇöÀç DBÀÇ »óÇ°¿É¼Ç(PROD_OPTION) Å×ÀÌºí¿¡¼­ °¡Àå Å« ¿É¼Ç ID¸¦ °¡Á®¿Â´Ù
+				// ï¿½ï¿½ï¿½ï¿½ DBï¿½ï¿½ ï¿½ï¿½Ç°ï¿½É¼ï¿½(PROD_OPTION) ï¿½ï¿½ï¿½Ìºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å« ï¿½É¼ï¿½ IDï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½
 				Integer maxOptionID = optionService.findMaxOptId();
 				if (Objects.isNull(maxOptionID))
 					maxOptionID = 0;
@@ -235,14 +235,14 @@ public class SellerPrdUploadController {
 
 			int sellStockRegResult = seller_Prod_StockService.seller_prod_stockInsert(seller_Prod_StockDTO);
 
-		} else if(productType.equals("´ë¿©")){// ´ë¿© Àç°í¿¡ µé¾î°¡¾ß ÇÏ´Â °æ¿ì(RENT_PROD_STOCK)
-			// µî·ÏÇÏ·Á´Â Àç°í¿Í ÀÏÄ¡ÇÏ´Â »óÇ°ID¸¦ °¡Áø ´ë¿© Àç°íµé Áß Àç°íID ³¡ÀÚ¸® ¼ýÀÚ°¡ Á¦ÀÏ Å« Àç°íIDÀÇ ³¡ÀÚ¸® ¼ö¸¦ °¡Á®¿Â´Ù.
-			// ex)³ªÀÌÅ° ¹ÝÆÈ_550-398-22934_1~5 >> 5
+		} else if(productType.equals("ï¿½ë¿©")){// ï¿½ë¿© ï¿½ï¿½ï¿½ ï¿½ï¿½î°¡ï¿½ï¿½ ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½(RENT_PROD_STOCK)
+			// ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Ï´ï¿½ ï¿½ï¿½Ç°IDï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ë¿© ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ID ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½ï¿½ï¿½Ú°ï¿½ ï¿½ï¿½ï¿½ï¿½ Å« ï¿½ï¿½ï¿½IDï¿½ï¿½ ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½.
+			// ex)ï¿½ï¿½ï¿½ï¿½Å° ï¿½ï¿½ï¿½ï¿½_550-398-22934_1~5 >> 5
 			Integer maxSellStockNum = rentProdStockService.findMaxStockNumber(prod_id);
 			if(Objects.isNull(maxSellStockNum)) maxSellStockNum=0;
-			maxSellStockNum++;// ex) 6À¸·Î ¿Ã¸²
+			maxSellStockNum++;// ex) 6ï¿½ï¿½ï¿½ï¿½ ï¿½Ã¸ï¿½
 			
-			System.out.println("´ë¿©Àç°í ÃÖ´ë°ª:"+maxSellStockNum);
+			System.out.println("ï¿½ë¿©ï¿½ï¿½ï¿½ ï¿½Ö´ë°ª:"+maxSellStockNum);
 
 			String stockID = prod_id + "_RENT_" + maxSellStockNum;
 			RentProdStockDTO rentProdStockDTO = new RentProdStockDTO();
@@ -251,13 +251,13 @@ public class SellerPrdUploadController {
 			rentProdStockDTO.setTotal(0);
 			rentProdStockDTO.setProd_id(prod_id);
 
-			// ¿É¼Ç¸í & ¿É¼Ç°ª Ã³¸®
-			// for¹®À» ÀÌ¿ëÇÑ opt_id Ãß°¡
+			// ï¿½É¼Ç¸ï¿½ & ï¿½É¼Ç°ï¿½ Ã³ï¿½ï¿½
+			// forï¿½ï¿½ï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½ï¿½ opt_id ï¿½ß°ï¿½
 			for (int i = 0; i < optNames.size(); i++) {
 				String optionName = URLDecoder.decode(optNames.get(i), "UTF-8");
 				String optionValue = URLDecoder.decode(optValues.get(i), "UTF-8");
 
-				// ÇöÀç DBÀÇ »óÇ°¿É¼Ç(PROD_OPTION) Å×ÀÌºí¿¡¼­ °¡Àå Å« ¿É¼Ç ID¸¦ °¡Á®¿Â´Ù
+				// ï¿½ï¿½ï¿½ï¿½ DBï¿½ï¿½ ï¿½ï¿½Ç°ï¿½É¼ï¿½(PROD_OPTION) ï¿½ï¿½ï¿½Ìºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å« ï¿½É¼ï¿½ IDï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½
 				Integer maxOptionID = optionService.findMaxOptId();
 				if (Objects.isNull(maxOptionID))
 					maxOptionID = 0;
@@ -291,7 +291,7 @@ public class SellerPrdUploadController {
 			System.out.println(rentStockRegResult);
 		}
 
-		redirectAttributes.addFlashAttribute("PrdRegisterResult", "»óÇ° Á¤º¸ ¾÷·Îµå¿¡ ¼º°øÇÏ¿´½À´Ï´Ù.");
-		return "/seller/PrdList.do";// ¼º°ø ÆäÀÌÁö·Î ¸®´ÙÀÌ·º¼Ç(ÆÀÇÁ·ÎÁ§Æ®¿¡¼­´Â ÆÇ¸ÅÀÚ-¹°Ç° ¸®½ºÆ®·Î ¸®´ÙÀÌ·ºÆ®)
+		redirectAttributes.addFlashAttribute("PrdRegisterResult", "ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Îµå¿¡ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
+		return "/seller/PrdList.do";// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì·ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¸ï¿½ï¿½ï¿½-ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì·ï¿½Æ®)
 	}
 }

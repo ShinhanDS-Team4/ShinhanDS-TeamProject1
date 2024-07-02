@@ -11,6 +11,11 @@ public class CategoryService {
 	@Autowired
 	CategoryDAOInterface categoryDAO;
 	
+	//상품의 카테고리명 조회
+	public CategoryDTO productCategoryByProdId(String prod_id) {
+		return categoryDAO.productCategoryByProdId(prod_id);
+	};
+	
 	public CategoryDTO selectById(Integer category_id) {
 		return categoryDAO.selectById(category_id);
 	}

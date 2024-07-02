@@ -24,7 +24,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqDTO;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqService;
 import com.team4.shoppingmall.cart.CartService;
-import com.team4.shoppingmall.member.MemberDTO;
+import com.team4.shoppingmall.category.CategoryDTO;
+import com.team4.shoppingmall.category.CategoryService;
 import com.team4.shoppingmall.order_detail.Order_DetailService;
 import com.team4.shoppingmall.order_prod.OrderProdService;
 import com.team4.shoppingmall.prod.ProductNewVO;
@@ -34,6 +35,7 @@ import com.team4.shoppingmall.rent.RentService;
 import com.team4.shoppingmall.rent_detail.RentDetailService;
 import com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO;
 import com.team4.shoppingmall.rent_prod_stock.RentProdStockService;
+import com.team4.shoppingmall.reviews.ReviewsDTO;
 import com.team4.shoppingmall.reviews.ReviewsService;
 import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestDTO;
 import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestService;
@@ -42,103 +44,110 @@ import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestService
 @RequestMapping("/prod")
 public class ProdTestController {
 	
-	/* ³ªÁß¿¡ ¼­ºñ½º,DTO µî ÀÌ¸§¿¡¼­ Test»©°í, ÆÄÀÏ ³»¿ë ¿Å±â±â */
+/* ë‚˜ì¤‘ì— ì„œë¹„ìŠ¤,DTO ë“± ì´ë¦„ì—ì„œ Testë¹¼ê³ , íŒŒì¼ ë‚´ìš© ì˜®ê¸°ê¸° */
 	
 	@Autowired
-	Seller_Prod_StockTestService seller_Prod_StockTestService; //ÆÇ¸Å »óÇ° Àç°í
+	Seller_Prod_StockTestService seller_Prod_StockTestService; //íŒë§¤ ìƒí’ˆ ì¬ê³ 
 	
 	@Autowired
-	ProdTestService prodTestService;  //»óÇ°
+	ProdTestService prodTestService;  //ìƒí’ˆ
 	
 	@Autowired
-	Prod_OptionTestService prod_OptionSerTestService;  //»óÇ° ¿É¼Ç
+	Prod_OptionTestService prod_OptionSerTestService;  //ìƒí’ˆ ì˜µì…˜
 	
 	@Autowired
-	Buyer_InqService buyer_InqService; //±¸¸ÅÀÚ ¹®ÀÇ(±¸¸ÅÀÚ-ÆÇ¸ÅÀÚ)
+	Buyer_InqService buyer_InqService; //êµ¬ë§¤ì ë¬¸ì˜(êµ¬ë§¤ì-íŒë§¤ì)
 	
 	@Autowired
-	CartService cartService; //Àå¹Ù±¸´Ï
+	CartService cartService; //ì¥ë°”êµ¬ë‹ˆ
 	
 	@Autowired
-	ReviewsService reviewsService; //¸®ºä
+	ReviewsService reviewsService; //ë¦¬ë·°
 	
 	@Autowired
-	RentService rentService; //´ë¿©
+	RentService rentService; //ëŒ€ì—¬
 	
 	@Autowired
-	RentProdStockService rentProdStockService; //´ë¿©»óÇ°Àç°í 
+	RentProdStockService rentProdStockService; //ëŒ€ì—¬ìƒí’ˆì¬ê³  
 	
 	@Autowired
-	RentDetailService rentDetailService; //´ë¿© »ó¼¼
+	RentDetailService rentDetailService; //ëŒ€ì—¬ ìƒì„¸
 
 	@Autowired
-	OrderProdService orderProdService; //ÁÖ¹®
+	OrderProdService orderProdService; //ì£¼ë¬¸
 	
 	@Autowired
-	Order_DetailService order_DetailService; //ÁÖ¹®»ó¼¼ 
+	Order_DetailService order_DetailService; //ì£¼ë¬¸ìƒì„¸ 
 	
+	@Autowired
+	CategoryService categoryService; //ì¹´í…Œê³ ë¦¬ 
 	
-	
-	/* »óÇ° ¸ñ·Ï ÆäÀÌÁö */
+	/* ìƒí’ˆ ëª©ë¡ í˜ì´ì§€ */
 	@GetMapping("/productlistTest")
 	public void productList() {
 		
 	}
 		
-	/* »óÇ° »ó¼¼ ÆäÀÌÁö */
+	/* ìƒí’ˆ ìƒì„¸ í˜ì´ì§€ */
 	@GetMapping("/product_detail")
 	public void productDetail(String prod_id, Model model) throws JsonProcessingException {
 		
-		//³ªÁß¿¡ »èÁ¦ÇÏ±â
-		prod_id = "³ªÀÌÅ° ¹İÆÈ_1234-1234";
-		//prod_id = "µ¢Å©_1234-1234"; //´ë¿©Àç°í ¾ø´Â »óÇ° Å×½ºÆ®
-		 
-		//»óÇ°ÀÇ Á¤º¸¿Í ¿É¼Ç Á¶È¸
-		//¿É¼Ç¸í°ú °ª ÀüºÎ Á¶È¸
-		//List<Object> prod_Options = prod_OptionSerTestService.selectAllOptionsByProdId(prod_id);
+		//ë‚˜ì¤‘ì— ì‚­ì œí•˜ê¸°
+		//prod_id = "ë…¼ì•„ì´ë¡  ì‚¬í‹´ ì†”ë¦¬ë“œ ë“œë ˆìŠ¤ ì…”ì¸  - í™”ì´íŠ¸_199-81-22242"; //ëŒ€ì—¬ì¬ê³ ì—†ëŠ”ìƒí’ˆ test
+		prod_id = "ììˆ˜ ë¯¸ë‹ˆ ì›í”¼ìŠ¤ - í™”ì´íŠ¸_199-81-21909";
+		
+		//ìƒí’ˆì˜ ì •ë³´ì™€ ì˜µì…˜ ì¡°íšŒ
+		//ì˜µì…˜ëª…ê³¼ ê°’ ì „ë¶€ ì¡°íšŒ
 		ArrayList<Object> prod_Options = (ArrayList<Object>) prod_OptionSerTestService.selectAllOptionsByProdId(prod_id);
 		model.addAttribute("prod_Options", prod_Options);
-		//System.out.println("¿É¼Ç Á¶È¸ : "+ prod_Options);
 		 
-		//ÆÇ¸Å »óÇ° ¿É¼Çº° Àç°í·® Á¶È¸
+		//íŒë§¤ ìƒí’ˆ ì˜µì…˜ë³„ ì¬ê³ ëŸ‰ ì¡°íšŒ
 		List<Seller_Prod_StockTestDTO> seller_prod_stockDTO = seller_Prod_StockTestService.selectSpsOptionByProdId(prod_id);
 		model.addAttribute("seller_prod_stockDTO", seller_prod_stockDTO);
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonText = mapper.writeValueAsString( seller_prod_stockDTO );
 		model.addAttribute( "stockList", jsonText );
 
-		//»óÇ° Á¤º¸ Á¶È¸
+		//ìƒí’ˆ ì •ë³´ ì¡°íšŒ (ì¿¼ë¦¬ ìˆ˜ì •)
 		Map<String,Object> prod_detail_info = prodTestService.selectProdDetailInfoByProdId(prod_id);
 		prod_detail_info.put("prod_id", prod_id); 
 		model.addAttribute("prod_detail_info", prod_detail_info);
 		
-		//´ë¿© »óÇ° ¿É¼Çº° Àç°í·® Á¶È¸
+		//ìƒí’ˆ ì¹´í…Œê³ ë¦¬ ì¡°íšŒ
+		CategoryDTO category = categoryService.productCategoryByProdId(prod_id);
+		model.addAttribute("category", category);
+		
+		//ë¦¬ë·° í‰ê· ê³¼ ë¦¬ë·° ìˆ˜
+		ReviewsDTO reviewInfo = reviewsService.reviewAvgByProdId(prod_id); 
+		model.addAttribute("reviewInfo", reviewInfo);
+		
+		//ëŒ€ì—¬ ìƒí’ˆ ì˜µì…˜ë³„ ì¬ê³ ëŸ‰ ì¡°íšŒ
 		List<RentProdStockDTO> rentStockList = rentProdStockService.selectRpsOptionByProdId(prod_id);
 		model.addAttribute("rentStockList", rentStockList);
 		ObjectMapper rentMapper = new ObjectMapper();
 		String jsonTextRent = rentMapper.writeValueAsString( rentStockList );
 		model.addAttribute( "rentStockList", jsonTextRent );
 		
-		/* »óÇ° ÀüÃ¼ ¸®ºä ¸ñ·Ï */		
+		/* ìƒí’ˆ ì „ì²´ ë¦¬ë·° ëª©ë¡ */			
 		List<Map<String,String>> productReviews = reviewsService.selectAllProductReviewByProdId(prod_id);
 		model.addAttribute("productReviews", productReviews);
 		
-		//¸®ºä ¸ñ·Ï¿¡ ºÒ·¯¿Ã »óÇ°ÀÇ ¿É¼Ç ¸ñ·Ï
+		//ë¦¬ë·° ëª©ë¡ì— ë¶ˆëŸ¬ì˜¬ ìƒí’ˆì˜ ì˜µì…˜ ëª©ë¡
 		List<Prod_OptionDTO> prodOptions = prod_OptionSerTestService.productAllOptionsByProdId(prod_id);
 		model.addAttribute("prodOptions", prodOptions);
 		
-		/* »óÇ° ÀüÃ¼ ¹®ÀÇ ¸ñ·Ï */
+		/* ìƒí’ˆ ì „ì²´ ë¬¸ì˜ ëª©ë¡ */
 		List<Buyer_InqDTO> buyer_inqList = buyer_InqService.selectByProdId(prod_id);
 		model.addAttribute("buyer_inqList", buyer_inqList);
 		
-		//»óÇ°ÀÇ ´ë¿©Àç°íID Á¶È¸ - ´ë¿© ¹öÆ° È°¼ºÈ­
+		//ìƒí’ˆì˜ ëŒ€ì—¬ì¬ê³ ID ì¡°íšŒ - ëŒ€ì—¬ ë²„íŠ¼ í™œì„±í™”
 		List<RentProdStockDTO> rentProductStockCheck = rentProdStockService.selectRentStockByProdId2(prod_id);
 		model.addAttribute("rentProductStockCheck", rentProductStockCheck);
 		
 	}
 	
 	
-	//Àå¹Ù±¸´Ï - »óÇ°(ÆÇ¸Å)
+	//ì¥ë°”êµ¬ë‹ˆ - ìƒí’ˆ(íŒë§¤)
 	@PostMapping("/productCartInsert.do")
 	@ResponseBody
 	public int productCartInsert(String prod_id,
@@ -147,23 +156,26 @@ public class ProdTestController {
 								 Model model,
 								 @RequestBody ProductNewVO prodVO) 
 	{
-		//session¿¡¼­ ÀĞÀ» ¿¹Á¤ 
+		//session
 		//MemberDTO member =  session.getAttribute("member");
 		//String member_id = member.getMember_id();
         String member_id = "testid";
         prod_id = "";
         
         if(prodVO.getS_stock_id() == null || prodVO == null) {
-    		return 0; //Àå¹Ù±¸´Ï ÀúÀå ½ÇÆĞ
+    		return 0; 
 		}
         
-		//Àå¹Ù±¸´Ï »ı¼º (È¸¿øid, ÆÇ¸ÅÀç°íid, ¼ö·®)
-		int sellProdCartInsert = cartService.cartInsert(prodVO, member_id);
+        //í”„ë¡ íŠ¸ì—ì„œ ì¬ê³ id ì €ì¥ì´ ì•ˆë¼ê³  ëª»ë„˜ì–´ì˜¤ëŠ”ì¤‘
+        
+        
+        int cart_amount = prodVO.getOrder_num();
+		int sellProdCartInsert = cartService.cartInsert(prodVO, member_id, cart_amount);
 		
 		return sellProdCartInsert;
 		
 	}
-	//Àå¹Ù±¸´Ï - »óÇ°(´ë¿©)
+	//ì¥ë°”êµ¬ë‹ˆ - ìƒí’ˆ(ëŒ€ì—¬)
 	@PostMapping("/rentProductCartInsert.do")
 	@ResponseBody
 	public int rentProductCartInsert(String prod_id,
@@ -172,25 +184,24 @@ public class ProdTestController {
 								 Model model,
 								 @RequestBody ProductNewVO prodVO) 
 	{
-		//session¿¡¼­ ÀĞÀ» ¿¹Á¤ 
+		//session
 		//MemberDTO member =  session.getAttribute("member");
 		//String member_id = member.getMember_id();
         String member_id = "testid";
         prod_id = "";
         
         if(prodVO == null || prodVO.getR_stock_id() == null) {
-    		return 0; //Àå¹Ù±¸´Ï ÀúÀå ½ÇÆĞ
+    		return 0; 
 		}
         
-		//Àå¹Ù±¸´Ï »ı¼º (È¸¿øid, ÆÇ¸ÅÀç°íid, ¼ö·®)
 		int cartRentProductInsert = cartService.cartRentProductInsert(prodVO, member_id);
 		
 		return cartRentProductInsert;
 		
 	}
 	    
-	/* ±¸¸ÅÇÏ±â */ 
-	//ProductNewVO »ı¼º
+	/* êµ¬ë§¤í•˜ê¸° */ 
+	//ProductNewVO ìƒì„±
 	@PostMapping("/productOrderInsert.do")
 	@ResponseBody
 	public int productOrderInsert(HttpServletRequest request, 
@@ -198,28 +209,27 @@ public class ProdTestController {
 								  @RequestBody ProductNewVO prodVO,
 								  HttpSession session) throws UnsupportedEncodingException
 	{
-    	//session¿¡¼­ ÀĞÀ» ¿¹Á¤ 
+    	//session
 		//MemberDTO member =  session.getAttribute("member");
 		//String member_id = member.getMember_id();
         String member_id = "testid";
-        //»óÇ°ID
         String prod_id = "";
 		
-		//Àç°í Ã¼Å© (ÇÁ·ĞÆ®¿¡¼­ Ã¼Å© Çß´Âµ¥ ¹éµµ ³ªÁß¿¡ Ãß°¡)
+        //ì¬ê³  ì²´í¬ (í”„ë¡ íŠ¸ì—ì„œ ì²´í¬ í–ˆëŠ”ë° ë°±ë„ ë‚˜ì¤‘ì— ì¶”ê°€)
     	if(prodVO.getS_stock_id() == null || prodVO == null) {
-    		return 0; //ÁÖ¹®½ÇÆĞ
+    		return 0; 
 		}
     	
 		int productPrice = Integer.parseInt(prodVO.getProductPrice());
-		int total_price = productPrice * prodVO.getOrder_num();  //ÁÖ¹® ÃÑ±İ¾×
+		int total_price = productPrice * prodVO.getOrder_num();   //ì£¼ë¬¸ ì´ê¸ˆì•¡
 		
-		//1.ÁÖ¹®,ÁÖ¹®»ó¼¼ »ı¼º (¼­ºñ½º¿¡¼­ ·ÎÁ÷ Ã³¸®)
+		//1.ì£¼ë¬¸,ì£¼ë¬¸ìƒì„¸ ìƒì„± (ì„œë¹„ìŠ¤ì—ì„œ ë¡œì§ ì²˜ë¦¬)
 		int orderProdInsert =  orderProdService.orderprodInsert(prodVO, total_price, member_id);
 		
 		return orderProdInsert; 
     }
 	
-	/* ´ë¿©ÇÏ±â */
+	/* ëŒ€ì—¬í•˜ê¸° */
 	@PostMapping("/rentProductOrderInsert.do")
 	@ResponseBody
 	public int rentProductOrderInsert(HttpServletRequest request, 
@@ -227,19 +237,16 @@ public class ProdTestController {
 								  @RequestBody ProductNewVO prodVO,
 								  HttpSession session) 
 	{
-		//session¿¡¼­ ÀĞÀ» ¿¹Á¤ 
 		//MemberDTO member =  session.getAttribute("member");
 		//String member_id = member.getMember_id();
 		String member_id = "testid";	 
-		
-		//»óÇ°ID
         String prod_id = "";
         
         if(prodVO.getR_stock_id() == null || prodVO == null) {
         	return 0; 
         }
         
-        //1.´ë¿©, ´ë¿©»ó¼¼ »ı¼º (¼­ºñ½º¿¡¼­ ·ÎÁ÷ Ã³¸®)
+        //1.ëŒ€ì—¬, ëŒ€ì—¬ìƒì„¸ ìƒì„±
         int rentProdInsert = rentService.rentInsert2(prodVO, member_id);
         
         
@@ -247,57 +254,41 @@ public class ProdTestController {
         
 	}
 
-	/* »óÇ° ¹®ÀÇÇÏ±â (±¸¸ÅÀÚ=>ÆÇ¸ÅÀÚ) */
+	/* ìƒí’ˆ ë¬¸ì˜í•˜ê¸° (êµ¬ë§¤ì=>íŒë§¤ì) */
 	@PostMapping(value = "/productQnaInsert.do", produces = "text/plain;charset=utf-8")
 	@ResponseBody
 	public String productQnaInsert( 
 			@RequestParam("prod_id") String prod_id,
-			@RequestParam String qnaTitle,	//¹®ÀÇ Á¦¸ñ
-			@RequestParam String qnaTestarea, //¹®ÀÇ ³»¿ë
-			HttpSession session //session¿¡¼­ ·Î±×ÀÎ Á¤º¸ ÀĞ±â
+			@RequestParam String qnaTitle,	//ë¬¸ì˜ ì œëª©
+			@RequestParam String qnaTestarea,  //ë¬¸ì˜ ë‚´ìš©
+			HttpSession session 
 	){
 		Buyer_InqDTO buyer_InqDTO = new Buyer_InqDTO();
 		
 		Map<String,String> buyer_inq_map = new HashMap<String,String>();
 		
-		System.out.println("¹®ÀÇ Á¦¸ñ: "+qnaTitle);
-		System.out.println("¹®ÀÇ ³»¿ë: "+qnaTestarea);
-		
-		//session¿¡¼­ °¡Á®¿À±â
 		//MemberDTO member =  session.getAttribute("member");
 		//String member_id = member.getMember_id();
 		String member_id = "testid";
+		prod_id = "ììˆ˜ ë¯¸ë‹ˆ ì›í”¼ìŠ¤ - í™”ì´íŠ¸_199-81-21909";
+		//prod_id = "ë…¼ì•„ì´ë¡  ì‚¬í‹´ ì†”ë¦¬ë“œ ë“œë ˆìŠ¤ ì…”ì¸  - í™”ì´íŠ¸_199-81-22242";
 		
-		//prod_id = "";
-		//String prod_id = "";
-		prod_id = "³ªÀÌÅ° ¹İÆÈ_1234-1234";
-		
-		/* ¾÷·Îµå */
-        //¹®ÀÇ Á¦¸ñ 
-        buyer_inq_map.put("buyer_inq_title", qnaTitle); 
-
-        //¹®ÀÇ³»¿ë 
+         buyer_inq_map.put("buyer_inq_title", qnaTitle); 
 		 buyer_inq_map.put("buyer_inq_content", qnaTestarea); 
-		 
-		 
 		 buyer_inq_map.put("member_id", member_id); 
-		 
-		//»óÇ°ID Å×½ºÆ® - ½ÇÁ¦ prod_id °ªÀ» ¼³Á¤Çì¾ß ÇÔ
 		 buyer_inq_map.put("prod_id", prod_id); 
-		
 		 
-		//insert¹® - Buyer_InAÅ×ÀÌºí 
 		int result = buyer_InqService.buyer_inqInsert(buyer_inq_map);
 		
 		String message;
 		
 		if(result > 0) {
-			message = "¹®ÀÇ°¡ µî·ÏµÇ¾ú½À´Ï´Ù.";
+			message = "ë¬¸ì˜ê°€ ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤.";
 			
 			return  message;		
 			
 		}else {
-			message = "¿À·ù°¡ ¹ß»ıÇß½À´Ï´Ù. ´Ù½Ã ½ÃµµÇØÁÖ¼¼¿ä.";
+			message = "ì˜¤ë¥˜ê°€ ë°œìƒí–ˆìŠµë‹ˆë‹¤. ë‹¤ì‹œ ì‹œë„í•´ì£¼ì„¸ìš”.";
 			return  message;
 		}
 		

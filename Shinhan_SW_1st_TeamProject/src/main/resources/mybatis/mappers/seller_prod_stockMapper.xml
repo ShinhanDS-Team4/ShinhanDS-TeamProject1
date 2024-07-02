@@ -5,12 +5,11 @@
 <mapper namespace="com.saren.seller_prod_stock">
 	
 	<!-- ORDER_PROD테이블에 넣을 선택한 옵션 이름으로 상품의 재고ID 찾기(parameterType = 동적VO)  
-		 carMapper.xml 같은 select문임 
-	-->
+		 carMapper.xml 같은 select문임 -->
     <select id="searchStockId" parameterType="com.team4.shoppingmall.cart.CartDynamicVO" 
     		resultType="string">
-		SELECT seller_prod_stock.s_stock_id 
-		FROM seller_prod_stock
+		SELECT sell_prod_stock.s_stock_id 
+		FROM sell_prod_stock
 		WHERE opt_id1||','|| opt_id2||','||opt_id3 ||','||opt_id4||','||opt_id5   
 		LIKE 	 
 		( 
@@ -39,7 +38,7 @@
 		    SPS.opt_id5,
 		    SPS.stock
 		FROM 
-		    SELLER_PROD_STOCK SPS
+		    sell_prod_stock SPS
 		WHERE 
 		    SPS.prod_id = #{prod_id}
 	</select>
@@ -48,21 +47,21 @@
 
 		resultType="seller_prod_stockVO">
 		SELECT *
-		FROM SELLER_PROD_STOCK
+		FROM sell_prod_stock
 		WHERE s_stock_id = #{s_stock_id}
 	</select>
 
 	<select id="selectByProdId" parameterType="string"
 		resultType="seller_prod_stockVO">
 		SELECT *
-		FROM SELLER_PROD_STOCK
+		FROM sell_prod_stock
 		WHERE prod_id = #{prod_id}
 	</select>
 
 	<select id="findMaxStockNumber" parameterType="string"
 		resultType="integer">
 		SELECT max(to_number(REGEXP_SUBSTR(s.s_stock_id,'_([0-9]+)$', 1, 1, null, 1)))
-		FROM SELLER_PROD_STOCK s
+		FROM SELL_PROD_STOCK s
 		WHERE s.prod_id = #{prod_id}
 	</select>
 
@@ -74,7 +73,7 @@
 			p.prod_added_date,
 			p.prod_price
 		FROM
-			SELLER_PROD_STOCK s
+			SELL_PROD_STOCK s
 		JOIN
 			PROD p ON s.prod_id = p.prod_id
 		WHERE
@@ -82,13 +81,13 @@
 	</select>
 	<select id="selectAll" resultType="seller_prod_stockVO">
 		SELECT *
-		FROM SELLER_PROD_STOCK
+		FROM SELL_PROD_STOCK
 	</select>
 
 	<insert id="seller_prod_stockInsert"
 		parameterType="seller_prod_stockVO">
 		INSERT
-		INTO SELLER_PROD_STOCK(s_stock_id, stock, total,
+		INTO SELL_PROD_STOCK(s_stock_id, stock, total,
 		prod_id, opt_id1, opt_id2, opt_id3, opt_id4, opt_id5)
 		VALUES(#{s_stock_id}, #{stock}, #{total}, #{prod_id}, #{opt_id1},
 		#{opt_id2}, #{opt_id3}, #{opt_id4}, #{opt_id5})
@@ -96,7 +95,7 @@
 	
 	<!-- 주문 생성시 재고수 업데이트 -->
 	<update id="sellProdStockUpdate">
-		UPDATE SELLER_PROD_STOCK
+		UPDATE SELL_PROD_STOCK
 		SET
 		stock = stock - #{order_num}
 		WHERE s_stock_id =  #{s_stock_id}
@@ -104,7 +103,7 @@
 
 	<update id="seller_prod_stockUpdate"
 		parameterType="seller_prod_stockVO">
-		UPDATE SELLER_PROD_STOCK
+		UPDATE SELL_PROD_STOCK
 		SET
 		stock = #{stock}, total =
 		#{total},
@@ -118,7 +117,7 @@
 	<delete id="seller_prod_stockDelete" parameterType="string">
 		DELETE
 		FROM
-		SELLER_PROD_STOCK
+		SELL_PROD_STOCK
 		WHERE s_stock_id = #{s_stock_id}
 	</delete>
 

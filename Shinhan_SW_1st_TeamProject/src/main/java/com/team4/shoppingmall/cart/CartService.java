@@ -16,12 +16,12 @@ public class CartService {
 	@Autowired
 	CartDAOInterface cartDAO;
 	
-	//¼±ÅÃÇÑ ¿É¼Ç »óÇ°ÀÇ Àç°íID Á¶È¸
+	//ì„ íƒí•œ ì˜µì…˜ ìƒí’ˆì˜ ì¬ê³ ID ì¡°íšŒ
 	public String searchStockId(HashMap<String, String> map, String prod_id) {
 		return cartDAO.searchStockId(map, prod_id);
 	}
 	
-	//Àå¹Ù±¸´Ï¿¡ °°Àº »óÇ°ÀÌ Á¸ÀçÇÏ´ÂÁö Á¶È¸
+	//ì¥ë°”êµ¬ë‹ˆì— ê°™ì€ ìƒí’ˆì´ ì¡´ì¬í•˜ëŠ”ì§€ ì¡°íšŒ
 //	public CartDTO selectCartBySellstock(Map<String,String> map) {
 //		return cartDAO.selectCartBySellstock(map);
 //	}
@@ -49,57 +49,57 @@ public class CartService {
 		return cartDAO.selectAll();
 	}
 	
-	//ÆÇ¸Å»óÇ° Àå¹Ù±¸´Ï insert¹®
+	//íŒë§¤ìƒí’ˆ ì¥ë°”êµ¬ë‹ˆ insertë¬¸
 	@Transactional
-	public int cartInsert(ProductNewVO prodVO, String member_id) {
+	public int cartInsert(ProductNewVO prodVO, String member_id, int cart_amount) {
 	
 		CartDTO cartDTO = new CartDTO();
 		cartDTO.setMember_id(member_id);
 		cartDTO.setS_stock_id(prodVO.getS_stock_id());
-		cartDTO.setCart_amount(prodVO.getOrder_num()); //¼ö·®
+		//cartDTO.setCart_amount(prodVO.getOrder_num()); 
+		cartDTO.setCart_amount(cart_amount); 
 		
-		//ÀÌ¹Ì ÀÖ´ÂÁö Á¶È¸
+		//ì¬ê³  ìˆëŠ”ì§€ ì¡°íšŒ
 		CartDTO isExistsSellCart = cartDAO.selectCartBySellStock(cartDTO);
 		
 		if(isExistsSellCart != null){
 			
 			cartDTO.setCart_id(isExistsSellCart.getCart_id());
-			//Áßº¹ »óÇ°ÀÇ ¼ö·® + ¾÷µ¥ÀÌÆ®
+			//ì¤‘ë³µ ìƒí’ˆì˜ ìˆ˜ëŸ‰ + ì—…ë°ì´íŠ¸
 			int updateResult = cartDAO.updateCartBySellStock(cartDTO);
 			return updateResult;
 			
 		}else {
-			//Àå¹Ù±¸´Ï »ı¼º
+			
 			int result = cartDAO.cartInsert(cartDTO);
 			return result;
 		}
 	}
-	//´ë¿©»óÇ° Àå¹Ù±¸´Ï insert¹®
+	//ëŒ€ì—¬ìƒí’ˆ ì¥ë°”êµ¬ë‹ˆ insertë¬¸
 	public int cartRentProductInsert(ProductNewVO prodVO, String member_id) {
 		
 		CartDTO cartDTO = new CartDTO();
 		cartDTO.setMember_id(member_id);
 		cartDTO.setS_stock_id(prodVO.getS_stock_id());
-		cartDTO.setCart_amount(prodVO.getRent_num());//¼ö·®
+		cartDTO.setCart_amount(prodVO.getRent_num());//ï¿½ï¿½ï¿½ï¿½
 		
-		//ÀÌ¹Ì ÀÖ´ÂÁö Á¶È¸
+		//ì¬ê³  ìˆëŠ”ì§€ ì¡°íšŒ
 		CartDTO isExistsRentCart = cartDAO.selectCartByRentStock(cartDTO);
 		
 		if(isExistsRentCart != null){
 			
 			cartDTO.setCart_id(isExistsRentCart.getCart_id());
-			//Áßº¹ »óÇ°ÀÇ ¼ö·® + ¾÷µ¥ÀÌÆ®
+			//ì¤‘ë³µ ìƒí’ˆì˜ ìˆ˜ëŸ‰ + ì—…ë°ì´íŠ¸
 			int updateResult = cartDAO.updateCartByRentStock(cartDTO);
 			return updateResult;
 			
 		}else {
-			//Àå¹Ù±¸´Ï »ı¼º
 			int result = cartDAO.cartRentProductInsert(cartDTO);
 			return result;
 		}
 	}
 
-	//Àå¹Ù±¸´Ï »óÇ° ¼ö·® ¾÷µ¥ÀÌÆ®
+	//ì¥ë°”êµ¬ë‹ˆ ìƒí’ˆ ìˆ˜ëŸ‰ ì—…ë°ì´íŠ¸
 	public int updateCartBySellStock(CartDTO cart) {
 		return cartDAO.updateCartBySellStock(cart);
 	}
