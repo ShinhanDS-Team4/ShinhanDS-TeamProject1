@@ -25,7 +25,11 @@ public class CustomerControllerJH {
 	Addr_ListService addrService; 
 	
 	@Autowired
+	Addr_ListService addrService; //회원 주소 
+  
+  @Autowired
 	MemberService memberService;
+
 	
 	/*留덉씠�럹�씠吏� 硫붿씤*/
 	@GetMapping("/myPage.do")
