@@ -21,43 +21,7 @@
 <%-- 카카오API --%>
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-
-
 <script>
-	
-	function selectAddr(){
-		 var selectedRadio = document.querySelector('input[name="address"]:checked');
-	        if (selectedRadio) {
-	            // 선택된 라디오 버튼의 값 (address ID)을 가져옵니다.
-	            var addr_num = selectedRadio.value;
-	            var order_id = $('#orderId').val(); 
-	            alert(addr_num);
-	            $.ajax({
-	     			url : "/shoppingmall/customer/applyAddress",
-	     			type : 'POST',
-	     			contentType : 'application/json',
-	     			data : JSON.stringify({
-	     				addr_num : addr_num,
-	     				order_id : order_id
-	     			}),
-	     			success : function(response) {
-	     				if (response === "Address Saved") {
-	     					alert('선택하신 주소가 적용되었습니다');
-	     					location.reload();
-	     				} else {
-	     					alert('선택하신 주소 적용에 실패하였습니다');
-	     				}
-	     			},
-	     			error : function() {
-	     				alert('서버 요청 중 오류가 발생했습니다.');
-	     			}
-	             });
-	            
-	        } else {
-	            // 선택된 라디오 버튼이 없을 때의 메시지.
-	        	alert("Not selected");
-	        }
-	}
 	
 	function applyCoupon() {
 		var selectedCouponId = $('#selectedCoupon').val();
@@ -66,7 +30,7 @@
 		alert(orderid);
 
 		$.ajax({
-			url : "/shoppingmall/customer/applyCoupon",
+			url : "/shoppingmall/customer/applyRentCoupon",
 			type : 'POST',
 			contentType : 'application/json',
 			data : JSON.stringify({
@@ -96,7 +60,7 @@
 		
 		
 		$.ajax({
-			url : "/shoppingmall/customer/applyPoint",
+			url : "/shoppingmall/customer/applyRentPoint",
 			type : 'POST',
 			contentType : 'application/json',
 			data : JSON.stringify({
@@ -124,12 +88,12 @@
 			
 			$("#orderBtn").on("click", function(){
 				alert("구매버튼");
-				var order_id = '${orderInfo.order_id}';
+				var rental_code = '${rentInfo.rental_code}';
 				var userid= '${memberInfo.member_id}';
 				var username = '${memberInfo.member_name}';
 				var phone='${memberInfo.phone}';
-				var merchant_uid = 'order_'+order_id//DB에 주문ID로 저장될, 고유한 주문 ID
-				var amount = '${orderInfo.total_price}';//결제 금액
+				var merchant_uid = 'rent_'+rental_code;//DB에 주문ID로 저장될, 고유한 주문 ID
+				var amount = '${rentInfo.total_rent_price}';//결제 금액
 				
 				
 				$.ajax({
@@ -148,7 +112,7 @@
 			                	pay_method: "card",
 			                	merchant_uid: merchant_uid, // 주문 고유 번호
 			                	name: "상품 주문",
-			                	amount: '${orderInfo.total_price}',
+			                	amount: '${rentInfo.total_rent_price}',
 			                	buyer_email: '${memberInfo.email}',
 			                	buyer_name: username,
 			                	buyer_tel: phone,
@@ -166,7 +130,8 @@
 			                    		success : function(verificationResult){
 			                    			if(verificationResult === "success"){
 			                    				alert("검증에서 이상 없음. 결제 완료");	
-			                    				window.location.href = "/shoppingmall/customer/sellPaySuccess?order_id="+ + encodeURIComponent(order_id);
+			                    				window.location.href = "/shoppingmall/customer/rentPaySuccess?&rental_code=" + encodeURIComponent(rental_code);
+			           
 			                    			}else{
 			                    				alert("검증에서 이상 발생. 결제 취소");
 			                    			}
@@ -205,7 +170,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="orderDetail" items="${orderDetailList}">
+					<c:forEach var="rentDetail" items="${rentDetailList}">
 						<tr>
 							<td>
 								<div class="product-details">
@@ -215,7 +180,7 @@
 										</div>
 										<div class="right">
 											<input type="text" placeholder="덩크로우"
-												value="${orderDetail.s_stock_id}">
+												value="${rentDetail.r_stock_id}">
 										</div>
 									</div>
 									<div class="info">
@@ -224,15 +189,15 @@
 										</div>
 										<div class="right">
 											<input type="text" placeholder="10000"
-												value="${orderDetail.order_product_price}">
+												value="${rentDetail.rent_product_price}">
 										</div>
 									</div>
 								</div>
 							</td>
-							<td><input type="number" value="${orderDetail.order_num}">
+							<td><input type="number" value="${rentDetail.rent_num}">
 							</td>
 							<td>
-								<p>${orderDetail.order_product_price * orderDetail.order_num}</p>
+								<p>${rentDetail.rent_product_price * rentDetail.rent_num}</p>
 							</td>
 
 						</tr>
@@ -242,8 +207,6 @@
 
 			</table>
 		</div>
-
-
 
 		<div class="delivery-info">
 			<h2>배송자 정보</h2>
@@ -258,55 +221,6 @@
 			</div>
 
 			<div class="form-group">
-				<label for="addrList">배송지 선택</label>
-				<table>
-					<thead>
-						<tr>
-							<th>Select</th>
-							<th>AddressID</th>
-							<th>Main Address</th>
-							<th>Detail Address</th>
-							<th>Sub Address</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach var="address" items="${addrList}">
-							<tr>
-								<td><input type="radio" name="address"
-									value="${address.addr_num}" id="address_${address.addr_num}">
-								</td>
-								<td>${address.addr_num}</td>
-								<td>${address.main_address}</td>
-								<td>${address.sub_address}</td>
-								<td>${address.detail_address}</td>
-							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
-			</div>
-			<div class="form-group">
-				<button type="button" onclick="selectAddr()">배송 주소 선택</button>
-			</div>
-
-
-			<!-- <div class="form-group">
-				<label for="main_address">배송주소</label> <input type="text"
-					id="main_address" name="main_address" />
-				<button type="button" class="address-button">주소 찾기</button>
-			</div>
-			<div class="form-group">
-				<label for="address">상세주소</label> <input type="text"
-					id="detail_address" name="detail_address" />
-			</div>
-			<div class="form-group">
-				<input type="checkbox" id="save-address" name="save-address" /> <label
-					for="save-address">기본 배송지로 저장</label>
-			</div> -->
-
-
-
-
-			<div class="form-group">
 				<label for="coupon">쿠폰 선택</label> <select name="selectedCoupon"
 					id="selectedCoupon">
 					<option value="선택안함">선택 안함</option>
@@ -316,15 +230,13 @@
 				</select>
 				<!-- Hidden input to store selected coupon ID -->
 
-				<input type="hidden" id="totalPrice" name="totalPrice"
-					value="${orderInfo.total_price}" /> <input type="hidden"
-					id="orderId" name="orderId" value="${orderInfo.order_id}" />
+				<input type="hidden" id="totalPrice" name="totalPrice" value="${rentInfo.total_rent_price}" />
+					<input type="hidden" id="orderId" name="orderId" value="${rentInfo.rental_code}" />
 				<div class="buttons">
 					<button type="button" id="apply_coupon" onclick="applyCoupon()">선택하기</button>
 				</div>
 
 			</div>
-
 
 			<div class="form-group">
 				<label for="pointLeft">보유 포인트</label> <input type="number"
@@ -337,13 +249,11 @@
 					<button type="button" id="apply_point" onclick="applyPoint()">사용</button>
 				</div>
 			</div>
-
-
 		</div>
-
+`
 		<div class="form-group">
 			<label>최종 결제 금액</label> <input type="number"
-				value="${orderInfo.total_price}">
+				value="${rentInfo.total_rent_price}">
 		</div>
 		<button class="payment-button" id="orderBtn">결제하기</button>
 	</main>

@@ -12,11 +12,14 @@ import lombok.ToString;
 @Getter@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderProdDTO {
-	Integer order_id;
-	Date order_date;
-	String order_state;
-	String member_id;
-	Integer addr_num;
-	Integer total_price;
+public class OrderProdDetailDTO {
+	String prod_name;
+	String brand;
+	Integer opt_id1;
+	Integer opt_id2;
+	Integer opt_id3;
+	Integer opt_id4;
+	Integer opt_id5;
+	Integer order_product_price;
+	String img_url;
 }

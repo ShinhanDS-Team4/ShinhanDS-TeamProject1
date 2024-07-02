@@ -48,6 +48,7 @@ import com.team4.shoppingmall.rent_detail.RentDetailDTO;
 import com.team4.shoppingmall.rent_detail.RentDetailService;
 import com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO;
 import com.team4.shoppingmall.rent_prod_stock.RentProdStockService;
+import com.team4.shoppingmall.seller_prod_stock.StockUpdateDTO;
 import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockDTO;
 import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockService;
 
@@ -208,6 +209,26 @@ public class SellerPageController {
 		}
 		return "Delete Success";
 	}
+	
+	@PostMapping("/deleteSellStocks")
+	@ResponseBody
+	public String deleteSellStocks(@RequestBody StockUpdateDTO request) {
+		List<String> sellStockIds = request.getSellStockIds();
+		for(String sellStockId : sellStockIds) {
+			int sellStockDelResult = seller_Prod_StockService.seller_prod_stockDelete(sellStockId);
+		}
+		return "Delete Success";
+	}
+	@PostMapping("/deleteRentStocks")
+	@ResponseBody
+	public String deletesSellStocks(@RequestBody StockUpdateDTO request) {
+		List<String> rentStockIds = request.getSellStockIds();
+		for(String rentStockId : rentStockIds) {
+			int rentStockDelResult = rentProdStockService.rentProdDelete(rentStockId);
+		}
+		return "Delete Success";
+	}
+	
 
 	// 문의 목록 페이지 보여주기
 	@GetMapping("/Q&AList.do")

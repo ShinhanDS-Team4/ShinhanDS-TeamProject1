@@ -12,17 +12,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.team4.shoppingmall.order_prod.OrderProdDTO;
+import com.team4.shoppingmall.order_prod.OrderProdDetailDTO;
 import com.team4.shoppingmall.order_prod.OrderProdService;
-import com.team4.shoppingmall.prod.ProdDTO;
 import com.team4.shoppingmall.prod.ProdService;
 import com.team4.shoppingmall.rent.RentDTO;
+import com.team4.shoppingmall.rent.RentSelectDTO;
 import com.team4.shoppingmall.rent.RentService;
 import com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO;
 
@@ -37,71 +37,72 @@ public class TestControllerYun {
 	@Autowired
 	ProdService prodService;
 
-	// »óÇ°¸ñ·Ï - selectAll2 
+	// ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ - selectAll2 
 	@GetMapping("/productlist.do")
 	public String test1(Model model, HttpServletRequest request) {
-		System.out.println("/customer/productlist.jsp"); // ¸ğµç »óÇ°¸ñ·Ï
+		System.out.println("/customer/productlist.jsp"); // ï¿½ï¿½ï¿½ ï¿½ï¿½Ç°ï¿½ï¿½ï¿½
 		List<Map<String, Object>> prodAllOrders = prodService.selectAll2();
-		System.out.println("ÀüÃ¼»óÇ°¸ñ·Ï" + prodAllOrders);
+		System.out.println("ï¿½ï¿½Ã¼ï¿½ï¿½Ç°ï¿½ï¿½ï¿½" + prodAllOrders);
 		model.addAttribute("prodAllOrders", prodAllOrders);
 
 		return "customer/productlist";
 	}
 
 	/*
-	 * // »óÇ°¸ñ·Ï
+	 * // ï¿½ï¿½Ç°ï¿½ï¿½ï¿½
 	 * 
 	 * @GetMapping("/productlist.do") public String
 	 * productList(@RequestParam("category_id") int categoryId,
 	 * 
 	 * @RequestParam("category_name") String categoryName, Model model) {
-	 * System.out.println("Ä«Å×°í¸®ID: " + categoryId);
-	 * System.out.println("/customer/productlist.jsp"); // ¼±ÅÃµÈ Ä«Å×°í¸®ÀÇ »óÇ° ¸ñ·Ï
+	 * System.out.println("Ä«ï¿½×°ï¿½ID: " + categoryId);
+	 * System.out.println("/customer/productlist.jsp"); // ï¿½ï¿½ï¿½Ãµï¿½ Ä«ï¿½×°ï¿½ï¿½ï¿½ ï¿½ï¿½Ç° ï¿½ï¿½ï¿½
 	 * List<Map<String, Object>> prodAllOrders =
-	 * prodService.selectByCategory(categoryId); System.out.println("¼±ÅÃµÈ Ä«Å×°í¸® »óÇ°¸ñ·Ï"
+	 * prodService.selectByCategory(categoryId); System.out.println("ï¿½ï¿½ï¿½Ãµï¿½ Ä«ï¿½×°ï¿½ ï¿½ï¿½Ç°ï¿½ï¿½ï¿½"
 	 * + prodAllOrders); model.addAttribute("prodAllOrders", prodAllOrders);
-	 * model.addAttribute("categoryName", categoryName); // Ä«Å×°í¸® ÀÌ¸§ Ãß°¡
+	 * model.addAttribute("categoryName", categoryName); // Ä«ï¿½×°ï¿½ ï¿½Ì¸ï¿½ ï¿½ß°ï¿½
 	 * 
 	 * return "customer/productlist"; }
 	 */
 
-	// ´ë¿©¸ñ·Ï
+	// ï¿½ë¿©ï¿½ï¿½ï¿½
 	@GetMapping("/rentlist.do")
 	public String test2(Model model, HttpServletRequest request) {
-		System.out.println("/customer/rentlist.jsp");
+	    System.out.println("/customer/rentlist.jsp");
 
-		// ¸ğµç ´ë¿©¸ñ·Ï
-		List<RentDTO> rentAllOrders = rentService.selectAll();
-		System.out.println("ÀüÃ¼´ë¿©³»¿ª" + rentAllOrders);
+	    // ëª¨ë“  ë ŒíŠ¸ ì •ë³´ ê°€ì ¸ì˜¤ê¸°
+	    List<RentDTO> rentAllOrders = rentService.selectAll();
+	    System.out.println("ì „ì²´ ë ŒíŠ¸ ëª©ë¡: " + rentAllOrders);
 
-		// ÁÖ¹®º° »ó¼¼¸ñ·Ï Map
-		Map<Integer, Map<String, Object>> rentDetailsMap = new HashMap();
+	    // ë ŒíŠ¸ ìƒì„¸ ì •ë³´ë¥¼ ë‹´ì„ Map
+	    Map<Integer, List<RentSelectDTO>> rentDetailsMap = new HashMap<>();
 
-		// °¢ ÁÖ¹®¿¡ ´ëÇÑ ÁÖ¹® »ó¼¼ ¸ñ·Ï
-		for (RentDTO rent : rentAllOrders) {
-			int rental_code = rent.getRental_code();
-			Map<String, Object> rentDetails = rentService.selectById2(rental_code);
-			rentDetailsMap.put(rental_code, rentDetails);
-		}
-		System.out.println("°¢ »ó¼¼´ë¿©³»¿ª" + rentDetailsMap);
+	    // ê° ë ŒíŠ¸ì— ëŒ€í•œ ìƒì„¸ ì •ë³´ ê°€ì ¸ì˜¤ê¸°
+	    for (RentDTO rent : rentAllOrders) {
+	        int rental_code = rent.getRental_code();
+	        List<RentSelectDTO> rentDetails = rentService.selectById2(rental_code);
+	        rentDetailsMap.put(rental_code, rentDetails);
+	    }
+	    System.out.println("ë ŒíŠ¸ ìƒì„¸ ì •ë³´ ëª©ë¡: " + rentDetailsMap);
 
-		// °¢ »óÇ°ÀÇ ¸ğµç ¿É¼Ç
-		List<RentProdStockDTO> optionList = rentService.selectOptions();
+	    // ë ŒíŠ¸ ìƒí’ˆ ì˜µì…˜ ë¦¬ìŠ¤íŠ¸ ê°€ì ¸ì˜¤ê¸°
+	    List<RentProdStockDTO> optionList = rentService.selectOptions();
 
-		model.addAttribute("rentAllOrders", rentAllOrders);
-		model.addAttribute("rentDetailsMap", rentDetailsMap);
-		model.addAttribute("optionList", optionList);
+	    model.addAttribute("rentAllOrders", rentAllOrders);
+	    model.addAttribute("rentDetailsMap", rentDetailsMap);
+	    model.addAttribute("optionList", optionList);
 
-		return "customer/rentlist";
+	    return "customer/rentlist";
 	}
 
-	// ´ë¿©Ãë¼Ò
+
+	// ï¿½ë¿©ï¿½ï¿½ï¿½
 	@PostMapping("/cancelRent.do")
 	@ResponseBody
 	public String cancelRent(@RequestParam("rentalCode") int rentalCode, HttpServletResponse response) { 
-		System.out.println("´ë¿©¿äÃ»(ÁÖ¹®¹øÈ£): " + rentalCode);
+		System.out.println("ï¿½ë¿©ï¿½ï¿½Ã»(ï¿½Ö¹ï¿½ï¿½ï¿½È£): " + rentalCode);
 		
-		// ÆÇ¸ÅÀÚ¿¡°Ô ¿äÃ»º¸³»±â?
+		// ï¿½Ç¸ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?
 		
 		int cancelSuccess = rentService.cancelRent(rentalCode);
 		String message = "";
@@ -115,16 +116,16 @@ public class TestControllerYun {
 		}
 	}
 
-	// ¹İ³³
+	// ï¿½İ³ï¿½
 	@PostMapping("/returnRent.do")
 	@ResponseBody
 	public String returnRent(@RequestParam("rentalCode") int rentalCode, HttpServletResponse response) {
-		System.out.println("¹İ³³¿äÃ»(ÁÖ¹®¹øÈ£): " + rentalCode);
+		System.out.println("ï¿½İ³ï¿½ï¿½ï¿½Ã»(ï¿½Ö¹ï¿½ï¿½ï¿½È£): " + rentalCode);
 
 		int returnSuccess = rentService.returnRent(rentalCode);
 		String message = "";
 		
-		// ÆÇ¸ÅÀÚ¿¡°Ô ¿äÃ»º¸³»±â?
+		// ï¿½Ç¸ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?
 		
 		if (returnSuccess > 0) { 
 			message = "success"; 
@@ -135,40 +136,42 @@ public class TestControllerYun {
 		}
 	}
 
-	// ÁÖ¹®¸ñ·Ï
+	// ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½
 	@GetMapping("/orderlist.do")
 	public String test3(Model model, HttpServletRequest request) {
-		System.out.println("/customer/orderlist.jsp");
+	    System.out.println("/customer/orderlist.jsp");
 
-		// ¸ğµç ÁÖ¹®¸ñ·Ï
-		List<OrderProdDTO> allorders = orderProdService.selectAll();
-		System.out.println("ÀüÃ¼ÁÖ¹®³»¿ª" + allorders);
+	    // ëª¨ë“  ì£¼ë¬¸ ì •ë³´ ê°€ì ¸ì˜¤ê¸°
+	    List<OrderProdDTO> allorders = orderProdService.selectAll();
+	    System.out.println("ì „ì²´ ì£¼ë¬¸ ëª©ë¡: " + allorders);
 
-		// ÁÖ¹®º° »ó¼¼¸ñ·Ï Map
-		Map<Integer, Map<String, Object>> orderDetailsMap = new HashMap();
+	    // ì£¼ë¬¸ ìƒì„¸ ì •ë³´ë¥¼ ë‹´ì„ Map
+	    Map<Integer, List<OrderProdDetailDTO>> orderDetailsMap = new HashMap<>();
 
-		// °¢ ÁÖ¹®¿¡ ´ëÇÑ ÁÖ¹® »ó¼¼ ¸ñ·Ï
-		for (OrderProdDTO order : allorders) {
-			int orderId = order.getOrder_id();
-			Map<String, Object> orderDetails = orderProdService.selectById2(orderId);
-			orderDetailsMap.put(orderId, orderDetails);
-		}
-		System.out.println("°¢ »ó¼¼ÁÖ¹®³»¿ª" + orderDetailsMap);
+	    // ê° ì£¼ë¬¸ì— ëŒ€í•œ ìƒì„¸ ì •ë³´ ê°€ì ¸ì˜¤ê¸°
+	    for (OrderProdDTO order : allorders) {
+	        int orderId = order.getOrder_id();
+	        List<OrderProdDetailDTO> orderDetails = orderProdService.selectById2(orderId);
+	        orderDetailsMap.put(orderId, orderDetails);
+	    }
+	    System.out.println("ì£¼ë¬¸ ìƒì„¸ ì •ë³´ ëª©ë¡: " + orderDetailsMap);
 
-		model.addAttribute("allOrders", allorders);
-		model.addAttribute("orderDetailsMap", orderDetailsMap);
-		model.addAttribute("optionList", orderProdService.selectOptions());
+	    model.addAttribute("allOrders", allorders);
+	    model.addAttribute("orderDetailsMap", orderDetailsMap);
+	    model.addAttribute("optionList", orderProdService.selectOptions());
 
-		return "customer/orderlist";
+	    return "customer/orderlist";
 	}
 
-	// Ãë¼Ò¿äÃ»
+
+
+	// ï¿½ï¿½Ò¿ï¿½Ã»
 	@PostMapping("/cancel.do")
 	@ResponseBody
 	public String processCancel(@RequestParam("orderId") int orderId, HttpServletResponse response) throws IOException {
-		System.out.println("Ãë¼Ò¿äÃ»(ÁÖ¹®¹øÈ£): " + orderId);
+		System.out.println("ï¿½ï¿½Ò¿ï¿½Ã»(ï¿½Ö¹ï¿½ï¿½ï¿½È£): " + orderId);
 
-		// ÆÇ¸ÅÀÚ¿¡°Ô Ãë¼Ò¿äÃ» º¸³»±â
+		// ï¿½Ç¸ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½Ò¿ï¿½Ã» ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 		int cancelSuccess = orderProdService.orderCancel(orderId); 
 		String message = "";
@@ -182,13 +185,13 @@ public class TestControllerYun {
 		}
 	}
 
-	// È¯ºÒ¿äÃ»
+	// È¯ï¿½Ò¿ï¿½Ã»
 	@PostMapping("/refund.do")
 	@ResponseBody
 	public String processRefund(@RequestParam("orderId") int orderId, HttpServletResponse response) throws IOException {
-		System.out.println("È¯ºÒ¿äÃ»(ÁÖ¹®¹øÈ£): " + orderId);
+		System.out.println("È¯ï¿½Ò¿ï¿½Ã»(ï¿½Ö¹ï¿½ï¿½ï¿½È£): " + orderId);
 
-		// ÆÇ¸ÅÀÚ¿¡°Ô È¯ºÒ¿äÃ» º¸³»±â
+		// ï¿½Ç¸ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ È¯ï¿½Ò¿ï¿½Ã» ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 		int refundSuccess = orderProdService.orderRefund(orderId); 
 		String message = "";

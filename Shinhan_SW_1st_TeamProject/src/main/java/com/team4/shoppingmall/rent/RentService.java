@@ -25,16 +25,17 @@ public class RentService {
 	@Autowired
 	RentProdStockDAOInterface rentProdStockDAO;
 	
+
 	public int searchRentId() {
 		return rentDAO.searchRentId();
 	}
 
-	// ´ë¿©»ó¼¼
+	// ëŒ€ì—¬ìƒì„¸
 	public RentDTO selectById(Integer rental_code) {
 		return rentDAO.selectById(rental_code);
 	}
 
-	// ´ë¿©¸ñ·Ï
+	// ëŒ€ì—¬ëª©ë¡
 	public List<RentDTO> selectAll() {
 		return rentDAO.selectAll();
 	}
@@ -47,56 +48,59 @@ public class RentService {
 		rent.setMember_id(member_id);
 		rent.setRent_start_date(prodVO.getRent_start_date());
 		rent.setRent_end_date(prodVO.getRent_end_date());
-		//rent.setRental_code(); ½ÃÄö½º
+		//rent.setRental_code(); ì‹œí€€ìŠ¤
 		rent.setTotal_rent_price(prodVO.getTotal_rent_price());
 		
-		//2.´ë¿© »ı¼º
+		//2.ëŒ€ì—¬ ìƒì„±
 		int result = rentDAO.rentInsert(rent);
 		
-		//insertÇÑ ´ë¿©ID°ª °¡Á®¿À±â
+		//insertí•œ ëŒ€ì—¬IDê°’ ê°€ì ¸ì˜¤ê¸°
 		int rental_code = rent.getRental_code();
 		
 		
-		//2.´ë¿©»ó¼¼ »ı¼º
+		//2.ëŒ€ì—¬ìƒì„¸ ìƒì„±
 		RentDetailDTO rentDetailDTO = new RentDetailDTO();
 
-		rentDetailDTO.setR_stock_id(prodVO.getR_stock_id()); //´ë¿©Àç°íid
-		rentDetailDTO.setRent_num(prodVO.getRent_num()); // ´ë¿© ¼ö
-		rentDetailDTO.setRent_product_price(prodVO.getRent_product_price()); //´ë¿©°¡°İ
-		rentDetailDTO.setRental_code(rental_code); //´ë¿©id
+		rentDetailDTO.setR_stock_id(prodVO.getR_stock_id()); //ëŒ€ì—¬ì¬ê³ id
+		rentDetailDTO.setRent_num(prodVO.getRent_num()); // ëŒ€ì—¬ ìˆ˜
+		rentDetailDTO.setRent_product_price(prodVO.getRent_product_price()); //ëŒ€ì—¬ê°€ê²©
+		rentDetailDTO.setRental_code(rental_code); //ëŒ€ì—¬id
 		
 		result = rentDetailDAO.rentDetailInsert(rentDetailDTO);
 		
-		//3.´ë¿© Àç°í ¼ö·® ¾÷µ¥ÀÌÆ®
+		//3.ëŒ€ì—¬ ì¬ê³  ìˆ˜ëŸ‰ ì—…ë°ì´íŠ¸
 		rentProdStockDAO.rentProdStockUpdate(prodVO);
 		
 		return result;
 	};
-
 	
-	// ´ë¿©»óÅÂ ¼öÁ¤
+	// ëŒ€ì—¬ìƒíƒœ ìˆ˜ì •
 	public int rentUpdate(Integer rental_code) {
 		return rentDAO.rentUpdate(rental_code);
 	}
 
-	// rentlist.jsp¿¡ Ãâ·ÂÇÒ ´ë¿©»óÇ° »ó¼¼Á¤º¸
-	public Map<String, Object> selectById2(int rental_code) { 
+	// rentlist.jspï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ë¿©ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	public List<RentSelectDTO> selectById2(int rental_code) { 
 		return rentDAO.selectById2(rental_code);
 	}
 
-	// rentlist.jsp¿¡¼­, »ó¼¼»óÇ° ¿É¼Ç Ãâ·Â½Ã, ¸ğµç ¿É¼Ç °¡Á®¿À±â
+	// rentlist.jspï¿½ï¿½ï¿½ï¿½, ï¿½ó¼¼»ï¿½Ç° ï¿½É¼ï¿½ ï¿½ï¿½Â½ï¿½, ï¿½ï¿½ï¿½ ï¿½É¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	public List<RentProdStockDTO> selectOptions() {
         return rentDAO.selectOptions();
 	}
 
-	// rentlist.jsp¿¡¼­, Ãë¼Ò
+	// rentlist.jspï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½
 	public int cancelRent(int rentalCode) {
         return rentDAO.cancelRent(rentalCode);
 	}
 
-	// rentlist.jsp¿¡¼­, ¹İ³³
+	// rentlist.jspï¿½ï¿½ï¿½ï¿½, ï¿½İ³ï¿½
 	public int returnRent(int rentalCode) {
         return rentDAO.returnRent(rentalCode);
+	}
+	
+	public int updateRent(RentDTO rent) {
+		return rentDAO.updateRent(rent);
 	}
 
 }

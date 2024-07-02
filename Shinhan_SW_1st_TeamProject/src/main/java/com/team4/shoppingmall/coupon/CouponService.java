@@ -27,7 +27,7 @@ public class CouponService {
 	}
 	
 	// ÄíÆù»ç¿ë
-	public int couponUse(String coupon_id) {
-		return couponDAO.couponUse(coupon_id);
+	public int couponUse(CouponDTO couponDTO) {
+		return couponDAO.couponUse(couponDTO);
 	}
 }

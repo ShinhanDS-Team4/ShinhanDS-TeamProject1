@@ -26,5 +26,5 @@ public class Buyer_InqController {
 	
 	@Autowired
 	Buyer_InqService buyer_inqService;
-	
+
 }

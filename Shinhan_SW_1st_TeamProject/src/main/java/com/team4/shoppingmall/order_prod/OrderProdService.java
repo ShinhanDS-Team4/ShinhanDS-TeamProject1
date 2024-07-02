@@ -24,22 +24,22 @@ public class OrderProdService {
 
 	@Autowired
 	Order_DetailDAOInterface orderDetailDAO;
-	
+
 	@Autowired
-	Seller_Prod_StockTestDAOInterface seller_Prod_StockTestDAO; //Test����
+	Seller_Prod_StockTestDAOInterface seller_Prod_StockTestDAO; 
+
 	
-	// �ֹ���
 	public OrderProdDTO selectById(Integer order_id) {
 		return orderprodDAO.selectById(order_id);
 	}
 
-	// �ֹ����
+	
 	public List<OrderProdDTO> selectAll() {
 		return orderprodDAO.selectAll();
 	}
+	
 
-
-	// �ֹ�����, �ֹ��� ����, ��� ������Ʈ
+	
 	@Transactional
 	public int orderprodInsert(ProductNewVO prodVO, int total_price, String member_id) {
 		
@@ -68,18 +68,22 @@ public class OrderProdService {
 		
 		result = orderDetailDAO.orderDetailInsert(orderDetailDTO);
 		
-		//3.���� ������Ʈ
+		
 		seller_Prod_StockTestDAO.sellProdStockUpdate(prodVO);
 		
 		return result;
 	}
-	// �ֹ�����
+
 	public int orderprodUpdate(OrderProdDTO orderprod) {
 		return orderprodDAO.orderprodUpdate(orderprod);
 	}
 	
+	public int updateOrderPrice(OrderProdDTO orderprod) {
+		return orderprodDAO.updateOrderPrice(orderprod);
+	}
+	
 	// orderlist.jsp�� ����� ��ǰ��, �귣��, �ɼ�, ��ǰ����, �̹���URL
-	public Map<String, Object> selectById2(int order_id) {
+	public List<OrderProdDetailDTO> selectById2(int order_id) {
         return orderprodDAO.selectById2(order_id);
     }
 

@@ -20,7 +20,6 @@ import com.team4.shoppingmall.member.MemberService;
 @Controller
 @RequestMapping("/customer")
 public class CustomerControllerJH {
-
 	
 	@Autowired
 	Addr_ListService addrService; //회원 주소 

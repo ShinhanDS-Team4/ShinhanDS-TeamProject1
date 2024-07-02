@@ -51,9 +51,9 @@ public class CategoryController {
 		String[] phones = new String[] {"010-6349-3464", "010-9723-4740", "010-2717-9614", "010-7552-8293", "010-4590-9812", "010-7137-8144"};
 		
 		JSONParser parser = new JSONParser();
-		Reader pl_reader = new FileReader("C:/Users/jh981/Desktop/products_list.json");
-		Reader bm_reader = new FileReader("C:/Users/jh981/Desktop/business_mans.json");
-		Reader ctg_reader = new FileReader("C:/Users/jh981/Desktop/ctg_url_matching.json");
+		Reader pl_reader = new FileReader("C:/shinhan_project/ShinhanDS-TeamProject1/Shinhan_SW_1st_TeamProject/src/main/webapp/resources/dbset/products_list.json");
+		Reader bm_reader = new FileReader("C:/shinhan_project/ShinhanDS-TeamProject1/Shinhan_SW_1st_TeamProject/src/main/webapp/resources/dbset/business_mans.json");
+		Reader ctg_reader = new FileReader("C:/shinhan_project/ShinhanDS-TeamProject1/Shinhan_SW_1st_TeamProject/src/main/webapp/resources/dbset/ctg_url_matching.json");
 		JSONObject prod_list = (JSONObject) parser.parse(pl_reader);
 		JSONObject bm_list = (JSONObject) parser.parse(bm_reader);
 		JSONObject ctg_list = (JSONObject) parser.parse(ctg_reader);
@@ -83,7 +83,7 @@ public class CategoryController {
 			
 			for(String size :sizes) {
 				prod_option = new Prod_OptionDTO();
-				prod_option.setOpt_name("사이즈");
+				prod_option.setOpt_name("������");
 				prod_option.setOpt_value(size);
 				prod_option.setProd_id((String) prod_id);
 				prod_optionService.optionInsert(prod_option);
