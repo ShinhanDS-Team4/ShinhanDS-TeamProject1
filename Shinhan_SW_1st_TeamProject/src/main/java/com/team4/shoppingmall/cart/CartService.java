@@ -6,6 +6,9 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.team4.shoppingmall.prod.ProductNewVO;
 
 @Service
 public class CartService {
@@ -13,14 +16,17 @@ public class CartService {
 	@Autowired
 	CartDAOInterface cartDAO;
 	
-	//¼±ÅÃÇÑ ¿É¼Ç »óÇ°ÀÇ Àç°íID Á¶È¸
+	//ì„ íƒí•œ ì˜µì…˜ ìƒí’ˆì˜ ì¬ê³ ID ì¡°íšŒ
 	public String searchStockId(HashMap<String, String> map, String prod_id) {
 		return cartDAO.searchStockId(map, prod_id);
 	}
 	
-	//Àå¹Ù±¸´Ï¿¡ °°Àº »óÇ°ÀÌ Á¸ÀçÇÏ´ÂÁö Á¶È¸
-	public CartDTO selectCartBySellstock(Map<String,String> map) {
-		return cartDAO.selectCartBySellstock(map);
+	//ì¥ë°”êµ¬ë‹ˆì— ê°™ì€ ìƒí’ˆì´ ì¡´ì¬í•˜ëŠ”ì§€ ì¡°íšŒ
+//	public CartDTO selectCartBySellstock(Map<String,String> map) {
+//		return cartDAO.selectCartBySellstock(map);
+//	}
+	public CartDTO selectCartBySellstock(CartDTO cartDTO) {
+		return cartDAO.selectCartBySellStock(cartDTO);
 	}
 	
 	public List<CartDTO> selectSellStockByMemberId(String member_id) {
@@ -43,8 +49,59 @@ public class CartService {
 		return cartDAO.selectAll();
 	}
 	
-	public int cartInsert(CartDTO cart) {
-		return cartDAO.cartInsert(cart);
+	//íŒë§¤ìƒí’ˆ ì¥ë°”êµ¬ë‹ˆ insertë¬¸
+	@Transactional
+	public int cartInsert(ProductNewVO prodVO, String member_id, int cart_amount) {
+	
+		CartDTO cartDTO = new CartDTO();
+		cartDTO.setMember_id(member_id);
+		cartDTO.setS_stock_id(prodVO.getS_stock_id());
+		//cartDTO.setCart_amount(prodVO.getOrder_num()); 
+		cartDTO.setCart_amount(cart_amount); 
+		
+		//ì¬ê³  ìˆëŠ”ì§€ ì¡°íšŒ
+		CartDTO isExistsSellCart = cartDAO.selectCartBySellStock(cartDTO);
+		
+		if(isExistsSellCart != null){
+			
+			cartDTO.setCart_id(isExistsSellCart.getCart_id());
+			//ì¤‘ë³µ ìƒí’ˆì˜ ìˆ˜ëŸ‰ + ì—…ë°ì´íŠ¸
+			int updateResult = cartDAO.updateCartBySellStock(cartDTO);
+			return updateResult;
+			
+		}else {
+			
+			int result = cartDAO.cartInsert(cartDTO);
+			return result;
+		}
+	}
+	//ëŒ€ì—¬ìƒí’ˆ ì¥ë°”êµ¬ë‹ˆ insertë¬¸
+	public int cartRentProductInsert(ProductNewVO prodVO, String member_id) {
+		
+		CartDTO cartDTO = new CartDTO();
+		cartDTO.setMember_id(member_id);
+		cartDTO.setS_stock_id(prodVO.getS_stock_id());
+		cartDTO.setCart_amount(prodVO.getRent_num());//ï¿½ï¿½ï¿½ï¿½
+		
+		//ì¬ê³  ìˆëŠ”ì§€ ì¡°íšŒ
+		CartDTO isExistsRentCart = cartDAO.selectCartByRentStock(cartDTO);
+		
+		if(isExistsRentCart != null){
+			
+			cartDTO.setCart_id(isExistsRentCart.getCart_id());
+			//ì¤‘ë³µ ìƒí’ˆì˜ ìˆ˜ëŸ‰ + ì—…ë°ì´íŠ¸
+			int updateResult = cartDAO.updateCartByRentStock(cartDTO);
+			return updateResult;
+			
+		}else {
+			int result = cartDAO.cartRentProductInsert(cartDTO);
+			return result;
+		}
+	}
+
+	//ì¥ë°”êµ¬ë‹ˆ ìƒí’ˆ ìˆ˜ëŸ‰ ì—…ë°ì´íŠ¸
+	public int updateCartBySellStock(CartDTO cart) {
+		return cartDAO.updateCartBySellStock(cart);
 	}
 	
 	public int cartUpdate(CartDTO cart) {
@@ -55,9 +112,5 @@ public class CartService {
 		return cartDAO.cartDelete(cart_id);
 	}
 	
-	//Àå¹Ù±¸´Ï »óÇ° ¼ö·® ¾÷µ¥ÀÌÆ®
-	public int updateCartBySellstock(CartDTO cart) {
-		return cartDAO.updateCartBySellstock(cart);
-	}
 	
 }

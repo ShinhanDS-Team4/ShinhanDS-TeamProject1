@@ -10,6 +10,11 @@
 		FROM RENT
 		WHERE RENTAL_CODE = #{aa}
 	</select>
+	
+	<!-- 시퀀스로 생성된 최근 대여id 찾기 -->
+	<select id="searchRentId" resultType="int">
+		select last_number-1 from user_sequences where sequence_name = 'RENT_SEQUENCE'
+	</select>
 
 	<!-- 대여목록 -->
 	<select id="selectAll" resultType="rentVO">
@@ -18,7 +23,7 @@
 	</select>
 
 	<!-- 대여하기 (주문상태 칼럼 삭제) -->
-	<insert id="rentInsert" parameterType="com.team4.shoppingmall.rent.RentDTO">
+	<insert id="rentInsert" parameterType="rentVO">
 		INSERT
 		INTO RENT(rental_code, rent_start_date, rent_end_date, member_id, total_rent_price)
 		VALUES(
@@ -28,6 +33,9 @@
 			#{member_id}, 
 			#{total_rent_price}
 		)
+		<selectKey keyProperty="rental_code" resultType="Integer" order="AFTER">
+       		SELECT rent_sequence.CURRVAL FROM DUAL
+ 		</selectKey>
 	</insert>
 
 	<!-- 대여상태 수정 -->
@@ -58,7 +66,7 @@
 	</select>
 
 	<!-- orderlist.jsp에 출력할 대여상품 상세정보 -->
-	<select id="selectById2" parameterType="int" resultType="map">
+	<select id="selectById2" parameterType="int" resultType="rent_selectVO">
 		SELECT P.prod_name,
 		   	   M.brand, 
 			   SPS.opt_id1,
@@ -67,13 +75,13 @@
 			   SPS.opt_id4,
 			   SPS.opt_id5,
 			   RD.rent_product_price,			   
-			   PI.img_url			   
+			   PI.img_id	   
 		FROM
 			RENT R
 		JOIN
 			RENT_DETAIL RD ON R.rental_code = RD.rental_code
 		JOIN
-			RENT_PROD_STOCK SPS ON RD.stock_id = SPS.stock_id
+			RENT_PROD_STOCK SPS ON RD.r_stock_id = SPS.r_stock_id
 		JOIN
 			PROD P ON SPS.prod_id = P.prod_id
 		JOIN

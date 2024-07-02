@@ -46,14 +46,14 @@ public class CategoryController {
 	@GetMapping("/dbset")
 	public void dbSet() throws IOException, ParseException {
 		String[] sizes = new String[] {"S", "M", "L"};
-		String[] names = new String[] {"ÍπÄÏ†ïÌòÑ", "Î∞±ÏÉÅÌò∏", "Ïù¥Ï¢ÖÍ≤Ω", "Î∞±Ïù∏ÌòÅ", "Ïù¥Ïû¨Ìôò", "Ï°∞Ïú§Ïû¨"};
+		String[] names = new String[] {"±Ë¡§«ˆ", "πÈªÛ»£", "¿Ã¡æ∞Ê", "πÈ¿Œ«ı", "¿Ã¿Á»Ø", "¡∂¿±¿Á"};
 		String[] emails = new String[] {"jh441122jh@gmail.com", "baeksh0118@gmail.com", " ljk5252525@gmail.com", "baekinhyeok998@gmail.com", "1nth2bleakmidwinter@gmail.com", "dbrmfgks@gmail.com"};
 		String[] phones = new String[] {"010-6349-3464", "010-9723-4740", "010-2717-9614", "010-7552-8293", "010-4590-9812", "010-7137-8144"};
 		
 		JSONParser parser = new JSONParser();
-		Reader pl_reader = new FileReader("C:/Users/jh981/Desktop/products_list.json");
-		Reader bm_reader = new FileReader("C:/Users/jh981/Desktop/business_mans.json");
-		Reader ctg_reader = new FileReader("C:/Users/jh981/Desktop/ctg_url_matching.json");
+		Reader pl_reader = new FileReader("C:/shinhan_project/ShinhanDS-TeamProject1/Shinhan_SW_1st_TeamProject/src/main/webapp/resources/dbset/products_list.json");
+		Reader bm_reader = new FileReader("C:/shinhan_project/ShinhanDS-TeamProject1/Shinhan_SW_1st_TeamProject/src/main/webapp/resources/dbset/business_mans.json");
+		Reader ctg_reader = new FileReader("C:/shinhan_project/ShinhanDS-TeamProject1/Shinhan_SW_1st_TeamProject/src/main/webapp/resources/dbset/ctg_url_matching.json");
 		JSONObject prod_list = (JSONObject) parser.parse(pl_reader);
 		JSONObject bm_list = (JSONObject) parser.parse(bm_reader);
 		JSONObject ctg_list = (JSONObject) parser.parse(ctg_reader);
@@ -83,7 +83,7 @@ public class CategoryController {
 			
 			for(String size :sizes) {
 				prod_option = new Prod_OptionDTO();
-				prod_option.setOpt_name("ÏÇ¨Ïù¥Ï¶à");
+				prod_option.setOpt_name("ªÁ¿Ã¡Ó");
 				prod_option.setOpt_value(size);
 				prod_option.setProd_id((String) prod_id);
 				prod_optionService.optionInsert(prod_option);

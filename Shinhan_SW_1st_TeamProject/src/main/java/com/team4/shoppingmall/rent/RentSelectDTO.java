@@ -1,4 +1,6 @@
-package com.team4.shoppingmall.seller_prod_stockTest;
+package com.team4.shoppingmall.rent;
+
+import java.sql.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,15 +12,14 @@ import lombok.ToString;
 @Getter@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Seller_Prod_StockTestDTO {
-	String s_stock_id;
-	Integer stock;
-	Integer total;
-	String prod_id;
+public class RentSelectDTO {
+	String prod_name;
+	String brand;
 	Integer opt_id1;
 	Integer opt_id2;
 	Integer opt_id3;
 	Integer opt_id4;
 	Integer opt_id5;
-	Integer review_id; //ªË¡¶
+	Integer rent_product_price;
+	Integer img_id;
 }

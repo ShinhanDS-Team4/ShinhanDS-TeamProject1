@@ -7,30 +7,31 @@ import com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO;
 
 public interface RentDAOInterface {
 	
-	//´ë¿©Àç°í¿¡ ÀÖ´Â »óÇ°ÀÇ ´ë¿©ID Ã£±â
-	
-	// ´ë¿©»ó¼¼
+	//ï¿½ë¿©ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½Ç°ï¿½ï¿½ ï¿½ë¿©ID Ã£ï¿½ï¿½
+	public int searchRentId();
+	// ï¿½ë¿©ï¿½ï¿½
 	public RentDTO selectById(Integer rental_code);
 	
-	// ´ë¿©¸ñ·Ï
+	// ï¿½ë¿©ï¿½ï¿½ï¿½
 	public List<RentDTO> selectAll();
 	
-	// ´ë¿©ÇÏ±â 
+	// ï¿½ë¿©ï¿½Ï±ï¿½ 
 	public int rentInsert(RentDTO rent);
 	
-	// ´ë¿©»óÅÂ ¼öÁ¤
+	
+	// ï¿½ë¿©ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	public int rentUpdate(Integer rental_code);
 
-	// rentlist.jsp¿¡ Ãâ·ÂÇÒ ´ë¿©»óÇ° »ó¼¼Á¤º¸(ºê·£µå¸í, »óÇ°¸í, ¿É¼Ç, ´ë¿©°¡°Ý, ÀÌ¹ÌÁöURL)
+	// rentlist.jspï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ë¿©ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ê·£ï¿½ï¿½ï¿½, ï¿½ï¿½Ç°ï¿½ï¿½, ï¿½É¼ï¿½, ï¿½ë¿©ï¿½ï¿½ï¿½ï¿½, ï¿½Ì¹ï¿½ï¿½ï¿½URL)
 	public Map<String, Object> selectById2(int rental_code);
 
-	// rentlist.jsp¿¡¼­, »ó¼¼»óÇ° ¿É¼Ç Ãâ·Â½Ã, ¸ðµç ¿É¼Ç °¡Á®¿À±â
+	// rentlist.jspï¿½ï¿½ï¿½ï¿½, ï¿½ó¼¼»ï¿½Ç° ï¿½É¼ï¿½ ï¿½ï¿½Â½ï¿½, ï¿½ï¿½ï¿½ ï¿½É¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	public List<RentProdStockDTO> selectOptions();
 
-	// rentlist.jsp¿¡¼­, Ãë¼Ò
+	// rentlist.jspï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½
 	public int cancelRent(int rentalCode);
 
-	// rentlist.jsp¿¡¼­, ¹Ý³³
+	// rentlist.jspï¿½ï¿½ï¿½ï¿½, ï¿½Ý³ï¿½
 	public int returnRent(int rentalCode);
 
 	public int updateRent(RentDTO rent);

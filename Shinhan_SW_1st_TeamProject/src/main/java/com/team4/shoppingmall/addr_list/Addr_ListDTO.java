@@ -18,5 +18,4 @@ public class Addr_ListDTO {
     String detail_address;
     String is_master_addr;
     String sub_address;
-	
 }

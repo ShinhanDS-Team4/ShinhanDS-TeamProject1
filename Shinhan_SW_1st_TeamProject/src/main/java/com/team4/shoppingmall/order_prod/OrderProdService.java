@@ -5,6 +5,16 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.team4.shoppingmall.order_detail.Order_DetailDAOInterface;
+import com.team4.shoppingmall.order_detail.Order_DetailDTO;
+import com.team4.shoppingmall.prod.ProductNewVO;
+import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockDAOInterface;
+import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockDAOMybatis;
+import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockDTO;
+import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestDAOInterface;
+import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestDTO;
 
 @Service
 public class OrderProdService {
@@ -12,49 +22,80 @@ public class OrderProdService {
 	@Autowired
 	OrderProdDAOInterface orderprodDAO;
 
-	// ÁÖ¹®»ó¼¼
+	// ï¿½Ö¹ï¿½ï¿½ï¿½
 	public OrderProdDTO selectById(Integer order_id) {
 		return orderprodDAO.selectById(order_id);
 	}
 
-	// ÁÖ¹®¸ñ·Ï
+	// ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½
 	public List<OrderProdDTO> selectAll() {
 		return orderprodDAO.selectAll();
 	}
 
-	// ÁÖ¹®»ı¼º
-	public int orderprodInsert(OrderProdDTO orderprod) {
-		return orderprodDAO.orderprodInsert(orderprod);
+
+	// ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½Ö¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
+	@Transactional
+	public int orderprodInsert(ProductNewVO prodVO, int total_price, String member_id) {
+		
+		OrderProdDTO order = new OrderProdDTO();
+		
+		order.setMember_id(member_id);
+		order.setTotal_price(total_price);
+		
+		//1.ï¿½Ö¹ï¿½ ï¿½ï¿½ï¿½ï¿½ 
+		int result = orderprodDAO.orderprodInsert(order);
+		
+		//2.ï¿½Ö¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 
+		
+		//ìƒì„±ëœ ì£¼ë¬¸id ì‹œí€€ìŠ¤ ë²ˆí˜¸ ì°¾ê¸° 
+		int order_id = orderprodDAO.sequenceOrderId(); //null
+		//Integer orderId = order.getOrder_id(); // insertï¿½ï¿½ orderIdï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½
+
+		Order_DetailDTO orderDetailDTO = new Order_DetailDTO();
+		
+		int productPrice = Integer.parseInt(prodVO.getProductPrice()); //ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½
+		
+		orderDetailDTO.setOrder_num(prodVO.getOrder_num());
+		orderDetailDTO.setOrder_product_price(productPrice);
+		orderDetailDTO.setOrder_id(order_id);
+		orderDetailDTO.setS_stock_id(prodVO.getS_stock_id());
+		
+		result = orderDetailDAO.orderDetailInsert(orderDetailDTO);
+		
+		//3.ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
+		seller_Prod_StockTestDAO.sellProdStockUpdate(prodVO);
+		
+		return result;
 	}
 
-	// ÁÖ¹®¼öÁ¤
 	public int orderprodUpdate(OrderProdDTO orderprod) {
 		return orderprodDAO.orderprodUpdate(orderprod);
 	}
 	
-	//ÇÒÀÎ Àû¿ë ¾÷µ¥ÀÌÆ®
 	public int updateOrderPrice(OrderProdDTO orderprod) {
 		return orderprodDAO.updateOrderPrice(orderprod);
 	}
 	
-	// orderlist.jsp¿¡ Ãâ·ÂÇÒ »óÇ°¸í, ºê·£µå, ¿É¼Ç, »óÇ°°¡°İ, ÀÌ¹ÌÁöURL
-	public Map<String, Object> selectById2(int order_id) {
+	// orderlist.jspï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç°ï¿½ï¿½, ï¿½ê·£ï¿½ï¿½, ï¿½É¼ï¿½, ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½, ï¿½Ì¹ï¿½ï¿½ï¿½URL
+	public List<OrderProdDetailDTO> selectById2(int order_id) {
         return orderprodDAO.selectById2(order_id);
     }
 
-	// orderlist.jsp¿¡¼­, »ó¼¼»óÇ° ¿É¼Ç Ãâ·Â½Ã, ¸ğµç ¿É¼Ç °¡Á®¿À±â
+	// orderlist.jspï¿½ï¿½ï¿½ï¿½, ï¿½ó¼¼»ï¿½Ç° ï¿½É¼ï¿½ ï¿½ï¿½Â½ï¿½, ï¿½ï¿½ï¿½ ï¿½É¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	public Object selectOptions() { 
         return orderprodDAO.selectOptions();
 	}
 
-	// orderlist.jsp¿¡¼­, ÁÖ¹®Ãë¼Ò
+	// orderlist.jspï¿½ï¿½ï¿½ï¿½, ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½
 	public int orderCancel(int orderId) {
 		return orderprodDAO.orderCancel(orderId);
 	}
 
-	// orderlist.jsp¿¡¼­, È¯ºÒ
+	// orderlist.jspï¿½ï¿½ï¿½ï¿½, È¯ï¿½ï¿½
 	public int orderRefund(int orderId) {
 		return orderprodDAO.orderRefund(orderId);
 	}
+	
+	
 
 }
