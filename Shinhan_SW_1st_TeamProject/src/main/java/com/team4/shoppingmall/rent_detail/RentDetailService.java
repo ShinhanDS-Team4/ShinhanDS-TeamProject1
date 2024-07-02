@@ -20,6 +20,11 @@ public class RentDetailService {
 	public List<RentDetailDTO> selectAll() {
 		return rentDetailDAO.selectAll();
 	}
+	
+	//판매자의 대여 상세 목록 가져오기
+	public List<RentDetailDTO> selectBySellerID(String member_id){
+		return rentDetailDAO.selectBySellerID(member_id);
+	}
 
 	// 대여상세 생성
 	public int rentDetailInsert(RentDetailDTO rentdetail) {
@@ -29,6 +34,14 @@ public class RentDetailService {
 	// 대여상세 수정 
 	public int rentDetailUpdate(RentDetailDTO rentdetail) {
 		return rentDetailDAO.rentDetailUpdate(rentdetail);
+	}
+	
+	public int rentDetailStatusUpdate(RentDetailDTO rentdetail) {
+		return rentDetailDAO.rentDetailStatusUpdate(rentdetail);
+	}
+	
+	public int rentDetailDelete(Integer rentdetail_id) {
+		return rentDetailDAO.rentDetailDelete(rentdetail_id);
 	}
 
 }

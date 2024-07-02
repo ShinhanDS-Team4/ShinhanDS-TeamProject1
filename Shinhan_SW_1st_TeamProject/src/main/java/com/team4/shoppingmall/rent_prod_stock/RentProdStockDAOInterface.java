@@ -39,6 +39,8 @@ public interface RentProdStockDAOInterface {
 	// 대여상품삭제
 	public int rentProdDelete(String r_stock_id);
 
+	public int rentStockUpdate(RentProdStockDTO rentprod);
+
 	
 
 	

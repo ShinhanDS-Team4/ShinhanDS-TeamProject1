@@ -235,12 +235,12 @@ footer {
 	cursor: pointer;
 }
 
-#yes-cancel-button {
+#yes-cancel-button, #yes-return-button {
 	background-color: #6200EA;
 	color: white;
 }
 
-#no-cancel-button {
+#no-cancel-button, #no-return-button {
 	background-color: #FFFFFF;
 	color: black;
 	border: 1px solid #000000;
@@ -296,7 +296,7 @@ footer {
 
 				// Add event listeners to cancel buttons
 				$('.cancel-button').on('click', function() {
-					var rentalCode = $(this).data('rental-code');
+					var rentalCode = $(this).attr("data-order-id");
 					showCancelPopup(rentalCode);
 				});
 
@@ -313,15 +313,80 @@ footer {
 							if (response === 'success') {
 								hideCancelPopup();
 								showCancelCompletePopup();
+								setTimeout(function() {
+									location.reload();
+								}, 2000); // 2초 후 페이지 새로고침
+							} else {
+								alert("대여 취소에 실패했습니다.");
 							}
+						},
+						error : function(error) {
+							alert("Error: " + error);
 						}
 					});
 				});
 
-				$('#no-cancel-button').on('click', hideCancelPopup);
+				// Function to show the return popup
+				function showReturnPopup(rentalCode) {
+					$('#return-popup').css('display', 'flex');
+					console.log(rentalCode);
+					$('#return-rental-code').val(rentalCode); // Set the hidden input value
+					console.log($('#return-rental-code').val());
+				}
 
-				$('#cancel-complete-popup .popup-button').on('click',
-						hideCancelCompletePopup);
+				// Function to hide the return popup
+				function hideReturnPopup() {
+					$('#return-popup').hide();
+				}
+
+				// Function to show the return complete popup
+				function showReturnCompletePopup() {
+					$('#return-complete-popup').css('display', 'flex');
+				}
+
+				// Function to hide the return complete popup
+				function hideReturnCompletePopup() {
+					$('#return-complete-popup').hide();
+				}
+
+				// Add event listeners to return buttons
+				$('.refund-button').on('click', function() {
+					var rentalCode = $(this).attr('data-order-id');
+					showReturnPopup(rentalCode);
+				});
+
+				// Submit the return form via AJAX
+				$('#yes-return-button').on('click', function() {
+					var rentalCode = $('#return-rental-code').val();
+					$.ajax({
+						type : 'POST',
+						url : 'returnRent.do',
+						data : {
+							rentalCode : rentalCode
+						},
+						success : function(response) {
+							if (response === 'success') {
+								hideReturnPopup();
+								showReturnCompletePopup();
+								setTimeout(function() {
+									location.reload();
+								}, 2000); // 2초 후 페이지 새로고침
+							} else {
+								alert("반납에 실패했습니다.");
+							}
+						},
+						error: function(jqXHR, textStatus, errorThrown) {
+				            console.error('AJAX request failed. Status:', textStatus, 'Error:', errorThrown);
+				            console.error('Response text:', jqXHR.responseText);
+				            alert("AJAX request failed. Status: " + textStatus + " Error: " + errorThrown + " Response: " + jqXHR.responseText);
+				        }
+					});
+				});
+
+				$('#no-return-button').on('click', hideReturnPopup);
+				$('#return-complete-popup .popup-button').on('click', hideReturnCompletePopup);
+				$('#no-cancel-button').on('click', hideCancelPopup);
+				$('#cancel-complete-popup .popup-button').on('click', hideCancelCompletePopup);
 			});
 </script>
 </head>
@@ -333,7 +398,7 @@ footer {
 		<!-- Main Content Section -->
 		<main class="main-content inner">
 			<h2>대여 내역</h2>
-			
+
 			<div class="divider-between-title-and-order"></div>
 
 			<c:forEach var="order" items="${rentAllOrders}">
@@ -355,7 +420,7 @@ footer {
 							</p>
 							<span class="order-status"> <c:choose>
 									<c:when test="${order.rent_state == 'rent_requested'}">대여신청완료</c:when>
-									<c:when test="${order.rent_state == 'rent_canceled'}">대여취소</c:when>
+									<c:when test="${order.rent_state == 'cancelled'}">대여취소</c:when>
 									<c:when test="${order.rent_state == 'on_rent'}">대여중</c:when>
 									<c:when test="${order.rent_state == 'returning'}">반납중</c:when>
 									<c:when test="${order.rent_state == 'returned'}">반납 완료</c:when>
@@ -419,8 +484,7 @@ footer {
 					</div>
 					<div class="popup-footer">
 						<form id="cancel-form" method="post" action="cancelRent.do">
-							<input type="hidden" id="cancel-order-id" name="rentalCode"
-								value="">
+							<input type="hidden" id="cancel-rental-code" name="rentalCode" value="">
 							<button type="button" class="popup-button" id="yes-cancel-button">예</button>
 							<button type="button" class="popup-button" id="no-cancel-button">아니오</button>
 						</form>
@@ -442,6 +506,41 @@ footer {
 					</div>
 				</div>
 			</div>
+
+			<!-- 반납신청 알림 -->
+			<div id="return-popup" class="popup">
+				<div class="popup-content">
+					<div class="popup-header">
+						<span class="popup-icon">!</span>
+					</div>
+					<div class="popup-body">
+						<p>반납 신청하시겠습니까?</p>
+					</div>
+					<div class="popup-footer">
+						<form id="return-form" method="post" action="returnRent.do">
+							<input type="hidden" id="return-rental-code" name="rentalCode" value="">
+							<button type="button" class="popup-button" id="yes-return-button">예</button>
+							<button type="button" class="popup-button" id="no-return-button">아니오</button>
+						</form>
+					</div>
+				</div>
+			</div>
+
+			<!-- 반납 완료 알림 -->
+			<div id="return-complete-popup" class="popup">
+				<div class="popup-content">
+					<div class="popup-header">
+						<span class="popup-icon">!</span>
+					</div>
+					<div class="popup-body">
+						<p>반납이 완료되었습니다.</p>
+					</div>
+					<div class="popup-footer">
+						<button class="popup-button" id="close-return-complete-popup">닫기</button>
+					</div>
+				</div>
+			</div>
+
 		</main>
 		<%@ include file="../common/footer.jsp"%>
 	</div>

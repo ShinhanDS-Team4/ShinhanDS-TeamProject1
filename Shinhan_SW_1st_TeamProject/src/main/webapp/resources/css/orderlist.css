@@ -224,12 +224,12 @@ footer {
 	cursor: pointer;
 }
 
-#yes-button, #yes-cancel-button {
+#yes-refund-button, #yes-cancel-button {
 	background-color: #6200EA;
 	color: white;
 }
 
-#no-button, #no-cancel-button {
+#no-refund-button, #no-cancel-button {
 	background-color: #FFFFFF;
 	color: black;
 	border: 1px solid #000000;

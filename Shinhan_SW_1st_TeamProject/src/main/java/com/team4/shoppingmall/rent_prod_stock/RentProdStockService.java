@@ -60,6 +60,10 @@ public class RentProdStockService {
 	public int rentProdUpdate(RentProdStockDTO rentprod) {
 		return rentProdStockDAO.rentProdUpdate(rentprod);
  	}
+	
+	public int rentStockUpdate(RentProdStockDTO rentprod) {
+		return rentProdStockDAO.rentStockUpdate(rentprod);
+	}
 
 	// 대여상품삭제 
 	public int rentProdDelete(String r_stock_id) {

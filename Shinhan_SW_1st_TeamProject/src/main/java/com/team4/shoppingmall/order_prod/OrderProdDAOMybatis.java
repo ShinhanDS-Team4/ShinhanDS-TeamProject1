@@ -58,16 +58,16 @@ public class OrderProdDAOMybatis implements OrderProdDAOInterface {
         return optlist;
 	}
 
+	// orderlist.jsp에서, 주문취소
 	@Override
 	public int orderCancel(int orderId) {
         return sqlSession.update(namespace + "orderCancel", orderId);
-
 	}
 
+	// orderlist.jsp에서, 주문환불
 	@Override
 	public int orderRefund(int orderId) {
-        return sqlSession.update(namespace + "orderRefund", orderId);
-
+        return sqlSession.update(namespace + "orderRefund", orderId); 
 	} 
 
 }

@@ -21,15 +21,13 @@
 		where PROD_ID= #{prod_id}
     </select>
     
-	<select id="selectByOptionId" parameterType="string"
-		resultType="prod_optionVO">
+	<select id="selectByOptionId" parameterType="int" resultType="prod_optionVO">
 		SELECT * 
 		FROM PROD_OPTION 
 		WHERE opt_id = #{opt_id}
 	</select>
 	
-	<select id="selectByProdId" parameterType="string"
-		resultType="prod_optionVO">
+	<select id="selectByProdId" parameterType="string" resultType="prod_optionVO">
 		SELECT * 
 		FROM PROD_OPTION 
 		WHERE prod_id = #{prod_id}

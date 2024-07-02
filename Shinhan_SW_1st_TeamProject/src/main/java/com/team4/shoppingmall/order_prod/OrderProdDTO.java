@@ -18,5 +18,4 @@ public class OrderProdDTO {
 	String member_id;
 	Integer addr_num;
 	Integer total_price;
-	
 }

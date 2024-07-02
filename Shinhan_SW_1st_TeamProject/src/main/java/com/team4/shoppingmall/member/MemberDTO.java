@@ -24,5 +24,6 @@ public class MemberDTO {
 	Integer member_type;
 	String gender;
 	String seller_authority;
-	Date seller_create_date;
+	Date create_date;
+
 }

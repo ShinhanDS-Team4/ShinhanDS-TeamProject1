@@ -38,23 +38,21 @@
 		    SPS.opt_id5,
 		    SPS.stock
 		FROM 
-		    sell_prod_stock SPS
+		    SELL_PROD_STOCK SPS
 		WHERE 
 		    SPS.prod_id = #{prod_id}
 	</select>
 
-	<select id="selectByStockId" parameterType="string"
-
-		resultType="seller_prod_stockVO">
+	<select id="selectByStockId" parameterType="string" resultType="seller_prod_stockVO">
 		SELECT *
-		FROM sell_prod_stock
+		FROM SELL_PROD_STOCK
 		WHERE s_stock_id = #{s_stock_id}
 	</select>
 
 	<select id="selectByProdId" parameterType="string"
 		resultType="seller_prod_stockVO">
 		SELECT *
-		FROM sell_prod_stock
+		FROM SELL_PROD_STOCK
 		WHERE prod_id = #{prod_id}
 	</select>
 
@@ -111,6 +109,14 @@
 		opt_id2 = #{opt_id2}, opt_id3 = #{opt_id3},
 		opt_id4 = #{opt_id4}, opt_id5 =
 		#{opt_id5}
+		WHERE s_stock_id = #{s_stock_id}
+	</update>
+	
+	<!-- 판매상품 재고 수정 -->
+	<update id="sellStockUpdate"
+		parameterType="seller_prod_stockVO">
+		UPDATE SELLER_PROD_STOCK
+		SET stock = #{stock}
 		WHERE s_stock_id = #{s_stock_id}
 	</update>
 

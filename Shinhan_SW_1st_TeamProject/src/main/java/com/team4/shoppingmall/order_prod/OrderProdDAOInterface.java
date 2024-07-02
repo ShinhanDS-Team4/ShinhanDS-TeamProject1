@@ -29,8 +29,10 @@ public interface OrderProdDAOInterface {
 	// orderlist.jspï¿½ï¿½ï¿½ï¿½, ï¿½ó¼¼»ï¿½Ç° ï¿½É¼ï¿½ ï¿½ï¿½Â½ï¿½, ï¿½ï¿½ï¿½ ï¿½É¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	public List<Prod_OptionDTO> selectOptions();
 
+	// orderlist.jsp¿¡¼­, ÁÖ¹®Ãë¼Ò
 	public int orderCancel(int orderId);
 
+	// orderlist.jsp¿¡¼­, ÁÖ¹®È¯ºÒ
 	public int orderRefund(int orderId);
 
 	

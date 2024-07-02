@@ -44,51 +44,50 @@ import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestService
 @RequestMapping("/prod")
 public class ProdTestController {
 	
-/* 나중에 서비스,DTO 등 이름에서 Test빼고, 파일 내용 옮기기 */
 	
 	@Autowired
-	Seller_Prod_StockTestService seller_Prod_StockTestService; //판매 상품 재고
+	Seller_Prod_StockTestService seller_Prod_StockTestService; 
 	
 	@Autowired
-	ProdTestService prodTestService;  //상품
+	ProdTestService prodTestService; 
 	
 	@Autowired
-	Prod_OptionTestService prod_OptionSerTestService;  //상품 옵션
+	Prod_OptionTestService prod_OptionSerTestService; 
 	
 	@Autowired
-	Buyer_InqService buyer_InqService; //구매자 문의(구매자-판매자)
+	Buyer_InqService buyer_InqService; 
 	
 	@Autowired
-	CartService cartService; //장바구니
+	CartService cartService;
 	
 	@Autowired
-	ReviewsService reviewsService; //리뷰
+	ReviewsService reviewsService;
 	
 	@Autowired
-	RentService rentService; //대여
+	RentService rentService;
 	
 	@Autowired
-	RentProdStockService rentProdStockService; //대여상품재고 
+	RentProdStockService rentProdStockService;
 	
 	@Autowired
-	RentDetailService rentDetailService; //대여 상세
-
+	RentDetailService rentDetailService; 
+  
 	@Autowired
-	OrderProdService orderProdService; //주문
+	OrderProdService orderProdService;
 	
 	@Autowired
-	Order_DetailService order_DetailService; //주문상세 
+	Order_DetailService order_DetailService; 
 	
 	@Autowired
-	CategoryService categoryService; //카테고리 
+	CategoryService categoryService; 
 	
-	/* 상품 목록 페이지 */
+	
 	@GetMapping("/productlistTest")
 	public void productList() {
 		
 	}
 		
-	/* 상품 상세 페이지 */
+		/* 상품 상세 페이지 */
 	@GetMapping("/product_detail")
 	public void productDetail(String prod_id, Model model) throws JsonProcessingException {
 		
@@ -147,7 +146,7 @@ public class ProdTestController {
 	}
 	
 	
-	//장바구니 - 상품(판매)
+  //장바구니 - 상품(판매)
 	@PostMapping("/productCartInsert.do")
 	@ResponseBody
 	public int productCartInsert(String prod_id,
@@ -165,11 +164,9 @@ public class ProdTestController {
         if(prodVO.getS_stock_id() == null || prodVO == null) {
     		return 0; 
 		}
+       
         
-        //프론트에서 재고id 저장이 안돼고 못넘어오는중
-        
-        
-        int cart_amount = prodVO.getOrder_num();
+    int cart_amount = prodVO.getOrder_num();
 		int sellProdCartInsert = cartService.cartInsert(prodVO, member_id, cart_amount);
 		
 		return sellProdCartInsert;
@@ -215,7 +212,7 @@ public class ProdTestController {
         String member_id = "testid";
         String prod_id = "";
 		
-        //재고 체크 (프론트에서 체크 했는데 백도 나중에 추가)
+      //재고 체크 (프론트에서 체크 했는데 백도 나중에 추가)
     	if(prodVO.getS_stock_id() == null || prodVO == null) {
     		return 0; 
 		}
@@ -246,7 +243,7 @@ public class ProdTestController {
         	return 0; 
         }
         
-        //1.대여, 대여상세 생성
+      
         int rentProdInsert = rentService.rentInsert2(prodVO, member_id);
         
         
@@ -254,13 +251,14 @@ public class ProdTestController {
         
 	}
 
+	
 	/* 상품 문의하기 (구매자=>판매자) */
 	@PostMapping(value = "/productQnaInsert.do", produces = "text/plain;charset=utf-8")
 	@ResponseBody
 	public String productQnaInsert( 
 			@RequestParam("prod_id") String prod_id,
-			@RequestParam String qnaTitle,	//문의 제목
-			@RequestParam String qnaTestarea,  //문의 내용
+			@RequestParam String qnaTitle,	
+			@RequestParam String qnaTestarea, 
 			HttpSession session 
 	){
 		Buyer_InqDTO buyer_InqDTO = new Buyer_InqDTO();
@@ -270,7 +268,7 @@ public class ProdTestController {
 		//MemberDTO member =  session.getAttribute("member");
 		//String member_id = member.getMember_id();
 		String member_id = "testid";
-		prod_id = "자수 미니 원피스 - 화이트_199-81-21909";
+		 prod_id = "자수 미니 원피스 - 화이트_199-81-21909";
 		//prod_id = "논아이론 사틴 솔리드 드레스 셔츠 - 화이트_199-81-22242";
 		
          buyer_inq_map.put("buyer_inq_title", qnaTitle); 
@@ -282,7 +280,7 @@ public class ProdTestController {
 		
 		String message;
 		
-		if(result > 0) {
+    if(result > 0) {
 			message = "문의가 등록되었습니다.";
 			
 			return  message;		

@@ -60,20 +60,32 @@ public class SellerPrdUploadController {
 	@Autowired
 	RentProdStockService rentProdStockService;
 
+
+	//상품 이미지 파일 업로드 디렉토리
+	//1.메인 이미지 파일
 	@Value("${file.main-img-upload-dir}")
-	private String uploadDir;
+	private String mainIMG_uploadDir;
+	
+	//2.설명 이미지 파일
+	@Value("${file.desc-img-upload-dir}")
+	private String descIMG_uploadDir;
+
 
 	@PostMapping("/uploadPrd")
-	public String handleFileUpload(@RequestParam("prdType") String prdType, @RequestParam("prdName") String prdName,
-			@RequestParam("prdPrice") int prdPrice, @RequestParam("prdCategory") int prdCategory,
-			@RequestParam("file") List<MultipartFile> files, @RequestParam("prdDescription") String prdDescription,
+	public String handleFileUpload(
+			@RequestParam("prdType") String prdType,
+			@RequestParam("prdName") String prdName,
+			@RequestParam("prdPrice") int prdPrice, 
+			@RequestParam("prdCategory") int prdCategory,
+			@RequestParam("mainImgFile") List<MultipartFile> mainFiles, 
+			@RequestParam("descImgFile") List<MultipartFile> descFiles, 
+			@RequestParam("prdDescription") String prdDescription,
 			@RequestParam("optName") List<String> optNames, @RequestParam("optValue") List<String> optValues,
 			@RequestParam("prdStock") int prdStock, RedirectAttributes redirectAttributes)
 			throws UnsupportedEncodingException {
 
-		String member_id = "573-50-00882";// �ӽ÷� ����� �Ǹ���ID(����ڵ�Ϲ�ȣ) >> �̰� �α��� ����� �������� ����Ǹ� Session���� ������ ����
+		String member_id = "573-50-00882";
 
-		// �ѱ� ������ ���� �ذ�
 		String productType = URLDecoder.decode(prdType, "UTF-8");
 		String productName = URLDecoder.decode(prdName, "UTF-8");
 		// String productCategory = URLDecoder.decode(prdCategory,"UTF-8");
@@ -84,25 +96,20 @@ public class SellerPrdUploadController {
 		// System.out.println(productCategory);
 		System.out.println(productDescription);
 
-		List<String> fileUrls = new ArrayList<>();// �������� URL���� ������ ����Ʈ
+		List<String> fileUrls = new ArrayList<>();
 
-		/*----------������ʹ� ��ǰ �����͸� DB�� �����ϴ� ������ ����----------*/
-
-		// ���ε� ��¥
-		// ���� ��¥�� LocalDate�� ������
+		
 		LocalDate localDate = LocalDate.now();
 
-		// LocalDate�� java.sql.Date�� ��ȯ
+		// LocalDate占쏙옙 java.sql.Date占쏙옙 占쏙옙환
 		Date sqlDate = Date.valueOf(localDate);
 
-		// 1.��ǰ(Product) ���̺� ���� : ���� ��ǰ ID ���� ���� Ȯ�� �ʿ�
-		String prod_id = productName + "_" + member_id; // ��ǰID : ��ǰ��_�Ǹ���ID
+		
+		String prod_id = productName + "_" + member_id; 
 
-		System.out.println("��ǰID : " + prod_id);
+		System.out.println("占쏙옙품ID : " + prod_id);
 
-		// PROD���� ��ǰ ID�� �˻��Ͽ� ������ ���� �����ϴ��� �켱 Ȯ��
-		// if(�������� ������) ��ǰ ��� & ���� ��� �� ��� ���
-		// else(�����ϸ�) => ���(Stock) �����͸� ����� ��
+
 		ProdDTO prodDTO = new ProdDTO();
 				
 		prodDTO = prodService.selectByProdId(prod_id);
@@ -110,7 +117,7 @@ public class SellerPrdUploadController {
 		System.out.println(prodDTO);
 
 		if (Objects.isNull(prodDTO)) {
-			// ��ǰ ���
+		
 			ProdDTO prodDTO2 = new ProdDTO();
 			
 			prodDTO2.setProd_id(prod_id);
@@ -124,62 +131,100 @@ public class SellerPrdUploadController {
 			int prdRegResult = prodService.prodInsert(prodDTO2);
 			System.out.println(prdRegResult);
 
-			// ��ǰ ���̺� ��� ����
+			
 
-			// 2.��ǰ �̹���(PROD_IMAGE) ���̺� ������ ����
-			int fileIndex = 1; // ���� �ε����� 1�� �ʱ�ȭ
+			// 2.상품 이미지(PROD_IMAGE) 테이블 데이터 저장
+			// 상품이미지 등록은 메인 이미지 목록 등록 >> 설명 이미지 목록 등록 순으로 진행
+			int mainfileIndex = 1; // 메인 이미지 파일 인덱스를 1로 초기화
+			int descfileIndex = 1; // 설명 이미지 파일 인덱스를 1로 초기화
 
-			for (MultipartFile file : files) {
-				// ���� Ÿ�� üũ
-				String contentType = file.getContentType();
+			for (MultipartFile mainfile : mainFiles) {
+				// 파일 타입 체크
+				String contentType = mainfile.getContentType();
+
 				System.out.println(contentType);
 				if (!"image/jpeg".equals(contentType) && !"image/png".equals(contentType)) {
-					redirectAttributes.addFlashAttribute("PrdRegisterResult", "�̹��� ������ �ƴմϴ�.");
-					return "/seller/sellerPrdList";// ������������ �����̷���(��������Ʈ������ alert���� ������ ���� �Ǹ���-��ǰ ����Ʈ�� �����̷�Ʈ)
-				}
+					redirectAttributes.addFlashAttribute("PrdRegisterResult", "이미지 파일이 아닙니다.");
+					return "/seller/sellerPrdList";		
+        }
 
-				// ���� ó��(URL�� ��ȯ)
+
+				//서버 컴퓨터의 디렉토리에 파일 저장
+				
+				//(1)메인이미지 파일
 				try {
-					// ���ϸ��� '��ǰ��_�Ǹ���ID_image_x'(x�� sequence)
-					String filename = prod_id + "_image_" + fileIndex+".png";
-					Path filePath = Paths.get(uploadDir).resolve(filename);
-					Files.createDirectories(filePath.getParent()); // ���丮�� �������� ������ ����
-					Files.write(filePath, file.getBytes()); // ���� ����
+					// 파일명은 '상품명_판매자ID_mainimage_x'(x는 sequence)
+					String filename = prod_id + "_mainimage_" + mainfileIndex+".png";
+					Path filePath = Paths.get(mainIMG_uploadDir).resolve(filename);
+					Files.createDirectories(filePath.getParent()); // 디렉토리가 존재하지 않으면 생성
+					Files.write(filePath, mainfile.getBytes()); // 파일 저장
 
-					// ���� URL ���� >> ����!!) �ش� ����URL�� ���� �������� ��� ���� ���������� ��ȿ��
-					String fileUrl = "/images/" + filename;
-					System.out.println("�̹�������URL : " + fileUrl);
-					fileUrls.add(fileUrl);
-
-					// DB�� ����
+					// DB에 저장
 					Prod_ImageDTO imageDTO = new Prod_ImageDTO();
 
-					imageDTO.setImg_id(filename);//��ǰ��_�Ǹ���ID_image_fileindex
-					imageDTO.setProd_id(prod_id);//��ǰ_�Ǹ���ID
+					imageDTO.setImg_id(filename);//상품명_판매자ID_image_fileindex
+					imageDTO.setProd_id(prod_id);//상품_판매자ID
 					
 					System.out.println(imageDTO);
 
-					int prdImgRegResult = imageService.prod_imageInsert(imageDTO);
+					int prdMainImgRegResult = imageService.prod_imageInsert(imageDTO);
 
-					fileIndex++;
+					mainfileIndex++;
 
 				} catch (IOException e) {
 					e.printStackTrace();
-					redirectAttributes.addFlashAttribute("PrdRegisterResult", "��ǰ ���� ���ε忡 �����Ͽ����ϴ�.");
-					return "/seller/sellerPrdList";// ������������ �����̷���(��������Ʈ������ alert���� ������ ���� �Ǹ���-��ǰ ����Ʈ�� �����̷�Ʈ)
+					redirectAttributes.addFlashAttribute("PrdRegisterResult", "상품 정보 업로드에 실패하였습니다.");
+					return "/seller/sellerPrdList";// 오류페이지로 리다이렉션(팀프로젝트에서는 alert으로 에러를 띄우고 판매자-물품 리스트로 리다이렉트)
+				}
+			}
+			
+			
+			//(2)설명이미지파일
+			for (MultipartFile descfile : descFiles) {
+				// 파일 타입 체크
+				String contentType = descfile.getContentType();
+				System.out.println(contentType);
+				if (!"image/jpeg".equals(contentType) && !"image/png".equals(contentType)) {
+					redirectAttributes.addFlashAttribute("PrdRegisterResult", "이미지 파일이 아닙니다.");
+					return "/seller/sellerPrdList";// 오류페이지로 리다이렉션(팀프로젝트에서는 alert으로 에러를 띄우고 판매자-물품 리스트로 리다이렉트)
+				}
+
+				// 서버 컴퓨터의 디렉토리에 파일 저장
+				try {
+					// 파일명은 '상품명_판매자ID_descimage_x'(x는 sequence)
+					String filename = prod_id + "_descimage_" + descfileIndex+".png";
+					Path filePath = Paths.get(descIMG_uploadDir).resolve(filename);
+					Files.createDirectories(filePath.getParent()); // 디렉토리가 존재하지 않으면 생성
+					Files.write(filePath, descfile.getBytes()); // 파일 저장
+
+
+				
+					Prod_ImageDTO imageDTO = new Prod_ImageDTO();
+
+					imageDTO.setImg_id(filename);
+					imageDTO.setProd_id(prod_id);
+					
+					System.out.println(imageDTO);
+
+					int prdDescImgRegResult = imageService.prod_imageInsert(imageDTO);
+
+					descfileIndex++;
+
+				} catch (IOException e) {
+					e.printStackTrace();
+					redirectAttributes.addFlashAttribute("PrdRegisterResult", "상품 정보 업로드 실패하였습니다.");
+					return "/seller/sellerPrdList";
 				}
 			}
 		}
 
-		// 3.���(Stock) ���
-		// ���⼭���� productType ���� StockDTO�� ���ε��� �����ؼ� ó���Ѵ�
-		if (productType.equals("�Ǹ�")) {// �Ǹſ� ��� ���� �ϴ� ���(SELLER_PROD_STOCK)
-			// ����Ϸ��� ���� ��ġ�ϴ� ��ǰID�� ���� �Ǹ� ���� �� ���ID ���ڸ� ���ڰ� ���� ū ���ID�� ���ڸ� ���� �����´�.
-			// ex)����Ű ����_550-398-22934_1~5 >> 5
+	
+		if (productType.equals("판매")) {
+		
 			Integer maxSellStockNum=seller_Prod_StockService.findMaxStockNumber(prod_id);
 			System.out.println(maxSellStockNum);
 			if(Objects.isNull(maxSellStockNum)) maxSellStockNum=0;
-			maxSellStockNum++;// ex) 6���� �ø�
+			maxSellStockNum++;
 			
 			System.out.println(maxSellStockNum);
 			
@@ -190,8 +235,7 @@ public class SellerPrdUploadController {
 			seller_Prod_StockDTO.setTotal(0);
 			seller_Prod_StockDTO.setProd_id(prod_id);
 
-			// �ɼǸ� & �ɼǰ� ó��
-			// for���� �̿��� opt_id �߰�
+		
 			for (int i = 0; i < optNames.size(); i++) {
 				String optionName = URLDecoder.decode(optNames.get(i), "UTF-8");
 				String optionValue = URLDecoder.decode(optValues.get(i), "UTF-8");
@@ -199,7 +243,7 @@ public class SellerPrdUploadController {
 				System.out.println(optionName);
 				System.out.println(optionValue);
 
-				// ���� DB�� ��ǰ�ɼ�(PROD_OPTION) ���̺��� ���� ū �ɼ� ID�� �����´�
+				
 				Integer maxOptionID = optionService.findMaxOptId();
 				if (Objects.isNull(maxOptionID))
 					maxOptionID = 0;
@@ -235,14 +279,13 @@ public class SellerPrdUploadController {
 
 			int sellStockRegResult = seller_Prod_StockService.seller_prod_stockInsert(seller_Prod_StockDTO);
 
-		} else if(productType.equals("�뿩")){// �뿩 ��� ���� �ϴ� ���(RENT_PROD_STOCK)
-			// ����Ϸ��� ���� ��ġ�ϴ� ��ǰID�� ���� �뿩 ���� �� ���ID ���ڸ� ���ڰ� ���� ū ���ID�� ���ڸ� ���� �����´�.
-			// ex)����Ű ����_550-398-22934_1~5 >> 5
+		} else if(productType.equals("대e")){
+			
 			Integer maxSellStockNum = rentProdStockService.findMaxStockNumber(prod_id);
 			if(Objects.isNull(maxSellStockNum)) maxSellStockNum=0;
-			maxSellStockNum++;// ex) 6���� �ø�
+			maxSellStockNum++;
 			
-			System.out.println("�뿩��� �ִ밪:"+maxSellStockNum);
+			
 
 			String stockID = prod_id + "_RENT_" + maxSellStockNum;
 			RentProdStockDTO rentProdStockDTO = new RentProdStockDTO();
@@ -251,13 +294,12 @@ public class SellerPrdUploadController {
 			rentProdStockDTO.setTotal(0);
 			rentProdStockDTO.setProd_id(prod_id);
 
-			// �ɼǸ� & �ɼǰ� ó��
-			// for���� �̿��� opt_id �߰�
+		
 			for (int i = 0; i < optNames.size(); i++) {
 				String optionName = URLDecoder.decode(optNames.get(i), "UTF-8");
 				String optionValue = URLDecoder.decode(optValues.get(i), "UTF-8");
 
-				// ���� DB�� ��ǰ�ɼ�(PROD_OPTION) ���̺��� ���� ū �ɼ� ID�� �����´�
+			
 				Integer maxOptionID = optionService.findMaxOptId();
 				if (Objects.isNull(maxOptionID))
 					maxOptionID = 0;
@@ -291,7 +333,9 @@ public class SellerPrdUploadController {
 			System.out.println(rentStockRegResult);
 		}
 
-		redirectAttributes.addFlashAttribute("PrdRegisterResult", "��ǰ ���� ���ε忡 �����Ͽ����ϴ�.");
-		return "/seller/PrdList.do";// ���� �������� �����̷���(��������Ʈ������ �Ǹ���-��ǰ ����Ʈ�� �����̷�Ʈ)
+
+		redirectAttributes.addFlashAttribute("PrdRegisterResult", "상품 정보 업로드에 성공하였습니다.");
+		return "/seller/sellerPrdList";// 성공 페이지로 리다이렉션(팀프로젝트에서는 판매자-물품 리스트로 리다이렉트)
+
 	}
 }

@@ -39,4 +39,9 @@ public class ReviewsService {
 	public int reviewsDelete(Integer review_id) {
 		return reviewsDAO.reviewsDelete(review_id);
 	}
+	
+	//내 리뷰 불러오기를 위한 memberId로 select하기
+	public List<ReviewsDTO> selectBymemId(String member_id){
+		return reviewsDAO.selectBymemId(member_id);
+	}
 }
