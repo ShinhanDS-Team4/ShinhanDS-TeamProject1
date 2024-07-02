@@ -14,42 +14,42 @@ public class RentService {
 	@Autowired
 	RentDAOInterface rentDAO;
 	
-	// ´ë¿©»ó¼¼
+	// ï¿½ë¿©ï¿½ï¿½
 	public RentDTO selectById(Integer rental_code) {
 		return rentDAO.selectById(rental_code);
 	}
 
-	// ´ë¿©¸ñ·Ï
+	// ï¿½ë¿©ï¿½ï¿½ï¿½
 	public List<RentDTO> selectAll() {
 		return rentDAO.selectAll();
 	}
 
-	// ´ë¿©ÇÏ±â
+	// ï¿½ë¿©ï¿½Ï±ï¿½
 	public int rentInsert(RentDTO rent) {
 		return rentDAO.rentInsert(rent);
 	}
 
-	// ´ë¿©»óÅÂ ¼öÁ¤
+	// ï¿½ë¿©ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	public int rentUpdate(Integer rental_code) {
 		return rentDAO.rentUpdate(rental_code);
 	}
 
-	// rentlist.jsp¿¡ Ãâ·ÂÇÒ ´ë¿©»óÇ° »ó¼¼Á¤º¸
-	public Map<String, Object> selectById2(int rental_code) { 
+	// rentlist.jspï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ë¿©ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	public List<RentSelectDTO> selectById2(int rental_code) { 
 		return rentDAO.selectById2(rental_code);
 	}
 
-	// rentlist.jsp¿¡¼­, »ó¼¼»óÇ° ¿É¼Ç Ãâ·Â½Ã, ¸ðµç ¿É¼Ç °¡Á®¿À±â
+	// rentlist.jspï¿½ï¿½ï¿½ï¿½, ï¿½ó¼¼»ï¿½Ç° ï¿½É¼ï¿½ ï¿½ï¿½Â½ï¿½, ï¿½ï¿½ï¿½ ï¿½É¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	public List<RentProdStockDTO> selectOptions() {
         return rentDAO.selectOptions();
 	}
 
-	// rentlist.jsp¿¡¼­, Ãë¼Ò
+	// rentlist.jspï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½
 	public int cancelRent(int rentalCode) {
         return rentDAO.cancelRent(rentalCode);
 	}
 
-	// rentlist.jsp¿¡¼­, ¹Ý³³
+	// rentlist.jspï¿½ï¿½ï¿½ï¿½, ï¿½Ý³ï¿½
 	public int returnRent(int rentalCode) {
         return rentDAO.returnRent(rentalCode);
 	}

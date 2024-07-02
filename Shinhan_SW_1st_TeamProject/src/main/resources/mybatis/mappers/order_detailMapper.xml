@@ -30,13 +30,11 @@
 		INSERT
 		INTO
 		ORDER_DETAIL(
-		orderdetail_id, order_product_price, order_num,
-		order_state, order_id, s_stock_id
+		orderdetail_id, order_product_price, order_num, order_id, s_stock_id
 		)
 		VALUES(
 		#{orderdetail_id},
-		#{order_product_price}, #{order_num},
-		#{order_state}, #{order_id},
+		#{order_product_price}, #{order_num}, #{order_id},
 		#{s_stock_id}
 		)
 	</insert>
@@ -45,18 +43,17 @@
 		SET
 		orderdetail_id = #{orderdetail_id},
 		order_product_price = #{order_product_price},
-		order_num = #{order_num},
-		order_state = #{order_state},
+		order_num = #{order_num}, 
 		order_id = #{order_id},
 		s_stock_id = #{s_stock_id}
 		WHERE orderdetail_id = #{orderdetail_id}
 	</update>
 	
-	<update id="orderDetailStatusUpdate" parameterType="order_detailVO">
+<!-- 	<update id="orderDetailStatusUpdate" parameterType="order_detailVO">
 		UPDATE ORDER_DETAIL
 		SET order_state = #{order_state}
 		WHERE orderdetail_id = #{orderdetail_id}
-	</update>
+	</update> -->
 
 	<delete id="orderDetailDelete" parameterType="int">
 		DELETE

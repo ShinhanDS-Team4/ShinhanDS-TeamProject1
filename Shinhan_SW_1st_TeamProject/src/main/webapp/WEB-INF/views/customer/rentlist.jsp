@@ -101,9 +101,16 @@ footer {
 	flex-direction: column;
 }
 
-.order-details {
+.order-detail {
 	display: flex;
 	align-items: center;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.order-details {
+	display: flex;
+	align-items: flex-start;
 	margin-top: 20px;
 	margin-bottom: 20px;
 }
@@ -407,18 +414,18 @@ footer {
 						<div class="order-text">
 							<p class="order-date">
 								대여 시작일: ${order.rent_start_date}
+								<%-- 
 								<c:choose>
 									<c:when test="${order.rent_state == 'rent_requested'}">
-										<button class="cancel-button"
-											data-order-id="${order.rental_code}">대여취소</button>
+										<button class="cancel-button" data-order-id="${order.rental_code}">대여취소</button>
 									</c:when>
 									<c:when test="${order.rent_state == 'on_rent'}">
-										<button class="refund-button"
-											data-order-id="${order.rental_code}">반납하기</button>
+										<button class="refund-button" data-order-id="${order.rental_code}">반납하기</button>
 									</c:when>
 								</c:choose>
 							</p>
-							<span class="order-status"> <c:choose>
+							<span class="order-status">
+								<c:choose>
 									<c:when test="${order.rent_state == 'rent_requested'}">대여신청완료</c:when>
 									<c:when test="${order.rent_state == 'cancelled'}">대여취소</c:when>
 									<c:when test="${order.rent_state == 'on_rent'}">대여중</c:when>
@@ -427,37 +434,39 @@ footer {
 									<c:otherwise>알 수 없음</c:otherwise>
 								</c:choose>
 							</span>
-						</div>
+							--%>
+						</div> 
 
-						<c:set var="detail" value="${rentDetailsMap[order.rental_code]}" />
-
-						<div class="order-details">
-							<img src="${detail.IMG_URL}" alt="상품 이미지">
-							<div class="product-info">
-								<h3>${detail.PROD_NAME}</h3>
-								<p>${detail.BRAND}</p>
-								<p>
-									<c:forEach items="${optionList}" var="option">
-										<c:if test="${detail.OPT_ID1 == option.opt_id}">
-                  						  ${option.opt_value}
-             						    </c:if>
-									</c:forEach>
-									/
-									<c:forEach items="${optionList}" var="option">
-										<c:if test="${detail.OPT_ID2 == option.opt_id}">
-                   						 ${option.opt_value}
-             						    </c:if>
-									</c:forEach>
-									/
-									<c:forEach items="${optionList}" var="option">
-										<c:if test="${detail.OPT_ID3 == option.opt_id}">
-                   						 ${option.opt_value}
-               						    </c:if>
-									</c:forEach>
-								</p>
-								<p>${detail.RENT_PRODUCT_PRICE}원</p>
+						<c:forEach var="detail" items="${rentDetailsMap[order.rental_code]}">
+							<div class="order-details">
+								<img src="${detail.img_id}" alt="상품 이미지">
+								<div class="product-info">
+									<h3>${detail.prod_name}</h3>
+									<p>${detail.brand}</p>
+									<p>
+										<c:forEach items="${optionList}" var="option">
+											<c:if test="${detail.opt_id1 == option.opt_id}">
+												${option.opt_value}
+											</c:if>
+										</c:forEach>
+										/
+										<c:forEach items="${optionList}" var="option">
+											<c:if test="${detail.opt_id2 == option.opt_id}">
+												${option.opt_value}
+											</c:if>
+										</c:forEach>
+										/
+										<c:forEach items="${optionList}" var="option">
+											<c:if test="${detail.opt_id3 == option.opt_id}">
+												${option.opt_value}
+											</c:if>
+										</c:forEach>
+									</p>
+									<p>${detail.rent_product_price}원</p>
+								</div>
 							</div>
-						</div>
+						</c:forEach>
+					</div>
 				</section>
 
 				<div class="divider-between-sections"></div>
@@ -545,5 +554,6 @@ footer {
 		<%@ include file="../common/footer.jsp"%>
 	</div>
 </body>
+
 
 </html>

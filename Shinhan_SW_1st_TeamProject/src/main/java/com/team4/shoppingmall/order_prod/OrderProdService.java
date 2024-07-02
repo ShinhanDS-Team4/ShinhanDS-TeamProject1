@@ -12,42 +12,42 @@ public class OrderProdService {
 	@Autowired
 	OrderProdDAOInterface orderprodDAO;
 
-	// ÁÖ¹®»ó¼¼
+	// ï¿½Ö¹ï¿½ï¿½ï¿½
 	public OrderProdDTO selectById(Integer order_id) {
 		return orderprodDAO.selectById(order_id);
 	}
 
-	// ÁÖ¹®¸ñ·Ï
+	// ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½
 	public List<OrderProdDTO> selectAll() {
 		return orderprodDAO.selectAll();
 	}
 
-	// ÁÖ¹®»ý¼º
+	// ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½
 	public int orderprodInsert(OrderProdDTO orderprod) {
 		return orderprodDAO.orderprodInsert(orderprod);
 	}
 
-	// ÁÖ¹®¼öÁ¤
+	// ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½
 	public int orderprodUpdate(OrderProdDTO orderprod) {
 		return orderprodDAO.orderprodUpdate(orderprod);
 	}
 	
-	// orderlist.jsp¿¡ Ãâ·ÂÇÒ »óÇ°¸í, ºê·£µå, ¿É¼Ç, »óÇ°°¡°Ý, ÀÌ¹ÌÁöURL
-	public Map<String, Object> selectById2(int order_id) {
+	// orderlist.jspï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç°ï¿½ï¿½, ï¿½ê·£ï¿½ï¿½, ï¿½É¼ï¿½, ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½, ï¿½Ì¹ï¿½ï¿½ï¿½URL
+	public List<OrderProdDetailDTO> selectById2(int order_id) {
         return orderprodDAO.selectById2(order_id);
     }
 
-	// orderlist.jsp¿¡¼­, »ó¼¼»óÇ° ¿É¼Ç Ãâ·Â½Ã, ¸ðµç ¿É¼Ç °¡Á®¿À±â
+	// orderlist.jspï¿½ï¿½ï¿½ï¿½, ï¿½ó¼¼»ï¿½Ç° ï¿½É¼ï¿½ ï¿½ï¿½Â½ï¿½, ï¿½ï¿½ï¿½ ï¿½É¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	public Object selectOptions() { 
         return orderprodDAO.selectOptions();
 	}
 
-	// orderlist.jsp¿¡¼­, ÁÖ¹®Ãë¼Ò
+	// orderlist.jspï¿½ï¿½ï¿½ï¿½, ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½
 	public int orderCancel(int orderId) {
 		return orderprodDAO.orderCancel(orderId);
 	}
 
-	// orderlist.jsp¿¡¼­, È¯ºÒ
+	// orderlist.jspï¿½ï¿½ï¿½ï¿½, È¯ï¿½ï¿½
 	public int orderRefund(int orderId) {
 		return orderprodDAO.orderRefund(orderId);
 	}

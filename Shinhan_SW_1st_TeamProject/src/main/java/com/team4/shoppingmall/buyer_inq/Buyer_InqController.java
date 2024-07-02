@@ -27,24 +27,24 @@ public class Buyer_InqController {
 	@Autowired
 	MemberService memberService;
 	
-	//³ªÀÇ ¹®ÀÇÆäÀÌÁö ÀÌµ¿
+	//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
 	@GetMapping("/myqna.do")
 	public String myqna(Model model, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		MemberDTO mem = (MemberDTO)session.getAttribute("member");
-		//³ªÁß¿¡ ÇÊÅÍ¸µ ÇÏ°ÚÁö¸¸ ¿ì¼±Àº ÀÓ½Ã¹æÆíÀ¸·Î ºÐ±âÁ¡ ¸¸µé¾î³õÀ½
+		//ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½Ï°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ì¼±ï¿½ï¿½ ï¿½Ó½Ã¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ð±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if(mem == null) {
 			return "redirect:/member_test/login.do";
 		}
 		String id = mem.getMember_id();
-		System.out.println(mem);//·Î±×ÀÎ ÇÑ ¼¼¼ÇÀÌ ºÒ·¯¿ÍÁö´ÂÁö Å×½ºÆ®¿ë
+		System.out.println(mem);//ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×½ï¿½Æ®ï¿½ï¿½
 		
 		List<Buyer_InqDTO> buyerInq = buyer_inqService.selectByMemberId(id);
 		model.addAttribute("buyerInq" , buyerInq);
 		return "board/qa_board";
 	}
 	
-	//³ªÀÇ ¹®ÀÇ Àû±â
+	//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	@GetMapping("/writeqna.do")
 	public String writeqna() {
 		return "board/buyer_InqQPopup";
@@ -57,14 +57,14 @@ public class Buyer_InqController {
 			@RequestParam("seller_inq_content") String content,
 			@RequestParam("prod_id") String prod_id
 			) {
-		// ¾÷·Îµå ³¯Â¥
-		// ¿À´Ã ³¯Â¥¸¦ LocalDate·Î °¡Á®¿È
+		// ï¿½ï¿½ï¿½Îµï¿½ ï¿½ï¿½Â¥
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Â¥ï¿½ï¿½ LocalDateï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		LocalDate localDate = LocalDate.now();
 
-		// LocalDate¸¦ java.sql.Date·Î º¯È¯
+		// LocalDateï¿½ï¿½ java.sql.Dateï¿½ï¿½ ï¿½ï¿½È¯
 		Date sqlDate = Date.valueOf(localDate);
 
-		// ¹®ÀÇID »ý¼º
+		// ï¿½ï¿½ï¿½ï¿½ID ï¿½ï¿½ï¿½ï¿½
 		Integer qid = 12305;
 		
 		Buyer_InqDTO buyerInq = new Buyer_InqDTO();
@@ -74,7 +74,7 @@ public class Buyer_InqController {
 		buyerInq.setBuyer_inq_date(sqlDate);
 		buyerInq.setMember_id(mid);
 		buyerInq.setProd_id(prod_id);
-		//null°ª Ã³¸®ÇÏ´Â °ÍºÎÅÍ ´ÙÀ½¿¡ ÇÏ±â.
+		//nullï¿½ï¿½ Ã³ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Íºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï±ï¿½.
 		
 		int result = buyer_inqService.buyer_inqInsert(buyerInq);
 		System.out.println(result);
