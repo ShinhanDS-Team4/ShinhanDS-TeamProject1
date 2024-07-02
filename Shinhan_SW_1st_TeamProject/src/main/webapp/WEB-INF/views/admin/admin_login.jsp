@@ -126,14 +126,12 @@ h2 {
 			<h2>관리자 로그인</h2>
 			<form id="loginForm" action="admin_login" method="post">
 				<div class="form-group">
-					<label for="admin_id">사용자 이름</label> <input type="text"
-						class="form-control" id="admin_id" name="admin_id" value="admin"
-						required>
+					<label for="admin_id">사용자 이름</label> 
+					<input type="text" class="form-control" id="admin_id" name="admin_id" value="admin" required>
 				</div>
 				<div class="form-group">
-					<label for="admin_pw">비밀번호</label> <input type="password"
-						class="form-control" id="admin_pw" name="admin_pw" value="admin"
-						required>
+					<label for="admin_pw">비밀번호</label> 
+					<input type="password" class="form-control" id="admin_pw" name="admin_pw" value="admin" required>
 				</div>
 				<button type="submit" class="btn btn-primary btn-block">로그인</button>
 

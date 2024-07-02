@@ -7,7 +7,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 @ToString
-@Getter@Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class RentDetailDTO {

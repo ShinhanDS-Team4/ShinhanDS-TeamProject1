@@ -8,7 +8,7 @@ import com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO;
 public interface RentDAOInterface {
 	
 	//�뿩��� �ִ� ��ǰ�� �뿩ID ã��
-	
+	public int searchRentId();
 	// �뿩��
 	public RentDTO selectById(Integer rental_code);
 	
@@ -18,11 +18,12 @@ public interface RentDAOInterface {
 	// �뿩�ϱ� 
 	public int rentInsert(RentDTO rent);
 	
+	
 	// �뿩���� ����
 	public int rentUpdate(Integer rental_code);
 
 	// rentlist.jsp�� ����� �뿩��ǰ ������(�귣���, ��ǰ��, �ɼ�, �뿩����, �̹���URL)
-	public List<RentSelectDTO> selectById2(int rental_code);
+	public Map<String, Object> selectById2(int rental_code);
 
 	// rentlist.jsp����, �󼼻�ǰ �ɼ� ��½�, ��� �ɼ� ��������
 	public List<RentProdStockDTO> selectOptions();

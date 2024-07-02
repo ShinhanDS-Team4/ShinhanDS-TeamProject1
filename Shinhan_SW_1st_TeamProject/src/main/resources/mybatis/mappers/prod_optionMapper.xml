@@ -48,7 +48,7 @@
 	<insert id="prod_optionInsert" parameterType="prod_optionVO">
 		INSERT 
 		INTO PROD_OPTION(opt_id, opt_name, opt_value, prod_id) 
-		VALUES(PROD_OPTION_SEQ.NEXTVAL, #{opt_name}, #{opt_value}, #{prod_id})
+		VALUES(#{opt_id}, #{opt_name}, #{opt_value}, #{prod_id})
 	</insert>
 
 	<update id="prod_optionUpdate" parameterType="prod_optionVO">
