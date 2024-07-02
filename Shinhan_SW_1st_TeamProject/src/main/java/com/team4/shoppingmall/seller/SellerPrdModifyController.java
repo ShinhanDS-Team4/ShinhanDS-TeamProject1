@@ -105,8 +105,8 @@ public class SellerPrdModifyController {
 		System.out.println("설명 사진 목록 삭제 작업 시작");
 		String prod_id = (String) request.get("prodid");
 		System.out.println("상품ID:" + prod_id);
-		// String prod_id = "나이키%20반팔2_573-50-00882";
 		System.out.println(prod_id);
+
 		List<String> imgIdList = imageService.findAllImgFileNameByProdID(prod_id);
 
 		int imgDeleteResult = imageService.prod_imageDelete(prod_id);
@@ -124,40 +124,35 @@ public class SellerPrdModifyController {
 		return "resetImgSuccess";
 	}
 
-	@PostMapping("updateStockInfo")
-	public String updateStockInfo(
-			@RequestParam("prdId") String prdID, 
-			@RequestParam("prdPrice") int prdPrice, 
+	@PostMapping("/modifyPrdouct")
+	public String updateStockInfo(@RequestParam("prdId") String prdID, @RequestParam("prdPrice") int prdPrice,
 			@RequestParam("prdCategory") int prdCategory,
-			@RequestParam("mainImgFile") List<MultipartFile> mainFiles, 
-			@RequestParam("descImgFile") List<MultipartFile> descFiles, 
-			@RequestParam("prdDescription") String prdDescription,
-			@RequestParam("stockid") String stockid,
-			@RequestParam("prdStock") int prdStock,
-			RedirectAttributes redirectAttributes
-			) throws UnsupportedEncodingException {
-		String member_id = "573-50-00882";//판매자ID 임시, Session에서 받아올 것임
-		
-		String prod_id=URLDecoder.decode(prdID, "UTF-8");//상품ID
-		String prd_desc=URLDecoder.decode(prdDescription,"UTF-8");//상품설명
+			@RequestParam(value="mainImgFile",required = false) List<MultipartFile> mainFiles,
+			@RequestParam(value="descImgFile",required = false) List<MultipartFile> descFiles,
+			@RequestParam("prdDescription") String prdDescription, @RequestParam("stockid") String stockid,
+			@RequestParam("prdStock") int prdStock, RedirectAttributes redirectAttributes)
+			throws UnsupportedEncodingException {
+		String member_id = "573-50-00882";// 판매자ID 임시, Session에서 받아올 것임
+
+		String prod_id = URLDecoder.decode(prdID, "UTF-8");// 상품ID
+		String prd_desc = URLDecoder.decode(prdDescription, "UTF-8");// 상품설명
 		int prd_category = prdCategory;
-		
+
 		ProdDTO prodDTO = new ProdDTO();
-		
+
 		prodDTO.setProd_id(prod_id);
 		prodDTO.setProd_desc(prd_desc);
 		prodDTO.setCategory_id(prd_category);
 		prodDTO.setProd_price(prdPrice);
-		
+
 		int prdUpdateResult = prodService.prodModify(prodDTO);
-		
+
 		// 상품이미지 등록은 메인 이미지 목록 등록 >> 설명 이미지 목록 등록 순으로 진행
 		int mainfileIndex = 1; // 메인 이미지 파일 인덱스를 1로 초기화
 		int descfileIndex = 1; // 설명 이미지 파일 인덱스를 1로 초기화
-		
-		
-		//메인 사진 초기화 후 재등록
-		if(!Objects.isNull(mainFiles)) {
+
+		// 메인 사진 초기화 후 재등록
+		if (!Objects.isNull(mainFiles)) {
 			for (MultipartFile mainfile : mainFiles) {
 				// 파일 타입 체크
 				String contentType = mainfile.getContentType();
@@ -167,12 +162,12 @@ public class SellerPrdModifyController {
 					return "/seller/sellerPrdList";// 오류페이지로 리다이렉션(팀프로젝트에서는 alert으로 에러를 띄우고 판매자-물품 리스트로 리다이렉트)
 				}
 
-				//서버 컴퓨터의 디렉토리에 파일 저장
-				
-				//(1)메인이미지 파일
+				// 서버 컴퓨터의 디렉토리에 파일 저장
+
+				// (1)메인이미지 파일
 				try {
 					// 파일명은 '상품명_판매자ID_mainimage_x'(x는 sequence)
-					String filename = prod_id + "_mainimage_" + mainfileIndex+".png";
+					String filename = prod_id + "_mainimage_" + mainfileIndex + ".png";
 					Path filePath = Paths.get(mainIMG_uploadDir).resolve(filename);
 					Files.createDirectories(filePath.getParent()); // 디렉토리가 존재하지 않으면 생성
 					Files.write(filePath, mainfile.getBytes()); // 파일 저장
@@ -180,9 +175,9 @@ public class SellerPrdModifyController {
 					// DB에 저장
 					Prod_ImageDTO imageDTO = new Prod_ImageDTO();
 
-					imageDTO.setImg_id(filename);//상품명_판매자ID_image_fileindex
-					imageDTO.setProd_id(prod_id);//상품_판매자ID
-					
+					imageDTO.setImg_id(filename);// 상품명_판매자ID_image_fileindex
+					imageDTO.setProd_id(prod_id);// 상품_판매자ID
+
 					System.out.println(imageDTO);
 
 					int prdMainImgRegResult = imageService.prod_imageInsert(imageDTO);
@@ -196,8 +191,8 @@ public class SellerPrdModifyController {
 				}
 			}
 		}
-		
-		if(!Objects.isNull(descFiles)) {
+
+		if (!Objects.isNull(descFiles)) {
 			for (MultipartFile descfile : descFiles) {
 				// 파일 타입 체크
 				String contentType = descfile.getContentType();
@@ -210,7 +205,7 @@ public class SellerPrdModifyController {
 				// 서버 컴퓨터의 디렉토리에 파일 저장
 				try {
 					// 파일명은 '상품명_판매자ID_descimage_x'(x는 sequence)
-					String filename = prod_id + "_descimage_" + descfileIndex+".png";
+					String filename = prod_id + "_descimage_" + descfileIndex + ".png";
 					Path filePath = Paths.get(descIMG_uploadDir).resolve(filename);
 					Files.createDirectories(filePath.getParent()); // 디렉토리가 존재하지 않으면 생성
 					Files.write(filePath, descfile.getBytes()); // 파일 저장
@@ -218,9 +213,9 @@ public class SellerPrdModifyController {
 					// DB에 저장
 					Prod_ImageDTO imageDTO = new Prod_ImageDTO();
 
-					imageDTO.setImg_id(filename);//상품명_판매자ID_image_fileindex
-					imageDTO.setProd_id(prod_id);//상품_판매자ID
-					
+					imageDTO.setImg_id(filename);// 상품명_판매자ID_image_fileindex
+					imageDTO.setProd_id(prod_id);// 상품_판매자ID
+
 					System.out.println(imageDTO);
 
 					int prdDescImgRegResult = imageService.prod_imageInsert(imageDTO);
@@ -234,27 +229,33 @@ public class SellerPrdModifyController {
 				}
 			}
 		}
+
+		// 재고ID-재고량 변경
+		String stock_id = URLDecoder.decode(stockid, "UTF-8");
 		
-		//재고ID-재고량 변경
-		String stock_id = URLDecoder.decode(prdID, "UTF-8");
-		if(stock_id.contains("_SELL_")) {//판매재고인 경우
+		System.out.println("재고ID:"+stock_id);
+		
+		if (stock_id.contains("_SELL_")) {// 판매재고인 경우
 			Seller_Prod_StockDTO seller_Prod_StockDTO = new Seller_Prod_StockDTO();
 			seller_Prod_StockDTO.setS_stock_id(stock_id);
 			seller_Prod_StockDTO.setStock(prdStock);
 			
+			System.out.println("판매재고 수정데이터:"+seller_Prod_StockDTO);
+
 			int changeSellStock = seller_Prod_StockService.sellStockUpdate(seller_Prod_StockDTO);
-		
-		}
-		else if(stock_id.contains("_RENT_")) {//대여재고인 경우
+
+		} else if (stock_id.contains("_RENT_")) {// 대여재고인 경우
 			RentProdStockDTO rentProdStockDTO = new RentProdStockDTO();
+			
 			rentProdStockDTO.setR_stock_id(stock_id);
 			rentProdStockDTO.setStock(prdStock);
 			
+			System.out.println("대여재고 수정데이터:"+rentProdStockDTO);
+
 			int changeRentStock = rentProdStockService.rentStockUpdate(rentProdStockDTO);
 		}
-		
-		redirectAttributes.addFlashAttribute("PrdRegisterResult", "상품 정보 최신화에 성공하였습니다.");
-		return "/seller/sellerPrdList";// 성공 페이지로 리다이렉션(팀프로젝트에서는 판매자-물품 리스트로 리다이렉트) 
-	}
 
+		redirectAttributes.addFlashAttribute("PrdRegisterResult", "상품 정보 최신화에 성공하였습니다.");
+		return "redirect:/seller/PrdList.do";// 성공 페이지로 리다이렉션(팀프로젝트에서는 판매자-물품 리스트로 리다이렉트)
+	}
 }

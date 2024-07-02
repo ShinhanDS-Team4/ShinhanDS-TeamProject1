@@ -240,9 +240,9 @@
 					</div>
 					<div class="form-group">
 						<label>카테고리</label> <select>
-							<option value="">선택</option>
-							<option value="category1">카테고리 1</option>
-							<option value="category2">카테고리 2</option>
+							<option value=0>선택</option>
+							<option value=1>카테고리 1</option>
+							<option value=2>카테고리 2</option>
 						</select>
 					</div>
 
@@ -334,7 +334,7 @@
 
 					<div class="form-group">
 						<label>재고량</label>
-						<input type="text" name="prdStock" value = "${StockInfo.stock}">
+						<input type="number" name="prdStock" value = "${StockInfo.stock}">
 					</div>
 					<div class="buttons">
 						<button type="submit">수정하기</button>

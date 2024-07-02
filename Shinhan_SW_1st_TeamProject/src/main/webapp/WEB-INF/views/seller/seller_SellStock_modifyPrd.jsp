@@ -138,8 +138,8 @@
 
 	//메인사진 미리보기 삭제 및 데이터 초기화
 	function resetMainProdImg() {
-		var prodid = '$ProductInfo.prod_id';
-		
+		var prodid = '${ProductInfo.prod_id}';
+		alert(prodid);
 		$.ajax({
 			type : "POST",
 			url : "/shoppingmall/seller/resetMainProdImg",
@@ -171,7 +171,8 @@
 
 	//설명사진 미리보기 삭제 및 데이터 초기화
 	function resetDescProdImg() {
-		var prodid = '$ProductInfo.prod_id';
+		var prodid = '${ProductInfo.prod_id}';
+		alert(prodid);
 		$.ajax({
 			type : "POST",
 			url : "/shoppingmall/seller/resetDescProdImg",
@@ -247,10 +248,11 @@
 							value="${ProductInfo.prod_price}">
 					</div>
 					<div class="form-group">
-						<label>카테고리</label> <select>
-							<option value="">선택</option>
-							<option value="category1">카테고리 1</option>
-							<option value="category2">카테고리 2</option>
+						<label>카테고리</label>
+						<select name="prdCategory">
+							<option value=0>선택</option>
+							<option value=1>카테고리 1</option>
+							<option value=2>카테고리 2</option>
 						</select>
 					</div>
 
@@ -333,7 +335,7 @@
 								<c:forEach var="option" items="${optionList}">
 									<tr>
 										<td>${option.opt_name}</td>
-										<td>${option.opt_name}</td>
+										<td>${option.opt_value}</td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -342,7 +344,7 @@
 
 					<div class="form-group">
 						<label>재고량</label>
-						<input type="text" name="prdStock" value = "${StockInfo.stock}">
+						<input type="number" name="prdStock" value = "${StockInfo.stock}">
 					</div>
 					<div class="buttons">
 						<button type="submit">수정하기</button>

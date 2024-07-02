@@ -17,7 +17,67 @@
 
 <!-- 페이지용 css -->
 <link rel="stylesheet" href="${path}/resources/css/seller_prdList.css" />
-
+<script>
+	function deleteCheckedSellStock(){
+		var selectedStatus='일괄삭제';
+		var selectedSellStocks=[];
+		$('.sellStock-checkbox:checked').each(function(){
+			selectedSellStocks.push($(this).data('id'));
+		});
+		
+		if(selectedSellStocks.length>0){
+			$.ajax({
+				url:'/shoppingmall/seller/deleteSellStocks',
+				type:'POST',
+				contentType:'application/json',
+				data:JSON.stringify({sellStockIds:selectedSellStocks,status:selectedStatus}),
+				success: function(response){
+    				if(response==="Delete Success"){
+    					alert('선택 항목 삭제 완료');
+    					location.reload();
+    				}else{
+    					alert('삭제 중 오류 발생');
+    				}
+    			},
+    			error:function(){
+    				alert('서버 요청 중 오류가 발생했습니다.');
+    			}
+			});
+		}else {
+        	alert('선택한 재고가 없습니다.');
+    	}
+	}
+	
+	function deleteCheckedRentStock(){
+		var selectedStatus='일괄삭제';
+		var selectedRentStocks=[];
+		$('.rentStock-checkbox:checked').each(function(){
+			selectedSellStocks.push($(this).data('id'));
+		});
+		
+		if(selectedSellStocks.length>0){
+			$.ajax({
+				url:'/shoppingmall/seller/deleteRentStocks',
+				type:'POST',
+				contentType:'application/json',
+				data:JSON.stringify({rentStockIds:selectedRentStocks,status:selectedStatus}),
+				success: function(response){
+    				if(response==="Delete Success"){
+    					alert('선택 항목 삭제 완료');
+    					location.reload();
+    				}else{
+    					alert('삭제 중 오류 발생');
+    				}
+    			},
+    			error:function(){
+    				alert('서버 요청 중 오류가 발생했습니다.');
+    			}
+			});
+		}else {
+        	alert('선택한 재고가 없습니다.');
+    	}
+	}
+</script>
 </head>
 <body>
 	<%@ include file="../common/header.jsp"%>
@@ -56,7 +116,7 @@
 					<tbody>
 						<c:forEach var="sStock" items="${stockSList}">
 							<tr>
-								<td><input type="checkbox" /></td>
+								<td><input type="checkbox" class="sellStock-checkbox" data-id="${sStock.s_stock_id }"/></td>
 								<td>${sStock.s_stock_id}</td>
 								<td>${sStock.prod_added_date}</td>
 								<td>${sStock.prod_price}</td>
@@ -108,8 +168,7 @@
 					</tbody>
 				</table>
 				<div class="actions">
-					<button>선택 상품 삭제</button>
-					
+					<button id="delete_selected_sStock" onclick="deleteCheckedSellStock()">선택 상품 삭제</button>
 				</div>
 			</div>
 			<div class="product-list">
@@ -128,7 +187,7 @@
 					<tbody>
 						<c:forEach var="rStock" items="${stockRList}">
 							<tr>
-								<td><input type="checkbox" /></td>
+								<td><input type="checkbox" class="rentStock-checkbox" data-id="${rStock.r_stock_id }"/></td>
 								<td>${rStock.r_stock_id}</td>
 								<td>${rStock.prod_added_date}</td>
 								<td>${rStock.prod_price}</td>
@@ -180,7 +239,7 @@
 					</tbody>
 				</table>
 				<div class="actions">
-					<button>선택 상품 삭제</button>
+					<button id="delete_selected_rStock" onclick="deleteCheckedRentStock()">선택 상품 삭제</button>
 					
 				</div>
 			</div>

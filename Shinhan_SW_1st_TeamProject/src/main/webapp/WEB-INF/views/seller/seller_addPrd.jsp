@@ -238,7 +238,7 @@
 					</div>
 					<div class="form-group">
 						<label>카테고리</label> <select name="prdCategory">
-							<option value="">선택</option>
+							<option value=0>선택</option>
 							<option value=1>카테고리 1</option>
 							<option value=2>카테고리 2</option>
 						</select>
