@@ -5,6 +5,8 @@
 <html lang="ko">
 <head>
 	<c:set var="path" value="${pageContext.servletContext.contextPath}" />
+	<!-- 헤더,푸터 css -->
+    <link rel="stylesheet" href="${path}/resources/css/header_footer.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원가입 페이지</title>
@@ -13,14 +15,13 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f9f9f9;
+            background-color: #ffffff;
             color: #333;
         }
         header {
             background-color: #fff;
             padding: 10px 0;
             text-align: center;
-            border-bottom: 1px solid #ccc;
         }
         header .logo {
             font-size: 2em;
@@ -37,11 +38,15 @@
             color: #333;
         }
         .container {
-            max-width: 800px;
+            max-width: 600px;
+            height: 800px;
             margin: 0 auto;
             padding: 20px;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* 공간을 고르게 나눔 */
         }
         h1 {
             text-align: center;
@@ -50,12 +55,14 @@
         form {
             display: flex;
             flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between; /* 공간을 고르게 나눔 */
         }
         .form-group {
             display: flex;
             flex-direction: row;
             align-items: center;
-            margin-bottom: 15px;
+            /* margin-bottom: 15px; 삭제 */
         }
         .form-group label {
             flex: 0 0 150px; /* 고정된 너비 설정 */
@@ -72,7 +79,7 @@
             border-radius: 5px;
         }
         .radio-group, .checkbox-group {
-            margin-bottom: 15px;
+            /* margin-bottom: 15px; 삭제 */
         }
         .radio-group label,
         .checkbox-group label {
@@ -168,30 +175,31 @@
             }
         });
 
+        // 비밀번호 확인 기능
+        $('#confirm-password').on('input', function() {
+            var password = $('#member_pw').val();
+            var confirmPassword = $(this).val();
+            if (password !== confirmPassword) {
+                $('#password-error').text('비밀번호가 다릅니다.');
+            } else {
+                $('#password-error').text('');
+            }
+        });
+
         // 회원가입 폼 제출
         $('form').on('submit', function(event) {
             if (!$('#email').prop('readonly')) {
                 event.preventDefault();
                 $('#email-error').text('이메일을 인증해 주세요.');
             }
+            alert('SAREN에 어서오세요!');
         });
     });
     </script>
 </head>
 <body>
 <c:set var="path" value="${pageContext.servletContext.contextPath}" />
-    <header>
-        <div class="logo">saren</div>
-    </header>
-
-    <nav class="navbar">
-        <a href="#">여성</a>
-        <a href="#">남성</a>
-        <a href="#">키즈</a>
-        <a href="#">악세서리</a>
-        <a href="#">기타</a>
-    </nav>
-
+    <%@ include file="../common/header.jsp" %>
     <div class="container">
         <h1>회원가입</h1>
         <form method="post" accept-charset="UTF-8" action="${path}/member_test/signup.do">
@@ -213,6 +221,7 @@
             <div class="form-group">
                 <label for="confirm-password">비밀번호 확인</label>
                 <input type="password" id="confirm-password" name="confirmPassword">
+                <div id="password-error" class="error-message"></div>
             </div>
             <div class="form-group">
                 <label for="member_name">이름</label>
@@ -263,7 +272,6 @@
     </div>
 
     <footer>
-        <div class="footer-line"></div>
         <div class="footer-text">회사소개 이용약관 개인정보처리방침 이메일무단수집거부 단체주문 제휴문의 입점신청 멤버쉽 안내</div>
         <div class="footer-logo">saren</div>
         <div class="footer-links">

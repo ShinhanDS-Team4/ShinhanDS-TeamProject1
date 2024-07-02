@@ -16,53 +16,65 @@ public class RentDAOMybatis implements RentDAOInterface {
 	SqlSession sqlSession;
 
 	String namespace = "com.saren.rent.";
+	
+	
+	
+	@Override
+	public int searchRentId() {
+		return sqlSession.selectOne(namespace+"searchRentId");
+	}
 
-	// ´ë¿©»ó¼¼
+	// ëŒ€ì—¬ìƒì„¸
 	@Override
 	public RentDTO selectById(Integer rental_code) {
 		return sqlSession.selectOne(namespace+"selectById", rental_code);
 	}
 
-	// ´ë¿©¸ñ·Ï
+	// ëŒ€ì—¬ëª©ë¡
 	@Override
 	public List<RentDTO> selectAll() {
 		return sqlSession.selectList(namespace + "selectAll");
 	}
 
-	// ´ë¿©ÇÏ±â
+	// ëŒ€ì—¬í•˜ê¸°
 	@Override
 	public int rentInsert(RentDTO rent) {
 		return sqlSession.insert(namespace+"rentInsert", rent);
 	} 
 
-	// ´ë¿©»óÅÂ ¼öÁ¤
+	// ëŒ€ì—¬ìƒíƒœ ìˆ˜ì •
 	@Override
 	public int rentUpdate(Integer rental_code) {
 		return sqlSession.update(namespace+"rentUpdate", rental_code);
 	} 
 
-	// rentlist.jsp¿¡ Ãâ·ÂÇÒ »óÇ°¸í, ºê·£µå, ¿É¼Ç, »óÇ°°¡°İ, ÀÌ¹ÌÁöURL
+	// rentlist.jspï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç°ï¿½ï¿½, ï¿½ê·£ï¿½ï¿½, ï¿½É¼ï¿½, ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½, ï¿½Ì¹ï¿½ï¿½ï¿½URL
 	@Override
-	public Map<String, Object> selectById2(int rental_code) {
-		return sqlSession.selectOne(namespace+"selectById2", rental_code); 
+	public List<RentSelectDTO> selectById2(int rental_code) {
+		return sqlSession.selectList(namespace+"selectById2", rental_code); 
 	}
 	
-	// rentlist.jsp¿¡¼­, »ó¼¼»óÇ° ¿É¼Ç Ãâ·Â½Ã, ¸ğµç ¿É¼Ç °¡Á®¿À±â
+	// rentlist.jspï¿½ï¿½ï¿½ï¿½, ï¿½ó¼¼»ï¿½Ç° ï¿½É¼ï¿½ ï¿½ï¿½Â½ï¿½, ï¿½ï¿½ï¿½ ï¿½É¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	@Override
 	public List<RentProdStockDTO> selectOptions() {
 		return sqlSession.selectList(namespace+"selectOptions");  
     }
 
-	// rentlist.jsp¿¡¼­, ´ë¿©Ãë¼Ò
+	// rentlist.jspï¿½ï¿½ï¿½ï¿½, ï¿½ë¿©ï¿½ï¿½ï¿½
 	@Override
 	public int cancelRent(int rentalCode) {
 		return sqlSession.update(namespace+"cancelRent", rentalCode);
 	}
 	
-	// rentlist.jsp¿¡¼­, ¹İ³³
+	// rentlist.jspï¿½ï¿½ï¿½ï¿½, ï¿½İ³ï¿½
 	@Override
 	public int returnRent(int rentalCode) {
 		return sqlSession.update(namespace+"returnRent", rentalCode);
+	}
+
+	@Override
+	public int updateRent(RentDTO rent) {
+		return sqlSession.update(namespace+"updateRent", rent);
 	}
 
 

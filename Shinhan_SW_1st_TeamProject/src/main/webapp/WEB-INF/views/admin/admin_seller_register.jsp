@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>판매자 등록 신청</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="${pageContext.servletContext.contextPath}/resources/css/admin/admin_page.css" rel="stylesheet">
+    <%-- <link href="${pageContext.servletContext.contextPath}/resources/css/admin/admin_page.css" rel="stylesheet"> --%>
 </head>
 <body>
 <jsp:include page="common.jsp" />
@@ -28,7 +28,7 @@
                             <th>성별</th>                            
                             <th>신청 날짜</th>
                             <th>판매 상태</th>
-                            <th>작업</th>
+                            <th colspan="2">허용 / 거부</th>
                     	</tr>                        
                     </thead>
                     <tbody>
@@ -36,14 +36,14 @@
 	                        <tr>
                             	<td id="seller-${seller.member_id}"><a href="admin_seller_info?member_id=${seller.member_id}">${seller.member_id}</a></td>
 	                            <td>${seller.member_name}</td>
-	                            <td>${seller.member_brand}</td>
-	                            <td>${seller.member_email}</td>
-	                            <td>${seller.member_phone}</td>
-	                            <td>${seller.member_birth_date}</td>
-	                            <td>${seller.member_gender}</td>
-	                            <td>${seller.member_seller_create_date}</td>
-	                            <td id="status-${seller.member_id}">${seller.member_seller_authority}</td>
-	                            <td>
+	                            <td>${seller.brand}</td>
+	                            <td>${seller.email}</td>
+	                            <td>${seller.phone}</td>
+	                            <td>${seller.birth_date}</td>
+	                            <td>${seller.gender}</td>
+	                            <td>${seller.create_date}</td>
+	                            <td id="status-${seller.member_id}">${seller.seller_authority}</td>
+	                            <td colspan="2">
 	                                <button class="btn btn-sm btn-primary" onclick="updateSellerStatus(${seller.member_id}, 'Access')">허용</button>
 	                                <button class="btn btn-sm btn-danger" onclick="updateSellerStatus(${seller.member_id}, 'Deny')">거부</button>
 	                            </td>
@@ -51,7 +51,7 @@
 	                    </c:forEach>
                     	<c:if test="${empty sellers}">
 	                        <tr>
-	                            <td colspan="9" class="text-center">판매자 정보가 없습니다.</td>
+	                            <td colspan="10" class="text-center">판매자 정보가 없습니다.</td>
 	                        </tr>
                     	</c:if>                                             
                     </tbody>

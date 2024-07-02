@@ -14,18 +14,24 @@
  	-->
 
 	<!-- 대여상세 상세 -->
-	<select id="selectById" parameterType="string"
+	<select id="selectById" parameterType="int"
 		resultType="rent_detailVO">
 		SELECT *
 		FROM RENT_DETAIL
-		WHERE rentdetail_id =
-		#{rentdetail_id}
+		WHERE rentdetail_id = #{rentdetail_id}
 	</select>
 
 	<!-- 대여상세 목록 -->
-	<select id="selectAll" resultType="com.team4.shoppingmall.rent_detail.RentDetailDTO">
+	<select id="selectAll" resultType="rent_detailVO">
 		SELECT *
 		FROM RENT_DETAIL
+	</select>
+	
+	<!-- 대여ID 기준으로 대여 상세 목록 -->
+	<select id="selectByRental_code" parameterType="int" resultType="rent_detailVO">
+		SELECT *
+		FROM RENT_DETAIL
+		WHERE rental_code=#{rental_code}
 	</select>
 
 	<!-- 판매자ID 단위로 대여 상세 데이터 목록 가져오기 -->
@@ -49,7 +55,7 @@
 			#{rent_num}, 
 			#{r_stock_id}, 
 			#{rental_code},
-			'rent_requested'
+			'대여신청완료'
 		)
 	</insert>
 

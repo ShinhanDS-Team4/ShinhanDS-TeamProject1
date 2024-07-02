@@ -1,8 +1,6 @@
 package com.team4.shoppingmall.admin;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -32,16 +30,17 @@ public class AdminController {
 	MemberService mService;
 	@Autowired
 	CustomerService cService;
-
 	
 	Logger logger = LoggerFactory.getLogger(AdminController.class);
 
-	@PostMapping("admin_mypage_edit")
+	// 관리자 마이 페이지 수정
+	@PostMapping("admin_mypage")
 	public String adminmypageedit(AdminDTO aDto) {
 		System.out.println(aDto);
 		return "admin/admin_mypage";
 	}
 
+	// 관리자 마이 페이지
 	@GetMapping("admin_mypage")
 	public String adminmypage(Model model, HttpSession session) {
 		AdminDTO aDto = (AdminDTO) session.getAttribute("aDto");
@@ -52,6 +51,7 @@ public class AdminController {
 		return "admin/admin_mypage";
 	}
 
+	// 관리자 메인 페이지
 	@GetMapping("admin_page")
 	public String adminpage(Model model, HttpSession session) {
 		AdminDTO aDto = (AdminDTO) session.getAttribute("aDto");
@@ -82,11 +82,11 @@ public class AdminController {
 
         Double customer_monthly_increase_rate = mService.customerMonthlyIncreaseRate();
         model.addAttribute("customer_monthly_increase_rate", customer_monthly_increase_rate);		             
-
         
 		return "admin/admin_page";
 	}
 
+	// 판매자 목록 페이지
 	@GetMapping("admin_seller_list")
 	public String adminsellerlist(Model model) {
 		List<MemberDTO> mDto = mService.selectBySeller_authority();
@@ -94,11 +94,13 @@ public class AdminController {
 		return "admin/admin_seller_list";
 	}
 
+	// 판매자 상품 조회 페이지
 	@GetMapping("admin_seller_prod")
 	public String adminsellerdetail() {
 		return "admin/admin_seller_prod";
 	}
 
+	// 판매자 허용/거부 페이지
 	@GetMapping("admin_seller_register")
 	public String adminsellerregister(Model model) {
 		List<MemberDTO> mDto = mService.selectBySeller();
@@ -106,23 +108,34 @@ public class AdminController {
 		return "admin/admin_seller_register";
 	}
 
+	// 판매자 정보 확인 페이지
 	@GetMapping("admin_seller_info")
 	public String adminsellerinfo(Model model, String member_id) {
 		model.addAttribute("member_info", mService.selectById(member_id));
 		return "admin/admin_seller_info";
 	}
+
+	// 판매자 정보 삭제 페이지
+	@GetMapping("admin_seller_delete")
+	public String delete(String member_id) {
+		mService.memberDelete(member_id);
+		return "redirect:admin_seller_list";
+	}
 	
+	// 검색창
 	@GetMapping("search_results")
 	public @ResponseBody List<MemberDTO> searchResults( String searchType,  String keyword) {
 		List<MemberDTO> members = mService.searchMembers(searchType, keyword);        
         return members;
     }
 
+	// 관리자 문의 게시판
 	@GetMapping("admin_faq")
 	public String adminsellerfaq() {
 		return "admin/admin_faq";
 	}
 
+	// 관리자 로그인 요청 에러확인
 	@GetMapping("admin_login")
 	public void adminlogindispaly() {
 		logger.debug("로그인 요청(debug)");
@@ -131,15 +144,18 @@ public class AdminController {
 		logger.error("로그인 요청(error)");
 	}
 
+	// 관리자 로그아웃
 	@GetMapping("admin_logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "redirect:admin_login";
 	}
 
+	// 관리자 로그인
 	@PostMapping("admin_login")
 	public String loginCheck(@RequestParam("admin_id") String admin_id, @RequestParam("admin_pw") String admin_pw,
 			HttpSession session, HttpServletRequest request) {
+		System.out.println(admin_id);
 		AdminDTO aDto = aService.loginChk(admin_id, admin_pw);
 		System.out.println(aDto);
 		if (aDto == null) {
@@ -149,13 +165,14 @@ public class AdminController {
 			session.setAttribute("loginResult", "잘못된 비밀번호입니다.");
 			return "redirect:admin_login";
 		} else {
-			session.setAttribute("loginResult", "로그인 오류");
+			session.setAttribute("loginResult", "로그인 성공");
 			session.setAttribute("aDto", aDto);
 
 			return "redirect:admin_page";
 		}
 	}
 
+	// 아이디 찾기
 	@PostMapping("admin_findid")
 	public @ResponseBody String findId(String admin_email, String admin_name, Model model) {
 		System.out.println(admin_email);
@@ -170,7 +187,7 @@ public class AdminController {
 		return findIdResult;
 	}
 
-	
+	// 비밀번호 찾기
 	@PostMapping("admin_findpw")
     @ResponseBody
     public String findPw(String admin_id, String admin_name, String admin_phone) {	
@@ -180,7 +197,8 @@ public class AdminController {
         String admin_pw = aService.findByPw(admin_id, admin_name, admin_phone);
         return admin_pw != null ? admin_pw : "0";
     }
-
+	
+	// 새 비밀번호로 변경
     @PostMapping("/admin_changepw")
     @ResponseBody
     public String changePw(String admin_id, String new_admin_pw) {

@@ -5,7 +5,7 @@ import java.util.Map;
 
 public interface ProdDAOTestInterface {
 	
-	//상품 상세 정보 조회
+	
 	public Map<String,Object> selectProdDetailInfoByProdId(String prod_id);
 	
 	public ProdTestDTO selectByProdId(String prod_id);

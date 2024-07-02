@@ -3,32 +3,38 @@ package com.team4.shoppingmall.order_prod;
 import java.util.List;
 import java.util.Map;
 
+import com.team4.shoppingmall.prod.ProductNewVO;
 import com.team4.shoppingmall.prod_option.Prod_OptionDTO; 
 
 public interface OrderProdDAOInterface {
 	
-	// ÁÖ¹®»ó¼¼
+	public int sequenceOrderId();
+	
+	// ï¿½Ö¹ï¿½ï¿½ï¿½
 	public OrderProdDTO selectById(Integer order_id);
 	
-	// ÁÖ¹®¸ñ·Ï
+	// ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½
 	public List<OrderProdDTO> selectAll();
 	
-	// ÁÖ¹®»ý¼º
+	// ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½
 	public int orderprodInsert(OrderProdDTO orderprod); 
-	
-	// ÁÖ¹®¼öÁ¤
+
+	// ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½
 	public int orderprodUpdate(OrderProdDTO orderprod);
 	
-	// orderlist.jsp¿¡ Ãâ·ÂÇÒ ÆÇ¸Å»óÇ° »ó¼¼Á¤º¸(ºê·£µå¸í, »óÇ°¸í, ¿É¼Ç, ´ë¿©°¡°Ý, ÀÌ¹ÌÁöURL)
-	public Map<String, Object> selectById2(int order_id);
+	// orderlist.jspï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¸Å»ï¿½Ç° ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ê·£ï¿½ï¿½ï¿½, ï¿½ï¿½Ç°ï¿½ï¿½, ï¿½É¼ï¿½, ï¿½ë¿©ï¿½ï¿½ï¿½ï¿½, ï¿½Ì¹ï¿½ï¿½ï¿½URL)
+	public List<OrderProdDetailDTO> selectById2(int order_id);
 
-	// orderlist.jsp¿¡¼­, »ó¼¼»óÇ° ¿É¼Ç Ãâ·Â½Ã, ¸ðµç ¿É¼Ç °¡Á®¿À±â
+	// orderlist.jspï¿½ï¿½ï¿½ï¿½, ï¿½ó¼¼»ï¿½Ç° ï¿½É¼ï¿½ ï¿½ï¿½Â½ï¿½, ï¿½ï¿½ï¿½ ï¿½É¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	public List<Prod_OptionDTO> selectOptions();
 
-	// orderlist.jsp¿¡¼­, ÁÖ¹®Ãë¼Ò
+	// orderlist.jspï¿½ï¿½ï¿½ï¿½, ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½
 	public int orderCancel(int orderId);
 
-	// orderlist.jsp¿¡¼­, ÁÖ¹®È¯ºÒ
+	// orderlist.jspï¿½ï¿½ï¿½ï¿½, ï¿½Ö¹ï¿½È¯ï¿½ï¿½
 	public int orderRefund(int orderId);
+
+	public int updateOrderPrice(OrderProdDTO orderprod);
+
 	
 }

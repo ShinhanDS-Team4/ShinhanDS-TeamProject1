@@ -14,28 +14,28 @@ public class CustomerDAOMybatis implements CustomerDAOInterface {
 
 	String namespace = "com.saren.customer.";
 
-	// ����
+	// 占쏙옙占쏙옙
 	@Override
-	public CustomerDTO selectById(Integer rental_code) {
-		return sqlSession.selectOne(namespace+"selectById", rental_code);
+	public CustomerDTO selectById(String customer_id) {
+		return sqlSession.selectOne(namespace+"selectById", customer_id);
 	}
 	
-	// �����
+	// 占쏙옙占쏙옙占�
 	@Override
 	public List<CustomerDTO> selectAll() {
 		return sqlSession.selectList(namespace+"selectAll");
 	}
 	
-	// �����
+	// 占쏙옙占쏙옙占�
 	@Override
 	public int customerInsert(CustomerDTO customer) {
 		return sqlSession.insert(namespace+"customerInsert", customer);
 	}
 	
-	// ������
+	// 占쏙옙占쏙옙占쏙옙
 	@Override
-	public int customerUpdate(Integer rental_code) {
-		return sqlSession.update(namespace+"customerUpdate", rental_code);
+	public int customerUpdate(CustomerDTO customer) {
+		return sqlSession.update(namespace+"customerUpdate", customer);
 	}
 	
 	@Override

@@ -15,7 +15,7 @@ public class ProdTestDAOMybatis implements ProdDAOTestInterface {
 	
 	String namespace = "com.saren.prod.";
 	
-	//상품 상세 정보 조회
+	
 	@Override
 	public Map<String,Object> selectProdDetailInfoByProdId(String prod_id) {
 		return sqlSession.selectOne(namespace+"selectProdDetailInfoByProdId", prod_id);

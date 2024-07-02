@@ -17,19 +17,39 @@
 		FROM ORDER_PROD
 	</select>
 
-	<!-- 주문생성 -->
-	<insert id="orderprodInsert" parameterType="order_prodVO">
-		INSERT
-		INTO ORDER_PROD(order_id, order_date, member_id, addr_num, total_price)
-		VALUES(#{order_id}, #{order_date}, #{member_id}, #{addr_num}, #{total_price})
+	
+	<!-- product_detail.jsp 주문생성 -->
+	<!-- DB세팅하고 CURRVAL안될 경우 수정.
+		SELECT last_number-1 FROM user_sequences WHERE sequence_name = 'ORDER_PROD_SEQUENCE' 
+		<selectKey keyProperty="order_id" resultType="Integer" order="AFTER">
+       		SELECT ORDER_PROD_SEQUENCE.CURRVAL FROM DUAL
+ 		</selectKey>
+	-->
+	<insert id="orderprodInsert" parameterType="com.team4.shoppingmall.order_prod.OrderProdDTO">
+		INSERT INTO ORDER_PROD (order_id, order_date, member_id, addr_num, total_price)
+		SELECT ORDER_PROD_SEQUENCE.NEXTVAL, sysdate, #{member_id}, addr_num, #{total_price}
+		FROM addr_list 
+		WHERE member_id = #{member_id} AND IS_MASTER_ADDR = 'Y'
 	</insert>
-
+	
+	<select id="sequenceOrderId" resultType="int">
+		SELECT last_number-1 FROM user_sequences WHERE sequence_name = 'ORDER_PROD_SEQUENCE' 
+	</select>
+	
+	
 	<!-- 주문수정 -->
 	<update id="orderprodUpdate" parameterType="order_prodVO">
 		UPDATE ORDER_PROD
 		SET
 		order_date=#{order_date},
 		addr_num = #{addr_num},
+		total_price = #{total_price}
+		WHERE order_id = #{order_id}
+	</update>
+	
+	<update id="updateOrderPrice" parameterType="order_prodVO">
+		UPDATE ORDER_PROD
+		SET
 		total_price = #{total_price}
 		WHERE order_id = #{order_id}
 	</update>
@@ -41,7 +61,7 @@
     </select>
  
 	<!-- orderlist.jsp에 출력할 상품명, 브랜드, 옵션, 상품가격, 이미지URL -->
-	<select id="selectById2" parameterType="int" resultType="map"> 
+	<select id="selectById2" parameterType="int" resultType="order_prod_detailVO"> 
 		SELECT
 			P.prod_name,
 		   	M.brand, 
@@ -51,13 +71,13 @@
 			S.opt_id4,
 			S.opt_id5,
 			OD.order_product_price,
-			PI.img_url
+			PI.img_id
 		FROM
 			ORDER_DETAIL OD
 		JOIN
 			ORDER_PROD OP ON OD.order_id = OP.order_id
 		JOIN
-			SELLER_PROD_STOCK S ON OD.stock_id = S.stock_id
+			SELLER_PROD_STOCK S ON OD.s_stock_id = S.s_stock_id
 		JOIN
 			PROD P ON S.prod_id = P.prod_id
 		JOIN
