@@ -60,7 +60,7 @@ public class RentProdStockService {
 
 
 	// 대여상품수정 
-public int rentStockUpdate(RentProdStockDTO rentprod) {
+	public int rentStockUpdate(RentProdStockDTO rentprod) {
 		return rentProdStockDAO.rentStockUpdate(rentprod);
 	}
 

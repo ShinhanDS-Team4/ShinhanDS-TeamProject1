@@ -23,5 +23,5 @@ public class OrderProdDetailDTO {
 	String img_id;
 	String order_state;
 	String orderdetail_id;
-}
 
+}

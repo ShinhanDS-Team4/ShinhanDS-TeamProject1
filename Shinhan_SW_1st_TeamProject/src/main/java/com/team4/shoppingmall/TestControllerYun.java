@@ -118,10 +118,18 @@ public class TestControllerYun {
 	@PostMapping("/returnRent.do")
 	@ResponseBody
 	public String returnRent(@RequestParam("rentalCode") int rentalCode, HttpServletResponse response) {
+<<<<<<< HEAD
 	
 		int returnSuccess = rentService.returnRent(rentalCode);
 		String message = "";
 		
+=======
+		System.out.println("대여코드: " + rentalCode);
+
+		int returnSuccess = rentService.returnRent(rentalCode);
+		String message = "";
+		 
+>>>>>>> main
 		
 		if (returnSuccess > 0) { 
 			message = "success"; 

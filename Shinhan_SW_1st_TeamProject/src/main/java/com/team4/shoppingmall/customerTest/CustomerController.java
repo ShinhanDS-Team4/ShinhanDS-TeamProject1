@@ -158,7 +158,6 @@ public class CustomerController {
 		return "customer/rentPay";
 	}
 
-
 	@PostMapping("/applyRentCoupon")
 	@ResponseBody
 	public String applyRentCoupon(@RequestBody CouponRequestDTO couponRequestDTO) {
@@ -388,7 +387,6 @@ public class CustomerController {
 	public String preparePayment(@RequestParam String merchantUid, @RequestParam int amount) {
 		return paymentService.registerPaymentAmount(merchantUid, amount);
 	}
-
 
 	// ���� ���뿡 ���� ����
 	@PostMapping("/verifyPayment")

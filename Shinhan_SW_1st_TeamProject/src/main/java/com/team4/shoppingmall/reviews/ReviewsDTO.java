@@ -20,11 +20,7 @@ public class ReviewsDTO {
 	String review_img;
 	String review_content;
 	Integer orderdetail_id;
-<<<<<<< HEAD
-	String member_id; //칼럼추가
-=======
-	String member_id;
->>>>>>> main
+	String member_id; 
 	
 	//필드추가
 	int avg_rate;
