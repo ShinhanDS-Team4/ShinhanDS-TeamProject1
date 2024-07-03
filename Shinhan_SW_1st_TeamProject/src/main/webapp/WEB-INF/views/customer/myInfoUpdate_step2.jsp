@@ -26,17 +26,21 @@
 </div>
 <script>
 	 $(document).ready(function(){         
-           //확인 버튼 클릭하면 비밀번호 검토 없이 바로 넘어감 -> 로직 수정 필요
-            $("#confirmButton").click(function(){
-        	   var password = $("#pw-check_input").val(); //입력한 비밀번호
+            $("#confirmButton").click(function(e){
+        	    e.preventDefault();
+        	   
+            	var password = $("#pw-check_input").val(); //입력한 비밀번호
+        	   
                $.ajax({
                    url: "${path}/customer/myInfoUpdatePwCheck.do",
-                   type: "get",
+                   type: "POST",
                    data: { password: password },
-                   success: function(data) {
-                	   //비밀번호 체크 후 맞으면 다음 스탭(step3)
+                   success: function(reseponseData) {
                 	   alert("비밀번호 확인 성공");
-                       $(".mypage_here").html(data);
+                	   
+                	   
+                   //비밀번호 체크 후 맞으면 다음 스탭(step3)
+                       $(".mypage_here").html(reseponseData);
                    },
                    error: function(xhr, status, error) {
                        console.error("Error: " + error);

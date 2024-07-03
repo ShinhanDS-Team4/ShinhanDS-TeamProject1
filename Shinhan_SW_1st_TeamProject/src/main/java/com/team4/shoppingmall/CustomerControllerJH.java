@@ -2,7 +2,6 @@ package com.team4.shoppingmall;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
@@ -11,9 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.team4.shoppingmall.addr_list.Addr_ListDTO;
 import com.team4.shoppingmall.addr_list.Addr_ListService;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqDTO;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqService;
@@ -21,9 +23,7 @@ import com.team4.shoppingmall.customer.CustomerDTO;
 import com.team4.shoppingmall.customer.CustomerService;
 import com.team4.shoppingmall.member.MemberDTO;
 import com.team4.shoppingmall.member.MemberService;
-import com.team4.shoppingmall.order_prod.OrderProdDTO;
 import com.team4.shoppingmall.order_prod.OrderProdService;
-import com.team4.shoppingmall.prod_option.Prod_OptionDTO;
 import com.team4.shoppingmall.prod_option.Prod_OptionService;
 import com.team4.shoppingmall.rent.RentService;
 
@@ -31,7 +31,7 @@ import com.team4.shoppingmall.rent.RentService;
 @RequestMapping("/customer")
 public class CustomerControllerJH {
 	
-	//@Autowired
+	@Autowired
 	Addr_ListService addrService; 
 	
 	@Autowired
@@ -51,6 +51,7 @@ public class CustomerControllerJH {
 	
 	@Autowired
 	CustomerService customerService;
+	
 	
 	/*마이페이지 메인*/
 	@GetMapping("/myPage.do")
@@ -85,7 +86,6 @@ public class CustomerControllerJH {
 	    CustomerDTO customer =customerService.selectById(member_id);
 	    model.addAttribute("myPoints", customer);
 	   
-	    System.out.println("myPoints--" + customer);
 	 
 	    
 		return "customer/myPage";
@@ -105,27 +105,96 @@ public class CustomerControllerJH {
 		
 		return "customer/rentlist.do";
 	}
-
+	
+	
 	
 	/* 회원정보수정 */
-	//step1
-	@GetMapping("/myInfoUpdate.do")
-	public String myInfoUpdate(Model model) {
+	//배송지 추가
+	@PostMapping("/myAddrInsert.do")
+	@ResponseBody
+    public int myAddrInsert(Model model,
+                           HttpSession session,
+                           @RequestBody Map<String, String> addressData) {
 		
+		System.out.println(addressData);
+
+		String member_id = "testid";
+
+        // 주소 처리 로직
+		String zipcode = addressData.get("zipcode");
+		String main_address = addressData.get("main_address");
+		String detail_address = addressData.get("detail_address");
+		String is_master_addr = addressData.get("is_master_addr");
+		String sub_address = addressData.get("sub_address");
+    
+		System.out.println(is_master_addr); //'Y'
+		//대표주소가 존재하는 경우
+		//배송지 목록에서 Y인 기존 모든 주소목록은 N으로 업데이트 한 후 insert진행
+		//서비스에서 트랜잭션널 처리
+        Addr_ListDTO addr_list = new Addr_ListDTO();
+        addr_list.setMember_id(member_id);
+        addr_list.setZipcode(zipcode);
+        addr_list.setMain_address(main_address);
+        addr_list.setDetail_address(detail_address);
+        addr_list.setIs_master_addr(is_master_addr);
+        addr_list.setSub_address(sub_address);
+        
+        int result = addrService.addressInsert(addr_list);
+       
+        System.out.println(result);
+        
+        return result;
+        
+    }
+	
+	//배송지 삭제
+	@ResponseBody
+	@PostMapping("/myAddrDelete.do")
+	public int myAddrDelete( HttpSession session, 
+							 Model model,
+							 @RequestBody Map<String, String> addrData) {
+		
+		String member_id = "testid";
+		
+		String addr_numstr = addrData.get("addr_num");
+		int addr_num = Integer.parseInt(addr_numstr); 
+        System.out.println(addr_num);
+
+		//1.삭제 완료
+		int result = addrService.addressDelete(addr_num);
+		
+		return result ;
+		
+	}
+	
+	//step1 회원정보 수정 페이지
+	@GetMapping("/myInfoUpdate.do")
+	public String myInfoUpdate( HttpSession session, Model model) {
+		
+		String member_id = "testid";
+		
+		//나의 배송지 목록
+		List<Map<String,Object>> addrlist = addrService.selectByMember_Id(member_id);
+		model.addAttribute("addrlist", addrlist);
+		
+		System.out.println(addrlist);
 		
 		return "customer/myInfoUpdate";
 	}
-	
+
 	//step2 - 비밀번호 확인 창
-	@GetMapping("/myInfoUpdatePw.do")
+	@PostMapping("/myInfoUpdatePw.do")
 	public String myInfoUpdatePw() {
+		
+		
+		
 		
 		return "customer/myInfoUpdate_step2";
 	}
 	
 	
 	//비밀번호 체크 후 다음 스텝(step3)
-	@GetMapping("/myInfoUpdatePwCheck.do")
+	@PostMapping("/myInfoUpdatePwCheck.do")
 	public String myInfoUpdatePwCheck(HttpSession session,
 									  @RequestParam("password") String password) {
 		
@@ -150,13 +219,13 @@ public class CustomerControllerJH {
 	
 	
 	/* 회원 탈퇴 */
-	@GetMapping("/memberDelete.do")
+	@PostMapping("/memberDelete.do")
 	public String memberDelete() {
 		
 		return "customer/memberDelete";
 	}
 
-	@GetMapping("/memberDeletePwCheck.do")
+	@PostMapping("/memberDeletePwCheck.do")
 	public String memberDeletePwCheck(@RequestParam("password") String password) {
 		if(password.equals("aaa")) {
 			return "customer/myPage";

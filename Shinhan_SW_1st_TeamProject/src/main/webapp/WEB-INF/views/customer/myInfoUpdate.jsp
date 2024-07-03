@@ -62,24 +62,27 @@
         border-radius: 4px;
         box-sizing: border-box;
     }
-    input[type="button"] {
+    #searchPostcode {
         padding: 10px 15px;
         border: 1px solid #ccc;
         background-color: #f1f1f1;
         cursor: pointer;
     }
-    input[type="submit"] {
+    #submitBtn {
         width: 100%;
         padding: 10px;
         background-color: #513AE4;
         color: white;
         border: none;
-        border-radius: 4px;
-        cursor: pointer;
+        border-radius: 6px;
+	    cursor: pointer;
+	    margin-top: 30px;
+	    font-size: 18px;
+	    font-weight: bold;
     }
-    input[type="submit"]:hover {
+    #submitBtn:hover {
         background-color: #513AE4;
-        padding-top: 20px;
+       
     }
     .info {
         font-size: 0.9em;
@@ -122,47 +125,136 @@
              }
          });
          
-         //클릭한 주소 목록 화면에서 삭제 
-         $('.delete-btn').click(function() {
-			$(this).closest('.address-box').remove();
+         //클릭한 주소 목록 화면에서 삭제  (작업중)
+         $('.delete-btn').click(function(e) {
+        	 e.preventDefault();
+        	 
+       	 
+        	 
+        	 // 클릭된 버튼의 부모 요소인 address-box를 찾음
+       		 var addressBox = $(this).parent('.address-box');
+        	 var addr_num = addressBox.find('input[type="hidden"]').val();
+        	 console.log('삭제할 주소 번호: ' + addr_num);
+       	    
+       	 	 // 현재 address-box의 개수를 계산
+       	     var addressBoxCount = $('.address-box').length;
+       	     console.log('현재 address-box 개수: ' + addressBoxCount);
+       	     
+       	     
+       	    // 삭제 요청을 위한 데이터
+       	    var addrData = {
+       	        addr_num: addr_num
+       	    };
+       	    console.log(addrData);
+       
+       	    // 주소가 1개 이상일 때만 삭제 요청
+       	    if (addressBoxCount > 1) {
+	       	    // 확인 절차 추가
+	       	    if (!confirm("정말로 이 주소를 삭제하시겠습니까?")) {
+	       	    	
+	       	        return;
+	       	    }
+				$.ajax({
+	                url: "${path}/customer/myAddrDelete.do",
+	                type: "POST",
+	                contentType: 'application/json',
+	                data: JSON.stringify(addrData),
+	                success: function(resultData) {
+	                	
+	                	if(resultData == 1){
+	                		
+	 	                    //$(".resultText_here").text("삭제되었습니다."); //아직 css 없음
+	 	                    alert("배송지가 삭제되었습니다.");
+	                	}else{
+	                		//$(".resultText_here").test("오류가 발생했습니다. 다시 시도해주세요.");
+	 	                    alert("오류가 발생했습니다. 다시 시도해주세요.");
+	                	}
+	                	
+	                },
+	                error: function(xhr, status, error) {
+	                    console.error("Error: " + error);
+	                    //$(".resultText_here").text("서버 오류가 발생했습니다. 다시 시도해주세요.");
+	                }
+	            });
+       	    } else {
+       	        alert("주소는 최소 1개 이상 존재해야 합니다. 삭제할 수 없습니다.");
+       	    }
+				
 		 });
          
+        //대표 주소로 설정
+        $('.address-box').click(function() {
+			
+		}) 
 	});
 </script>
 <body>
 	<%@ include file="../common/header.jsp" %>
+	<div class="overlay"></div>
+	<div>
+		<p class="resultText_here"></p>
+	</div>
 	<%-- 배송지 입력 팝업창 --%>
     <div class="overlay"></div>
 	<div id="addrAdd_wrap">
-	    <form action="${path}/customer/myAddrInsert" method="post" id="addrAddForm">
+	    <form id="addrAddForm">
 	    	<h1>배송지 입력</h1>
 			<span class="close">&times;</span>
-	        <label for="shipping-name">배송지 명 <span style="color: red;">*</span></label>
-	        <input type="text" id="shipping-name" name="shipping-name" placeholder="최대 10글자로 작성해주세요" required maxlength="10">
-	
-	        <label for="recipient-name">받으실 분 <span style="color: red;">*</span></label>
-	        <input type="text" id="recipient-name" name="recipient-name" placeholder="최대 10글자로 작성해주세요" required maxlength="10">
-	
-	        <label for="phone-number">휴대폰 번호 <span style="color: red;">*</span></label>
-	        <input type="tel" id="phone-number" name="phone-number" placeholder="010-0000-0000" required pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}">
-	        <div class="info">안심번호 서비스 <i>(?)</i></div>
-	
 	        <label for="address">주소 <span style="color: red;">*</span></label>
-	        
+
 	        <%-- 우편번호API --%>	
 			<input type="text" id="sample6_postcode" placeholder="우편번호" name="zipcode">
-			<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
+			<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" id="searchPostcode"><br>
 			<input type="text" id="sample6_address" placeholder="주소" name="main_address"><br>
 			<input type="text" id="sample6_detailAddress" placeholder="상세주소" name="detail_address">
 			<input type="text" id="sample6_extraAddress" placeholder="참고항목" name="sub_address">
 			<br/>
 			<span>대표주소 설정</span>
-			<input type="checkbox" name="is_master_addr">
+			<input type="checkbox" name="is_master_addr" id="isMasterAddr">
 			
-	        <input type="submit" value="확인">
+	        <input type="button" id="submitBtn" value="확인">
 	    </form>
     </div>
-   
+    <script type="text/javascript">
+    $(function() {
+    	
+    	//배송지 팝업 확인 버튼
+    	$('#submitBtn').on('click', function(e) {
+    		e.preventDefault();
+    		
+    		var isMasterAddrChecked = $("#isMasterAddr").is(":checked") ? "Y" : "N";
+    		var addrAddFormData = {
+                zipcode: $("#sample6_postcode").val(),
+                main_address: $("#sample6_address").val(),
+                detail_address: $("#sample6_detailAddress").val(),
+                is_master_addr:  isMasterAddrChecked,
+                sub_address: $("#sample6_extraAddress").val()
+            };
+    		console.log(addrAddFormData);
+            $.ajax({
+                type: "POST",
+                url: "${path}/customer/myAddrInsert.do",
+                data: JSON.stringify(addrAddFormData),
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function(resultData) {
+                    if(resultData == 1){
+                    	alert("배송지가 추가되었습니다.");
+                    	location.reload();
+                    	
+                    }else{
+                    	alert("오류가 발생되었습니다. 다시 시도해 주세요.");
+                    	location.reload();
+                    }
+                },
+                error: function(request, status, error) {
+                    console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                }
+            });
+    	});
+    	
+    });
+    </script>
 	<script>
 	    function sample6_execDaumPostcode() {
 	        new daum.Postcode({
@@ -263,33 +355,29 @@
 						</div>
 					</div>
 					<h2 class="myinfo_title">나의 배송지</h2>
+				<form id="addrListForm" method="post">
 					<div class="section">
-						<div class="address-box">
-							<div class="label">대표</div>
-							<div class="info">
-								홍길동<strong>010-0000-0000</strong><br> 00000 서울특별시 00구
-								00로 00(00동, 00타운) A동
-							</div>
-							<button class="delete-btn">삭제</button>
-						</div>
-						<%-- <form action="${path}/cutomer/수정">--%>
+						<c:forEach items="${addrlist}" var="addr">
 							<div class="address-box">
-							<c:forEach var="addr" items="${addrlist}">  
-								<div class="label">대표</div>
+								<div class="label">
+									${addr.IS_MASTER_ADDR == "Y" ? "대표" : ""}
+								</div>
+								<input type="hidden" value="${addr.ADDR_NUM}">
 								<div class="info">
-									홍길동<strong>010-0000-0000</strong><br> 
-									 [${addr.zipcode}] ${addr.main_address}
-									 ${addr.detail_address} ${addr.sub_address}
+									${addr.MEMBER_NAME}<strong>${addr.PHONE}</strong><br> >
+									(${addr.ZIPCODE}) 
+									${addr.MAIN_ADDRESS}
+									${addr.DETAIL_ADDRESS}
+									${addr.SUB_ADDRESS}
 								</div>
 								<button class="delete-btn">삭제</button>
-							</c:forEach>
 							</div>
-						<%--</form>--%>
+						</c:forEach>
 						<div class="adress-add">
-							<button id="addrAddButton" class="button">배송지 추가</button>
+							<button id="addrAddButton" type="button" class="button">배송지 추가</button>
 						</div>
-						
 					</div>
+				</form>
 				</div>
 			</div>
 			<script type="text/javascript">
@@ -299,7 +387,7 @@
 		                
 		                $.ajax({
 		                    url: "${path}/customer/myInfoUpdatePw.do",
-		                    type: "GET",
+		                    type: "POST",
 		                    success: function(data) {
 		                        $(".mypage_here").html(data);
 		                    },

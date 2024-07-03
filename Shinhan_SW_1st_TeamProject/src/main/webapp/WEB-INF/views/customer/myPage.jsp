@@ -90,7 +90,7 @@
 								</p>
 								<div class="links">
 									<a href="javascript:#void">주문내역 <span>${orderCount != 0 ? orderCount : 0} 건</span></a> 
-									<a href="javascript:#void">대여내역 <span>${rentCount} 건</span></a>
+									<a href="javascript:#void">대여내역 <span>${rentCount != 0 ? rentCount : 0} 건</span></a>
 									<a href="javascript:#void">문의내역 <span>${inqCount != 0 ? inqCount : 0} 건</span></a>
 								</div>
 							</div>
