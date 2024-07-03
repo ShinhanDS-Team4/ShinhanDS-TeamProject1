@@ -35,7 +35,8 @@ public interface RentDAOInterface {
 	public int returnRent(int rentalCode);
 
 	public int updateRent(RentDTO rent);
-	
+
 	public int rentprodDelete(int rental_code);
 	
 }
+

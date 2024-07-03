@@ -2,25 +2,23 @@ package com.team4.shoppingmall.admin_inq;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.team4.shoppingmall.member.MemberDTO;
 import com.team4.shoppingmall.member.MemberService;
-import com.team4.shoppingmall.notice.NoticeDTO;
-import com.team4.shoppingmall.notice.NoticeService;
 
 @Controller
 @RequestMapping("/adminqna")
@@ -32,24 +30,24 @@ public class Admin_InqController {
 	Admin_InqService admin_inqService;
 
 	
-	//³ªÀÇ ¹®ÀÇÆäÀÌÁö ÀÌµ¿
+	//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
 	@GetMapping("/myqna.do")
 	public String myqna(Model model, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		MemberDTO mem = (MemberDTO)session.getAttribute("member");
-		//³ªÁß¿¡ ÇÊÅÍ¸µ ÇÏ°ÚÁö¸¸ ¿ì¼±Àº ÀÓ½Ã¹æÆíÀ¸·Î ºĞ±âÁ¡ ¸¸µé¾î³õÀ½
+		//ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½Ï°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ì¼±ï¿½ï¿½ ï¿½Ó½Ã¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ğ±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if(mem == null) {
 			return "redirect:/member_test/login.do";
 		}
 		String id = mem.getMember_id();
-		System.out.println(mem);//·Î±×ÀÎ ÇÑ ¼¼¼ÇÀÌ ºÒ·¯¿ÍÁö´ÂÁö Å×½ºÆ®¿ë
+		System.out.println(mem);//ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×½ï¿½Æ®ï¿½ï¿½
 		
 		List<Admin_InqDTO> adminInq = admin_inqService.selectByMemberId(id);
 		model.addAttribute("adminInq", adminInq);
 		return "board/qa_board";
 	}
 	
-	//³ªÀÇ ¹®ÀÇ Àû±â
+	//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	@GetMapping("/writeqna.do")
 	public String writeqna() {
 		return "board/admin_InqQPopup";
@@ -61,18 +59,17 @@ public class Admin_InqController {
 			@RequestParam("admin_inq_title") String title,
 			@RequestParam("admin_inq_content") String content
 			) {
-		// ¾÷·Îµå ³¯Â¥
-		// ¿À´Ã ³¯Â¥¸¦ LocalDate·Î °¡Á®¿È
+		
+		// í˜„ì¬ë‚ ì§œë¡œ ë°˜í™˜
 		LocalDate localDate = LocalDate.now();
 
-		// LocalDate¸¦ java.sql.Date·Î º¯È¯
 		Date sqlDate = Date.valueOf(localDate);
 
-		// ¹®ÀÇID »ı¼º
-		Integer qid = 12305;
+		
+		//Integer qid = 12305;
 		
 		Admin_InqDTO adminInq = new Admin_InqDTO();
-		adminInq.setAdmin_inq_id(qid);
+		//adminInq.setAdmin_inq_id(qid);
 		adminInq.setAdmin_inq_title(title);
 		adminInq.setAdmin_inq_content(content);
 		adminInq.setAdmin_inq_date(sqlDate);
@@ -91,6 +88,30 @@ public class Admin_InqController {
 		return "board/admin_InqQPopupCheck";
 	}
 	
+	@PostMapping(value = "/updateqna.do", produces = MediaType.TEXT_HTML_VALUE + ";charset=UTF-8")
+	@ResponseBody
+	public String updateqna(
+			@RequestParam("admin_inq_id") Integer id,
+			@RequestParam("admin_inq_title") String title,
+			@RequestParam("admin_inq_content") String content
+			) {
+        Admin_InqDTO adminInq = new Admin_InqDTO();
+        adminInq.setAdmin_inq_id(id);
+        adminInq.setAdmin_inq_title(title);
+        adminInq.setAdmin_inq_content(content);
+        
+        int result = admin_inqService.admin_inqUpdate(adminInq);
+        System.out.println(result);
+        return "<script type='text/javascript'>alert('ìˆ˜ì •ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.'); window.opener.location.reload(); window.close();</script>";
+    }
+	
+	@GetMapping("/admin_reply.do")
+	public String replyqna(Integer admin_inq_id, Model model) {
+		Admin_InqDTO adminInq = admin_inqService.selectByInqId(admin_inq_id);
+		System.out.println(adminInq);
+		model.addAttribute("adminInq", adminInq);
+		return "board/admin_InqQReplyPopup";
+	}
 
 
 }

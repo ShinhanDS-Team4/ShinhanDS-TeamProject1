@@ -30,7 +30,6 @@ body {
     height: auto; /* 높이는 비율에 맞게 자동 조절 */
     max-width: 100%; /* 최대 너비 설정 */
 }
-
 .sidebar a:hover {
     background-color: #495057;
 }
@@ -175,7 +174,7 @@ body {
 	width: 50%;
 }
 
-.search-container form {
+.search-container form{
 	width: 100%;
 }
 
@@ -199,22 +198,4 @@ body {
 .input-group .form-control {
     width: auto;
     flex: 0 1 auto;
-}
-
-.search-results-list {
-    list-style-type: none; /* 목록 항목 앞에 기호를 없앰 */
-    margin-top: 10px;
-    padding-left: 0; /* 내부 패딩 제거 */
-    max-height: 250px; /* 최대 높이 설정 */
-    overflow-y: auto; /* 내용이 넘칠 경우 스크롤바 표시 */
-    width: 100%; /* 전체 너비 */
-}
-
-.search-results-list li {
-    padding: 8px;
-    border-bottom: 1px solid #ccc; /* 각 항목을 구분짓는 선 */
-}
-
-.search-results-list li:hover {
-    background-color: #f8f8f8; /* 마우스 오버 시 배경 색상 변경 */
 }

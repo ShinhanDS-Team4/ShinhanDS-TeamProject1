@@ -64,3 +64,4 @@ public class RentDetailDAOMybatis implements RentDetailDAOInterface {
 		return sqlSession.delete(namespace+"rentDetailDelByRentCode", rental_code);
 	}
 }
+

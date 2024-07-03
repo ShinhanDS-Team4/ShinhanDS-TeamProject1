@@ -176,11 +176,10 @@ hr {
 }
 </style>
 <script>
-	function openPopup() {
-		// 팝업 창 열기
-		window.open('writeqna.do', 'popupWindow',
-				'width=1000,height=1000,scrollbars=yes');
-	}
+function openPopup(url) {
+	//팝업 창 열기
+    window.open(url, 'popupWindow', 'width=1000,height=1000,scrollbars=yes');
+}
 </script>
 </head>
 
@@ -229,13 +228,27 @@ hr {
 				<div class="main-content-header">
 					<h2>나의 문의</h2>
 					<%-- +기호를 클릭할 때 openPopup함수를 호출, javascript:void(0)는 페이지 리로드 방지용 --%>
-					<a href="javascript:void(0)" onclick="openPopup()">+</a>
+					<a href="javascript:void(0)" onclick="openPopup('${path}/adminqna/writeqna.do')">+</a>
 				</div>
 				<ul class="faq-list">
-					<c:forEach items="${adminInq}" var="admin">
-						<li><a href="${path}/adminqna/updateqna.do?admin_inq_id=${admin.admin_inq_id}">${admin.admin_inq_title}</a>
-							<hr></li>
-					</c:forEach>
+			        <c:forEach items="${adminInq}" var="admin">
+			            <li style="position: relative;">
+			                <a href="javascript:void(0);" 
+			                   onclick="openPopup('${path}/adminqna/updateqna.do?admin_inq_id=${admin.admin_inq_id}')">
+			                    ${admin.admin_inq_title}
+			                </a>
+			                <c:if test="${not empty admin.admin_reply}">
+			                    <a href="javascript:void(0);" 
+			                       onclick="openPopup('${path}/adminqna/admin_reply.do?admin_inq_id=${admin.admin_inq_id}')" 
+			                       style="background-color: green; color: white; border: none; padding: 5px 10px; 
+			                              text-decoration: none; position: absolute; right: 0; 
+			                              transform: translateY(-50%); border-radius: 10px;">
+			                        답변완료
+			                    </a>
+			                </c:if>
+			                <hr>
+			            </li>
+			        </c:forEach>
 					<li><a href="#">아이디와 비밀번호가 기억나지 않아요.</a>
 						<hr></li>
 					<li><a href="#">구매했던 제품과 가격이 달라졌어요. 차액 환불이 되나요?</a>

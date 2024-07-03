@@ -56,11 +56,17 @@ public class MemberController {
 			return "redirect:login.do";
 		}else if(!member.getMember_pw().equals(member_pw)) {
 			session.setAttribute("loginResult", "password 오류");
+<<<<<<< HEAD
+			return "redirect:login.do";
+		}else {
+			session.setAttribute("loginResult", "SAREN에 오신 것을 환영합니다");
+=======
 			return "redirect:login.do";
 		}else if(member.seller_authority.equals(N)){
 			session.setAttribute("loginResult", "관리자의 승인이 필요한 계정입니다.");
 			return "redirect:login.do";
 		}else {
+>>>>>>> main
 			session.setAttribute("member", member);
 			String lastRequest = (String)session.getAttribute("lastRequest");
 			String goPage;

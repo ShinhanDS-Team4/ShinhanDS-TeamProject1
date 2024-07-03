@@ -71,7 +71,8 @@
 			S.opt_id4,
 			S.opt_id5,
 			OD.order_product_price,
-			PI.img_id
+			PI.img_id,
+			OD.order_state
 		FROM
 			ORDER_DETAIL OD
 		JOIN

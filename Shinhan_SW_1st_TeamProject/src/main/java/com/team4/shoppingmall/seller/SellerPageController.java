@@ -92,53 +92,53 @@ public class SellerPageController {
 	@Autowired
 	Prod_OptionService prod_OptionService;
 
-	String member_id = "573-50-00882";// ÀÓ½Ã·Î »ç¿ëÇÒ ÆÇ¸ÅÀÚID(»ç¾÷ÀÚµî·Ï¹øÈ£)
+	String member_id = "573-50-00882";// ï¿½ì—«ï¿½ë–†æ¿¡ï¿½ ï¿½ê¶—ï¿½ìŠœï¿½ë¸· ï¿½ë™‹ï§ã…¼ì˜„ID(ï¿½ê¶—ï¿½ë¾½ï¿½ì˜„ï¿½ë²‘æ¿¡ì•¸ì¾²ï¿½ìƒ‡)
 
-	// »óÇ° ÀÌ¹ÌÁö ÆÄÀÏ ¾÷·Îµå µğ·ºÅä¸®
-	// 1.¸ŞÀÎ ÀÌ¹ÌÁö ÆÄÀÏ
+	// ï¿½ê¸½ï¿½ë­¹ ï¿½ì” èª˜ëª„ï¿½ ï¿½ë™†ï¿½ì”ª ï¿½ë¾½æ¿¡ì’•ë±¶ ï¿½ëµ’ï¿½ì †ï¿½ë„—ç”±ï¿½
+	// 1.ï§ë¶¿ì”¤ ï¿½ì” èª˜ëª„ï¿½ ï¿½ë™†ï¿½ì”ª
 	@Value("${file.main-img-upload-dir}")
 	private String mainIMG_uploadDir;
 
-	// 2.¼³¸í ÀÌ¹ÌÁö ÆÄÀÏ
+	// 2.ï¿½ê½•ï§ï¿½ ï¿½ì” èª˜ëª„ï¿½ ï¿½ë™†ï¿½ì”ª
 	@Value("${file.desc-img-upload-dir}")
 	private String descIMG_uploadDir;
 
-	// ¸ŞÀÎ È­¸é º¸¿©ÁÖ±â
+	// ï§ë¶¿ì”¤ ï¿½ì†•ï§ï¿½ è¹‚ëŒë¿¬äºŒì‡¨ë¦°
 	@GetMapping("/MainPage.do")
 	public String mainpage(Model model) {
 		model.addAttribute("sellerInfo", memberService.selectById(member_id));
 
-		// ¿©±â¼­ SQL¹®À» »ç¿ëÇØ model·Î µ¥ÀÌÅÍ¸¦ ²ø¾î¿È
-		// ¿©±â¿¡´Â ÆÇ¸ÅÀÚ°¡ ÆÇ¸ÅÇÏ´Â »óÇ°µéÀÇ ÆÇ¸Å·® µ¥ÀÌÅÍ¸¦ ²ø¾î¿À°í, µ¥ÀÌÅÍ¸¦ ±×·¡ÇÁÈ­ÇÏ¿© Ç¥Çö
+		// ï¿½ë¿¬æ¹²ê³—ê½Œ SQLè‡¾ëª„ì“£ ï¿½ê¶—ï¿½ìŠœï¿½ë¹ modelæ¿¡ï¿½ ï¿½ëœ²ï¿½ì” ï¿½ê½£ç‘œï¿½ ï¿½ê±£ï¿½ë¼±ï¿½ìƒ‚
+		// ï¿½ë¿¬æ¹²ê³—ë¿‰ï¿½ë’— ï¿½ë™‹ï§ã…¼ì˜„åª›ï¿½ ï¿½ë™‹ï§ã…½ë¸¯ï¿½ë’— ï¿½ê¸½ï¿½ë­¹ï¿½ë±¾ï¿½ì“½ ï¿½ë™‹ï§ã…»ì›¾ ï¿½ëœ²ï¿½ì” ï¿½ê½£ç‘œï¿½ ï¿½ê±£ï¿½ë¼±ï¿½ì‚¤æ€¨ï¿½, ï¿½ëœ²ï¿½ì” ï¿½ê½£ç‘œï¿½ æ´¹ëªƒì˜’ï¿½ë´½ï¿½ì†•ï¿½ë¸¯ï¿½ë¿¬ ï¿½ëª´ï¿½ì½
 		// model.addAttribute(result, flashMap);
 		return "seller/sellerMain";
 	}
 
-	// ÆÇ¸Å&´ë¿© »óÇ° ÆäÀÌÁö º¸¿©ÁÖ±â
+	// ï¿½ë™‹ï§ï¿½&ï¿½ï¿½ï¿½ë¿¬ ï¿½ê¸½ï¿½ë­¹ ï¿½ëŸ¹ï¿½ì” ï§ï¿½ è¹‚ëŒë¿¬äºŒì‡¨ë¦°
 	@GetMapping("/PrdList.do")
 	public String prdList(Model model, Model model1, Model model2) {
 		model.addAttribute("sellerInfo", memberService.selectById(member_id));
 		
-		// ÆÇ¸Å »óÇ° ¸®½ºÆ®
+		// íŒë§¤ ìƒí’ˆ ë¦¬ìŠ¤íŠ¸
 		model1.addAttribute("stockSList", seller_Prod_StockService.findSellStockList(member_id));
 
-		System.out.println("ÆÇ¸Å»óÇ° ¸®½ºÆ® ºÒ·¯¿È");
-		// ´ë¿© »óÇ° ¸®½ºÆ®
+		System.out.println("ï¿½ë™‹ï§ã…¼ê¸½ï¿½ë­¹ ç”±ÑŠë’ªï¿½ë“ƒ éºëˆìœ­ï¿½ìƒ‚");
+		// ï¿½ï¿½ï¿½ë¿¬ ï¿½ê¸½ï¿½ë­¹ ç”±ÑŠë’ªï¿½ë“ƒ
 		model2.addAttribute("stockRList", rentProdStockService.findRentStockList(member_id));
 
-		System.out.println("´ë¿©»óÇ° ¸®½ºÆ® ºÒ·¯¿È");
+		System.out.println("ï¿½ï¿½ï¿½ë¿¬ï¿½ê¸½ï¿½ë­¹ ç”±ÑŠë’ªï¿½ë“ƒ éºëˆìœ­ï¿½ìƒ‚");
 
 		return "/seller/sellerPrdList";
 	}
 
-	// ÆÇ¸Å&¹è¼Û ÆäÀÌÁö º¸¿©ÁÖ±â
+	// ï¿½ë™‹ï§ï¿½&è«›ê³—ë„š ï¿½ëŸ¹ï¿½ì” ï§ï¿½ è¹‚ëŒë¿¬äºŒì‡¨ë¦°
 	@GetMapping("/DeliveryList.do")
 	public String deliveryList(Model model, Model model1, Model model2) {
 		
 		model.addAttribute("sellerInfo", memberService.selectById(member_id));
 
-		// ÆÇ¸Å&¹è¼Û ¸®½ºÆ®
-		// 1.ÆÇ¸Å »óÇ° ´ë»ó ÁÖ¹®»ó¼¼¸®½ºÆ®
+		// ï¿½ë™‹ï§ï¿½&è«›ê³—ë„š ç”±ÑŠë’ªï¿½ë“ƒ
+		// 1.ï¿½ë™‹ï§ï¿½ ï¿½ê¸½ï¿½ë­¹ ï¿½ï¿½ï¿½ê¸½ äºŒì‡°Ğ¦ï¿½ê¸½ï¿½ê½­ç”±ÑŠë’ªï¿½ë“ƒ
 		System.out.println(order_DetailService.selectBySellerID(member_id));
 		System.out.println(rentDetailService.selectBySellerID(member_id));
 
@@ -147,7 +147,7 @@ public class SellerPageController {
 		return "/seller/sellerDelivery";
 	}
 
-	// ÆÇ¸Å ÁÖ¹® Ç×¸ñ ÀÏ°ıÃ³¸®
+	// ï¿½ë™‹ï§ï¿½ äºŒì‡°Ğ¦ ï¿½ë¹†ï§ï¿½ ï¿½ì”ªæ„¿ê¾©ì¿‚ç”±ï¿½
 	@PostMapping("/updateOrderStatus")
 	@ResponseBody
 	public String updateOrderStauts(@RequestBody OrderUpdateReqDTO request) {
@@ -168,7 +168,7 @@ public class SellerPageController {
 		return "Update Success";
 	}
 
-	// ÆÇ¸Å ÁÖ¹® Ç×¸ñ ÀÏ°ı»èÁ¦
+	// ï¿½ë™‹ï§ï¿½ äºŒì‡°Ğ¦ ï¿½ë¹†ï§ï¿½ ï¿½ì”ªæ„¿ê¾©ê¶˜ï¿½ì £
 	@PostMapping("/deleteOrderDetails")
 	@ResponseBody
 	public String deleteOrderDetails(@RequestBody OrderUpdateReqDTO request) {
@@ -181,12 +181,12 @@ public class SellerPageController {
 		return "Delete Success";
 	}
 
-	// ´ë¿© ÁÖ¹® Ç×¸ñ ÀÏ°ıÃ³¸®
+	// ï¿½ï¿½ï¿½ë¿¬ äºŒì‡°Ğ¦ ï¿½ë¹†ï§ï¿½ ï¿½ì”ªæ„¿ê¾©ì¿‚ç”±ï¿½
 	@PostMapping("/updateRentStatus")
 	@ResponseBody
 	public String updateRentStatus(@RequestBody OrderUpdateReqDTO request) {
 		List<Integer> rentDetailIds = request.getOrderDetailIds();
-		System.out.println("´ë¿© ÀÏ°ıÃ³¸® ´ë»ó ¸ñ·Ï:" + rentDetailIds);
+		System.out.println("ï¿½ï¿½ï¿½ë¿¬ ï¿½ì”ªæ„¿ê¾©ì¿‚ç”±ï¿½ ï¿½ï¿½ï¿½ê¸½ ï§â‘¸ì¤‰:" + rentDetailIds);
 
 		String status = request.getStatus();
 
@@ -202,7 +202,7 @@ public class SellerPageController {
 		return "Update Success";
 	}
 
-	// ´ë¿© ÁÖ¹® Ç×¸ñ ÀÏ°ı»èÁ¦
+	// ï¿½ï¿½ï¿½ë¿¬ äºŒì‡°Ğ¦ ï¿½ë¹†ï§ï¿½ ï¿½ì”ªæ„¿ê¾©ê¶˜ï¿½ì £
 	@PostMapping("/deleteRentDetails")
 	@ResponseBody
 	public String deleteRentDetails(@RequestBody OrderUpdateReqDTO request) {
@@ -234,13 +234,13 @@ public class SellerPageController {
 	}
 	
 
-	// ¹®ÀÇ ¸ñ·Ï ÆäÀÌÁö º¸¿©ÁÖ±â
+	// è‡¾ëª„ì“½ ï§â‘¸ì¤‰ ï¿½ëŸ¹ï¿½ì” ï§ï¿½ è¹‚ëŒë¿¬äºŒì‡¨ë¦°
 	@GetMapping("/Q&AList.do")
 	public String qaList(Model model, Model model3, Model model4, HttpServletRequest request) {
 		
 		model.addAttribute("sellerInfo", memberService.selectById(member_id));
 		
-		// ±¸¸ÅÀÚÀÇ ¹®ÀÇ ¸ñ·Ï
+		// êµ¬ë§¤ìì˜ ë¬¸ì˜ ëª©ë¡
 		System.out.println(buyer_inqService.selectInqList(member_id));
 		model3.addAttribute("buyerQAList", buyer_inqService.selectInqList(member_id));
 		// System.out.println(model1);
@@ -249,7 +249,7 @@ public class SellerPageController {
 		return "/seller/sellerQ&dAList";
 	}
 
-	// »óÇ° µî·Ï ÆäÀÌÁö
+	// ï¿½ê¸½ï¿½ë­¹ ï¿½ë²‘æ¿¡ï¿½ ï¿½ëŸ¹ï¿½ì” ï§ï¿½
 	@GetMapping("/AddProduct.do")
 	public String addProduct(Model model) {
 		
@@ -257,20 +257,20 @@ public class SellerPageController {
 		return "/seller/seller_addPrd";
 	}
 
-	// »óÇ° ¼öÁ¤ ÆäÀÌÁö
+	// ï¿½ê¸½ï¿½ë­¹ ï¿½ë‹”ï¿½ì ™ ï¿½ëŸ¹ï¿½ì” ï§ï¿½
 	@GetMapping("/ModifyProduct.do")
 	public String modifyProduct(Model model,Model model1, Model model2, Model model3, Model model4, Model model5,
 			@RequestParam("stock_id") String stockID) throws UnsupportedEncodingException {
 
-		String stock_id = URLDecoder.decode(stockID, "UTF-8");// ÇÑ±Û·Î º¯È¯
-		System.out.println("°¡Á®¿Â stock_id:"+stock_id);
+		String stock_id = URLDecoder.decode(stockID, "UTF-8");// ï¿½ë¸³æ¹²ï¿½æ¿¡ï¿½ è¹‚ï¿½ï¿½ì†š
+		System.out.println("åª›ï¿½ï¿½ì¡‡ï¿½ì‚© stock_id:"+stock_id);
 
-		// Àç°íID°¡ ¾î´À Àç°í Å×ÀÌºí¿¡ ¼ÓÇÏ´ÂÁö È®ÀÎ
-		Seller_Prod_StockDTO seller_Prod_StockDTO = seller_Prod_StockService.selectByStockId(stock_id);// Àç°í µ¥ÀÌÅÍ¸¦ ÀüºÎ ²ø¾î¿È
-		System.out.println("È®ÀÎ°á°ú:"+seller_Prod_StockDTO);
-		if (Objects.isNull(seller_Prod_StockDTO)) {// ´ë¿©»óÇ° Àç°íÀÏ °æ¿ì
-			RentProdStockDTO rentProdStockDTO = rentProdStockService.selectById(stock_id);// Àç°íÀÇ ±âº» Á¤º¸ ²ø¾î¿À±â
-			System.out.println("Àç°íID:"+rentProdStockDTO);
+		// ï¿½ì˜±æ€¨ìŸ…Dåª›ï¿½ ï¿½ë¼±ï¿½ë’“ ï¿½ì˜±æ€¨ï¿½ ï¿½ë€’ï¿½ì” é‡‰ë¶¿ë¿‰ ï¿½ëƒ½ï¿½ë¸¯ï¿½ë’—ï§ï¿½ ï¿½ì†—ï¿½ì”¤
+		Seller_Prod_StockDTO seller_Prod_StockDTO = seller_Prod_StockService.selectByStockId(stock_id);// ï¿½ì˜±æ€¨ï¿½ ï¿½ëœ²ï¿½ì” ï¿½ê½£ç‘œï¿½ ï¿½ìŸ¾éºï¿½ ï¿½ê±£ï¿½ë¼±ï¿½ìƒ‚
+		System.out.println("ï¿½ì†—ï¿½ì”¤å¯ƒê³Œë‚µ:"+seller_Prod_StockDTO);
+		if (Objects.isNull(seller_Prod_StockDTO)) {// ï¿½ï¿½ï¿½ë¿¬ï¿½ê¸½ï¿½ë­¹ ï¿½ì˜±æ€¨ì¢ì”ª å¯ƒìŒìŠ¦
+			RentProdStockDTO rentProdStockDTO = rentProdStockService.selectById(stock_id);// ï¿½ì˜±æ€¨ì¢ì“½ æ¹²ê³•ë‚¯ ï¿½ì ™è¹‚ï¿½ ï¿½ê±£ï¿½ë¼±ï¿½ì‚¤æ¹²ï¿½
+			System.out.println("ï¿½ì˜±æ€¨ìŸ…D:"+rentProdStockDTO);
 			
 			String ProdID = rentProdStockDTO.getProd_id();
 
@@ -282,7 +282,7 @@ public class SellerPageController {
 			descImageDTO.setProd_id(ProdID);
 			descImageDTO.setImg_type(1);
 
-			// ÇØ´ç Àç°íÀÇ »óÇ°ID¿Í ¿¬µ¿µÇ¾î ÀÖ´Â »óÇ°ÀÌ¹ÌÁöID(=ÀÌ¹ÌÁö ÆÄÀÏ¸í) ¸ñ·ÏÀ» °¡Á®¿Â´Ù.
+			// ï¿½ë¹ï¿½ë–¦ ï¿½ì˜±æ€¨ì¢ì“½ ï¿½ê¸½ï¿½ë­¹IDï¿½ï¿½ ï¿½ë¿°ï¿½ë£ï¿½ë¦ºï¿½ë¼± ï¿½ì—³ï¿½ë’— ï¿½ê¸½ï¿½ë­¹ï¿½ì” èª˜ëª„ï¿½ID(=ï¿½ì” èª˜ëª„ï¿½ ï¿½ë™†ï¿½ì”ªï§ï¿½) ï§â‘¸ì¤‰ï¿½ì“£ åª›ï¿½ï¿½ì¡‡ï¿½ì‚©ï¿½ë–.
 			List<String> prodMainImgList = imageService.findMainImgFileNameByProdID(mainImageDTO);
 			List<String> prodDescImgList = imageService.findDescImgFileNameByProdID(descImageDTO);
 
@@ -313,7 +313,7 @@ public class SellerPageController {
 			model4.addAttribute("ProdDescImgList", prodDescImgList);
 			
 			return "/seller/seller_RentStock_modifyPrd";
-		} else {// ÆÇ¸Å»óÇ° Àç°íÀÏ °æ¿ì
+		} else {// ï¿½ë™‹ï§ã…¼ê¸½ï¿½ë­¹ ï¿½ì˜±æ€¨ì¢ì”ª å¯ƒìŒìŠ¦
 			String ProdID = seller_Prod_StockDTO.getProd_id();
 			Prod_ImageDTO mainImageDTO = new Prod_ImageDTO();
 			mainImageDTO.setProd_id(ProdID);
@@ -323,7 +323,7 @@ public class SellerPageController {
 			descImageDTO.setProd_id(ProdID);
 			descImageDTO.setImg_type(1);
 
-			// ÇØ´ç Àç°íÀÇ »óÇ°ID¿Í ¿¬µ¿µÇ¾î ÀÖ´Â »óÇ°ÀÌ¹ÌÁöID(=ÀÌ¹ÌÁö ÆÄÀÏ¸í) ¸ñ·ÏÀ» °¡Á®¿Â´Ù.
+			// ï¿½ë¹ï¿½ë–¦ ï¿½ì˜±æ€¨ì¢ì“½ ï¿½ê¸½ï¿½ë­¹IDï¿½ï¿½ ï¿½ë¿°ï¿½ë£ï¿½ë¦ºï¿½ë¼± ï¿½ì—³ï¿½ë’— ï¿½ê¸½ï¿½ë­¹ï¿½ì” èª˜ëª„ï¿½ID(=ï¿½ì” èª˜ëª„ï¿½ ï¿½ë™†ï¿½ì”ªï§ï¿½) ï§â‘¸ì¤‰ï¿½ì“£ åª›ï¿½ï¿½ì¡‡ï¿½ì‚©ï¿½ë–.
 			List<String> prodMainImgList = imageService.findMainImgFileNameByProdID(mainImageDTO);
 			List<String> prodDescImgList = imageService.findDescImgFileNameByProdID(descImageDTO);
 
@@ -357,7 +357,7 @@ public class SellerPageController {
 		}
 	}
 
-	// ±¸¸ÅÀÚ¹®ÀÇ ´äº¯ ÆË¾÷
+	// æ´Ñ‰â„“ï¿½ì˜„è‡¾ëª„ì“½ ï¿½ë–Ÿè¹‚ï¿½ ï¿½ë™˜ï¿½ë¾½
 	@GetMapping("/answerCustomer.do")
 	public String answerCustomer(Model model, @RequestParam("buyer_inq_id") Integer buyer_inq_id,
 			HttpServletRequest request) {
@@ -371,7 +371,7 @@ public class SellerPageController {
 		return "/seller/seller_CustomerQAPopUp";
 	}
 
-	// ±¸¸ÅÀÚ ¹®ÀÇ¿¡ ´äº¯
+	// æ´Ñ‰â„“ï¿½ì˜„ è‡¾ëª„ì“½ï¿½ë¿‰ ï¿½ë–Ÿè¹‚ï¿½
 	@PostMapping("/answerCustomer.do")
 	@ResponseBody
 	public String answerCquestion(@RequestParam("buyer_inq_id") Integer buyerInqId,
@@ -388,11 +388,11 @@ public class SellerPageController {
 
 		System.out.println(buyer_reply);
 
-		// ¾÷·Îµå ³¯Â¥
-		// ¿À´Ã ³¯Â¥¸¦ LocalDate·Î °¡Á®¿È
+		// ï¿½ë¾½æ¿¡ì’•ë±¶ ï¿½ê¶‡ï§ï¿½
+		// ï¿½ì‚¤ï¿½ë’› ï¿½ê¶‡ï§ì’•ï¿½ï¿½ LocalDateæ¿¡ï¿½ åª›ï¿½ï¿½ì¡‡ï¿½ìƒ‚
 		LocalDate localDate = LocalDate.now();
 
-		// LocalDate¸¦ java.sql.Date·Î º¯È¯
+		// LocalDateç‘œï¿½ java.sql.Dateæ¿¡ï¿½ è¹‚ï¿½ï¿½ì†š
 		Date sqlDate = Date.valueOf(localDate);
 
 		Buyer_InqDTO buyer_InqDTO = new Buyer_InqDTO();
@@ -407,23 +407,23 @@ public class SellerPageController {
 		return "Answer submitted successfully.";
 	}
 
-	// °ü¸®ÀÚ¹®ÀÇ Á¶È¸ ÆË¾÷
+	// æ„¿ï¿½ç”±ÑŠì˜„è‡¾ëª„ì“½ è­°ê³ ì‰¶ ï¿½ë™˜ï¿½ë¾½
 	@GetMapping("/answerAdmin.do")
 	public String answerAdmin(Model model, @RequestParam("admin_inq_id") Integer admin_inq_id) {
 		model.addAttribute("aqa", admin_inqService.selectByInqId(admin_inq_id));
 		return "/seller/seller_AdminAPopUp";
 	}
 
-	// °ü¸®ÀÚ¹®ÀÇ µî·Ï ÆË¾÷
+	// æ„¿ï¿½ç”±ÑŠì˜„è‡¾ëª„ì“½ ï¿½ë²‘æ¿¡ï¿½ ï¿½ë™˜ï¿½ë¾½
 	@GetMapping("/addAdminQA.do")
 	public String addAdminQA(Model model) {
-		String member_id = "573-50-00882";// ÀÓ½Ã·Î »ç¿ëÇÒ ÆÇ¸ÅÀÚID(»ç¾÷ÀÚµî·Ï¹øÈ£)
-		System.out.println("Á¶È¸ : " + memberService.selectById(member_id));
+		String member_id = "573-50-00882";// ï¿½ì—«ï¿½ë–†æ¿¡ï¿½ ï¿½ê¶—ï¿½ìŠœï¿½ë¸· ï¿½ë™‹ï§ã…¼ì˜„ID(ï¿½ê¶—ï¿½ë¾½ï¿½ì˜„ï¿½ë²‘æ¿¡ì•¸ì¾²ï¿½ìƒ‡)
+		System.out.println("è­°ê³ ì‰¶ : " + memberService.selectById(member_id));
 		model.addAttribute("aqa", memberService.selectById(member_id));
 		return "/seller/seller_AdminQPopUp";
 	}
 
-	// °ü¸®ÀÚ¿¡°Ô ¹®ÀÇ µî·Ï
+	// æ„¿ï¿½ç”±ÑŠì˜„ï¿½ë¿‰å¯ƒï¿½ è‡¾ëª„ì“½ ï¿½ë²‘æ¿¡ï¿½
 	@PostMapping("/addAdminQA.do")
 	@ResponseBody
 	public String registerStoAquestion(@RequestParam("member_id") String mid,
@@ -434,17 +434,17 @@ public class SellerPageController {
 		String admin_inq_title = URLDecoder.decode(StoAqTitle, "UTF-8");
 		String admin_inq_content = URLDecoder.decode(StoAq, "UTF-8");
 
-		// ¾÷·Îµå ³¯Â¥
-		// ¿À´Ã ³¯Â¥¸¦ LocalDate·Î °¡Á®¿È
+		// ï¿½ë¾½æ¿¡ì’•ë±¶ ï¿½ê¶‡ï§ï¿½
+		// ï¿½ì‚¤ï¿½ë’› ï¿½ê¶‡ï§ì’•ï¿½ï¿½ LocalDateæ¿¡ï¿½ åª›ï¿½ï¿½ì¡‡ï¿½ìƒ‚
 		LocalDate localDate = LocalDate.now();
 
-		// LocalDate¸¦ java.sql.Date·Î º¯È¯
+		// LocalDateç‘œï¿½ java.sql.Dateæ¿¡ï¿½ è¹‚ï¿½ï¿½ì†š
 		Date sqlDate = Date.valueOf(localDate);
 
-		// ¹®ÀÇID »ı¼º
+		// è‡¾ëª„ì“½ID ï¿½ê¹®ï¿½ê½¦
 		Integer qid = 12305;
 
-		// ÀÌÈÄ¿¡ SQL¹®À¸·Î DB¿¡ µî·Ï
+		// ï¿½ì” ï¿½ì‘ï¿½ë¿‰ SQLè‡¾ëª„ì‘æ¿¡ï¿½ DBï¿½ë¿‰ ï¿½ë²‘æ¿¡ï¿½
 
 		Admin_InqDTO admin_InqDTO = new Admin_InqDTO();
 		admin_InqDTO.setAdmin_inq_id(qid);

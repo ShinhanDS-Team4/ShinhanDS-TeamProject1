@@ -57,7 +57,6 @@ import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockService;
 @Controller
 @RequestMapping("/customer")
 public class CustomerController {
-
 	@Autowired
 	private OrderProdService orderProdService;
 
@@ -231,8 +230,8 @@ public class CustomerController {
 
 		String couponid = couponRequestDTO.getCouponid();
 		int orderid = couponRequestDTO.getOrderid();
-
-		//쿠폰을 선택하지 않은 경우
+		
+		// 쿠폰을 선택하지 않은 경우
 		if ("선택안함".equals(couponid)) {
 			return "Coupon applied";
 		} else {
@@ -314,7 +313,7 @@ public class CustomerController {
 		int addrUpdateResult = orderProdService.orderprodUpdate(orderProdDTO);
 
 		session.setAttribute("selectedAddr", addr_num);
-		
+
 		return "Address Saved";
 	}
 
@@ -403,7 +402,7 @@ public class CustomerController {
 	// 대여 결제 완료 후 프로세스
 	@GetMapping("/rentPaySuccess")
 	public String rentPaySuccess(@RequestParam("rental_code") Integer rental_code) {
-		
+
 		RentDTO rentDTO = rentService.selectById(rental_code);
 
 		List<RentDetailDTO> rentDetailDTOs = rentDetailService.selectByRental_code(rental_code);
@@ -488,10 +487,10 @@ public class CustomerController {
 	public String cancelOrderPay(@RequestParam int order_id) {
 		int orderID = order_id;
 
-		//주문 상세 삭제
+		// 주문 상세 삭제
 		int orderDetailDelResult = orderDetailService.orderDetailDelByOrderID(order_id);
 
-		//주문 삭제
+		// 주문 삭제
 		int orderDelResult = orderProdService.orderprodDelete(order_id);
 
 		return "Canceled";
@@ -503,10 +502,10 @@ public class CustomerController {
 	public String cancelRentPay(@RequestParam int rental_code) {
 		int rentalCode = rental_code;
 
-		//대여 상세 삭제
+		// 대여 상세 삭제
 		int rentDetailDelResult = rentDetailService.rentDetailDelByRentCode(rentalCode);
 
-		//대여 삭제
+		// 대여 삭제
 		int rentDelResult = rentService.rentprodDelete(rental_code);
 
 		return "Canceled";
