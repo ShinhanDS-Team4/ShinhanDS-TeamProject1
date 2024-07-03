@@ -213,10 +213,8 @@
 			<h2>마이페이지</h2>
 			<hr />
 			<div class="user-info">
-				<p>김철수</p>
-				<!-- 판매자 회원의 이름 -->
-				<p>573-50-00882</p>
-				<!-- 판매자 회원의 ID(사업자등록번호) -->
+				<p>${sellerInfo.member_name}</p>
+				<p>${sellerInfo.member_id}</p>
 			</div>
 
 			<div class="container">
@@ -282,7 +280,7 @@
 		</section>
 
 		<!-- 여기부터는 오른쪽에 있는 알림버튼창 관련 -->
-		<aside class="notifications">
+		<%-- <aside class="notifications">
 			<div class="notify_icon">
 				<img src="${path}/resources/images/bell.png" alt="알림"
 					class="bell_icon" />
@@ -294,20 +292,7 @@
 					<p>결제 대기 주문 : 23건</p>
 				</div>
 			</div>
-		</aside>
+		</aside> --%>
 	</main>
-	<script>
-		document.querySelector(".notifications .bell_icon").addEventListener(
-				"click",
-				function() {
-					document.querySelector(".notifications .popup").classList
-							.toggle("show");
-				});
-	</script>
-	<style>
-.notifications .popup.show {
-	display: block;
-}
-</style>
 </body>
 </html>

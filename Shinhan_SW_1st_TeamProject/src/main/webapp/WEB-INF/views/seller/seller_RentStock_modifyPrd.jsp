@@ -220,9 +220,8 @@
 			<h2>마이페이지</h2>
 			<hr />
 			<div class="user-info">
-				<input type="text" name="member_name" id="member_name"
-					placeholder="김철수"> <input type="text" name="member_id"
-					id="member_id" placeholder="573-50-00882">
+				<p>${sellerInfo.member_name}</p>
+				<p>${sellerInfo.member_id}</p>
 			</div>
 
 			<div class="container">
@@ -310,10 +309,8 @@
 							value="${StockInfo.r_stock_id}">
 					</div>
 
-					<div class="form-group">
-						<label>해당 재고의 옵션 목록</label>
-					</div>
-					<div id="optionList" class="form-group">
+					<div class="optionList" id="optionList">
+						<h3>재고의 옵션 목록</h3>
 						<table id="optionTable">
 							<thead>
 								<tr>
@@ -342,7 +339,7 @@
 				</form>
 			</div>
 		</section>
-		<aside class="notifications">
+		<%-- <aside class="notifications">
 			<div class="notify_icon">
 				<img src="${path}/resources/images/bell.png" alt="알림"
 					class="bell_icon" />
@@ -354,20 +351,7 @@
 					<p>결제 대기 주문 : 23건</p>
 				</div>
 			</div>
-		</aside>
+		</aside> --%>
 	</main>
-	<script>
-		document.querySelector(".notifications .bell_icon").addEventListener(
-				"click",
-				function() {
-					document.querySelector(".notifications .popup").classList
-							.toggle("show");
-				});
-	</script>
-	<style>
-	.notifications .popup.show {
-	display: block;
-}
-</style>
 </body>
 </html>

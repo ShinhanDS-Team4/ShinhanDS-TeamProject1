@@ -280,3 +280,32 @@ span {
 	width: 300px;
 	height: 250px;
 }
+
+.optionList {
+  margin-bottom: 40px;
+}
+
+.optionList h3 {
+  margin-top: 0;
+}
+
+.optionList table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.optionList table th,
+.optionList table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.optionList .actions {
+  margin-top: 10px;
+  text-align: right;
+}
+
+.optionList .actions button {
+  margin-left: 10px;
+}

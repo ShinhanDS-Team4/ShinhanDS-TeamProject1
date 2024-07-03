@@ -106,6 +106,7 @@ public class SellerPageController {
 	// 메인 화면 보여주기
 	@GetMapping("/MainPage.do")
 	public String mainpage(Model model) {
+		model.addAttribute("sellerInfo", memberService.selectById(member_id));
 
 		// 여기서 SQL문을 사용해 model로 데이터를 끌어옴
 		// 여기에는 판매자가 판매하는 상품들의 판매량 데이터를 끌어오고, 데이터를 그래프화하여 표현
@@ -115,8 +116,9 @@ public class SellerPageController {
 
 	// 판매&대여 상품 페이지 보여주기
 	@GetMapping("/PrdList.do")
-	public String prdList(Model model1, Model model2) {
-
+	public String prdList(Model model, Model model1, Model model2) {
+		model.addAttribute("sellerInfo", memberService.selectById(member_id));
+		
 		// 판매 상품 리스트
 		model1.addAttribute("stockSList", seller_Prod_StockService.findSellStockList(member_id));
 
@@ -131,7 +133,9 @@ public class SellerPageController {
 
 	// 판매&배송 페이지 보여주기
 	@GetMapping("/DeliveryList.do")
-	public String deliveryList(Model model1, Model model2) {
+	public String deliveryList(Model model, Model model1, Model model2) {
+		
+		model.addAttribute("sellerInfo", memberService.selectById(member_id));
 
 		// 판매&배송 리스트
 		// 1.판매 상품 대상 주문상세리스트
@@ -232,8 +236,10 @@ public class SellerPageController {
 
 	// 문의 목록 페이지 보여주기
 	@GetMapping("/Q&AList.do")
-	public String qaList(Model model3, Model model4, HttpServletRequest request) {
-
+	public String qaList(Model model, Model model3, Model model4, HttpServletRequest request) {
+		
+		model.addAttribute("sellerInfo", memberService.selectById(member_id));
+		
 		// 구매자의 문의 목록
 		System.out.println(buyer_inqService.selectInqList(member_id));
 		model3.addAttribute("buyerQAList", buyer_inqService.selectInqList(member_id));
@@ -245,13 +251,15 @@ public class SellerPageController {
 
 	// 상품 등록 페이지
 	@GetMapping("/AddProduct.do")
-	public String addProduct() {
+	public String addProduct(Model model) {
+		
+		model.addAttribute("sellerInfo", memberService.selectById(member_id));
 		return "/seller/seller_addPrd";
 	}
 
 	// 상품 수정 페이지
 	@GetMapping("/ModifyProduct.do")
-	public String modifyProduct(Model model1, Model model2, Model model3, Model model4, Model model5,
+	public String modifyProduct(Model model,Model model1, Model model2, Model model3, Model model4, Model model5,
 			@RequestParam("stock_id") String stockID) throws UnsupportedEncodingException {
 
 		String stock_id = URLDecoder.decode(stockID, "UTF-8");// 한글로 변환
@@ -338,6 +346,7 @@ public class SellerPageController {
 			}
 
 			// System.out.println(uploadDir);
+			model.addAttribute("sellerInfo", memberService.selectById(member_id));
 			model1.addAttribute("StockInfo", seller_Prod_StockDTO);
 			model2.addAttribute("ProductInfo", prodService.selectByProdId(ProdID));
 			model3.addAttribute("ProdMainImgList", prodMainImgList);

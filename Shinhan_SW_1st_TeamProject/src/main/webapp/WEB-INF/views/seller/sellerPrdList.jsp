@@ -96,8 +96,8 @@
 			<h2>마이페이지</h2>
 			<hr />
 			<div class="user-info">
-				<p>김철수</p>
-				<p>573-50-00882</p>
+				<p>${sellerInfo.member_name}</p>
+				<p>${sellerInfo.member_id}</p>
 			</div>
 			<!--판매 상품 목록 리스트-->
 			<div class="product-list">
@@ -125,46 +125,6 @@
 							</tr>
 						</c:forEach>
 						<!-- 여기는 예시 -->
-						<tr>
-							<td><input type="checkbox" /></td>
-							<td><input type="text" placeholder="상품번호1" /></td>
-							<td><input type="text" placeholder="상품명1" /></td>
-							<td><input type="number" placeholder="35000" /></td>
-							<td><input type="number" placeholder="35" /></td>
-							<td><button type="button" onclick="location.href='${path}/seller/ModifyProduct.do?stock_id=aaa'">수정</button></td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" /></td>
-							<td><input type="text" placeholder="상품번호1" /></td>
-							<td><input type="text" placeholder="상품명1" /></td>
-							<td><input type="number" placeholder="35000" /></td>
-							<td><input type="number" placeholder="35" /></td>
-							<td><button>수정</button></td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" /></td>
-							<td><input type="text" placeholder="상품번호1" /></td>
-							<td><input type="text" placeholder="상품명1" /></td>
-							<td><input type="number" placeholder="35000" /></td>
-							<td><input type="number" placeholder="35" /></td>
-							<td><button>수정</button></td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" /></td>
-							<td><input type="text" placeholder="상품번호1" /></td>
-							<td><input type="text" placeholder="상품명1" /></td>
-							<td><input type="number" placeholder="35000" /></td>
-							<td><input type="number" placeholder="35" /></td>
-							<td><button>수정</button></td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" /></td>
-							<td><input type="text" placeholder="상품번호1" /></td>
-							<td><input type="text" placeholder="상품명1" /></td>
-							<td><input type="number" placeholder="35000" /></td>
-							<td><input type="number" placeholder="35" /></td>
-							<td><button>수정</button></td>
-						</tr>
 					</tbody>
 				</table>
 				<div class="actions">
@@ -195,47 +155,6 @@
 								<td><button type="button" onclick="location.href='${path}/seller/ModifyProduct.do?stock_id=${rStock.r_stock_id}'">수정</button></td>
 							</tr>
 						</c:forEach>
-						
-						<tr>
-							<td><input type="checkbox" /></td>
-							<td><input type="text" placeholder="상품번호1" /></td>
-							<td><input type="text" placeholder="상품명1" /></td>
-							<td><input type="number" placeholder="35000" /></td>
-							<td><input type="number" placeholder="35" /></td>
-							<td><button type="button" onclick="location.href='${path}/seller/ModifyProduct.do'">수정</button></td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" /></td>
-							<td><input type="text" placeholder="상품번호1" /></td>
-							<td><input type="text" placeholder="상품명1" /></td>
-							<td><input type="number" placeholder="35000" /></td>
-							<td><input type="number" placeholder="35" /></td>
-							<td><button>수정</button></td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" /></td>
-							<td><input type="text" placeholder="상품번호1" /></td>
-							<td><input type="text" placeholder="상품명1" /></td>
-							<td><input type="number" placeholder="35000" /></td>
-							<td><input type="number" placeholder="35" /></td>
-							<td><button>수정</button></td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" /></td>
-							<td><input type="text" placeholder="상품번호1" /></td>
-							<td><input type="text" placeholder="상품명1" /></td>
-							<td><input type="number" placeholder="35000" /></td>
-							<td><input type="number" placeholder="35" /></td>
-							<td><button>수정</button></td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" /></td>
-							<td><input type="text" placeholder="상품번호1" /></td>
-							<td><input type="text" placeholder="상품명1" /></td>
-							<td><input type="number" placeholder="35000" /></td>
-							<td><input type="number" placeholder="35" /></td>
-							<td><button>수정</button></td>
-						</tr>
 					</tbody>
 				</table>
 				<div class="actions">
@@ -243,10 +162,9 @@
 					
 				</div>
 			</div>
-			<button onclick="location.href='${path}/seller/AddProduct.do'">상품
-						등록</button>
+			<button onclick="location.href='${path}/seller/AddProduct.do'">상품 등록</button>
 		</section>
-		<aside class="notifications">
+		<%-- <aside class="notifications">
 			<div class="notify_icon">
 				<img src="${path}/resources/images/bell.png" alt="알림"
 					class="bell_icon" />
@@ -258,20 +176,7 @@
 					<p>결제 대기 주문 : 23건</p>
 				</div>
 			</div>
-		</aside>
+		</aside> --%>
 	</main>
-	<script>
-		document.querySelector(".notifications .bell_icon").addEventListener(
-				"click",
-				function() {
-					document.querySelector(".notifications .popup").classList
-							.toggle("show");
-				});
-	</script>
-	<style>
-.notifications .popup.show {
-	display: block;
-}
-</style>
 </body>
 </html>
