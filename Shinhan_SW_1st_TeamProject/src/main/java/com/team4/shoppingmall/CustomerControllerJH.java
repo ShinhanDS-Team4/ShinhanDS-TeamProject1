@@ -60,7 +60,7 @@ public class CustomerControllerJH {
 		MemberDTO member =  (MemberDTO) session.getAttribute("member");
 		//String member_id = member.getMember_id();
 		String member_id = "testid";  //member.get~~~
-
+		
 		//1.회원정보 조회
 //		MemberDTO member = memberService.selectById(member_id);
 //		model.addAttribute("member", member);
