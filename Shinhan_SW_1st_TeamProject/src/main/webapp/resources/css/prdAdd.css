@@ -261,15 +261,17 @@ span {
 
 #prdMainImgFileContainer{
 	display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    column-gap: 250px;
-    row-gapt:200px;  
+    grid-template-columns: repeat(2, 1fr); /* 4 columns */
+    grid-template-rows: repeat(3, auto); /* 2 rows */
+    gap: 10px; /* Gap between items */
+    padding: 10px; /* Padding around the grid */
 }
 #prdDescImgFileContainer{
 	display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    column-gap: 250px;
-    row-gapt:200px;  
+    grid-template-columns: repeat(2, 1fr); /* 4 columns */
+    grid-template-rows: repeat(4, auto); /* 2 rows */
+    gap: 10px; /* Gap between items */
+    padding: 10px; /* Padding around the grid */  
 }
 
 .file-item{
@@ -308,4 +310,11 @@ span {
 
 .optionList .actions button {
   margin-left: 10px;
+}
+
+#addImageBtn{
+	color: white;
+	background-color: black;
+	width: 200px;
+	height: 40px;
 }

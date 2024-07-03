@@ -102,7 +102,7 @@
 			<!--판매 상품 목록 리스트-->
 			<div class="product-list">
 				<h3>판매 상품 목록</h3>
-				<table>
+				<table class="sellPrdList">
 					<thead>
 						<tr>
 							<th></th>
@@ -133,7 +133,7 @@
 			</div>
 			<div class="product-list">
 				<h3>대여 상품 목록</h3>
-				<table>
+				<table class="sellPrdList">
 					<thead>
 						<tr>
 							<th></th>

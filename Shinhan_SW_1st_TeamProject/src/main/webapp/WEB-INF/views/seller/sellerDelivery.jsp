@@ -173,7 +173,7 @@
 			<!-- 주문/배송 -->
 			<div class="product-list">
 				<h3>판매 상품 주문 리스트</h3>
-				<table>
+				<table class="sellPrdList">
 					<thead>
 						<tr>
 							<th></th>
@@ -199,7 +199,7 @@
 					</tbody>
 				</table>
 				<div class="actions">
-					<select id="order_status_select">
+					<select id="order_status_select" class="orderStatus">
 						<option>결제대기</option>
 						<option>결제완료</option>
 						<option>배송준비중</option>
@@ -218,7 +218,7 @@
 			<!-- 대여 -->
 			<div class="product-list">
 				<h3>대여 상품 주문 리스트</h3>
-				<table>
+				<table class="sellPrdList">
 					<thead>
 						<tr>
 							<th></th>
@@ -244,7 +244,7 @@
 					</tbody>
 				</table>
 				<div class="actions">
-					<select id="rent_status_select">
+					<select id="rent_status_select" class="orderStatus">
 						<option>대여신청완료</option>
 						<option>결제완료</option>
 						<option>대여취소</option>
@@ -252,8 +252,8 @@
 						<option>반납중</option>
 						<option>반납완료</option>
 					</select>
-					<button id="batch_process_button" onclick="updateRentStatus()">일괄처리</button>
-					<button id="delete_selected_button" onclick="deleteCheckedRent()">선택 내역 삭제</button>
+					<button class="button" id="batch_process_button" onclick="updateRentStatus()">일괄처리</button>
+					<button class="button" id="delete_selected_button" onclick="deleteCheckedRent()">선택 내역 삭제</button>
 				</div>
 			</div>
 		</section>

@@ -53,7 +53,7 @@
 		fileRemove.type = 'button';
 		fileRemove.innerText = '삭제';
 		fileRemove.onclick = function() {
-			removeFile(this);
+			removeMainFile(this);
 		};
 
 		fileItem.appendChild(fileField);
@@ -96,7 +96,7 @@
 		fileRemove.type = 'button';
 		fileRemove.innerText = '삭제';
 		fileRemove.onclick = function() {
-			removeFile(this);
+			removeDescFile(this);
 		};
 
 		fileItem.appendChild(fileField);
@@ -111,10 +111,16 @@
 		return document.querySelectorAll('#prdDescImgFileContainer .file-item').length;
 	}
 	
-	function removeFile(button) {
+	function removeMainFile(button) {
 		// 부모 요소(file-item) 제거
 		button.parentNode.remove();
-		fileCount = getFileItemCount();
+		mainImgFileCount = getMainFileItemCount();
+	}
+	
+	function removeDescFile(button) {
+		// 부모 요소(file-item) 제거
+		button.parentNode.remove();
+		descImgFileCount = getDescFileItemCount();
 	}
 	
 	function setProdDescribeImg(event, fileItem) {
@@ -245,14 +251,14 @@
 					<!-- 상품의 메인 사진으로 사용할 여러 개의 사진을 집어넣는 곳 -->
 					<div class="form-group">
 						<label>메인사진</label>
-						<button type="button" onclick="addMainImgFile()">사진 추가</button>
+						<button type="button" id="addImageBtn" onclick="addMainImgFile()">사진 추가</button>
 					</div>
 					<div id="prdMainImgFileContainer"></div>
 
 					<!-- 상품 설명에 사용할 여러 개의 사진들을 집어넣는 곳  -->
 					<div class="form-group">
 						<label>상품 설명 사진 등록</label>
-						<button type="button" onclick="addDescImgFile()">사진 추가</button>
+						<button type="button" id="addImageBtn" onclick="addDescImgFile()">사진 추가</button>
 					</div>
 					<div id="prdDescImgFileContainer"></div>
 
