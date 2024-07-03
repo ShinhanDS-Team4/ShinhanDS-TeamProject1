@@ -4,7 +4,6 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.prod">
 	
-	<!-- 0701 수정중 -->
 	<!-- 상품 상세 정보 조회 -->
 	<!-- 상품 이름,상품 가격,브랜드명,카테고리명(부모카테고리명,세부카테고리명),상품의 리뷰 수,문의 수 조회 
 	<select id="selectProdDetailInfoByProdId" parameterType="string"

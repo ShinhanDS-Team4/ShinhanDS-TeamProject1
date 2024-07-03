@@ -57,14 +57,14 @@ public class CustomerControllerJH {
 	@GetMapping("/myPage.do")
 	public String myPage(HttpSession session, Model model) {
 		
-		//MemberDTO member =  session.getAttribute("member");
+		MemberDTO member =  (MemberDTO) session.getAttribute("member");
 		//String member_id = member.getMember_id();
-		String member_id = "testid";
+		String member_id = "testid";  //member.get~~~
 
 		//1.회원정보 조회
-		MemberDTO member = memberService.selectById(member_id);
-		model.addAttribute("member", member);
-		
+//		MemberDTO member = memberService.selectById(member_id);
+//		model.addAttribute("member", member);
+//		
 		//2.나의 주문 내역
 	    //List<OrderProdDTO> myAllOrders = orderProdService.orderProductById(member_id);
 		List<Map<String,Object>> myAllOrders = orderProdService.orderProductById(member_id);
@@ -209,25 +209,21 @@ public class CustomerControllerJH {
 		return result;
 	}
 	
-	//비밀번호 체크 후 다음 스텝(step3)
-	@GetMapping("/myInfoUpdate_step3.do")
-	public String myInfoUpdatePwCheck(HttpSession session, Model model) {
+	//!!!팝업창으로 띄우기
+	//비밀번호 체크 후 다음 스텝(step3)  !
+//	@GetMapping("/myInfoUpdate_step3.do")
+//	public String myInfoUpdatePwCheck(HttpSession session, Model model) {
 		
-		String member_id = "testid";
+		//String member_id = "testid";
 		
-		//1.회원정보 조회
-		MemberDTO member = memberService.selectById(member_id);
-		model.addAttribute("member", member);
-		
-		
-        return "customer/myInfoUpdate_step3"; //jsp페이지 태그
-	}
+//        return "customer/myInfoUpdate_step3"; //jsp페이지 태그
+//	}
 	
 	//step3 - 수정할 회원 정보 입력창	
 	@ResponseBody
 	@PostMapping("/myInfoUpdateForm")
 	public int myInfoUpdateForm(HttpSession session, Model model,
-									@RequestBody Map<String,String> myInfoData) 
+		 	@RequestBody Map<String,String> myInfoData) 
 	{
 		String member_id = "testid";
 		
@@ -247,6 +243,7 @@ public class CustomerControllerJH {
 		
 		//업데이트- 이름/비밀번호/휴대번호/이메일
 		int result = memberService.myInfoUpdate(member);
+		session.setAttribute("member", member);
 	
 		return result;
 	}

@@ -18,8 +18,7 @@ public class RentProdStockDAOMybatis implements RentProdStockDAOInterface {
 
 	String namespace = "com.saren.rent_prod_stock.";
 
-	
-	//¼±ÅÃ ¿É¼Ç »óÇ°ÀÇ ´ë¿© Àç°íid Ã£±â
+	//ì„ íƒ ì˜µì…˜ ìƒí’ˆì˜ ëŒ€ì—¬ ì¬ê³ id ì°¾ê¸°
 	public Map<String,String> selectRentStockByProdId(String prod_id, String optionString) {
 		Map<String, String> map = new HashMap<>();
 		map.put("prod_id", prod_id);
@@ -27,22 +26,19 @@ public class RentProdStockDAOMybatis implements RentProdStockDAOInterface {
 		return sqlSession.selectOne(namespace + "selectRentStockByProdId", map);
 	};
 	
-	//»óÇ°ÀÇ ´ë¿© Àç°íid Á¶È¸
+	//ìƒí’ˆì˜ ëŒ€ì—¬ ì¬ê³ id ì¡°íšŒ
 	public List<RentProdStockDTO> selectRentStockByProdId2(String prod_id){
 		return sqlSession.selectList(namespace + "selectRentStockByProdId2", prod_id);
 	};
-	
-	//´ë¿© »ı¼º½Ã ´ë¿© ¼ö·® ¾÷µ¥ÀÌÆ®
+	//ëŒ€ì—¬ ìƒì„±ì‹œ ëŒ€ì—¬ ìˆ˜ëŸ‰ ì—…ë°ì´íŠ¸
 	public int rentProdStockUpdate(ProductNewVO prodVO) {
 		return sqlSession.update(namespace + "rentProdStockUpdate", prodVO);
 	};
-	
-	//´ë¿© »óÇ° ¿É¼Çº° Àç°í Á¶È¸
+	//ëŒ€ì—¬ ìƒí’ˆ ì˜µì…˜ë³„ ì¬ê³  ì¡°íšŒ
 	public List<RentProdStockDTO> selectRpsOptionByProdId(String prod_id){
 		return sqlSession.selectList(namespace + "selectRpsOptionByProdId" , prod_id);
 	};
-	
-	// ´ë¿©»óÇ°»ó¼¼
+	// ëŒ€ì—¬ìƒí’ˆìƒì„¸
 	@Override
 	public RentProdStockDTO selectById(String r_stock_id) {
 		return sqlSession.selectOne(namespace + "selectById", r_stock_id);
@@ -55,29 +51,25 @@ public class RentProdStockDAOMybatis implements RentProdStockDAOInterface {
 	
 	@Override
 	public List<RentProdStockListDTO> findRentStockList(String member_id) {
-		System.out.println("mybatis Á¤»ó ¼öÇàµÊ");
+		System.out.println("mybatis ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½");
 		return sqlSession.selectList(namespace+"findRentStockList", member_id);
 	}
 
-	// ´ë¿©»óÇ°¸ñ·Ï
 	@Override
 	public List<RentProdStockDTO> selectAll() {
 		return sqlSession.selectList(namespace + "selectById");
 	}
 
-	// ´ë¿©»óÇ°µî·Ï
 	@Override
 	public int rentProdInsert(RentProdStockDTO rentprod) {
 		return sqlSession.insert(namespace + "rentProdInsert", rentprod);
 	}
 
-	// ´ë¿©»óÇ°¼öÁ¤
 	@Override
 	public int rentProdUpdate(RentProdStockDTO rentprod) {
 		return sqlSession.update(namespace + "rentProdUpdate", rentprod);
 	}
 
-	// ´ë¿©»óÇ°»èÁ¦
 	@Override
 	public int rentProdDelete(String r_stock_id) {
 		return sqlSession.delete(namespace + "selectById", r_stock_id);

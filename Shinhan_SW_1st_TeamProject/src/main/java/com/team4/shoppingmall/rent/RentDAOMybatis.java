@@ -28,37 +28,35 @@ public class RentDAOMybatis implements RentDAOInterface {
 		return sqlSession.selectOne(namespace+"searchRentId");
 	}
 
-	// �뿩��
+	// 대여상세
 	@Override
 	public RentDTO selectById(Integer rental_code) {
 		return sqlSession.selectOne(namespace+"selectById", rental_code);
 	}
 
-	// �뿩���
+	// 대여목록
 	@Override
 	public List<RentDTO> selectAll() {
 		return sqlSession.selectList(namespace + "selectAll");
 	}
 
-	// �뿩�ϱ�
+	// 대여하기
 	@Override
 	public int rentInsert(RentDTO rent) {
 		return sqlSession.insert(namespace+"rentInsert", rent);
 	} 
 
-	// �뿩���� ����
+	// 대여상태 수정
 	@Override
 	public int rentUpdate(Integer rental_code) {
 		return sqlSession.update(namespace+"rentUpdate", rental_code);
 	} 
 
-	// rentlist.jsp�� ����� ��ǰ��, �귣��, �ɼ�, ��ǰ����, �̹���URL
 	@Override
 	public Map<String, Object> selectById2(int rental_code) {
 		return sqlSession.selectOne(namespace+"selectById2", rental_code); 
 	}
 	
-	// rentlist.jsp����, �󼼻�ǰ �ɼ� ��½�, ��� �ɼ� ��������
 	@Override
 	public List<RentProdStockDTO> selectOptions() {
 		return sqlSession.selectList(namespace+"selectOptions"); 

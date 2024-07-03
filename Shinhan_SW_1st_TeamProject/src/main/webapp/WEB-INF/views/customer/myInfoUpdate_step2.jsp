@@ -2,8 +2,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="path" value="${pageContext.servletContext.contextPath}" />
 
-<%-- 마이페이지 : 회원정보수정-2 비밀번호확인 --%>
-
+<%-- 마이페이지 : 회원정보수정-2 비밀번호확인 후 회원정보 수정 폼 열기 --%>
+<%-- 팝업창으로 수정중 --%>
 <div class="mypage_here">
 	<div class="section_wrap">
 		<h1 class="myinfo_title">회원 정보 수정</h1>
@@ -49,7 +49,7 @@
                	  	 if(reseponseData == 1){
                 		 alert("비밀번호 확인 성공");
 	                	 //비밀번호 체크 후 맞으면 다음 스탭(step3)
-	                     $.ajax({
+	                    /*  $.ajax({
 	                           url: "${path}/customer/myInfoUpdate_step3.do", // 로드할 JSP 페이지의 경로
 	                           type: "GET",
 	                           success: function(htmlContent) {
@@ -58,7 +58,9 @@
 	                           error: function(xhr, status, error) {
 	                               console.error("Error loading step 3: " + error);
 	                           }
-	                       }); 
+	                       });  */
+	                       //JS
+	                       alert("aaaaaaa");
 		                 
                	   } else{
 	           		   $(".text_here").text("비밀번호가 틀렸습니다.");
