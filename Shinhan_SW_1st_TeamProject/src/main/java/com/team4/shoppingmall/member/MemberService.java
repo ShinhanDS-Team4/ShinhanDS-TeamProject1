@@ -11,6 +11,10 @@ public class MemberService {
 	@Autowired
 	MemberDAOInterface memberDAO;
 	
+	//구매자 회원 정보 수정
+	public int myInfoUpdate(MemberDTO member) {
+		return memberDAO.myInfoUpdate(member);
+	};
 	//로그인 회원 정보 수정용 비밀번호 체크
 	public int memberCheckByPw(MemberDTO member) {
 		return memberDAO.memberCheckByPw(member);

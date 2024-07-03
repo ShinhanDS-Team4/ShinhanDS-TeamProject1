@@ -191,21 +191,17 @@ public class CustomerControllerJH {
 		return "customer/myInfoUpdate_step2";
 	}
 	
-	//비민번호 체크 
+	//비밀번호 체크 
 	@ResponseBody
 	@PostMapping("/myInfoUpdatePwCheck.do")
 	public int myInfoUpdatePw(HttpSession session, Model model,
 							   @RequestBody Map<String,String> pwData ) 
 	{
-		
+	
 		String member_id = "testid"; //테스트id
-	    String password = pwData.get("password");
-		
-		System.out.println(member_id);
-		System.out.println(password);
-		
+		//1.회원정보 조회
 		MemberDTO member = new MemberDTO();
-		member.setMember_id(member_id); // ?
+		member.setMember_id(member_id);
 		member.setMember_pw(pwData.get("password"));
 		
 		int result = memberService.memberCheckByPw(member); 
@@ -215,17 +211,44 @@ public class CustomerControllerJH {
 	
 	//비밀번호 체크 후 다음 스텝(step3)
 	@GetMapping("/myInfoUpdate_step3.do")
-	public String myInfoUpdatePwCheck(HttpSession session) {
+	public String myInfoUpdatePwCheck(HttpSession session, Model model) {
+		
+		String member_id = "testid";
+		
+		//1.회원정보 조회
+		MemberDTO member = memberService.selectById(member_id);
+		model.addAttribute("member", member);
 		
 		
         return "customer/myInfoUpdate_step3"; //jsp페이지 태그
 	}
 	
 	//step3 - 수정할 회원 정보 입력창	
-	@PostMapping("/myInfoUpdateForm.do")
-	public String myInfoUpdateForm() {
+	@ResponseBody
+	@PostMapping("/myInfoUpdateForm")
+	public int myInfoUpdateForm(HttpSession session, Model model,
+									@RequestBody Map<String,String> myInfoData) 
+	{
+		String member_id = "testid";
 		
-		return "customer/myPage";
+		System.out.println("myInfoData: " + myInfoData);
+		String member_pw = myInfoData.get("member_pw");
+		String phone = myInfoData.get("phone");
+		String email = myInfoData.get("email");
+		
+		
+		MemberDTO member = new MemberDTO();
+		member.setMember_id(member_id);
+		member.setMember_pw(member_pw);
+		member.setPhone(phone);
+		member.setEmail(email);
+		
+		System.out.println(member_pw);
+		
+		//업데이트- 이름/비밀번호/휴대번호/이메일
+		int result = memberService.myInfoUpdate(member);
+	
+		return result;
 	}
 	
 	
