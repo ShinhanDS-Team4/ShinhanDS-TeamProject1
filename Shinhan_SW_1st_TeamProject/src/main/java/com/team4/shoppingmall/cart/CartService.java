@@ -111,7 +111,7 @@ public class CartService {
 
 	//장바구니 상품 수량 업데이트
 	public int updateCartBySellstock(CartDTO cart) {
-		return cartDAO.updateCartBySellstock(cart);
+		return cartDAO.updateCartBySellStock(cart);
 	}
 	
 }

@@ -33,16 +33,10 @@ public interface RentProdStockDAOInterface {
 	// 대여상품등록
 	public int rentProdInsert(RentProdStockDTO rentprod);
 
-	// 대여상품수정
-	public int rentProdUpdate(RentProdStockDTO rentprod);
-
 	// 대여상품삭제
 	public int rentProdDelete(String r_stock_id);
 
 	public int rentStockUpdate(RentProdStockDTO rentprod);
 
-	
-
-	
 
 }
