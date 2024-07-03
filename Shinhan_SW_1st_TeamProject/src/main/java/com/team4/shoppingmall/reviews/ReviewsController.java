@@ -32,6 +32,7 @@ public class ReviewsController {
 	@Value("${aws.accesskey}")
 	private String accessKey;
 	
+
 	//업로드 폼을 보여주는 메서드(upload랑 display 페이지는 테스트용입니다.)
 	@GetMapping("/upload")
     public String showUploadForm() {
@@ -81,26 +82,41 @@ public class ReviewsController {
 	
 
 	@GetMapping("/write.do")
-	public String writeReview() {
+	public String writeReview(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		MemberDTO mem = (MemberDTO)session.getAttribute("member");
+		//로그인테스트용, 현재는 필터링으로 거름.
+		if(mem == null) {
+			return "redirect:/member_test/login.do";
+		}
+		
 		return "board/reviewWrite";
 	}
 
 	@PostMapping("/write.do")
 	public String postReview(ReviewsDTO review, HttpServletRequest request, @RequestParam("reviewImg") MultipartFile review_img, RedirectAttributes redirectAttributes) throws Exception {
 	    if (!review_img.isEmpty()) {
-	     // =========파일명 받아옴=====================//
+	      // =========파일명 받아옴=====================/
 	        String originalFileName = review_img.getOriginalFilename();
 	     // ========= 파일명 중복 방지 처리 ========= //
 	        String uuidFileName = getUuidFileName(originalFileName);
 
-	        // 파일 업로드 및 URL 받기
+	       // 파일 업로드 및 URL 받기
 	        String fileUrl = s3Service.uploadObject(review_img, uuidFileName);
 	        review.setReview_img(fileUrl);  // ReviewsDTO에 URL 설정
 	    }
-
-	    // 리뷰 데이터 저장
-	    reviewsService.reviewsInsert(review);
-	    return "board/qa_board";
+	    HttpSession session = request.getSession();
+	    MemberDTO mem = (MemberDTO)session.getAttribute("member");
+		//지금은 로그인 필터링 해놓았지만 일단 둠
+		if(mem == null) {
+			return "redirect:/member_test/login.do";
+		}
+		String id = mem.getMember_id();
+		System.out.println(mem);
+		review.setMember_id(id);
+	  // 리뷰 데이터 저장
+	  reviewsService.reviewsInsert(review);
+	  return "redirect:/customer/myPage.do"; //임시 위치, 추후에 제품 상세페이지로 다시 이동하게 바꾸자.
 	}
 	
 	

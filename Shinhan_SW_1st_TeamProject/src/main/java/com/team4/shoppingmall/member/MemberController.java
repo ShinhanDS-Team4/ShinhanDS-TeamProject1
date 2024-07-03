@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.team4.shoppingmall.addr_list.Addr_ListDTO;
+import com.team4.shoppingmall.addr_list.Addr_ListService;
+
 @Controller
 @RequestMapping("/member_test")
 public class MemberController {
@@ -28,9 +31,12 @@ public class MemberController {
     MemberService memberService;
     @Autowired
     private GmailService gmailService;
+    @Autowired
+    Addr_ListService addrService;
     
     private Map<String, String> emailVerificationCodes = new HashMap<>();
 
+    
 	@GetMapping("/member_test.do")
 	public void detailTest(Model model, String member_id) {
 		model.addAttribute("memberVO", memberService.selectById(member_id));
@@ -98,8 +104,9 @@ public class MemberController {
 	}
 	
 	@PostMapping("/signup")
-	public String sendSignup(MemberDTO member, Model model) {
+	public String sendSignup(MemberDTO member, Addr_ListDTO addr, Model model) {
 		System.out.println(member);
+		System.out.println(addr);
 		LocalDate localDate = LocalDate.now();
 		Date sqlDate = Date.valueOf(localDate);
 		member.setCreate_date(sqlDate);
@@ -110,6 +117,8 @@ public class MemberController {
 		}else {
 			memberService.memberSellerInsert(member);
 		}
+		addr.setIs_master_addr("Y");
+		addrService.addressInsert(addr);
 
 		return "redirect:login.do";
 	}

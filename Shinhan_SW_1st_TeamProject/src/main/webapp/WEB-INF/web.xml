@@ -66,4 +66,16 @@
 		<filter-name>LoginFilter</filter-name>
 		<url-pattern>*.do</url-pattern>
 	</filter-mapping>
+	
+	<!-- 특정 에러 코드에 대한 에러 페이지 설정 -->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error.jsp</location>
+    </error-page>
+    
+    <!-- 모든 에러에 대한 기본 에러 페이지 설정 -->
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/error.jsp</location>
+    </error-page>
 </web-app>
