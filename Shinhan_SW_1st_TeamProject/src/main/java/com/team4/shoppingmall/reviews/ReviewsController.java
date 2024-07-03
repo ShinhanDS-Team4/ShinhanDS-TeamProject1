@@ -32,110 +32,75 @@ public class ReviewsController {
 	@Value("${aws.accesskey}")
 	private String accessKey;
 	
-	//���ε� ���� �����ִ� �޼���(upload�� display �������� �׽�Ʈ���Դϴ�.)
+	//업로드 폼을 보여주는 메서드(upload랑 display 페이지는 테스트용입니다.)
 	@GetMapping("/upload")
     public String showUploadForm() {
         return "board/reviewWritetest";
     }
 
-	// AWS 3S 참고용 업로드 페이지
+	// 여러 파일을 업로드하는 메서드
     @PostMapping("/upload")
-    public String uploadFiles(HttpServletRequest request,
-    		@RequestParam("files") MultipartFile[] files,
-    		RedirectAttributes redirectAttributes) throws Exception {
-        List<String> imageUrls = new ArrayList<>();  // ���ε�� ������ URL�� ������ ����Ʈ
+    public String uploadFiles(HttpServletRequest request, @RequestParam("files") MultipartFile[] files, RedirectAttributes redirectAttributes) throws Exception {
+        List<String> imageUrls = new ArrayList<>();  // 업로드된 파일의 URL을 저장할 리스트
 
-        // ���ε�� �� ������ ó��
+        // 업로드된 각 파일을 처리
         for (MultipartFile file : files) {
             if (!file.isEmpty()) {
-                String originalFileName = file.getOriginalFilename();  // ���� ���ϸ�
-                String uuidFileName = getUuidFileName(originalFileName);  // UUID�� ����Ͽ� ���ϸ� ����
+                String originalFileName = file.getOriginalFilename();  // 원본 파일명
+                String uuidFileName = getUuidFileName(originalFileName);  // UUID를 사용하여 파일명 생성
 
-                // ������ S3�� ���ε��ϰ� URL�� ����
+                // 파일을 S3에 업로드하고 URL을 받음
                 String fileUrl = s3Service.uploadObject(file, uuidFileName);
-                imageUrls.add(fileUrl);  // URL�� ����Ʈ�� �߰�
+                imageUrls.add(fileUrl);  // URL을 리스트에 추가
             }
         }
 
-        // ���ǿ� URL ����Ʈ ����
+        // 세션에 URL 리스트 저장
         HttpSession session = request.getSession();
         session.setAttribute("uploadedImageUrls", imageUrls);
 
-        // ���𷺼��� �� URL ����Ʈ ����
+        // 리디렉션할 때 URL 리스트 전달
         redirectAttributes.addFlashAttribute("uploadedImageUrls", imageUrls);
-        return "redirect:display";  // �̹��� ǥ�� �������� ���𷺼�
+        return "redirect:display";  // 이미지 표시 페이지로 리디렉션
     }
 
-    // ���ε�� �̹����� ǥ���ϴ� �޼���
+    // 업로드된 이미지를 표시하는 메서드
     @GetMapping("/display")
     public String displayImages(HttpSession session, Model model) {
-        // ���ǿ��� ���ε�� �̹��� URL ����Ʈ�� ������
+        // 세션에서 업로드된 이미지 URL 리스트를 가져옴
         List<String> uploadedImageUrls = (List<String>) session.getAttribute("uploadedImageUrls");
         if (uploadedImageUrls == null || uploadedImageUrls.isEmpty()) {
-            model.addAttribute("message", "No images uploaded yet!");  // ���ε�� �̹����� ���� �� �޽��� ����
-            return "errorPage";  // ���� ������ �Ǵ� ������ �޽����� ������ �������� ����
+            model.addAttribute("message", "No images uploaded yet!");  // 업로드된 이미지가 없을 때 메시지 설정
+            return "errorPage";  // 에러 페이지 또는 적절한 메시지를 보여줄 페이지로 리턴
         }
-        model.addAttribute("uploadedImageUrls", uploadedImageUrls);  // �𵨿� URL ����Ʈ �߰�
-        return "board/displayImage";  // �̹��� ǥ�� �������� �̵�
+        model.addAttribute("uploadedImageUrls", uploadedImageUrls);  // 모델에 URL 리스트 추가
+        return "board/displayImage";  // 이미지 표시 페이지로 이동
     }
 	
-	@GetMapping("myreview.do")
-	public String myReview(Model model, HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		MemberDTO mem = (MemberDTO)session.getAttribute("member");
-		//���߿� ���͸� �ϰ����� �켱�� �ӽù������� �б��� ��������
-		if(mem == null) {
-			return "redirect:/member_test/login.do";
-		}
-		String member_Id = mem.getMember_id();
-		
-		List<ReviewsDTO> reviews = reviewsService.selectBymemId(member_Id);
-		model.addAttribute("reviews", reviews);
-		return "board/myreview";
-	}
+	
 	
 
 	@GetMapping("/write.do")
-	public String writeReview(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		MemberDTO mem = (MemberDTO)session.getAttribute("member");
-		//���߿� ���͸� �ϰ����� �켱�� �ӽù������� �б��� ��������
-		if(mem == null) {
-			return "redirect:/member_test/login.do";
-		}
-		
+	public String writeReview() {
 		return "board/reviewWrite";
 	}
 
 	@PostMapping("/write.do")
-	public String postReview(ReviewsDTO review, HttpServletRequest request,
-			@RequestParam("reviewImg") MultipartFile review_img,
-			RedirectAttributes redirectAttributes) throws Exception {
-		
+	public String postReview(ReviewsDTO review, HttpServletRequest request, @RequestParam("reviewImg") MultipartFile review_img, RedirectAttributes redirectAttributes) throws Exception {
 	    if (!review_img.isEmpty()) {
-	     // =========���ϸ� �޾ƿ�=====================//
+	     // =========파일명 받아옴=====================//
 	        String originalFileName = review_img.getOriginalFilename();
-	     // ========= ���ϸ� �ߺ� ���� ó�� ========= //
+	     // ========= 파일명 중복 방지 처리 ========= //
 	        String uuidFileName = getUuidFileName(originalFileName);
 
-	        // ���� ���ε� �� URL �ޱ�
+	        // 파일 업로드 및 URL 받기
 	        String fileUrl = s3Service.uploadObject(review_img, uuidFileName);
-	        review.setReview_img(fileUrl);  // ReviewsDTO�� URL ����
+	        review.setReview_img(fileUrl);  // ReviewsDTO에 URL 설정
 	    }
-	    HttpSession session = request.getSession();
-	    MemberDTO mem = (MemberDTO)session.getAttribute("member");
-		//���߿� ���͸� �ϰ����� �켱�� �ӽù������� �б��� ��������
-		if(mem == null) {
-			return "redirect:/member_test/login.do";
-		}
-		String id = mem.getMember_id();
-		System.out.println(mem);//�α��� �� ������ �ҷ��������� �׽�Ʈ��
-		review.setMember_id(id);
-		
-	    // ���� ������ ����
+
+	    // 리뷰 데이터 저장
 	    reviewsService.reviewsInsert(review);
-		
-	    return "redirect:/customer/myPage.do";
+	    return "board/qa_board";
 	}
 	
 	
@@ -144,7 +109,7 @@ public class ReviewsController {
         String uploadedImageUrl = (String) session.getAttribute("uploadedImageUrl");
         if (uploadedImageUrl == null) {
             model.addAttribute("message", "No image uploaded yet!");
-            return "errorPage";  // ���� ������ �Ǵ� ������ �޽����� ������ ������
+            return "errorPage";  // 에러 페이지 또는 적절한 메시지를 보여줄 페이지
         }
         model.addAttribute("uploadedImageUrl", uploadedImageUrl);
         System.out.println(uploadedImageUrl);

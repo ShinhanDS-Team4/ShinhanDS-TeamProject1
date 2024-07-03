@@ -42,6 +42,7 @@ public class RentProdStockService {
 	}
 	
 	public List<RentProdStockListDTO> findRentStockList(String member_id){
+
 		System.out.println("service 정상 수행됨");
 		return rentProdStockDAO.findRentStockList(member_id);
 	}
@@ -51,21 +52,20 @@ public class RentProdStockService {
 		return rentProdStockDAO.selectAll();	
  	}
 
-	// �뿩��ǰ��� 
+
+	// 대여상품등록 
 	public int rentProdInsert(RentProdStockDTO rentprod) {
 		return rentProdStockDAO.rentProdInsert(rentprod);	
  	}
 
-	// �뿩��ǰ���� 
-	public int rentProdUpdate(RentProdStockDTO rentprod) {
-		return rentProdStockDAO.rentProdUpdate(rentprod);
- 	}
-	
+
+	// 대여상품수정 
 	public int rentStockUpdate(RentProdStockDTO rentprod) {
 		return rentProdStockDAO.rentStockUpdate(rentprod);
 	}
 
-	// �뿩��ǰ���� 
+
+	// 대여상품삭제 
 	public int rentProdDelete(String r_stock_id) {
 		return rentProdStockDAO.rentProdDelete(r_stock_id);
  	}

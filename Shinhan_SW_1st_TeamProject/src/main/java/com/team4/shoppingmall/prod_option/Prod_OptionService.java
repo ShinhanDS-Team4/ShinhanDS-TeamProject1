@@ -15,7 +15,7 @@ public class Prod_OptionService {
 		return prod_optionDAO.selectByOptionId(opt_id);
 	}
 
-	public List<Prod_OptionDTO> selectByProdId(Integer prod_id) {
+	public List<Prod_OptionDTO> selectByProdId(String prod_id) {
 		return prod_optionDAO.selectByProdId(prod_id);
 	}
 	

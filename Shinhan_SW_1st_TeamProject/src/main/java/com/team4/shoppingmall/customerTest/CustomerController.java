@@ -57,8 +57,10 @@ import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockService;
 @Controller
 @RequestMapping("/customer")
 public class CustomerController {
+
 	@Autowired
 	private OrderProdService orderProdService;
+
 
 	@Autowired
 	private RentService rentService;
@@ -73,7 +75,7 @@ public class CustomerController {
 	private CouponService couponService;
 
 	@Autowired
-	private MemberService memberService;
+	private MemberService memberService;	
 
 	@Autowired
 	private Addr_ListService addr_ListService;
@@ -479,7 +481,24 @@ public class CustomerController {
 		int customerUpdate = customerService.customerUpdate(customerDTO);
 
 		return "customer/customerOrderSuccess";
+
 	}
+	@PostMapping("/applyCoupon")
+	@ResponseBody
+	public String applyCoupon(@RequestBody CouponRequestDTO couponRequestDTO) {
+
+		String couponid = couponRequestDTO.getCouponid();
+		int orderid = couponRequestDTO.getOrderid();
+
+		if("���þ���".equals(couponid)) {
+			return "Coupon applied";
+		}else {
+			// �ֹ� �׸� ������ ��������
+			OrderProdDTO orderProdDTO = orderProdService.selectById(orderid);
+			int totalPrice = orderProdDTO.getTotal_price();
+			
+			System.out.println("����ID:" + couponid);
+			CouponDTO selectCouponDTO = couponService.selectById(couponid);
 
 	// 구매 결제 취소
 	@PostMapping("/cancelOrderPay.do")
@@ -527,3 +546,4 @@ public class CustomerController {
 	}
 
 }
+

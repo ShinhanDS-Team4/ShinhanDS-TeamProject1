@@ -1,6 +1,5 @@
 package com.team4.shoppingmall.order_prod;
 
-import java.sql.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,4 +23,5 @@ public class OrderProdDetailDTO {
 	String img_id;
 	String order_state;
 	String orderdetail_id;
+
 }

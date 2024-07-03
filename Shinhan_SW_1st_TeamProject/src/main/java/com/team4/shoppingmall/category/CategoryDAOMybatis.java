@@ -14,6 +14,11 @@ public class CategoryDAOMybatis implements CategoryDAOInterface {
 	
 	String namespace = "com.saren.category.";
 	
+	//상품의 카테고리명 조회
+	public CategoryDTO productCategoryByProdId(String prod_id) {
+		return sqlSession.selectOne(namespace+"productCategoryByProdId", prod_id);
+	};
+	
 	@Override
 	public CategoryDTO selectById(Integer category_id) {
 		return sqlSession.selectOne(namespace+"selectById", category_id);

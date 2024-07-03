@@ -1,6 +1,7 @@
 package com.team4.shoppingmall.addr_list;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class Addr_ListDAOMybatis implements Addr_ListDAOInterface{
+	
 	@Autowired
 	SqlSession sqlSession;
 	
@@ -21,6 +23,12 @@ public class Addr_ListDAOMybatis implements Addr_ListDAOInterface{
 	@Override
 	public List<Addr_ListDTO> selectByMember_Id(String member_id) {
 		return sqlSession.selectList(namespace+"selectByMember_Id", member_id);
+	}
+	
+	//나의 배송지 목록 조회
+	@Override
+	public List<Map<String,Object>> selectByMember_Id2(String member_id) {
+		return sqlSession.selectList(namespace+"selectByMember_Id2", member_id);
 	}
 	
 	@Override
@@ -38,6 +46,13 @@ public class Addr_ListDAOMybatis implements Addr_ListDAOInterface{
 		return sqlSession.update(namespace+"addressUpdate", addr_list);
 	}
 
-	
+	// 기존 is_master_addr 값을 N으로 업데이트
+	public int updateMasterAddrToN() {
+		return sqlSession.update(namespace+"updateMasterAddrToN");
+	};
+	//나의 주소 개수 
+	public int countAddresses(String member_id){
+		return sqlSession.selectOne(namespace+"countAddresses", member_id);
+	};
 	
 }

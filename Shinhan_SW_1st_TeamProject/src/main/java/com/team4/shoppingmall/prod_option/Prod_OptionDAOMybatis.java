@@ -20,7 +20,7 @@ public class Prod_OptionDAOMybatis implements Prod_OptionDAOInterface {
 	}
 	
 	@Override
-	public List<Prod_OptionDTO> selectByProdId(Integer prod_id) {
+	public List<Prod_OptionDTO> selectByProdId(String prod_id) {
 		return sqlSession.selectList(namespace+"selectByProdId", prod_id);
 	}
 	

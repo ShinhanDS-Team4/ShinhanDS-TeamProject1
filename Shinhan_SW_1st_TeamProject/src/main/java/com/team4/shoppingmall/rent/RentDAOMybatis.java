@@ -17,8 +17,12 @@ public class RentDAOMybatis implements RentDAOInterface {
 
 	String namespace = "com.saren.rent.";
 	
-	
-	
+
+	//대여 신청 완료된 대여 상품 목록
+	public List<Map<String,Object>> rentProductById(String member_id){
+		return sqlSession.selectList(namespace+"rentProductById", member_id);
+	};
+
 	@Override
 	public int searchRentId() {
 		return sqlSession.selectOne(namespace+"searchRentId");
@@ -48,12 +52,14 @@ public class RentDAOMybatis implements RentDAOInterface {
 		return sqlSession.update(namespace+"rentUpdate", rental_code);
 	} 
 
+
 	// rentlist.jsp�� ����� ��ǰ��, �귣��, �ɼ�, ��ǰ����, �̹���URL
 	@Override
 	public List<RentSelectDTO> selectById2(int rental_code) {
 		return sqlSession.selectList(namespace+"selectById2", rental_code); 
 	}
 	
+
 	// rentlist.jsp����, �󼼻�ǰ �ɼ� ��½�, ��� �ɼ� ��������
 	@Override
 	public List<RentProdStockDTO> selectOptions() {

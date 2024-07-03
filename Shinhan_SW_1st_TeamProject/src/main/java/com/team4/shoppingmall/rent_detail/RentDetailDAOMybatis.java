@@ -15,22 +15,34 @@ public class RentDetailDAOMybatis implements RentDetailDAOInterface {
 	SqlSession sqlSession;
 	String namespace = "com.saren.rent_detail."; //수정
 
+<<<<<<< HEAD
+	String namespace = "com.saren.rent_detail."; 
+
+=======
+>>>>>>> main
 	// 대여상세 상세
 	@Override
 	public RentDetailDTO selectById(Integer rentdetail_id) {
 		return sqlSession.selectOne(namespace+"selectById", rentdetail_id);
 	}
 
+<<<<<<< HEAD
+	// 대여상세 목록
+=======
+>>>>>>> main
 	@Override
 	public List<RentDetailDTO> selectAll() {
 		return sqlSession.selectList(namespace+"selectAll");
 	}
 
+<<<<<<< HEAD
+=======
 	@Override
 	public List<RentDetailDTO> selectBySellerID(String member_id) {
 		return sqlSession.selectList(namespace+"selectBySellerID", member_id);
 	}
 	
+>>>>>>> main
 	// 대여상세 생성
 	@Override
 	public int rentDetailInsert(RentDetailDTO rentdetail) {
