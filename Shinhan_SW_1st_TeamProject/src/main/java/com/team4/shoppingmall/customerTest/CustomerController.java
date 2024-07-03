@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -231,25 +232,26 @@ public class CustomerController {
 		String couponid = couponRequestDTO.getCouponid();
 		int orderid = couponRequestDTO.getOrderid();
 
+		//쿠폰을 선택하지 않은 경우
 		if ("선택안함".equals(couponid)) {
 			return "Coupon applied";
 		} else {
-			// �ֹ� �׸� ������ ��������
+			// 쿠폰을 선택한 경우
 			OrderProdDTO orderProdDTO = orderProdService.selectById(orderid);
 			int totalPrice = orderProdDTO.getTotal_price();
 
-			System.out.println("����ID:" + couponid);
+			System.out.println("쿠폰ID:" + couponid);
 			CouponDTO selectCouponDTO = couponService.selectById(couponid);
 
-			System.out.println("��������:" + selectCouponDTO);
+			System.out.println("쿠폰정보:" + selectCouponDTO);
 			double discountRate = selectCouponDTO.getDiscount_rate();
 
 			int discountAmount = (int) Math.round(totalPrice * (discountRate / 100.0));
 
 			int discountedPrice = totalPrice - discountAmount;
 
-			System.out.println("����:" + discountAmount);
-			System.out.println("���ΰ���:" + discountedPrice);
+			System.out.println("쿠폰 할인액:" + discountAmount);
+			System.out.println("쿠폰 적용 결제액:" + discountedPrice);
 
 			int couponAmount = selectCouponDTO.getQuantity();
 			selectCouponDTO.setQuantity(couponAmount - 1);
@@ -272,14 +274,14 @@ public class CustomerController {
 	@ResponseBody
 	public String applyCoupon(@RequestBody PointRequestDTO pointRequestDTO) {
 		int point = pointRequestDTO.getPoint();
-		System.out.println("����� ����Ʈ:" + point);
+		System.out.println("포인트 보유량:" + point);
 		int orderid = pointRequestDTO.getOrderid();
 
 		OrderProdDTO orderProdDTO = orderProdService.selectById(orderid);
 		int totalPrice = orderProdDTO.getTotal_price();
 
 		int pointAppliedPrice = totalPrice - point;
-		System.out.println("����Ʈ ��� �� ������:" + pointAppliedPrice);
+		System.out.println("포인트 적용 결제가격:" + pointAppliedPrice);
 
 		OrderProdDTO updatedPrice = new OrderProdDTO();
 		updatedPrice.setOrder_id(orderid);
@@ -299,18 +301,20 @@ public class CustomerController {
 	// 주소 선택하기
 	@PostMapping("/applyAddress")
 	@ResponseBody
-	public String applyAddress(@RequestBody AddressRequestDTO request) {
+	public String applyAddress(@RequestBody AddressRequestDTO request, HttpSession session) {
 		System.out.println(request);
 
 		int addr_num = request.getAddr_num();
 		int order_id = request.getOrder_id();
 
 		OrderProdDTO orderProdDTO = orderProdService.selectById(order_id);
-		System.out.println("�ֹ�����:" + orderProdDTO);
 		orderProdDTO.setAddr_num(addr_num);
+		System.out.println("주소 적용 후 주문정보:" + orderProdDTO);
 
 		int addrUpdateResult = orderProdService.orderprodUpdate(orderProdDTO);
 
+		session.setAttribute("selectedAddr", addr_num);
+		
 		return "Address Saved";
 	}
 
