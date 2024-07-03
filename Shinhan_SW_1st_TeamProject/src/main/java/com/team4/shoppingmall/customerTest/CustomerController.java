@@ -318,6 +318,7 @@ public class CustomerController {
 	@GetMapping("/sellPaySuccess")
 	public String sellPaySuccess(@RequestParam("order_id") Integer order_id) {
 
+		OrderProdDTO orderProdDTO = orderProdService.selectById(order_id);
 		// 구매 주문에 해당하는 주문 상세 목록들 가져오기
 		List<Order_DetailDTO> orderDetailDTOs = orderDetailService.selectByOrder_Id(order_id);
 
@@ -341,12 +342,56 @@ public class CustomerController {
 			seller_Prod_StockDTO.setStock(currentStock - orderAmount);
 			seller_Prod_StockDTO.setTotal(currentSellTotal + orderAmount);
 
-			// 고객의 포인트와 고객등급, 누적 등급 가져오기
-
 			int updateOrderStatus = orderDetailService.orderDetailUpdate(order_DetailDTO);
 			int updateStock = seller_Prod_StockService.seller_prod_stockUpdate(seller_Prod_StockDTO);
-
 		}
+
+		// 고객의 포인트와 고객등급, 누적 구매액 가져오기
+		String customerID = orderProdDTO.getMember_id();
+		CustomerDTO customerDTO = customerService.selectById(customerID);
+		int orderPrice = orderProdDTO.getTotal_price();
+
+		int point = customerDTO.getPoint();
+		String member_level = customerDTO.getMember_level();
+		int accum_amount = customerDTO.getAccum_amount();
+
+		// 누적 구매액 갱신
+		accum_amount = accum_amount + orderPrice;
+		customerDTO.setAccum_amount(accum_amount);
+
+		// 등급별 포인트 계산 후 적립
+		double rate = 0.0;
+
+		if ("Family".equals(member_level)) {
+			rate = 0.1;
+		} else if ("Bronze".equals(member_level)) {
+			rate = 0.5;
+		} else if ("Silver".equals(member_level)) {
+			rate = 1.0;
+		} else if ("Gold".equals(member_level)) {
+			rate = 1.5;
+		} else if ("Platinum".equals(member_level)) {
+			rate = 2.0;
+		}
+
+		int upadatedPoint = point + (int) Math.round(orderPrice * rate);
+
+		customerDTO.setPoint(upadatedPoint);
+
+		// 고객의 누적 구매액에 따라 등급 변경
+		if (accum_amount >= 1000000) {
+			customerDTO.setMember_level("Platinum");
+		} else if (accum_amount >= 600000 && accum_amount < 1000000) {
+			customerDTO.setMember_level("Gold");
+		} else if (accum_amount >= 300000 && accum_amount < 600000) {
+			customerDTO.setMember_level("Silver");
+		} else if (accum_amount >= 100000 && accum_amount < 300000) {
+			customerDTO.setMember_level("Bronze");
+		} else {
+			customerDTO.setMember_level("Family");
+		}
+
+		int customerUpdate = customerService.customerUpdate(customerDTO);
 
 		return "customer/customerOrderSuccess";
 	}
@@ -354,6 +399,8 @@ public class CustomerController {
 	// 대여 결제 완료 후 프로세스
 	@GetMapping("/rentPaySuccess")
 	public String rentPaySuccess(@RequestParam("rental_code") Integer rental_code) {
+		
+		RentDTO rentDTO = rentService.selectById(rental_code);
 
 		List<RentDetailDTO> rentDetailDTOs = rentDetailService.selectByRental_code(rental_code);
 
@@ -381,6 +428,53 @@ public class CustomerController {
 
 		}
 
+		// 고객의 포인트와 고객등급, 누적 구매액 가져오기
+		String customerID = rentDTO.getMember_id();
+		CustomerDTO customerDTO = customerService.selectById(customerID);
+		int rentPrice = rentDTO.getTotal_rent_price();
+
+		int point = customerDTO.getPoint();
+		String member_level = customerDTO.getMember_level();
+		int accum_amount = customerDTO.getAccum_amount();
+
+		// 누적 구매액 갱신
+		accum_amount = accum_amount + rentPrice;
+		customerDTO.setAccum_amount(accum_amount);
+
+		// 등급별 포인트 계산 후 적립
+		double rate = 0.0;
+
+		if ("Family".equals(member_level)) {
+			rate = 0.1;
+		} else if ("Bronze".equals(member_level)) {
+			rate = 0.5;
+		} else if ("Silver".equals(member_level)) {
+			rate = 1.0;
+		} else if ("Gold".equals(member_level)) {
+			rate = 1.5;
+		} else if ("Platinum".equals(member_level)) {
+			rate = 2.0;
+		}
+
+		int upadatedPoint = point + (int) Math.round(rentPrice * rate);
+
+		customerDTO.setPoint(upadatedPoint);
+
+		// 고객의 누적 구매액에 따라 등급 변경
+		if (accum_amount >= 1000000) {
+			customerDTO.setMember_level("Platinum");
+		} else if (accum_amount >= 600000 && accum_amount < 1000000) {
+			customerDTO.setMember_level("Gold");
+		} else if (accum_amount >= 300000 && accum_amount < 600000) {
+			customerDTO.setMember_level("Silver");
+		} else if (accum_amount >= 100000 && accum_amount < 300000) {
+			customerDTO.setMember_level("Bronze");
+		} else {
+			customerDTO.setMember_level("Family");
+		}
+
+		int customerUpdate = customerService.customerUpdate(customerDTO);
+
 		return "customer/customerOrderSuccess";
 	}
 
@@ -390,8 +484,10 @@ public class CustomerController {
 	public String cancelOrderPay(@RequestParam int order_id) {
 		int orderID = order_id;
 
+		//주문 상세 삭제
 		int orderDetailDelResult = orderDetailService.orderDetailDelByOrderID(order_id);
-		
+
+		//주문 삭제
 		int orderDelResult = orderProdService.orderprodDelete(order_id);
 
 		return "Canceled";
@@ -403,10 +499,12 @@ public class CustomerController {
 	public String cancelRentPay(@RequestParam int rental_code) {
 		int rentalCode = rental_code;
 
+		//대여 상세 삭제
 		int rentDetailDelResult = rentDetailService.rentDetailDelByRentCode(rentalCode);
-		
+
+		//대여 삭제
 		int rentDelResult = rentService.rentprodDelete(rental_code);
-		
+
 		return "Canceled";
 	}
 
