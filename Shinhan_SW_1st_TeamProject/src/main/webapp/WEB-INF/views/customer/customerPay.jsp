@@ -117,6 +117,28 @@
 		});
 		
 	}
+	
+	$("cancelBtn").on("click",function(){
+		var order_id = $('#orderId').val();
+		
+		$.ajax({
+			type:"POST",
+			url:"/shoppingmall/customer/cancelOrderPay.do",
+			data:{
+				"order_id":order_id
+			},success:function(response){
+				if(response==="Canceled"){
+					alert("주문을 취소하고 이전 페이지로 돌아갑니다.");
+					history.back();
+				}else{
+					alert("주문 취소에 실패하였습니다.")
+				}
+				
+			},error:function(jqXHR, textStatus, errorThrown) {
+                alert("서버 요청 실패: " + errorThrown);
+            }
+		});
+	});
 
 		$().ready(function(){
 			var IMP = window.IMP;
@@ -289,23 +311,6 @@
 			</div>
 
 
-			<!-- <div class="form-group">
-				<label for="main_address">배송주소</label> <input type="text"
-					id="main_address" name="main_address" />
-				<button type="button" class="address-button">주소 찾기</button>
-			</div>
-			<div class="form-group">
-				<label for="address">상세주소</label> <input type="text"
-					id="detail_address" name="detail_address" />
-			</div>
-			<div class="form-group">
-				<input type="checkbox" id="save-address" name="save-address" /> <label
-					for="save-address">기본 배송지로 저장</label>
-			</div> -->
-
-
-
-
 			<div class="form-group">
 				<label for="coupon">쿠폰 선택</label> <select name="selectedCoupon"
 					id="selectedCoupon">
@@ -346,6 +351,7 @@
 				value="${orderInfo.total_price}">
 		</div>
 		<button class="payment-button" id="orderBtn">결제하기</button>
+		<button class="payment-button" id="cancelBtn">뒤로가기</button>
 	</main>
 </body>
 </html>

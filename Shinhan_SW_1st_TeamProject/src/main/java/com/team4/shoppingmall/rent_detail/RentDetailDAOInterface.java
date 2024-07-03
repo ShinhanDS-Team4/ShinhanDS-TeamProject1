@@ -25,5 +25,7 @@ public interface RentDetailDAOInterface {
 
 	// �뿩ID�� �뿩�� ���
 	public List<RentDetailDTO> selectByRental_code(int rental_code);
+
+	public int rentDetailDelByRentCode(Integer rental_code);
 	
 }

@@ -81,6 +81,28 @@
 		});
 		
 	}
+	
+	$("cancelBtn").on("click",function(){
+		var order_id = $('#orderId').val();
+		
+		$.ajax({
+			type:"POST",
+			url:"/shoppingmall/customer/cancelRentPay.do",
+			data:{
+				"rental_code":order_id
+			},success:function(response){
+				if(response==="Canceled"){
+					alert("주문을 취소하고 이전 페이지로 돌아갑니다.");
+					history.back();
+				}else{
+					alert("주문 취소에 실패하였습니다.")
+				}
+				
+			},error:function(jqXHR, textStatus, errorThrown) {
+                alert("서버 요청 실패: " + errorThrown);
+            }
+		});
+	});
 
 		$().ready(function(){
 			var IMP = window.IMP;
@@ -256,6 +278,7 @@
 				value="${rentInfo.total_rent_price}">
 		</div>
 		<button class="payment-button" id="orderBtn">결제하기</button>
+		<button class="payment-button" id="cancelBtn">뒤로가기</button>
 	</main>
 </body>
 </html>

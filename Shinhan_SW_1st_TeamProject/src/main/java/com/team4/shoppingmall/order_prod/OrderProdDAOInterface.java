@@ -36,5 +36,7 @@ public interface OrderProdDAOInterface {
 
 	public int updateOrderPrice(OrderProdDTO orderprod);
 
+	public int orderprodDelete(int order_id);
+
 	
 }

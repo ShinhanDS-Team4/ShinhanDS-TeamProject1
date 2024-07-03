@@ -37,4 +37,8 @@ public class Order_DetailService {
 	public int orderDetailDelete(int orderdetail_id) {
 		return order_DetailDAO.orderDetailDelete(orderdetail_id);
 	}
+	
+	public int orderDetailDelByOrderID(int order_id) {
+		return order_DetailDAO.orderDetailDelByOrderID(order_id);
+	}
 }

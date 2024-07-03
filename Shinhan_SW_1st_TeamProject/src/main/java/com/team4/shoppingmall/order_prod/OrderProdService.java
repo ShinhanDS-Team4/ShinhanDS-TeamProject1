@@ -102,6 +102,10 @@ public class OrderProdService {
 		return orderprodDAO.orderRefund(orderId);
 	}
 	
+	public int orderprodDelete(int order_id) {
+		return orderprodDAO.orderprodDelete(order_id);
+	}
+	
 	
 
 }

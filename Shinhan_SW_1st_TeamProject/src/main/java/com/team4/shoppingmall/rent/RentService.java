@@ -102,5 +102,9 @@ public class RentService {
 	public int updateRent(RentDTO rent) {
 		return rentDAO.updateRent(rent);
 	}
+	
+	public int rentprodDelete(int rental_code) {
+		return rentDAO.rentprodDelete(rental_code);
+	}
 
 }
