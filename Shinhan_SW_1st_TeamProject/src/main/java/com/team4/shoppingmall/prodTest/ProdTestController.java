@@ -44,6 +44,7 @@ import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestService
 @RequestMapping("/prod")
 public class ProdTestController {
 	
+	/* Test패키지로 작업  */
 	
 	@Autowired
 	Seller_Prod_StockTestService seller_Prod_StockTestService; 
@@ -166,7 +167,8 @@ public class ProdTestController {
 		}
        
         
-    int cart_amount = prodVO.getOrder_num();
+        int cart_amount = prodVO.getOrder_num();
+
 		int sellProdCartInsert = cartService.cartInsert(prodVO, member_id, cart_amount);
 		
 		return sellProdCartInsert;

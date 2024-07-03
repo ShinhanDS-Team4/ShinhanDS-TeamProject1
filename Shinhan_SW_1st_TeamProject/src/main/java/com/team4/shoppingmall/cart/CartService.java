@@ -2,7 +2,6 @@ package com.team4.shoppingmall.cart;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +27,7 @@ public class CartService {
 	public CartDTO selectCartBySellstock(CartDTO cartDTO) {
 		return cartDAO.selectCartBySellStock(cartDTO);
 	}
-	
+
 	public List<CartDTO> selectSellStockByMemberId(String member_id) {
 		return cartDAO.selectSellStockByMemberId(member_id);
 	}
@@ -49,6 +48,17 @@ public class CartService {
 		return cartDAO.selectAll();
 	}
 	
+	public int cartInsert(CartDTO cart) {
+		return cartDAO.cartInsert(cart);
+	}
+	
+	public int cartUpdate(CartDTO cart) {
+		return cartDAO.cartUpdate(cart);
+	}
+	
+	public int cartDelete(Integer cart_id) {
+		return cartDAO.cartDelete(cart_id);
+	}
 	//판매상품 장바구니 insert문
 	@Transactional
 	public int cartInsert(ProductNewVO prodVO, String member_id, int cart_amount) {
@@ -100,17 +110,8 @@ public class CartService {
 	}
 
 	//장바구니 상품 수량 업데이트
-	public int updateCartBySellStock(CartDTO cart) {
-		return cartDAO.updateCartBySellStock(cart);
+	public int updateCartBySellstock(CartDTO cart) {
+		return cartDAO.updateCartBySellstock(cart);
 	}
-	
-	public int cartUpdate(CartDTO cart) {
-		return cartDAO.cartUpdate(cart);
-	}
-	
-	public int cartDelete(Integer cart_id) {
-		return cartDAO.cartDelete(cart_id);
-	}
-	
 	
 }

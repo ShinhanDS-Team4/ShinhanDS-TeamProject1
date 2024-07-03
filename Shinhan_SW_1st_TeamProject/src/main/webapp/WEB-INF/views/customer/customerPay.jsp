@@ -24,41 +24,41 @@
 
 
 <script>
-	
-	function selectAddr(){
-		 var selectedRadio = document.querySelector('input[name="address"]:checked');
-	        if (selectedRadio) {
-	            // 선택된 라디오 버튼의 값 (address ID)을 가져옵니다.
-	            var addr_num = selectedRadio.value;
-	            var order_id = $('#orderId').val(); 
-	            alert(addr_num);
-	            $.ajax({
-	     			url : "/shoppingmall/customer/applyAddress",
-	     			type : 'POST',
-	     			contentType : 'application/json',
-	     			data : JSON.stringify({
-	     				addr_num : addr_num,
-	     				order_id : order_id
-	     			}),
-	     			success : function(response) {
-	     				if (response === "Address Saved") {
-	     					alert('선택하신 주소가 적용되었습니다');
-	     					location.reload();
-	     				} else {
-	     					alert('선택하신 주소 적용에 실패하였습니다');
-	     				}
-	     			},
-	     			error : function() {
-	     				alert('서버 요청 중 오류가 발생했습니다.');
-	     			}
-	             });
-	            
-	        } else {
-	            // 선택된 라디오 버튼이 없을 때의 메시지.
-	        	alert("Not selected");
-	        }
+	function selectAddr() {
+		var selectedRadio = document
+				.querySelector('input[name="address"]:checked');
+		if (selectedRadio) {
+			// 선택된 라디오 버튼의 값 (address ID)을 가져옵니다.
+			var addr_num = selectedRadio.value;
+			var order_id = $('#orderId').val();
+			alert(addr_num);
+			$.ajax({
+				url : "/shoppingmall/customer/applyAddress",
+				type : 'POST',
+				contentType : 'application/json',
+				data : JSON.stringify({
+					addr_num : addr_num,
+					order_id : order_id
+				}),
+				success : function(response) {
+					if (response === "Address Saved") {
+						alert('선택하신 주소가 적용되었습니다');
+						location.reload();
+					} else {
+						alert('선택하신 주소 적용에 실패하였습니다');
+					}
+				},
+				error : function() {
+					alert('서버 요청 중 오류가 발생했습니다.');
+				}
+			});
+
+		} else {
+			// 선택된 라디오 버튼이 없을 때의 메시지.
+			alert("Not selected");
+		}
 	}
-	
+
 	function applyCoupon() {
 		var selectedCouponId = $('#selectedCoupon').val();
 		var orderid = $('#orderId').val();
@@ -86,15 +86,14 @@
 			}
 		});
 	}
-	
-	function applyPoint(){
+
+	function applyPoint() {
 		var usePoint = $('#usePoint').val();
 		var orderid = $('#orderId').val();
-		
+
 		alert(usePoint);
 		alert(orderid);
-		
-		
+
 		$.ajax({
 			url : "/shoppingmall/customer/applyPoint",
 			type : 'POST',
@@ -115,80 +114,126 @@
 				alert('서버 요청 중 오류가 발생했습니다.');
 			}
 		});
-		
+
 	}
 
-		$().ready(function(){
-			var IMP = window.IMP;
-            IMP.init('imp31438144'); // 가맹점 식별코드 입력
-			
-			$("#orderBtn").on("click", function(){
-				alert("구매버튼");
-				var order_id = '${orderInfo.order_id}';
-				var userid= '${memberInfo.member_id}';
-				var username = '${memberInfo.member_name}';
-				var phone='${memberInfo.phone}';
-				var merchant_uid = 'order_'+order_id//DB에 주문ID로 저장될, 고유한 주문 ID
-				var amount = '${orderInfo.total_price}';//결제 금액
-				
-				
-				$.ajax({
-					type:"POST",
-					url:"/shoppingmall/customer/preparePayment",
-					data:{
-						"merchantUid":merchant_uid,
-						"amount":amount	
-					},
-					success: function(response){
-						if(response==="Payment amount registered successfully"){
-							alert("결제금액 사전 등록 완료");
-							//여기에서 이니시스 결제
-							IMP.request_pay({
-			                	pg: "html5_inicis",           // 등록된 pg사 (적용된 pg사는 KG이니시스)
-			                	pay_method: "card",
-			                	merchant_uid: merchant_uid, // 주문 고유 번호
-			                	name: "상품 주문",
-			                	amount: '${orderInfo.total_price}',
-			                	buyer_email: '${memberInfo.email}',
-			                	buyer_name: username,
-			                	buyer_tel: phone,
-			                	buyer_addr: "서울특별시 강남구 신사동",
-			                	buyer_postcode: "01181",
-			            	}, function(response){
-			            		if (response.success){
-			                    	$.ajax({
-			                    		type:"POST",
-			                    		url:"/shoppingmall/customer/verifyPayment",
-			                    		data:{
-			                    			 "imp_uid":response.imp_uid,
-			                                 "merchant_uid":response.merchant_uid
-			                    		},
-			                    		success : function(verificationResult){
-			                    			if(verificationResult === "success"){
-			                    				alert("검증에서 이상 없음. 결제 완료");	
-			                    				window.location.href = "/shoppingmall/customer/sellPaySuccess?order_id="+ + encodeURIComponent(order_id);
-			                    			}else{
-			                    				alert("검증에서 이상 발생. 결제 취소");
-			                    			}
-			                    		},
-			                    		error: function(jqXHR, textStatus, errorThrown) {
-	                                        alert("결제 검증 요청 실패: " + errorThrown);
-	                                    }
-			                    	});
-			                	} else {
-			                		alert("결제에 실패하였습니다. 에러: " + response.error_msg);
-			                	}
-			            	});
-						}else{
-							alert("사전결제 등록 실패")
-						}
-					},
-					error: function(jqXHR, textStatus, errorThrown) {
-	                    alert("결제 금액 사전 등록 요청 실패: " + errorThrown);
-	                }
-				});
-			});
+	$("cancelBtn").on("click", function() {
+		var order_id = $('#orderId').val();
+
+		$.ajax({
+			type : "POST",
+			url : "/shoppingmall/customer/cancelOrderPay.do",
+			data : {
+				"order_id" : order_id
+			},
+			success : function(response) {
+				if (response === "Canceled") {
+					alert("주문을 취소하고 이전 페이지로 돌아갑니다.");
+					history.back();
+				} else {
+					alert("주문 취소에 실패하였습니다.")
+				}
+
+			},
+			error : function(jqXHR, textStatus, errorThrown) {
+				alert("서버 요청 실패: " + errorThrown);
+			}
 		});
+	});
+
+	$()
+			.ready(
+					function() {
+						var IMP = window.IMP;
+						IMP.init('imp31438144'); // 가맹점 식별코드 입력
+
+						$("#orderBtn")
+								.on(
+										"click",
+										function() {
+											alert("구매버튼");
+											var order_id = '${orderInfo.order_id}';
+											var userid = '${memberInfo.member_id}';
+											var username = '${memberInfo.member_name}';
+											var phone = '${memberInfo.phone}';
+											var merchant_uid = 'order_'
+													+ order_id//DB에 주문ID로 저장될, 고유한 주문 ID
+											var amount = '${orderInfo.total_price}';//결제 금액
+
+											$
+													.ajax({
+														type : "POST",
+														url : "/shoppingmall/customer/preparePayment",
+														data : {
+															"merchantUid" : merchant_uid,
+															"amount" : amount
+														},
+														success : function(
+																response) {
+															if (response === "Payment amount registered successfully") {
+																alert("결제금액 사전 등록 완료");
+																//여기에서 이니시스 결제
+																IMP
+																		.request_pay(
+																				{
+																					pg : "html5_inicis", // 등록된 pg사 (적용된 pg사는 KG이니시스)
+																					pay_method : "card",
+																					merchant_uid : merchant_uid, // 주문 고유 번호
+																					name : "상품 주문",
+																					amount : '${orderInfo.total_price}',
+																					buyer_email : '${memberInfo.email}',
+																					buyer_name : username,
+																					buyer_tel : phone,
+																					buyer_addr : "서울특별시 강남구 신사동",
+																					buyer_postcode : "01181",
+																				},
+																				function(
+																						response) {
+																					if (response.success) {
+																						$
+																								.ajax({
+																									type : "POST",
+																									url : "/shoppingmall/customer/verifyPayment",
+																									data : {
+																										"imp_uid" : response.imp_uid,
+																										"merchant_uid" : response.merchant_uid
+																									},
+																									success : function(
+																											verificationResult) {
+																										if (verificationResult === "success") {
+																											alert("검증에서 이상 없음. 결제 완료");
+																											window.location.href = "/shoppingmall/customer/sellPaySuccess?order_id="
+																													+ +encodeURIComponent(order_id);
+																										} else {
+																											alert("검증에서 이상 발생. 결제 취소");
+																										}
+																									},
+																									error : function(
+																											jqXHR,
+																											textStatus,
+																											errorThrown) {
+																										alert("결제 검증 요청 실패: "
+																												+ errorThrown);
+																									}
+																								});
+																					} else {
+																						alert("결제에 실패하였습니다. 에러: "
+																								+ response.error_msg);
+																					}
+																				});
+															} else {
+																alert("사전결제 등록 실패")
+															}
+														},
+														error : function(jqXHR,
+																textStatus,
+																errorThrown) {
+															alert("결제 금액 사전 등록 요청 실패: "
+																	+ errorThrown);
+														}
+													});
+										});
+					});
 </script>
 </head>
 <body>
@@ -214,7 +259,7 @@
 											<p>상품명</p>
 										</div>
 										<div class="right">
-											<input type="text" placeholder="덩크로우"
+											<input type="text" placeholder="덩크로우" readonly="readonly"
 												value="${orderDetail.s_stock_id}">
 										</div>
 									</div>
@@ -223,14 +268,13 @@
 											<p>가격</p>
 										</div>
 										<div class="right">
-											<input type="text" placeholder="10000"
+											<input type="text" placeholder="10000" readonly="readonly"
 												value="${orderDetail.order_product_price}">
 										</div>
 									</div>
 								</div>
 							</td>
-							<td><input type="number" value="${orderDetail.order_num}">
-							</td>
+							<td><p class="class">${orderDetail.order_num}</p></td>
 							<td>
 								<p>${orderDetail.order_product_price * orderDetail.order_num}</p>
 							</td>
@@ -246,34 +290,35 @@
 
 
 		<div class="delivery-info">
-			<h2>배송자 정보</h2>
+			<h2>배송 정보</h2>
 
 			<div class="form-group">
 				<label for="name">이름</label> <input type="text" id="name"
-					name="name" value="${memberInfo.member_name}" />
+					name="name" value="${memberInfo.member_name}" readonly="readonly" />
 			</div>
 			<div class="form-group">
 				<label for="phone">휴대폰</label> <input type="text" id="phone"
-					name="phone" value="${memberInfo.phone}" />
+					name="phone" value="${memberInfo.phone}" readonly="readonly" />
 			</div>
 
 			<div class="form-group">
 				<label for="addrList">배송지 선택</label>
-				<table>
+				<table class="addrListClass">
 					<thead>
 						<tr>
-							<th>Select</th>
-							<th>AddressID</th>
-							<th>Main Address</th>
-							<th>Detail Address</th>
-							<th>Sub Address</th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach var="address" items="${addrList}">
 							<tr>
 								<td><input type="radio" name="address"
-									value="${address.addr_num}" id="address_${address.addr_num}">
+									value="${address.addr_num}" id="address_${address.addr_num}"
+									<c:if test="${address.addr_num == selectedAddress}">checked</c:if>>
 								</td>
 								<td>${address.addr_num}</td>
 								<td>${address.main_address}</td>
@@ -285,25 +330,9 @@
 				</table>
 			</div>
 			<div class="form-group">
-				<button type="button" onclick="selectAddr()">배송 주소 선택</button>
+				<button type="button" class="select-button" onclick="selectAddr()">배송
+					주소 선택</button>
 			</div>
-
-
-			<!-- <div class="form-group">
-				<label for="main_address">배송주소</label> <input type="text"
-					id="main_address" name="main_address" />
-				<button type="button" class="address-button">주소 찾기</button>
-			</div>
-			<div class="form-group">
-				<label for="address">상세주소</label> <input type="text"
-					id="detail_address" name="detail_address" />
-			</div>
-			<div class="form-group">
-				<input type="checkbox" id="save-address" name="save-address" /> <label
-					for="save-address">기본 배송지로 저장</label>
-			</div> -->
-
-
 
 
 			<div class="form-group">
@@ -320,7 +349,8 @@
 					value="${orderInfo.total_price}" /> <input type="hidden"
 					id="orderId" name="orderId" value="${orderInfo.order_id}" />
 				<div class="buttons">
-					<button type="button" id="apply_coupon" onclick="applyCoupon()">선택하기</button>
+					<button type="button" class="select-button" id="apply_coupon"
+						onclick="applyCoupon()">선택하기</button>
 				</div>
 
 			</div>
@@ -328,13 +358,14 @@
 
 			<div class="form-group">
 				<label for="pointLeft">보유 포인트</label> <input type="number"
-					value="${customerInfo.point}">
+					value="${customerInfo.point}" readonly="readonly">
 			</div>
 			<div class="form-group">
 				<label for="pointLeft">사용할 포인트</label> <input type="number"
 					id="usePoint" name="usePoint">
 				<div class="buttons">
-					<button type="button" id="apply_point" onclick="applyPoint()">사용</button>
+					<button type="button" class="select-button" id="apply_point"
+						onclick="applyPoint()">사용</button>
 				</div>
 			</div>
 
@@ -343,9 +374,13 @@
 
 		<div class="form-group">
 			<label>최종 결제 금액</label> <input type="number"
-				value="${orderInfo.total_price}">
+				value="${orderInfo.total_price}" readonly="readonly">
 		</div>
-		<button class="payment-button" id="orderBtn">결제하기</button>
+		<div class="payment-group">
+			<button class="payment-button" id="orderBtn">결제하기</button>
+			<button class="payment-button" id="cancelBtn">뒤로가기</button>
+		</div>
+
 	</main>
 </body>
 </html>

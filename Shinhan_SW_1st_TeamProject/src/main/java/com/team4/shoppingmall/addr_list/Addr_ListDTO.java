@@ -11,11 +11,12 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Addr_ListDTO {
+	//ERD 칼럼명 적용
 	int addr_num;
     String member_id;
     String zipcode;
     String main_address;
     String detail_address;
-    String is_master_addr;
+    String is_master_addr; 
     String sub_address;
 }

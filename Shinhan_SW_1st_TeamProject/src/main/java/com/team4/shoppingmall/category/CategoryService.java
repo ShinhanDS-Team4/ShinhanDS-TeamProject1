@@ -15,7 +15,6 @@ public class CategoryService {
 	public CategoryDTO productCategoryByProdId(String prod_id) {
 		return categoryDAO.productCategoryByProdId(prod_id);
 	};
-	
 	public CategoryDTO selectById(Integer category_id) {
 		return categoryDAO.selectById(category_id);
 	}

@@ -11,6 +11,7 @@ public interface ReviewsDAOInterface {
 	//리뷰 평균과 리뷰 수
 	public ReviewsDTO reviewAvgByProdId(String prod_id);
 	
+	
 	public ReviewsDTO selectById(Integer review_id);
 	
 	public List<ReviewsDTO> selectAll();

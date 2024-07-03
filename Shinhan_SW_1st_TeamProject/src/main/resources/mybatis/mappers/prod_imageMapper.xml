@@ -49,13 +49,13 @@
 
 	<insert id="prod_imageInsert" parameterType="prod_imageVO">
 		INSERT
-		INTO PROD_IMAGE(img_id, prod_id) 
-		VALUES(#{img_id}, #{prod_id})
+		INTO PROD_IMAGE(img_id, prod_id, img_type) 
+		VALUES(#{img_id}, #{prod_id}, #{img_type})
 	</insert>
 
 	<update id="prod_imageUpdate" parameterType="prod_imageVO">
 		UPDATE PROD_IMAGE
-		SET img_id = #{img_id}
+		SET img_id = #{img_id}, img_type=#{img_type}
 		WHERE prod_id = #{prod_id}
 	</update>
 

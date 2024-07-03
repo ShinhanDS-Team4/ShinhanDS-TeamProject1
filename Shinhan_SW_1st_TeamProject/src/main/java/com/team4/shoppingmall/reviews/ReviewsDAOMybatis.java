@@ -15,6 +15,7 @@ public class ReviewsDAOMybatis implements ReviewsDAOInterface {
 	
 	String namespace = "com.saren.reviews.";
 	
+	
 	//상품 리뷰 목록
 	public List<Map<String,String>> selectAllProductReviewByProdId(String prod_id){
 		return sqlSession.selectList(namespace+"selectAllProductReviewByProdId", prod_id);
@@ -23,6 +24,7 @@ public class ReviewsDAOMybatis implements ReviewsDAOInterface {
 	public ReviewsDTO reviewAvgByProdId(String prod_id) {
 		return sqlSession.selectOne(namespace+"reviewAvgByProdId", prod_id);
 	};
+	
 	@Override
 	public ReviewsDTO selectById(Integer review_id) {
 		return sqlSession.selectOne(namespace+"selectById", review_id);
