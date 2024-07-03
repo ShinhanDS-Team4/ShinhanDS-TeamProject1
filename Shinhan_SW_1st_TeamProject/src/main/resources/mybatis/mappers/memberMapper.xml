@@ -5,11 +5,12 @@
 <mapper namespace="com.saren.member">
 
 	<!-- 로그인 회원 정보 수정용 비밀번호 체크  -->
-	<select id="memberCheckByPw" parameterType="string"
-		resultType="memberVO">
-		SELECT *
+	<select id="memberCheckByPw" parameterType="memberVO"
+		resultType="int">
+		SELECT COUNT(*)
 		FROM MEMBER
 		WHERE member_pw = #{member_pw}
+		and member_id = #{member_id}
 	</select>
 
 	<select id="selectById" parameterType="string"

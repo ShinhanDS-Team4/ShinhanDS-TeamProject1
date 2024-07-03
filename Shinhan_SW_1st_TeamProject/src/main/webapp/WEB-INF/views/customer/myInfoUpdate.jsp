@@ -351,7 +351,7 @@
 						<!-- "비밀번호 확인" 버튼 클릭: myinfo_update에서 페이지 업데이트 -->
 						<div class="pw-check">
 							<p>회원님의 개인정보보호를 위한 본인 확인절차를 위해 비밀번호를 입력해 주세요.</p>
-							<button id="loadButton" class="button">비밀번호 확인</button>
+							<button id="loadButton" class="button" type="">비밀번호 확인</button>
 						</div>
 					</div>
 					<h2 class="myinfo_title">나의 배송지</h2>
@@ -383,10 +383,9 @@
 			<script type="text/javascript">
 				 $(document).ready(function(){
 		            $("#loadButton").click(function(){
-		                //$("#mypage_here").load("${path}/customer/myInfoUpdate_step2.do");
-		                
+		                //비밀번호 확인 페이지로 이동
 		                $.ajax({
-		                    url: "${path}/customer/myInfoUpdatePw.do",
+		                    url: "${path}/customer/myInfoUpdatePwPage.do",
 		                    type: "POST",
 		                    success: function(data) {
 		                        $(".mypage_here").html(data);

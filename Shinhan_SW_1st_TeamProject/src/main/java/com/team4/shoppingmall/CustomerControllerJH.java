@@ -171,7 +171,7 @@ public class CustomerControllerJH {
 	@GetMapping("/myInfoUpdate.do")
 	public String myInfoUpdate( HttpSession session, Model model) {
 		
-		String member_id = "testid";
+		String member_id = "testid"; //테스트id
 		
 		//나의 배송지 목록
 		List<Map<String,Object>> addrlist = addrService.selectByMember_Id(member_id);
@@ -183,31 +183,42 @@ public class CustomerControllerJH {
 	}
 
 	//step2 - 비밀번호 확인 창
-	@PostMapping("/myInfoUpdatePw.do")
-	public String myInfoUpdatePw() {
-		
-		
-		
+	//jsp페이지 로드
+	@PostMapping("/myInfoUpdatePwPage.do")
+	public String myInfoUpdatePwPage(HttpSession session, 
+			 Model model){
 		
 		return "customer/myInfoUpdate_step2";
 	}
 	
+	//비민번호 체크 
+	@ResponseBody
+	@PostMapping("/myInfoUpdatePwCheck.do")
+	public int myInfoUpdatePw(HttpSession session, Model model,
+							   @RequestBody Map<String,String> pwData ) 
+	{
+		
+		String member_id = "testid"; //테스트id
+	    String password = pwData.get("password");
+		
+		System.out.println(member_id);
+		System.out.println(password);
+		
+		MemberDTO member = new MemberDTO();
+		member.setMember_id(member_id); // ?
+		member.setMember_pw(pwData.get("password"));
+		
+		int result = memberService.memberCheckByPw(member); 
+		
+		return result;
+	}
 	
 	//비밀번호 체크 후 다음 스텝(step3)
-	@PostMapping("/myInfoUpdatePwCheck.do")
-	public String myInfoUpdatePwCheck(HttpSession session,
-									  @RequestParam("password") String password) {
+	@GetMapping("/myInfoUpdate_step3.do")
+	public String myInfoUpdatePwCheck(HttpSession session) {
 		
-		//MemberDTO member =  session.getAttribute("member");
-		//String member_id = member.getMember_id();
-        String member_id = "testid"; //pw = 1111
-        
-		if(password.equals("aaa")) {
-			return "customer/myInfoUpdate_step3";
-		}else {
-			return "redirect:customer/myInfoUpdate_step2";
-		}
 		
+        return "customer/myInfoUpdate_step3"; //jsp페이지 태그
 	}
 	
 	//step3 - 수정할 회원 정보 입력창	
