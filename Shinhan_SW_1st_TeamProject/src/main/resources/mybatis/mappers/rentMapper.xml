@@ -54,7 +54,9 @@
 			   SPS.opt_id4,
 			   SPS.opt_id5,
 			   RD.rent_product_price,			   
-			   PI.img_id	   
+			   PI.img_id,	
+			   RD.rent_state,
+			   RD.rentdetail_id 
 		FROM
 			RENT R
 		JOIN
@@ -84,11 +86,11 @@
 	<!-- rentlist.jsp에서, 반납 -->
 	<update id="returnRent" parameterType="int">
 		UPDATE 
-			RENT
+			RENT_DETAIL
 		SET
 			rent_state = 'returned'
 		WHERE
-	    	rental_code = #{aa}
+	    	rentdetail_id = #{aa}
 	</update>
 
 </mapper>
