@@ -9,7 +9,7 @@
 		resultType="com.team4.shoppingmall.customer.CustomerDTO">
 		SELECT *
 		FROM CUSTOMER
-		WHERE "member_id" = #{member_id}
+		WHERE member_id = #{member_id}
 	</select>
 
 	<!-- 고객목록 -->
@@ -20,13 +20,10 @@
 	</select>
 
 	<!-- 고객등록 -->
-	<insert id="customerInsert"
-		parameterType="com.team4.shoppingmall.customer.CustomerDTO">
+	<insert id="customerInsert" parameterType="CustomerVO">
 		INSERT
-		INTO CUSTOMER("member_id", "point",
-		"member_level", "account_amount")
-		VALUES(#{member_id}, #{point},
-		#{member_level})
+		INTO CUSTOMER(member_id, point, member_level, accum_amount)
+		VALUES(#{member_id}, #{point}, #{member_level}, #{accum_amount})
 	</insert>
 
 	<!-- 고객수정 -->
@@ -34,10 +31,9 @@
 		parameterType="com.team4.shoppingmall.customer.CustomerDTO">
 		UPDATE CUSTOMER
 		SET
-		"point" = #{point}, "member_level" =
-		#{member_level}, "accum_amount" = #{accum_amount}
-		WHERE "member_id" =
-		#{member_id}
+		point = #{point}, member_level = #{member_level}, 
+		accum_amount = #{accum_amount}
+		WHERE member_id = #{member_id}
 	</update>
 
 	<select id="TotalMoneyAmount" resultType="long">

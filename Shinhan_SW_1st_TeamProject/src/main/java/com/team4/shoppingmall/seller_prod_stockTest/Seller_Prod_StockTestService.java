@@ -5,6 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.team4.shoppingmall.prod.ProductNewVO;
+import com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO;
+
 @Service
 public class Seller_Prod_StockTestService {
 	
@@ -15,6 +18,10 @@ public class Seller_Prod_StockTestService {
 	public List<Seller_Prod_StockTestDTO> selectSpsOptionByProdId(String prod_id){
 		return seller_prod_stockDAO.selectSpsOptionByProdId(prod_id);
 	}
+	//주문 생성시 재고수 업데이트
+	public int sellProdStockUpdate(ProductNewVO prodVO) {
+		return seller_prod_stockDAO.sellProdStockUpdate(prodVO);
+	};
 	
 	public Seller_Prod_StockTestDTO selectByStockId(String stock_id) {
 		return seller_prod_stockDAO.selectByStockId(stock_id);

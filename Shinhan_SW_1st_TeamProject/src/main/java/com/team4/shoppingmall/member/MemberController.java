@@ -48,15 +48,25 @@ public class MemberController {
 	
 	@PostMapping("/login.do")
 	public String login(@RequestParam("member_id") String member_id, @RequestParam("member_pw") String member_pw, HttpSession session, HttpServletRequest request) {
-		MemberDTO member = memberService.loginChk(member_id);
+		MemberDTO member = memberService.selectById(member_id);
+		System.out.println(member);
+		String N = "N";
 		if(member == null) {
 			session.setAttribute("loginResult", "존재하지 않는 ID");
 			return "redirect:login.do";
 		}else if(!member.getMember_pw().equals(member_pw)) {
 			session.setAttribute("loginResult", "password 오류");
+<<<<<<< HEAD
 			return "redirect:login.do";
 		}else {
 			session.setAttribute("loginResult", "SAREN에 오신 것을 환영합니다");
+=======
+			return "redirect:login.do";
+		}else if(member.seller_authority.equals(N)){
+			session.setAttribute("loginResult", "관리자의 승인이 필요한 계정입니다.");
+			return "redirect:login.do";
+		}else {
+>>>>>>> main
 			session.setAttribute("member", member);
 			String lastRequest = (String)session.getAttribute("lastRequest");
 			String goPage;

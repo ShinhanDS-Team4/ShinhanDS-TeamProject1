@@ -14,5 +14,5 @@ public class CustomerDTO {
 	String member_id;
 	Integer point;
 	String member_level;
-	Integer accum_account;
+	Integer accum_amount;
 }

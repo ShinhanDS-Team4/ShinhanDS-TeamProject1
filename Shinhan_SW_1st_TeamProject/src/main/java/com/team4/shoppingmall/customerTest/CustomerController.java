@@ -1,67 +1,40 @@
-package com.team4.shoppingmall.customerTest;
+package com.team4.shoppingmall.order_detail;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.net.ssl.HttpsURLConnection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.stereotype.Service;
 
-import com.google.gson.JsonObject;
-import com.siot.IamportRestClient.exception.IamportResponseException;
-
-@Controller
-@RequestMapping("/customer")
-public class CustomerController {
-
+@Service
+public class Order_DetailService {
 	@Autowired
-	private PaymentService paymentService;
+	Order_DetailDAOInterface order_DetailDAO;
 
-	// 상품결제페이지
-	@GetMapping("/orderPay")
-	public String orderPayPage() {
-		return "customer/customerPay";
+	public List<Order_DetailDTO> selectByOrder_Id(int order_id) {
+		return order_DetailDAO.selectByOrder_Id(order_id);
+	}
+	
+	public List<Order_DetailDTO> selectBySellerID(String member_id){
+		return order_DetailDAO.selectBySellerID(member_id);
+	}
+	
+	public List<Order_DetailDTO> selectAll() {
+		return order_DetailDAO.selectAll();
 	}
 
-	// 상품 결제 완료페이지
-	@GetMapping("/orderSuccess")
-	public String orderSuccessPage() {
-		return "customer/customerOrderSuccess";
+	public int orderDetailInsert(Order_DetailDTO order_detail) {
+		return order_DetailDAO.orderDetailInsert(order_detail);
 	}
 
-
-	//결제 전 사전 검증을 위한 결제금액 사전등록
-	@PostMapping("/preparePayment")
-	@ResponseBody
-	public String preparePayment(@RequestParam String merchantUid, @RequestParam int amount) {
-		return paymentService.registerPaymentAmount(merchantUid, amount);
+	public int orderDetailUpdate(Order_DetailDTO order_detail) {
+		return order_DetailDAO.orderDetailUpdate(order_detail);
+	}
+	
+	public int orderDetailStatusUpdate(Order_DetailDTO order_detail) {
+		return order_DetailDAO.orderDetailStatusUpdate(order_detail);
 	}
 
-	//결제 내용에 대한 검증
-	@PostMapping("/verifyPayment")
-	@ResponseBody
-	public String verifyPayment(@RequestParam("imp_uid") String impUid,
-                                @RequestParam("merchant_uid") String merchantUid) {
-		return paymentService.verifyPayment(impUid, merchantUid);
+	public int orderDetailDelete(int orderdetail_id) {
+		return order_DetailDAO.orderDetailDelete(orderdetail_id);
 	}
-
 }

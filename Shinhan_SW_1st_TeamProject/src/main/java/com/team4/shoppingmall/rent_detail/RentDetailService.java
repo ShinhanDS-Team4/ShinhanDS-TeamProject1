@@ -11,27 +11,32 @@ public class RentDetailService {
 	@Autowired
 	RentDetailDAOInterface rentDetailDAO;
 	
-	// ´ë¿©»ó¼¼ »ó¼¼
+	// ëŒ€ì—¬ìƒì„¸ ìƒì„¸
 	public RentDetailDTO selectById(Integer rentdetail_id) {
 		return rentDetailDAO.selectById(rentdetail_id);
 	}
 
-	// ´ë¿©»ó¼¼ ¸ñ·Ï
+	// ëŒ€ì—¬ìƒì„¸ ëª©ë¡
 	public List<RentDetailDTO> selectAll() {
 		return rentDetailDAO.selectAll();
 	}
 	
-	//ÆÇ¸ÅÀÚÀÇ ´ë¿© »ó¼¼ ¸ñ·Ï °¡Á®¿À±â
+	// ï¿½ë¿© IDï¿½ï¿½ ï¿½ë¿©ï¿½ï¿½ ï¿½ï¿½ï¿½
+	public List<RentDetailDTO> selectByRental_code(int rental_code){
+		return rentDetailDAO.selectByRental_code(rental_code);
+	}
+	
+	//íŒë§¤ìì˜ ëŒ€ì—¬ ìƒì„¸ ëª©ë¡ ê°€ì ¸ì˜¤ê¸°
 	public List<RentDetailDTO> selectBySellerID(String member_id){
 		return rentDetailDAO.selectBySellerID(member_id);
 	}
 
-	// ´ë¿©»ó¼¼ »ı¼º
+	// ëŒ€ì—¬ìƒì„¸ ìƒì„±
 	public int rentDetailInsert(RentDetailDTO rentdetail) {
 		return rentDetailDAO.rentDetailInsert(rentdetail);
 	}
 	
-	// ´ë¿©»ó¼¼ ¼öÁ¤ 
+	// ëŒ€ì—¬ìƒì„¸ ìˆ˜ì • 
 	public int rentDetailUpdate(RentDetailDTO rentdetail) {
 		return rentDetailDAO.rentDetailUpdate(rentdetail);
 	}

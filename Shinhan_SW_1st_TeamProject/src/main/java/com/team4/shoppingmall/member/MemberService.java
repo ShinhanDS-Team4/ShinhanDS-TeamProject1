@@ -5,11 +5,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.team4.shoppingmall.customer.CustomerDAOInterface;
+import com.team4.shoppingmall.customer.CustomerDTO;
+
 @Service
 public class MemberService {
 	
 	@Autowired
 	MemberDAOInterface memberDAO;
+	@Autowired
+	CustomerDAOInterface customerDAO;
 	
 	public MemberDTO selectById(String member_id) {
 		return memberDAO.selectById(member_id);
@@ -35,6 +40,18 @@ public class MemberService {
 		return memberDAO.memberDelete(member_id);
 	}
 	
+	public int memberBuyerInsert(MemberDTO member) {	
+		CustomerDTO customer = new CustomerDTO();
+		customer.setMember_id(member.getMember_id());
+		customer.setMember_level("FAMILY");
+		customer.setPoint(0);
+		customer.setAccum_amount(0);
+		return memberDAO.memberInsert(member) + customerDAO.customerInsert(customer);
+	}
+	
+	public int memberSellerInsert(MemberDTO member) {
+		return memberDAO.memberInsert(member);
+	}
 
 	public List<MemberDTO> selectBySeller() {
 		return memberDAO.selectBySeller();
@@ -78,6 +95,10 @@ public class MemberService {
 	public int updatePassword(MemberDTO member) {
 		return memberDAO.updatePassword(member);
 		
+	}
+	
+	public int memberUpdateAccess(MemberDTO member) {
+		return memberDAO.memberUpdateAccess(member);
 	}
 
 }

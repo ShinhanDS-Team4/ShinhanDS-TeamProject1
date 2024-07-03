@@ -1,12 +1,14 @@
 package com.team4.shoppingmall.rent_prod_stock;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.team4.shoppingmall.coupon.CouponDTO;
+import com.team4.shoppingmall.prod.ProductNewVO;
 
 @Repository
 public class RentProdStockDAOMybatis implements RentProdStockDAOInterface {
@@ -18,8 +20,26 @@ public class RentProdStockDAOMybatis implements RentProdStockDAOInterface {
 
 	
 	//선택 옵션 상품의 대여 재고id 찾기
-	public RentProdStockDTO selectRentStockByProdId(String prod_id) {
-		return sqlSession.selectOne(namespace + "selectRentStockByProdId", prod_id);
+	public Map<String,String> selectRentStockByProdId(String prod_id, String optionString) {
+		Map<String, String> map = new HashMap<>();
+		map.put("prod_id", prod_id);
+		map.put("optionString", optionString);
+		return sqlSession.selectOne(namespace + "selectRentStockByProdId", map);
+	};
+	
+	//상품의 대여 재고id 조회
+	public List<RentProdStockDTO> selectRentStockByProdId2(String prod_id){
+		return sqlSession.selectList(namespace + "selectRentStockByProdId2", prod_id);
+	};
+	
+	//대여 생성시 대여 수량 업데이트
+	public int rentProdStockUpdate(ProductNewVO prodVO) {
+		return sqlSession.update(namespace + "rentProdStockUpdate", prodVO);
+	};
+	
+	//대여 상품 옵션별 재고 조회
+	public List<RentProdStockDTO> selectRpsOptionByProdId(String prod_id){
+		return sqlSession.selectList(namespace + "selectRpsOptionByProdId" , prod_id);
 	};
 	
 	// 대여상품상세
@@ -35,29 +55,35 @@ public class RentProdStockDAOMybatis implements RentProdStockDAOInterface {
 	
 	@Override
 	public List<RentProdStockListDTO> findRentStockList(String member_id) {
-		System.out.println("mybatis 정상 수행됨");
+		System.out.println("mybatis ���� �����");
 		return sqlSession.selectList(namespace+"findRentStockList", member_id);
 	}
 
-	// 대여상품목록
+	// �뿩��ǰ���
 	@Override
 	public List<RentProdStockDTO> selectAll() {
 		return sqlSession.selectList(namespace + "selectById");
 	}
 
-	// 대여상품등록
+	// �뿩��ǰ���
 	@Override
 	public int rentProdInsert(RentProdStockDTO rentprod) {
 		return sqlSession.insert(namespace + "rentProdInsert", rentprod);
 	}
 
-	// 대여상품수정
+	// �뿩��ǰ����
 	@Override
 	public int rentProdUpdate(RentProdStockDTO rentprod) {
 		return sqlSession.update(namespace + "rentProdUpdate", rentprod);
 	}
+	
+	// �뿩��ǰ������
+	@Override
+	public int rentStockUpdate(RentProdStockDTO rentprod) {
+		return sqlSession.update(namespace + "rentStockUpdate", rentprod);
+	}
 
-	// 대여상품삭제
+	// �뿩��ǰ����
 	@Override
 	public int rentProdDelete(String r_stock_id) {
 		return sqlSession.delete(namespace + "selectById", r_stock_id);

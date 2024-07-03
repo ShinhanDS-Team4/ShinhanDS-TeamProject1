@@ -16,9 +16,9 @@ public class CartDAOMybatis implements CartDAOInterface {
 
 	String namespace = "com.saren.cart.";
 
-	//¼±ÅÃÇÑ ¿É¼Ç »óÇ°ÀÇ Àç°íID Á¶È¸
+	//ì„ íƒí•œ ì˜µì…˜ ìƒí’ˆì˜ ì¬ê³ ID ì¡°íšŒ
 	public String searchStockId(HashMap<String, String> map,String prod_id) {
-		//¿É¼Ç¸í°ú ¿É¼Ç¸íÀ» MapÀ¸·Î ÀúÀå
+		//ì˜µì…˜ëª…ê³¼ ì˜µì…˜ëª…ì„ Mapìœ¼ë¡œ ì €ì¥
 		System.out.println("map: "+ map);
 		CartDynamicVO datas = new CartDynamicVO();
 		datas.prod_id = prod_id;
@@ -27,11 +27,27 @@ public class CartDAOMybatis implements CartDAOInterface {
 		return sqlSession.selectOne(namespace + "searchStockId", datas);
 	}
 	
-	//Àå¹Ù±¸´Ï¿¡ °°Àº »óÇ°ÀÌ Á¸ÀçÇÏ´ÂÁö Á¶È¸
-	public CartDTO  selectCartBySellstock(Map<String,String> map) {
-		return sqlSession.selectOne(namespace + "selectCartBySellstock", map);
+	//ì¥ë°”êµ¬ë‹ˆ(êµ¬ë§¤ìƒí’ˆ)ì— ê°™ì€ ìƒí’ˆì´ ì¡´ì¬í•˜ëŠ”ì§€ ì¡°íšŒ
+	public CartDTO  selectCartBySellStock(CartDTO cart) {
+		return sqlSession.selectOne(namespace + "selectCartBySellStock", cart);
 	}
+	//ì¥ë°”êµ¬ë‹ˆ(êµ¬ë§¤ìƒí’ˆ) ìˆ˜ëŸ‰ ì—…ë°ì´íŠ¸
+	public int updateCartBySellStock(CartDTO cart) {
+		return sqlSession.update(namespace + "updateCartBySellStock", cart);
+	};
 	
+	//ì¥ë°”êµ¬ë‹ˆ(ëŒ€ì—¬ìƒí’ˆ) ì¡°íšŒ
+	public CartDTO selectCartByRentStock(CartDTO cart) {
+		return sqlSession.selectOne(namespace + "selectCartByRentStock", cart);
+	};
+	//ì¥ë°”êµ¬ë‹ˆ(ëŒ€ì—¬ìƒí’ˆ) ìƒì„±
+	public int cartRentProductInsert(CartDTO cart) {
+		return sqlSession.insert(namespace + "cartRentProductInsert", cart);
+	};
+	// ì¥ë°”êµ¬ë‹ˆ(ëŒ€ì—¬ìƒí’ˆ) ìˆ˜ëŸ‰ ì—…ë°ì´íŠ¸
+	public int updateCartByRentStock(CartDTO cart) {
+		return sqlSession.update(namespace + "updateCartByRentStock", cart);
+	};
 	@Override
 	public List<CartDTO> selectSellStockByMemberId(String member_id) {
 		return sqlSession.selectList(namespace + "selectSellStockByMemberId", member_id);
@@ -56,7 +72,7 @@ public class CartDAOMybatis implements CartDAOInterface {
 	public List<CartDTO> selectAll() {
 		return sqlSession.selectList(namespace + "selectAll");
 	}
-
+	//ì¥ë°”êµ¬ë‹ˆ(êµ¬ë§¤ìƒí’ˆ) ìƒì„±
 	@Override
 	public int cartInsert(CartDTO cart) {
 		return sqlSession.insert(namespace + "cartInsert", cart);
@@ -72,10 +88,7 @@ public class CartDAOMybatis implements CartDAOInterface {
 		return sqlSession.delete(namespace + "cartDelete", cart_id);
 	}
 	
-	//Àå¹Ù±¸´Ï »óÇ° ¼ö·® ¾÷µ¥ÀÌÆ®
-	public int updateCartBySellstock(CartDTO cart) {
-		return sqlSession.update(namespace + "updateCartBySellstock", cart);
-	};
+	
 
 
 }
