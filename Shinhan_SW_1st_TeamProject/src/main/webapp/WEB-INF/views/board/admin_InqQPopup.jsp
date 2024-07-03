@@ -14,7 +14,7 @@
 <script>
 	function submitForm(){
 		$.ajax({
-			url:'/shoppingmall/qna/writeqna.do',
+			url:'/shoppingmall/adminqna/writeqna.do',
 			data:$("#registerAQ").serialize(),
 			type:'POST',
 			success: function(responseData){

@@ -178,7 +178,7 @@ h1 {
 						</h3>
 						<ul class="myinfo_submenu">
 							<li><a href="${path}/adminqna/myqna.do">문의글</a></li>
-							<li><a href="${path}/board/reviewjsp">리뷰</a></li>
+							<li><a href="${path}/review/myreview.do">리뷰</a></li>
 						</ul>
 					</li>
 					<li>
@@ -208,9 +208,10 @@ h1 {
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="reviews" items="${reviews}">
+								<c:forEach var="reviews" items="${reviews}" varStatus="status">
 									<tr class="accordion-trigger">
-										<td>10</td>
+										<td>${status.index + 1}</td>
+										<!-- 인덱스 값 사용 -->
 										<td>티셔츠</td>
 										<td>${reviews.review_title}</td>
 										<td>${reviews.review_date}</td>
