@@ -31,6 +31,8 @@ public interface Order_DetailDAOInterface {
 	
 	public int orderDetailDelete(int orderdetail_id);
 
+	public int orderDetailDelByOrderID(int order_id);
+
 	
 
 	

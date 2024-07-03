@@ -101,13 +101,13 @@ public class SellerPrdUploadController {
 		
 		LocalDate localDate = LocalDate.now();
 
-		// LocalDate占쏙옙 java.sql.Date占쏙옙 占쏙옙환
+		// LocalDate�뜝�룞�삕 java.sql.Date�뜝�룞�삕 �뜝�룞�삕�솚
 		Date sqlDate = Date.valueOf(localDate);
 
 		
 		String prod_id = productName + "_" + member_id; 
 
-		System.out.println("占쏙옙품ID : " + prod_id);
+		System.out.println("상품ID : " + prod_id);
 
 
 		ProdDTO prodDTO = new ProdDTO();
@@ -150,20 +150,20 @@ public class SellerPrdUploadController {
 
 
 				//서버 컴퓨터의 디렉토리에 파일 저장
-				
 				//(1)메인이미지 파일
 				try {
 					// 파일명은 '상품명_판매자ID_mainimage_x'(x는 sequence)
 					String filename = prod_id + "_mainimage_" + mainfileIndex+".png";
 					Path filePath = Paths.get(mainIMG_uploadDir).resolve(filename);
-					Files.createDirectories(filePath.getParent()); // 디렉토리가 존재하지 않으면 생성
-					Files.write(filePath, mainfile.getBytes()); // 파일 저장
+					Files.createDirectories(filePath.getParent()); // �뵒�젆�넗由ш� 議댁옱�븯吏� �븡�쑝硫� �깮�꽦
+					Files.write(filePath, mainfile.getBytes()); // �뙆�씪 ���옣
 
 					// DB에 저장
 					Prod_ImageDTO imageDTO = new Prod_ImageDTO();
 
 					imageDTO.setImg_id(filename);//상품명_판매자ID_image_fileindex
 					imageDTO.setProd_id(prod_id);//상품_판매자ID
+					imageDTO.setImg_type(0);
 					
 					System.out.println(imageDTO);
 
@@ -197,12 +197,11 @@ public class SellerPrdUploadController {
 					Files.createDirectories(filePath.getParent()); // 디렉토리가 존재하지 않으면 생성
 					Files.write(filePath, descfile.getBytes()); // 파일 저장
 
-
-				
 					Prod_ImageDTO imageDTO = new Prod_ImageDTO();
 
 					imageDTO.setImg_id(filename);
 					imageDTO.setProd_id(prod_id);
+					imageDTO.setImg_type(1);
 					
 					System.out.println(imageDTO);
 
@@ -279,7 +278,7 @@ public class SellerPrdUploadController {
 
 			int sellStockRegResult = seller_Prod_StockService.seller_prod_stockInsert(seller_Prod_StockDTO);
 
-		} else if(productType.equals("대e")){
+		} else if(productType.equals("대여")){
 			
 			Integer maxSellStockNum = rentProdStockService.findMaxStockNumber(prod_id);
 			if(Objects.isNull(maxSellStockNum)) maxSellStockNum=0;

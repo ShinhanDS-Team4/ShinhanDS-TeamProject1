@@ -114,7 +114,7 @@ public class SellerPrdModifyController {
 		if (imgDeleteResult > 0) {
 			for (String imgID : imgIdList) {
 
-				Path filePath = Paths.get(mainIMG_uploadDir).resolve(imgID);
+				Path filePath = Paths.get(descIMG_uploadDir).resolve(imgID);
 				Files.delete(filePath);
 
 				System.out.println(imgID + "삭제 완료");

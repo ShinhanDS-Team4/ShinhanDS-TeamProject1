@@ -106,12 +106,13 @@ input {
 }
 
 button {
-  width: 130px;
+  width: 150px;
   height: 40px;
   font-size: 15px;
   font-weight: bold;
   color: white;
   background-color: black;
+  border-radius: 4px;
 }
 
 .bell {
@@ -133,4 +134,9 @@ span {
   color: #fff;
   padding: 5px 10px;
   border-radius: 50%;
+}
+
+.sellPrdList th{
+	background-color: black;
+	color:white;
 }

@@ -92,49 +92,53 @@ public class SellerPageController {
 	@Autowired
 	Prod_OptionService prod_OptionService;
 
-	String member_id = "573-50-00882";// 임시로 사용할 판매자ID(사업자등록번호)
+	String member_id = "573-50-00882";// �엫�떆濡� �궗�슜�븷 �뙋留ㅼ옄ID(�궗�뾽�옄�벑濡앸쾲�샇)
 
-	// 상품 이미지 파일 업로드 디렉토리
-	// 1.메인 이미지 파일
+	// �긽�뭹 �씠誘몄� �뙆�씪 �뾽濡쒕뱶 �뵒�젆�넗由�
+	// 1.硫붿씤 �씠誘몄� �뙆�씪
 	@Value("${file.main-img-upload-dir}")
 	private String mainIMG_uploadDir;
 
-	// 2.설명 이미지 파일
+	// 2.�꽕紐� �씠誘몄� �뙆�씪
 	@Value("${file.desc-img-upload-dir}")
 	private String descIMG_uploadDir;
 
-	// 메인 화면 보여주기
+	// 硫붿씤 �솕硫� 蹂댁뿬二쇨린
 	@GetMapping("/MainPage.do")
 	public String mainpage(Model model) {
+		model.addAttribute("sellerInfo", memberService.selectById(member_id));
 
-		// 여기서 SQL문을 사용해 model로 데이터를 끌어옴
-		// 여기에는 판매자가 판매하는 상품들의 판매량 데이터를 끌어오고, 데이터를 그래프화하여 표현
+		// �뿬湲곗꽌 SQL臾몄쓣 �궗�슜�빐 model濡� �뜲�씠�꽣瑜� �걣�뼱�샂
+		// �뿬湲곗뿉�뒗 �뙋留ㅼ옄媛� �뙋留ㅽ븯�뒗 �긽�뭹�뱾�쓽 �뙋留ㅻ웾 �뜲�씠�꽣瑜� �걣�뼱�삤怨�, �뜲�씠�꽣瑜� 洹몃옒�봽�솕�븯�뿬 �몴�쁽
 		// model.addAttribute(result, flashMap);
 		return "seller/sellerMain";
 	}
 
-	// 판매&대여 상품 페이지 보여주기
+	// �뙋留�&���뿬 �긽�뭹 �럹�씠吏� 蹂댁뿬二쇨린
 	@GetMapping("/PrdList.do")
-	public String prdList(Model model1, Model model2) {
-
+	public String prdList(Model model, Model model1, Model model2) {
+		model.addAttribute("sellerInfo", memberService.selectById(member_id));
+		
 		// 판매 상품 리스트
 		model1.addAttribute("stockSList", seller_Prod_StockService.findSellStockList(member_id));
 
-		System.out.println("판매상품 리스트 불러옴");
-		// 대여 상품 리스트
+		System.out.println("�뙋留ㅼ긽�뭹 由ъ뒪�듃 遺덈윭�샂");
+		// ���뿬 �긽�뭹 由ъ뒪�듃
 		model2.addAttribute("stockRList", rentProdStockService.findRentStockList(member_id));
 
-		System.out.println("대여상품 리스트 불러옴");
+		System.out.println("���뿬�긽�뭹 由ъ뒪�듃 遺덈윭�샂");
 
 		return "/seller/sellerPrdList";
 	}
 
-	// 판매&배송 페이지 보여주기
+	// �뙋留�&諛곗넚 �럹�씠吏� 蹂댁뿬二쇨린
 	@GetMapping("/DeliveryList.do")
-	public String deliveryList(Model model1, Model model2) {
+	public String deliveryList(Model model, Model model1, Model model2) {
+		
+		model.addAttribute("sellerInfo", memberService.selectById(member_id));
 
-		// 판매&배송 리스트
-		// 1.판매 상품 대상 주문상세리스트
+		// �뙋留�&諛곗넚 由ъ뒪�듃
+		// 1.�뙋留� �긽�뭹 ���긽 二쇰Ц�긽�꽭由ъ뒪�듃
 		System.out.println(order_DetailService.selectBySellerID(member_id));
 		System.out.println(rentDetailService.selectBySellerID(member_id));
 
@@ -143,7 +147,7 @@ public class SellerPageController {
 		return "/seller/sellerDelivery";
 	}
 
-	// 판매 주문 항목 일괄처리
+	// �뙋留� 二쇰Ц �빆紐� �씪愿꾩쿂由�
 	@PostMapping("/updateOrderStatus")
 	@ResponseBody
 	public String updateOrderStauts(@RequestBody OrderUpdateReqDTO request) {
@@ -164,7 +168,7 @@ public class SellerPageController {
 		return "Update Success";
 	}
 
-	// 판매 주문 항목 일괄삭제
+	// �뙋留� 二쇰Ц �빆紐� �씪愿꾩궘�젣
 	@PostMapping("/deleteOrderDetails")
 	@ResponseBody
 	public String deleteOrderDetails(@RequestBody OrderUpdateReqDTO request) {
@@ -177,12 +181,12 @@ public class SellerPageController {
 		return "Delete Success";
 	}
 
-	// 대여 주문 항목 일괄처리
+	// ���뿬 二쇰Ц �빆紐� �씪愿꾩쿂由�
 	@PostMapping("/updateRentStatus")
 	@ResponseBody
 	public String updateRentStatus(@RequestBody OrderUpdateReqDTO request) {
 		List<Integer> rentDetailIds = request.getOrderDetailIds();
-		System.out.println("대여 일괄처리 대상 목록:" + rentDetailIds);
+		System.out.println("���뿬 �씪愿꾩쿂由� ���긽 紐⑸줉:" + rentDetailIds);
 
 		String status = request.getStatus();
 
@@ -198,7 +202,7 @@ public class SellerPageController {
 		return "Update Success";
 	}
 
-	// 대여 주문 항목 일괄삭제
+	// ���뿬 二쇰Ц �빆紐� �씪愿꾩궘�젣
 	@PostMapping("/deleteRentDetails")
 	@ResponseBody
 	public String deleteRentDetails(@RequestBody OrderUpdateReqDTO request) {
@@ -230,10 +234,12 @@ public class SellerPageController {
 	}
 	
 
-	// 문의 목록 페이지 보여주기
+	// 臾몄쓽 紐⑸줉 �럹�씠吏� 蹂댁뿬二쇨린
 	@GetMapping("/Q&AList.do")
-	public String qaList(Model model3, Model model4, HttpServletRequest request) {
-
+	public String qaList(Model model, Model model3, Model model4, HttpServletRequest request) {
+		
+		model.addAttribute("sellerInfo", memberService.selectById(member_id));
+		
 		// 구매자의 문의 목록
 		System.out.println(buyer_inqService.selectInqList(member_id));
 		model3.addAttribute("buyerQAList", buyer_inqService.selectInqList(member_id));
@@ -243,26 +249,28 @@ public class SellerPageController {
 		return "/seller/sellerQ&dAList";
 	}
 
-	// 상품 등록 페이지
+	// �긽�뭹 �벑濡� �럹�씠吏�
 	@GetMapping("/AddProduct.do")
-	public String addProduct() {
+	public String addProduct(Model model) {
+		
+		model.addAttribute("sellerInfo", memberService.selectById(member_id));
 		return "/seller/seller_addPrd";
 	}
 
-	// 상품 수정 페이지
+	// �긽�뭹 �닔�젙 �럹�씠吏�
 	@GetMapping("/ModifyProduct.do")
-	public String modifyProduct(Model model1, Model model2, Model model3, Model model4, Model model5,
+	public String modifyProduct(Model model,Model model1, Model model2, Model model3, Model model4, Model model5,
 			@RequestParam("stock_id") String stockID) throws UnsupportedEncodingException {
 
-		String stock_id = URLDecoder.decode(stockID, "UTF-8");// 한글로 변환
-		System.out.println("가져온 stock_id:"+stock_id);
+		String stock_id = URLDecoder.decode(stockID, "UTF-8");// �븳湲�濡� 蹂��솚
+		System.out.println("媛��졇�삩 stock_id:"+stock_id);
 
-		// 재고ID가 어느 재고 테이블에 속하는지 확인
-		Seller_Prod_StockDTO seller_Prod_StockDTO = seller_Prod_StockService.selectByStockId(stock_id);// 재고 데이터를 전부 끌어옴
-		System.out.println("확인결과:"+seller_Prod_StockDTO);
-		if (Objects.isNull(seller_Prod_StockDTO)) {// 대여상품 재고일 경우
-			RentProdStockDTO rentProdStockDTO = rentProdStockService.selectById(stock_id);// 재고의 기본 정보 끌어오기
-			System.out.println("재고ID:"+rentProdStockDTO);
+		// �옱怨쟅D媛� �뼱�뒓 �옱怨� �뀒�씠釉붿뿉 �냽�븯�뒗吏� �솗�씤
+		Seller_Prod_StockDTO seller_Prod_StockDTO = seller_Prod_StockService.selectByStockId(stock_id);// �옱怨� �뜲�씠�꽣瑜� �쟾遺� �걣�뼱�샂
+		System.out.println("�솗�씤寃곌낵:"+seller_Prod_StockDTO);
+		if (Objects.isNull(seller_Prod_StockDTO)) {// ���뿬�긽�뭹 �옱怨좎씪 寃쎌슦
+			RentProdStockDTO rentProdStockDTO = rentProdStockService.selectById(stock_id);// �옱怨좎쓽 湲곕낯 �젙蹂� �걣�뼱�삤湲�
+			System.out.println("�옱怨쟅D:"+rentProdStockDTO);
 			
 			String ProdID = rentProdStockDTO.getProd_id();
 
@@ -274,10 +282,13 @@ public class SellerPageController {
 			descImageDTO.setProd_id(ProdID);
 			descImageDTO.setImg_type(1);
 
-			// 해당 재고의 상품ID와 연동되어 있는 상품이미지ID(=이미지 파일명) 목록을 가져온다.
+			// �빐�떦 �옱怨좎쓽 �긽�뭹ID�� �뿰�룞�릺�뼱 �엳�뒗 �긽�뭹�씠誘몄�ID(=�씠誘몄� �뙆�씪紐�) 紐⑸줉�쓣 媛��졇�삩�떎.
 			List<String> prodMainImgList = imageService.findMainImgFileNameByProdID(mainImageDTO);
 			List<String> prodDescImgList = imageService.findDescImgFileNameByProdID(descImageDTO);
 
+			System.out.println(prodMainImgList);
+			System.out.println(prodDescImgList);
+			
 			List<Integer> optionList = new ArrayList<Integer>();
 
 			optionList.add(rentProdStockDTO.getOpt_id1());
@@ -302,7 +313,7 @@ public class SellerPageController {
 			model4.addAttribute("ProdDescImgList", prodDescImgList);
 			
 			return "/seller/seller_RentStock_modifyPrd";
-		} else {// 판매상품 재고일 경우
+		} else {// �뙋留ㅼ긽�뭹 �옱怨좎씪 寃쎌슦
 			String ProdID = seller_Prod_StockDTO.getProd_id();
 			Prod_ImageDTO mainImageDTO = new Prod_ImageDTO();
 			mainImageDTO.setProd_id(ProdID);
@@ -312,7 +323,7 @@ public class SellerPageController {
 			descImageDTO.setProd_id(ProdID);
 			descImageDTO.setImg_type(1);
 
-			// 해당 재고의 상품ID와 연동되어 있는 상품이미지ID(=이미지 파일명) 목록을 가져온다.
+			// �빐�떦 �옱怨좎쓽 �긽�뭹ID�� �뿰�룞�릺�뼱 �엳�뒗 �긽�뭹�씠誘몄�ID(=�씠誘몄� �뙆�씪紐�) 紐⑸줉�쓣 媛��졇�삩�떎.
 			List<String> prodMainImgList = imageService.findMainImgFileNameByProdID(mainImageDTO);
 			List<String> prodDescImgList = imageService.findDescImgFileNameByProdID(descImageDTO);
 
@@ -335,6 +346,7 @@ public class SellerPageController {
 			}
 
 			// System.out.println(uploadDir);
+			model.addAttribute("sellerInfo", memberService.selectById(member_id));
 			model1.addAttribute("StockInfo", seller_Prod_StockDTO);
 			model2.addAttribute("ProductInfo", prodService.selectByProdId(ProdID));
 			model3.addAttribute("ProdMainImgList", prodMainImgList);
@@ -345,7 +357,7 @@ public class SellerPageController {
 		}
 	}
 
-	// 구매자문의 답변 팝업
+	// 援щℓ�옄臾몄쓽 �떟蹂� �뙘�뾽
 	@GetMapping("/answerCustomer.do")
 	public String answerCustomer(Model model, @RequestParam("buyer_inq_id") Integer buyer_inq_id,
 			HttpServletRequest request) {
@@ -359,7 +371,7 @@ public class SellerPageController {
 		return "/seller/seller_CustomerQAPopUp";
 	}
 
-	// 구매자 문의에 답변
+	// 援щℓ�옄 臾몄쓽�뿉 �떟蹂�
 	@PostMapping("/answerCustomer.do")
 	@ResponseBody
 	public String answerCquestion(@RequestParam("buyer_inq_id") Integer buyerInqId,
@@ -376,11 +388,11 @@ public class SellerPageController {
 
 		System.out.println(buyer_reply);
 
-		// 업로드 날짜
-		// 오늘 날짜를 LocalDate로 가져옴
+		// �뾽濡쒕뱶 �궇吏�
+		// �삤�뒛 �궇吏쒕�� LocalDate濡� 媛��졇�샂
 		LocalDate localDate = LocalDate.now();
 
-		// LocalDate를 java.sql.Date로 변환
+		// LocalDate瑜� java.sql.Date濡� 蹂��솚
 		Date sqlDate = Date.valueOf(localDate);
 
 		Buyer_InqDTO buyer_InqDTO = new Buyer_InqDTO();
@@ -395,23 +407,23 @@ public class SellerPageController {
 		return "Answer submitted successfully.";
 	}
 
-	// 관리자문의 조회 팝업
+	// 愿�由ъ옄臾몄쓽 議고쉶 �뙘�뾽
 	@GetMapping("/answerAdmin.do")
 	public String answerAdmin(Model model, @RequestParam("admin_inq_id") Integer admin_inq_id) {
 		model.addAttribute("aqa", admin_inqService.selectByInqId(admin_inq_id));
 		return "/seller/seller_AdminAPopUp";
 	}
 
-	// 관리자문의 등록 팝업
+	// 愿�由ъ옄臾몄쓽 �벑濡� �뙘�뾽
 	@GetMapping("/addAdminQA.do")
 	public String addAdminQA(Model model) {
-		String member_id = "573-50-00882";// 임시로 사용할 판매자ID(사업자등록번호)
-		System.out.println("조회 : " + memberService.selectById(member_id));
+		String member_id = "573-50-00882";// �엫�떆濡� �궗�슜�븷 �뙋留ㅼ옄ID(�궗�뾽�옄�벑濡앸쾲�샇)
+		System.out.println("議고쉶 : " + memberService.selectById(member_id));
 		model.addAttribute("aqa", memberService.selectById(member_id));
 		return "/seller/seller_AdminQPopUp";
 	}
 
-	// 관리자에게 문의 등록
+	// 愿�由ъ옄�뿉寃� 臾몄쓽 �벑濡�
 	@PostMapping("/addAdminQA.do")
 	@ResponseBody
 	public String registerStoAquestion(@RequestParam("member_id") String mid,
@@ -422,17 +434,17 @@ public class SellerPageController {
 		String admin_inq_title = URLDecoder.decode(StoAqTitle, "UTF-8");
 		String admin_inq_content = URLDecoder.decode(StoAq, "UTF-8");
 
-		// 업로드 날짜
-		// 오늘 날짜를 LocalDate로 가져옴
+		// �뾽濡쒕뱶 �궇吏�
+		// �삤�뒛 �궇吏쒕�� LocalDate濡� 媛��졇�샂
 		LocalDate localDate = LocalDate.now();
 
-		// LocalDate를 java.sql.Date로 변환
+		// LocalDate瑜� java.sql.Date濡� 蹂��솚
 		Date sqlDate = Date.valueOf(localDate);
 
-		// 문의ID 생성
+		// 臾몄쓽ID �깮�꽦
 		Integer qid = 12305;
 
-		// 이후에 SQL문으로 DB에 등록
+		// �씠�썑�뿉 SQL臾몄쑝濡� DB�뿉 �벑濡�
 
 		Admin_InqDTO admin_InqDTO = new Admin_InqDTO();
 		admin_InqDTO.setAdmin_inq_id(qid);

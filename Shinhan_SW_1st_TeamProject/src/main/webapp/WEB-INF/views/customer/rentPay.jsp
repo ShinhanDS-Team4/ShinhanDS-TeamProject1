@@ -81,6 +81,28 @@
 		});
 		
 	}
+	
+	$("cancelBtn").on("click",function(){
+		var order_id = $('#orderId').val();
+		
+		$.ajax({
+			type:"POST",
+			url:"/shoppingmall/customer/cancelRentPay.do",
+			data:{
+				"rental_code":order_id
+			},success:function(response){
+				if(response==="Canceled"){
+					alert("주문을 취소하고 이전 페이지로 돌아갑니다.");
+					history.back();
+				}else{
+					alert("주문 취소에 실패하였습니다.")
+				}
+				
+			},error:function(jqXHR, textStatus, errorThrown) {
+                alert("서버 요청 실패: " + errorThrown);
+            }
+		});
+	});
 
 		$().ready(function(){
 			var IMP = window.IMP;
@@ -179,7 +201,7 @@
 											<p>상품명</p>
 										</div>
 										<div class="right">
-											<input type="text" placeholder="덩크로우"
+											<input type="text" placeholder="덩크로우" readonly="readonly"
 												value="${rentDetail.r_stock_id}">
 										</div>
 									</div>
@@ -188,7 +210,7 @@
 											<p>가격</p>
 										</div>
 										<div class="right">
-											<input type="text" placeholder="10000"
+											<input type="text" placeholder="10000" readonly="readonly"
 												value="${rentDetail.rent_product_price}">
 										</div>
 									</div>
@@ -212,11 +234,11 @@
 			<h2>배송자 정보</h2>
 
 			<div class="form-group">
-				<label for="name">이름</label> <input type="text" id="name"
+				<label for="name">이름</label> <input type="text" id="name" readonly="readonly"
 					name="name" value="${memberInfo.member_name}" />
 			</div>
 			<div class="form-group">
-				<label for="phone">휴대폰</label> <input type="text" id="phone"
+				<label for="phone">휴대폰</label> <input type="text" id="phone" readonly="readonly"
 					name="phone" value="${memberInfo.phone}" />
 			</div>
 
@@ -239,7 +261,7 @@
 			</div>
 
 			<div class="form-group">
-				<label for="pointLeft">보유 포인트</label> <input type="number"
+				<label for="pointLeft">보유 포인트</label> <input type="number" readonly="readonly"
 					value="${customerInfo.point}">
 			</div>
 			<div class="form-group">
@@ -252,10 +274,11 @@
 		</div>
 `
 		<div class="form-group">
-			<label>최종 결제 금액</label> <input type="number"
+			<label>최종 결제 금액</label> <input type="number" readonly="readonly"
 				value="${rentInfo.total_rent_price}">
 		</div>
 		<button class="payment-button" id="orderBtn">결제하기</button>
+		<button class="payment-button" id="cancelBtn">뒤로가기</button>
 	</main>
 </body>
 </html>

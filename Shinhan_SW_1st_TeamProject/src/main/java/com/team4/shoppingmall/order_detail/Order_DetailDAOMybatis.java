@@ -58,6 +58,11 @@ public class Order_DetailDAOMybatis implements Order_DetailDAOInterface{
 		return sqlSession.delete(namespace+"orderDetailDelete", orderdetail_id);
 	}
 
+	@Override
+	public int orderDetailDelByOrderID(int order_id) {
+		return sqlSession.delete(namespace+"orderDetailDelByOrderID", order_id);
+	}
+
 	
 
 	
