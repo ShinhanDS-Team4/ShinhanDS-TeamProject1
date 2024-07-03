@@ -26,16 +26,15 @@
 		INSERT 
 		INTO ADMIN_INQ(admin_inq_id, admin_inq_title, admin_inq_content, 
 					   admin_inq_date, member_id) 
-		VALUES(#{admin_inq_id}, #{admin_inq_title}, #{admin_inq_content},  
+		VALUES(seq_admin_inq_id.nextval, #{admin_inq_title}, #{admin_inq_content},  
 			   #{admin_inq_date}, #{member_id})
 	</insert>
 
 	<update id="admin_inqUpdate" parameterType="admin_inqVO">
 		UPDATE ADMIN_INQ
 		SET
-		admin_inq_title = #{admin_inq_title}, "admin_inq_content" = #{admin_inq_content}, 
-		admin_inq_date = #{admin_inq_date}, "admin_reply" = #{admin_reply}, 
-		member_id = #{member_id}
+		admin_inq_title = #{admin_inq_title},
+		admin_inq_content = #{admin_inq_content}
 		WHERE admin_inq_id = #{admin_inq_id}
 	</update>
 
