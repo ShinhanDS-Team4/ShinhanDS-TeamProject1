@@ -429,7 +429,7 @@ public class CustomerController {
 			rentProdStockDTO.setTotal(currentRentTotal + rentAmount);
 
 			int updateOrderStatus = rentDetailService.rentDetailUpdate(rentDetailDTO);
-			int updateStock = rentProdStockService.rentProdUpdate(rentProdStockDTO);
+			int updateStock = rentProdStockService.rentStockUpdate(rentProdStockDTO);
 
 		}
 
@@ -483,22 +483,6 @@ public class CustomerController {
 		return "customer/customerOrderSuccess";
 
 	}
-	@PostMapping("/applyCoupon")
-	@ResponseBody
-	public String applyCoupon(@RequestBody CouponRequestDTO couponRequestDTO) {
-
-		String couponid = couponRequestDTO.getCouponid();
-		int orderid = couponRequestDTO.getOrderid();
-
-		if("���þ���".equals(couponid)) {
-			return "Coupon applied";
-		}else {
-			// �ֹ� �׸� ������ ��������
-			OrderProdDTO orderProdDTO = orderProdService.selectById(orderid);
-			int totalPrice = orderProdDTO.getTotal_price();
-			
-			System.out.println("����ID:" + couponid);
-			CouponDTO selectCouponDTO = couponService.selectById(couponid);
 
 	// 구매 결제 취소
 	@PostMapping("/cancelOrderPay.do")
