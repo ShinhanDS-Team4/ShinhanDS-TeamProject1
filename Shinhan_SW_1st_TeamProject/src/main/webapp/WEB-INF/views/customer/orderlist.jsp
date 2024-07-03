@@ -147,6 +147,7 @@
                                         <button class="refund-button" data-order-id="${order.order_id}">환불신청</button>
                                     </c:when>
                                 </c:choose>
+                                <fmt:formatDate value="${order.order_date}" pattern="yyyy.MM.dd" /> 
                             </p>
                         </div>
                         
