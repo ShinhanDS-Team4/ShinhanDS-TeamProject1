@@ -5,6 +5,8 @@
 <html lang="ko">
 <head>
 	<c:set var="path" value="${pageContext.servletContext.contextPath}" />
+    <%-- 헤더,푸터 css --%>
+	<link rel="stylesheet" href="${path}/resources/css/header_footer.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,30 +20,7 @@
             color: #333;
             display: flex;
             flex-direction: column;
-            align-items: center;
-        }
-        header {
-            background-color: #fff;
-            width: 100%;
-            padding: 10px 0;
-            text-align: center;
-            border-bottom: 1px solid #ccc;
-        }
-        header .logo {
-            font-size: 2em;
-            font-weight: bold;
-        }
-        nav.navbar {
-            background-color: #fff;
-            width: 100%;
-            text-align: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-        }
-        nav.navbar a {
-            margin: 0 15px;
-            text-decoration: none;
-            color: #333;
+            min-height: 100vh; /* 페이지 전체 높이 설정 */
         }
         .container {
             max-width: 600px;
@@ -50,6 +29,7 @@
             background-color: #fff;
             text-align: center;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
         }
         h1 {
             margin-bottom: 20px;
@@ -93,35 +73,37 @@
             background-color: #000;
             color: #fff;
         }
-        footer {
-            background-color: #fff;
-            color: #666;
-            text-align: center;
-            padding: 20px 0;
-            width: 100%;
-            margin-top: 50px;
-            border-top: 1px solid #ccc;
-        }
-        footer .footer-line {
-            border-top: 1px solid #555;
-            margin: 10px 0;
-        }
-        footer .footer-text {
-            margin: 5px 0;
-        }
-        footer .footer-logo {
-            font-size: 2em;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-        footer .footer-links {
-            margin-top: 10px;
-        }
-        footer .footer-links a {
-            color: #666;
-            text-decoration: none;
-            margin: 0 10px;
-        }
+		footer {
+			background-color: #333;
+			color: white;
+			text-align: center;
+			padding: 20px 0;
+			width: 100%;
+			margin-top: auto;
+		}
+		footer .footer-line {
+			margin: 10px 0;
+		}
+		
+		footer .footer-text {
+			margin: 5px 0;
+		}
+		
+		footer .footer-logo {
+			font-size: 2em;
+			font-weight: bold;
+			margin-top: 20px;
+		}
+		
+		footer .footer-links {
+			margin-top: 10px;
+		}
+		
+		footer .footer-links a {
+			color: #fff;
+			text-decoration: none;
+			margin: 0 10px;
+		}
     </style>
         <script>
         $(document).ready(function() {
@@ -170,19 +152,7 @@
     </script>
 </head>
 <body>
-
-    <header>
-        <div class="logo">saren</div>
-    </header>
-
-    <nav class="navbar">
-        <a href="#">여성</a>
-        <a href="#">남성</a>
-        <a href="#">키즈</a>
-        <a href="#">악세서리</a>
-        <a href="#">기타</a>
-    </nav>
-
+	<%@ include file="../common/header.jsp" %>
     <div class="container">
         <h1>이메일 인증</h1>
         <div id="verification-section">

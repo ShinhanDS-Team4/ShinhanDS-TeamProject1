@@ -119,6 +119,13 @@
             flex: 1;
             margin-right: 10px;
         }
+        .address-container {
+            display: flex;
+            flex-direction: column;
+        }
+        .hidden {
+            display: none;
+        }
         footer {
             background-color: #333;
             color: white;
@@ -146,11 +153,9 @@
             text-decoration: none;
             margin: 0 10px;
         }
-        .hidden {
-            display: none;
-        }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script>
     $(document).ready(function() {
         var verificationCode = '';
@@ -218,6 +223,42 @@
             }
         });
 
+        // 주소 입력 버튼 클릭 시 카카오 API 호출
+        $('#address-btn').on('click', function() {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    var addr = ''; // 주소 변수
+                    var extraAddr = ''; // 참고항목 변수
+
+                    // 사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                    if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                        addr = data.roadAddress;
+                    } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                        addr = data.jibunAddress;
+                    }
+
+                    // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                    if (data.userSelectedType === 'R') {
+                        if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                            extraAddr += data.bname;
+                        }
+                        if (data.buildingName !== '' && data.apartment === 'Y') {
+                            extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                        }
+                        if (extraAddr !== '') {
+                            extraAddr = ' (' + extraAddr + ')';
+                        }
+                    }
+
+                    // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                    document.getElementById('zipcode').value = data.zonecode;
+                    document.getElementById("main_address").value = addr;
+                    document.getElementById("sub_address").value = extraAddr;
+                    document.getElementById("detail_address").focus();
+                }
+            }).open();
+        });
+
         // 회원가입 폼 제출
         $('form').on('submit', function(event) {
             var password = $('#member_pw').val();
@@ -232,7 +273,6 @@
                 $('#password-error').text('비밀번호를 설정해주세요.').removeClass('green').addClass('red');
             } else {
                 alert('회원가입 완료!');
-                //조건 더 넣어야 할듯.
             }
         });
     });
@@ -292,9 +332,21 @@
                 <label for="female">여성</label>
             </div>
             <div class="form-group">
-                <label for="address">주소</label>
-                <input type="text" id="address" name="address" placeholder="우편번호">
-                <input type="text" id="detail-address" name="detailAddress" placeholder="상세주소">
+                <label for="zipcode">주소</label>
+                <button type="button" id="address-btn" class="btn address-button">주소 입력</button>
+                <input type="text" id="zipcode" name="zipcode" placeholder="우편번호" readonly>
+            </div>
+            <div class="form-group">
+                <label for="main_address"></label>
+                <input type="text" id="main_address" name="main_address" placeholder="주소" readonly>
+            </div>
+            <div class="form-group">
+                <label for="detail_address"></label>
+                <input type="text" id="detail_address" name="detail_address" placeholder="상세주소">
+            </div>
+            <div class="form-group">
+                <label for="sub_address"></label>
+                <input type="text" id="sub_address" name="sub_address" placeholder="참고주소">
             </div>
             <div class="form-group hidden" id="brand-group">
                 <label for="brand">브랜드</label>

@@ -30,12 +30,12 @@ public class Admin_InqController {
 	Admin_InqService admin_inqService;
 
 	
-	//���� ���������� �̵�
+	//나의 문의 페이지
 	@GetMapping("/myqna.do")
 	public String myqna(Model model, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		MemberDTO mem = (MemberDTO)session.getAttribute("member");
-		//���߿� ���͸� �ϰ����� �켱�� �ӽù������� �б��� ��������
+		//로그인이 되지 않았을 경우 login.do로 이동. 지금은 필요 없는데 혹시나 버그 터질 일 대비해 저장함(7/9 이후 삭제하기!)
 		if(mem == null) {
 			return "redirect:/member_test/login.do";
 		}

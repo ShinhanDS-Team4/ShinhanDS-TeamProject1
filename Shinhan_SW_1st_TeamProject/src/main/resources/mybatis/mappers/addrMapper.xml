@@ -18,7 +18,7 @@
 		INSERT
 		INTO ADDR_LIST(addr_num, member_id, zipcode, main_address, detail_address,
 					is_master_addr, sub_address)
-		VALUES(#{addr_num}, #{member_id}, #{zipcode}, #{main_address}, #{detail_address},
+		VALUES(seq_addr_num.nextval, #{member_id}, #{zipcode}, #{main_address}, #{detail_address},
 			   #{is_master_addr}, #{sub_address})
 	</insert>
 	<update id="addressUpdate" parameterType="com.team4.shoppingmall.addr_list.Addr_ListDTO">
