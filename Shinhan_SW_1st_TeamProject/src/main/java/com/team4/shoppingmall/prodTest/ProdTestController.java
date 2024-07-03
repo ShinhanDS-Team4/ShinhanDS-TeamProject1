@@ -2,12 +2,9 @@ package com.team4.shoppingmall.prodTest;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.sql.Date;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -27,146 +24,142 @@ import com.team4.shoppingmall.cart.CartDTO;
 import com.team4.shoppingmall.cart.CartService;
 import com.team4.shoppingmall.prod_option.Prod_OptionDTO;
 import com.team4.shoppingmall.prod_optionTest.Prod_OptionTestService;
-import com.team4.shoppingmall.rent.RentDTO;
-import com.team4.shoppingmall.rent.RentService;
-import com.team4.shoppingmall.rent_detail.RentDetailDTO;
-import com.team4.shoppingmall.rent_detail.RentDetailService;
 import com.team4.shoppingmall.rent_prod_stock.RentProdStockService;
 import com.team4.shoppingmall.reviews.ReviewsService;
 import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestDTO;
 import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestService;
-import com.team4.shoppingmall.util.DateUtil;
 
 @Controller
 @RequestMapping("/prod")
 public class ProdTestController {
 	
-	/* ³ªÁß¿¡ ¼­ºñ½º,DTO µî ÀÌ¸§¿¡¼­ Test»©°í, ÆÄÀÏ ³»¿ë ¿Å±â±â */
+	/* ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½ï¿½,DTO ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ï¿½ï¿½ Testï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Å±ï¿½ï¿½ */
 	
 	@Autowired
-	Seller_Prod_StockTestService seller_Prod_StockTestService; //ÆÇ¸Å »óÇ° Àç°í
+	Seller_Prod_StockTestService seller_Prod_StockTestService; //ï¿½Ç¸ï¿½ ï¿½ï¿½Ç° ï¿½ï¿½ï¿½
 	
 	@Autowired
-	ProdTestService prodTestService;  //»óÇ°
+	ProdTestService prodTestService;  //ï¿½ï¿½Ç°
 	
 	@Autowired
-	Prod_OptionTestService prod_OptionSerTestService;  //»óÇ° ¿É¼Ç
+	Prod_OptionTestService prod_OptionSerTestService;  //ï¿½ï¿½Ç° ï¿½É¼ï¿½
 	
 	@Autowired
-	Buyer_InqService buyer_InqService; //±¸¸ÅÀÚ ¹®ÀÇ(±¸¸ÅÀÚ-ÆÇ¸ÅÀÚ)
+	Buyer_InqService buyer_InqService; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½-ï¿½Ç¸ï¿½ï¿½ï¿½)
 	
 	@Autowired
-	CartService cartService; //Àå¹Ù±¸´Ï
+	CartService cartService; //ï¿½ï¿½Ù±ï¿½ï¿½ï¿½
 	
 	@Autowired
-	ReviewsService reviewsService; //¸®ºä
+	ReviewsService reviewsService; //ï¿½ï¿½ï¿½ï¿½
 	
 	@Autowired
-	RentService rentService; //´ë¿©
+	RentProdStockService rentProdStockService; //ï¿½ë¿©ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	
-	@Autowired
-	RentProdStockService rentProdStockService; //´ë¿©»óÇ°Àç°í 
-	
-	@Autowired
-	RentDetailService rentDetailService; //´ë¿© »ó¼¼
-	
-	/* »óÇ° ¸ñ·Ï ÆäÀÌÁö */
+	/* ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
 	@GetMapping("/productlistTest")
 	public void productList() {
 		
 	}
 		
-	/* »óÇ° »ó¼¼ ÆäÀÌÁö */
+	/* ï¿½ï¿½Ç° ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
 	@GetMapping("/product_detail")
 	public void productDetail(String prod_id, Model model) {
 		
-		//³ªÁß¿¡ »èÁ¦ÇÏ±â
-		prod_id = "³ªÀÌÅ° ¹ÝÆÈ_1234-1234";
+		//ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
+		prod_id = "ï¿½ï¿½ï¿½ï¿½Å° ï¿½ï¿½ï¿½ï¿½_1234-1234";
 		
-		/* »óÇ°ÀÇ Á¤º¸¿Í ¿É¼Ç Á¶È¸ */
-		//¿É¼Ç¸í°ú °ª ÀüºÎ Á¶È¸
+		/* ï¿½ï¿½Ç°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½É¼ï¿½ ï¿½ï¿½È¸ */
+		//ï¿½É¼Ç¸ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸
 		List<Object> prod_Options = prod_OptionSerTestService.selectAllOptionsByProdId(prod_id);
+		System.out.println("ï¿½É¼ï¿½ ï¿½ï¿½È¸ : "+ prod_Options);
 		model.addAttribute("prod_Options", prod_Options);
-		//System.out.println("¿É¼Ç Á¶È¸ : "+ prod_Options);
-		 
-		//ÆÇ¸Å »óÇ° ¿É¼Çº° Àç°í·® Á¶È¸
+		
+		//ï¿½Ç¸ï¿½ ï¿½ï¿½Ç° ï¿½É¼Çºï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½È¸
 		List<Seller_Prod_StockTestDTO> seller_prod_stockDTO = seller_Prod_StockTestService.selectSpsOptionByProdId(prod_id);
 		model.addAttribute("seller_prod_stockDTO", seller_prod_stockDTO);
 
-		//»óÇ° Á¤º¸ Á¶È¸
-		Map<String,Object> prod_detail_info = prodTestService.selectProdDetailInfoByProdId(prod_id);
-		prod_detail_info.put("prod_id", prod_id); 
+		//ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸
+		List<Map<String,Object>> prod_detail_info = prodTestService.selectProdDetailInfoByProdId(prod_id);
 		model.addAttribute("prod_detail_info", prod_detail_info);
-		//System.out.println("»óÇ° »ó¼¼ Á¤º¸ Á¶È¸ : "+ prod_detail_info);
+		
+		System.out.println("ï¿½ï¿½Ç° ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸ : "+ prod_detail_info);
+		System.out.println("---ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½----");
+		System.out.println(seller_prod_stockDTO);
 		
 		
-		/* »óÇ° ÀüÃ¼ ¸®ºä ¸ñ·Ï */		
+		/* ï¿½ï¿½Ç° ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ */		
 		List<Map<String,String>> productReviews = reviewsService.selectAllProductReviewByProdId(prod_id);
 		model.addAttribute("productReviews", productReviews);
-		//System.out.println("»óÇ° ÀüÃ¼ ¸®ºä ¸ñ·Ï : " + productReviews);
+		System.out.println("ï¿½ï¿½Ç° ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ : " + productReviews);
 		
-		//¸®ºä »óÇ°ÀÇ ¿É¼Ç ¸ñ·Ï
+		//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç°ï¿½ï¿½ ï¿½É¼ï¿½ ï¿½ï¿½ï¿½
 		List<Prod_OptionDTO> prodOptions = prod_OptionSerTestService.productAllOptionsByProdId(prod_id);
 		model.addAttribute("prodOptions", prodOptions);
 		
 		
-		//System.out.println("¸®ºä »óÇ° ¿É¼Ç ¸ñ·Ï : " + prodOptions);
+		System.out.println("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç° ï¿½É¼ï¿½ ï¿½ï¿½ï¿½ : " + prodOptions);
 		
-		/* »óÇ° ÀüÃ¼ ¹®ÀÇ ¸ñ·Ï */
+		/* ï¿½ï¿½Ç° ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ */
 		List<Buyer_InqDTO> buyer_inqList = buyer_InqService.selectByProdId(prod_id);
 		model.addAttribute("buyer_inqList", buyer_inqList);
-		//System.out.println("»óÇ° ÀüÃ¼ ¹®ÀÇ ¸ñ·Ï : " + buyer_inqList);
+		System.out.println("ï¿½ï¿½Ç° ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ : " + buyer_inqList);
 		
 	}
 	
-	/* Àå¹Ù±¸´Ï */
-	//»óÇ° ¼±ÅÃÇÑ ¿É¼Ç °ª ÀúÀåÇÏ±â -> Àå¹Ù±¸´Ï·Î insert
+	/* ï¿½ï¿½Ù±ï¿½ï¿½ï¿½ */
+	//ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½É¼ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ -> ï¿½ï¿½Ù±ï¿½ï¿½Ï·ï¿½ insert
 	@GetMapping(value = "/productCartInsert.do", produces = "text/plain;charset=utf-8")
 	public @ResponseBody String productCartInsert(HttpServletRequest request) throws UnsupportedEncodingException {
 
 		HttpSession session = request.getSession();
     	
-		//³ªÁß¿¡ »èÁ¦ÇÏ±â
-		String prod_id = "³ªÀÌÅ° ¹ÝÆÈ_1234-1234";
+		//ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
+		String prod_id = "ï¿½ï¿½ï¿½ï¿½Å° ï¿½ï¿½ï¿½ï¿½_1234-1234";
 		
-    	//1.session¿¡¼­ ÀÐÀ» ¿¹Á¤ 
+    	//1.sessionï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 
         String member_id = "testid";
-		//String memberId = (String) session.getAttribute("member_id"); ³ªÁß¿¡ ÁÖ¼® Ç®±â
+		//String memberId = (String) session.getAttribute("member_id"); ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½Ö¼ï¿½ Ç®ï¿½ï¿½
 		
-		//¼±ÅÃµÈ ¿É¼Ç °ª È®ÀÎ 
+		//ï¿½ï¿½ï¿½Ãµï¿½ ï¿½É¼ï¿½ ï¿½ï¿½ È®ï¿½ï¿½ 
 		String param = request.getQueryString();
         System.out.println("Selected option(param): " + param);
         
         String message = null;
         
-        //paramÀÌ nullÀÌ ¾Æ´Ñ °æ¿ì
+        //paramï¿½ï¿½ nullï¿½ï¿½ ï¿½Æ´ï¿½ ï¿½ï¿½ï¿½
         if(param != null) {
-        	System.out.println("(¿É¼ÇÁ¸Àç)Selected option: " + param);
+        	System.out.println("(ï¿½É¼ï¿½ï¿½ï¿½ï¿½ï¿½)Selected option: " + param);
+        	/*
+        	color=white&size=L&quantity=1&productPrice=40000&prod_id=%EB%82%98%EC%9D%B4%ED%82%A4%20%EB%B0%98%ED%8C%94_1234-1234
+        	{quantity=1, color=black, size=L, productPrice=40000, prod_id=ï¿½ï¿½ï¿½ï¿½Å° ï¿½ï¿½ï¿½ï¿½_1234-1234}
+            color=black, size=L, prod_id=ï¿½ï¿½ï¿½ï¿½Å° ï¿½ï¿½ï¿½ï¿½_1234-1234
+        	*/
         	
-			//(1)paramÀ¸·Î ³Ñ¾î¿Â ¼±ÅÃ ¿É¼Çµé ÀúÀå
+			//(1)paramï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¾ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½É¼Çµï¿½ ï¿½ï¿½ï¿½ï¿½
         	HashMap<String, String> map = new HashMap<>(); 
-        	HashMap<String, String> optionMap = new HashMap<>(); //¿É¼ÇMap-Å°(¿É¼Ç¸í):°ª(¿É¼Ç°ª)
+        	HashMap<String, String> optionMap = new HashMap<>(); //ï¿½É¼ï¿½Map-Å°(ï¿½É¼Ç¸ï¿½):ï¿½ï¿½(ï¿½É¼Ç°ï¿½)
         	String[] propertis = param.split("&");
         	for(String pro: propertis) {
         		String[] keyValue = pro.split("=");
         		
-        		//»óÇ°ID ÇÑ±Û ƒÆÁü ÇØ°á decode
+        		//ï¿½ï¿½Ç°ID ï¿½Ñ±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ø°ï¿½ decode
         		map.put(keyValue[0], URLDecoder.decode(keyValue[1], "utf-8"));
         		
-        		//discountPrice´Â Àå¹Ù±¸´Ï¿¡ ÇÊ¿ä¾øÀ½(paramÀ¸·Î ³Ñ¾î¿Ã ÇÊ¿ä¾øÀ½) - ¼öÁ¤ ÇÊ¿ä
+        		//discountPriceï¿½ï¿½ ï¿½ï¿½Ù±ï¿½ï¿½Ï¿ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ï¿½(paramï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¾ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ï¿½) - ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½
         		//if(!keyValue[0].contains("quantity")&& !keyValue[0].contains("discountPrice") &&  !keyValue[0].contains("prod_id"))
         		if(!keyValue[0].contains("quantity")&& !keyValue[0].contains("productPrice") &&  !keyValue[0].contains("prod_id"))
         			optionMap.put(keyValue[0], keyValue[1]);
         	}
-        	System.out.println("paramÀ¸·Î ³Ñ¾î¿Â ÀüÃ¼ °ª map : " + map);
+        	System.out.println("paramï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¾ï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ map : " + map);
         	
            
-            //2.¿É¼Ç¿¡ ÇØ´çÇÏ´Â »óÇ° Àç°íid (ÆÇ¸Å»óÇ°Àç°í)
+            //2.ï¿½É¼Ç¿ï¿½ ï¿½Ø´ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½Ç° ï¿½ï¿½ï¿½id (ï¿½Ç¸Å»ï¿½Ç°ï¿½ï¿½ï¿½)
             String sellStockId = cartService.searchStockId(optionMap, map.get("prod_id"));
             
             if(sellStockId != null) {
             	
-                //1.select¹® - Àå¹Ù±¸´Ï¿¡ °°Àº »óÇ° ÀÖ´ÂÁö Á¶È¸
+                //1.selectï¿½ï¿½ - ï¿½ï¿½Ù±ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç° ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½ï¿½È¸
                 Map<String,String> map2 = new HashMap<>();
                 map2.put("member_id", member_id);
                 map2.put("sellstock_id", sellStockId);
@@ -174,267 +167,136 @@ public class ProdTestController {
                 CartDTO cartBySellstockDTO = cartService.selectCartBySellstock(map2);
             	
                 if(cartBySellstockDTO != null) {
-                	//2.update¹® - °°Àº »óÇ° Á¸Àç ½Ã ¼ö·® ¾÷µ¥ÀÌÆ® 
+                	//2.updateï¿½ï¿½ - ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® 
                 	
                 	CartDTO cart = new CartDTO();
                 	
-                	//select·Î Á¶È¸ÇÑ °á°ú¿¡ ÀÖ´Â cart_id¸¦ °¡Á®¿Í¼­ ÀúÀå
+                	//selectï¿½ï¿½ ï¿½ï¿½È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ cart_idï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ ï¿½ï¿½ï¿½ï¿½
                 	cart.setCart_id(cartBySellstockDTO.getCart_id()); 
-                	//cart_amount º¯¼ö ÀúÀå => ±âÁ¸¿¡ ÀÖ´Â cart_amount + ¼ö·®(quantity)	
+                	//cart_amount ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ => ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ cart_amount + ï¿½ï¿½ï¿½ï¿½(quantity)	
                 	cart.setCart_amount(Integer.parseInt(map.get("quantity")));
                 	
                 	//int updateResult = cartService.updateCartBySellstock(cart);
                 	cartService.updateCartBySellstock(cart);
                 	
                 } else {
-                	//3.insert¹® - Àå¹Ù±¸´Ï Å×ÀÌºí¿¡ »õ·Î µî·Ï
-                	//¿©±â¼­ ¾²ÀÎ cart_id = 0Àº ÀÇ¹Ì¾øÀ½. ½ÃÄö½º »ç¿ëÁß
+                	//3.insertï¿½ï¿½ - ï¿½ï¿½Ù±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+                	//ï¿½ï¿½ï¿½â¼­ ï¿½ï¿½ï¿½ï¿½ cart_id = 0ï¿½ï¿½ ï¿½Ç¹Ì¾ï¿½ï¿½ï¿½. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
                 	CartDTO cartDTO = new CartDTO(0, member_id, sellStockId, Integer.parseInt(map.get("quantity")));
                 	cartService.cartInsert(cartDTO);
                 }
          
             }
-            message = "Àå¹Ù±¸´Ï¿¡ ÀúÀåµÇ¾ú½À´Ï´Ù.";
-            System.out.println("Àç°íID: "+ sellStockId);
+            message = "ï¿½ï¿½Ù±ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.";
+            System.out.println("ï¿½ï¿½ï¿½ID: "+ sellStockId);
             
-            return message; //Àå¹Ù±¸´Ï ÆäÀÌÁö ¾ÆÁ÷ ¿¬°á X
+            return message; //ï¿½ï¿½Ù±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ X
             
-        }else {//(2)paramÀÌ nullÀÎ °æ¿ì
-				System.out.println("(¿É¼Çnull)Selected option: " + param);
-				message = "¿É¼ÇÀ» ¼±ÅÃÇØ ÁÖ¼¼¿ä";
+        }else {//(2)paramï¿½ï¿½ nullï¿½ï¿½ ï¿½ï¿½ï¿½
+				System.out.println("(ï¿½É¼ï¿½null)Selected option: " + param);
+				message = "ï¿½É¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¼ï¿½ï¿½ï¿½";
 				return message;  
 			  }
     }
 	    
-	/* ±¸¸ÅÇÏ±â */
-	//»óÇ° ¼±ÅÃÇÑ ¿É¼Ç °ª ÀúÀåÇÏ±â -> ÁÖ¹®ÆäÀÌÁö
-	//°áÁ¦°¡ µÈ ÈÄ¿¡ ÁÖ¹®»ó¼¼Å×ÀÌºí¿¡ ÀúÀåµÇ´Â°Í? 
+	/* ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ */
+	//ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½É¼ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ -> ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ä¿ï¿½ ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ï¿½ï¿½Ç´Â°ï¿½? 
 	//@GetMapping("/?")
 	//public void productOrderInsert(String productOption) {
-	
-	//ÁÖ¹®Å×ÀÌºí insert 1 : ÁÖ¹®»ó¼¼Å×ÀÌºí insert  n
-	
-	
-	//
+		
 	//}
 
-	/* »óÇ° ´ë¿© °¡´ÉÇÑÁö Ã¼Å© => ´ë¿©ÇÏ±â ÁøÇà */
+	/* ï¿½ï¿½Ç° ï¿½ë¿© ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã¼Å© */
 	@PostMapping("/isProductRentable")
 	@ResponseBody
-	public int isProductRentable(HttpServletRequest request, Model model) {
+	public void isProductRentable(HttpServletRequest request) {
 		
-		//È¸¿ø ¼¼¼Ç¿¡¼­ ÀÐ±â
-		String member_id = "testid";
-    	 
 		String param = request.getQueryString();
-		String prod_id="";
+		System.out.println("!!ï¿½ï¿½Ç° ï¿½ë¿© ï¿½É¼ï¿½: " + param);
 		
-		String rent_prod_quantity = "";
-		String rent_start_date = "";
-		String rent_end_date = "";
-		String total_amount = "";
-		
-		//1.»óÇ°ÀÌ ´ë¿©Àç°í¿¡ Á¸ÀçÇÏ´ÂÁö Ã£±â
-		//{color=4, size=1, rent_prod_quantity=1, rent_start_date=2024-06-27, rent_end_date=2024-07-04, prod_id=%EB%82%98%EC%9D%B4%ED%82%A4%20%EB%B0%98%ED%8C%94_1234-1234, total_amount=30000}
-		
+		//1.ï¿½ï¿½Ç°ï¿½ï¿½ ï¿½ë¿©ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½
+		//(1)paramï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¾ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½É¼Çµï¿½ ï¿½ï¿½ï¿½ï¿½
     	HashMap<String, String> map = new HashMap<>(); 
-    	HashMap<String, String> optionMap = new HashMap<>(); //¿É¼ÇMap
+    	HashMap<String, String> optionMap = new HashMap<>(); //ï¿½É¼ï¿½Map-Å°(ï¿½É¼Ç¸ï¿½):ï¿½ï¿½(ï¿½É¼Ç°ï¿½)
     	String[] propertis = param.split("&");
-    	
-    	List<Integer> optList = new ArrayList<>();   
-    	
-    	int index=0;
-    	
     	for(String pro: propertis) {
     		String[] keyValue = pro.split("=");
     		
     		map.put(keyValue[0], keyValue[1]);
     		
-    		//»óÇ°id
-    		if(keyValue[0].equals("prod_id")) prod_id = keyValue[1];
-    		
-    		//´ë¿© ¼ö
-    		if(keyValue[0].equals("rent_prod_quantity")) rent_prod_quantity = keyValue[1];  //¼ö·®
-    		//´ë¿© ½ÃÀÛÀÏ
-    		if(keyValue[0].equals(("rent_start_date"))) rent_start_date = keyValue[1]; 
-    		//´ë¿© ¸¶°¨ÀÏ
-    		if(keyValue[0].equals(("rent_end_date"))) rent_end_date = keyValue[1];
-    		//´ë¿©°¡
-    		if(keyValue[0].equals(("total_amount"))) total_amount = keyValue[1]; //´ë¿©°¡
-    		
-    		//¿É¼Çµé
-    		if(!keyValue[0].contains("prod_id")&& 
-			  !keyValue[0].contains("rent_prod_quantity")&& 
-			  !keyValue[0].contains("rent_start_date") &&  
-			  !keyValue[0].contains("rent_end_date") && 
-			  !keyValue[0].contains("total_amount")) {
-    			
-    			optList.add( Integer.parseInt(keyValue[1])); 
-    			index++; //¿¹) 1,4,,,
-    		}
+    		if(!keyValue[0].contains("rent-prod-quantity")&& !keyValue[0].contains("rent_start_date") &&  !keyValue[0].contains("rent_end_date"))
+    			optionMap.put(keyValue[0], keyValue[1]);
     	}
+    	System.out.println("(ï¿½ë¿©)paramï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¾ï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ map : " + map);
+    	//{color=black, size=L, rent-prod-quantity=1, rent_start_date=2024-06-26, rent_end_date=2024-07-03}
     	
-	    // Option list Á¤·Ä
-    	optList.sort((a,b)->a-b);
-    	List<String> result = optList.stream().map(i->i.toString()).collect(Collectors.toList());
-    	String optionString = String.join("," , result);
-    	for(int i=1; i<=5-index;i++) { optionString += ","; }
-		 
-        //¿É¼Ç °ªÀÌ ÄÞ¸¶·Î ±¸ºÐµÈ ¹®ÀÚ¿­À» »ý¼º
-        map.put("prod_id", prod_id);
-        map.put("optionString", optionString);
-
-        System.out.println(prod_id + ":" + optionString);
-        
-		try {
-			prod_id = URLDecoder.decode(map.get("prod_id"), "utf-8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+    	String prod_id = "ï¿½ï¿½ï¿½ï¿½Å° ï¿½ï¿½ï¿½ï¿½_1234-1234";
+       
+        //2.ï¿½É¼Ç¿ï¿½ ï¿½Ø´ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½Ç° ï¿½ï¿½ï¿½id (ï¿½Ç¸Å»ï¿½Ç°ï¿½ï¿½ï¿½)
+        //String sellStockId = cartService.searchStockId(optionMap, map.get("prod_id"));
+        //String rentStockId = rentProdStockService.selectRentStockByProdId(prod_id);
+ 
+		//jspï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
 		
-		System.out.println(prod_id +":" + optionString); 
-		
-		//ÇØ´ç ¿É¼ÇÀÇ ´ë¿© »óÇ° Àç°í Á¶È¸
-		Map<String, String> rentProductStockCheck = rentProdStockService.selectRentStockByProdId(prod_id, optionString);
-        model.addAttribute("rentProductStockCheck",rentProductStockCheck);
-        //rentProductStockCheck => {OPT_ID2=4, OPT_ID1=1, R_STOCK_ID=³ªÀÌÅ° ¹ÝÆÈ_1234-1234_RENT_1, STOCK=50}
-        
-        
-        /* ´ë¿© */
-        // 2.´ë¿©Àç°í°¡ Á¸ÀçÇÏ´Â °æ¿ì ´ë¿©ÇÏ±â °¡´É
-         if (rentProductStockCheck != null) { 
-        	
-        	 RentDTO rent = new RentDTO();
-        	
-        	 rent.setRent_start_date( DateUtil.getSQLDate(rent_start_date)  );
-        	 rent.setRent_end_date(DateUtil.getSQLDate(rent_end_date));
-             rent.setMember_id(member_id);
-             rent.setTotal_rent_price(Integer.parseInt(total_amount));
-            
-        	 int rentProdInsert = rentService.rentInsert(rent);
-        	 
-        	 
-        	 /* ´ë¿© »ó¼¼ -------------------------||ÁøÇàÁß||---------------------------------------- 
-        	 // »ðÀÔµÈ ´ë¿©ID¸¦ Ã£´Â select¹® RENTÅ×ÀÌºí¿¡ »ðÀÔµÇ´Â RENTAL_CODE Ã£±â
-             int rentalCode = rentService.selectInsertRentalCode();
-    	 	
-        	 //3.¿É¼Ç¿¡ ÇØ´çÇÏ´Â »óÇ°ÀÇ ´ë¿©Àç°íID(r_stock_id) ±¸ÇÏ°í ´ë¿©»ó¼¼ »ý¼º
-             if (rentProductStockCheck != null && rentProductStockCheck.containsKey("R_STOCK_ID")) {
-                 String rentStockId = rentProductStockCheck.get("R_STOCK_ID");
-                 System.out.println("R_STOCK_ID: " + rentStockId);
-                 
-                 //´ë¿©ID´Â ¾î¶»°Ô Ã£Áö?
-                 
-                 RentDetailDTO rentDetailDTO = new RentDetailDTO();
-                 
-                 //rentDetailDTO.setRentdetail_id(); 	//½ÃÄö¤µ
-                 rentDetailDTO.setRent_product_price(Integer.parseInt(total_amount)); //ÀÏ´Ü ´ë¿©°¡°Ý ³ÖÀ½
-                 rentDetailDTO.setR_stock_id(rentStockId);  //´ë¿©Àç°íid
-                 rentDetailDTO.setRent_num(Integer.parseInt(rent_prod_quantity)); //´ë¿© ÁÖ¹® ¼ö·®
-                 
-                 rentDetailDTO.setRental_code(rentalCode); //´ë¿©id (½ÃÄö½º)
-                 
-                 
-                 //´ë¿©»ó¼¼ »ý¼º Insert (´ë¿©id, ´ë¿©Àç°íid, ÁÖ¹®¼ö·®, »óÇ°°¡°Ý(´ë¿©°¡), ÁÖ¹®»ó¼¼¹øÈ£(½ÃÄö½º) )
-                 //¸ÊÇÎµÈ sql¹® ¸øÃ£À½ ÀÌ½´
-                 int rentDetailInsert = rentDetailService.rentDetailInsert(rentDetailDTO);
-                 
-                 System.out.println("rentDetailInsert: " + rentDetailInsert);
-                 
-                 
-             } else {
-                 System.out.println("R_STOCK_ID °ªÀÌ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
-             }
-             //------------------------------------------------------------------------
-        	 */
-        	
-        	 
-        	 
-             return 1; // ´ë¿© ¼º°ø
-             
-         } else{
-        	 
-        	 return 0; //´ë¿©½ÇÆÐ (Àç°í¾øÀ½)
-         }
-         
-         
 		
 	}
 	
 	
+	/* ï¿½ë¿©ï¿½Ë¾ï¿½Ã¢ - ï¿½ë¿©ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ±ï¿½) */
+	//@PostMapping("/?")
+	//public void test2() {}
 	
+
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/* »óÇ° ¹®ÀÇÇÏ±â (±¸¸ÅÀÚ=>ÆÇ¸ÅÀÚ) */
+	/* ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½=>ï¿½Ç¸ï¿½ï¿½ï¿½) */
 	@PostMapping(value = "/productQnaInsert.do", produces = "text/plain;charset=utf-8")
 	@ResponseBody
 	public String productQnaInsert( 
-			@RequestParam String qnaTitle,	//¹®ÀÇ Á¦¸ñ
-			@RequestParam String qnaTestarea, //¹®ÀÇ ³»¿ë
-			HttpSession session //session¿¡¼­ ·Î±×ÀÎ Á¤º¸ ÀÐ±â
+			@RequestParam String qnaTitle,	//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+			@RequestParam String qnaTestarea, //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+			HttpSession session //sessionï¿½ï¿½ï¿½ï¿½ ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ð±ï¿½
 	){
 		Buyer_InqDTO buyer_InqDTO = new Buyer_InqDTO();
 		
 		Map<String,String> buyer_inq_map = new HashMap<String,String>();
 		
-		System.out.println("¹®ÀÇ Á¦¸ñ: "+qnaTitle);
-		System.out.println("¹®ÀÇ ³»¿ë: "+qnaTestarea);
+		System.out.println("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: "+qnaTitle);
+		System.out.println("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: "+qnaTestarea);
 		
 		
-		/* ¾÷·Îµå */
-        //¹®ÀÇ Á¦¸ñ 
+		/* ï¿½ï¿½ï¿½Îµï¿½ */
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 
         //buyer_InqDTO.setBuyer_inq_title(qnaTitle); 
         buyer_inq_map.put("buyer_inq_title", qnaTitle); 
 
-        //¹®ÀÇ³»¿ë 
+        //ï¿½ï¿½ï¿½Ç³ï¿½ï¿½ï¿½ 
 		//buyer_InqDTO.setBuyer_inq_content(qnaTestarea); 
 		 buyer_inq_map.put("buyer_inq_content", qnaTestarea); 
 		 
-		//È¸¿øID Å×½ºÆ® - ½ÇÁ¦·Î´Â ¼¼¼Ç¿¡¼­ °¡Á®¿Í¾ß ÇÔ
+		//È¸ï¿½ï¿½ID ï¿½×½ï¿½Æ® - ï¿½ï¿½ï¿½ï¿½ï¿½Î´ï¿½ ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¾ï¿½ ï¿½ï¿½
 		 String member_id = "testid";
 		//String memberId = (String) session.getAttribute("member_id"); 
 		 
 		 buyer_inq_map.put("member_id", member_id); 
 		 
-		//»óÇ°ID Å×½ºÆ® - ½ÇÁ¦ prod_id °ªÀ» ¼³Á¤Çì¾ß ÇÔ
-		 String prod_id = "³ªÀÌÅ° ¹ÝÆÈ_1234-1234";
+		//ï¿½ï¿½Ç°ID ï¿½×½ï¿½Æ® - ï¿½ï¿½ï¿½ï¿½ prod_id ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+		 String prod_id = "ï¿½ï¿½ï¿½ï¿½Å° ï¿½ï¿½ï¿½ï¿½_1234-1234";
 		 buyer_inq_map.put("prod_id", prod_id); 
 		
 		 
-		//insert¹® - Buyer_InAÅ×ÀÌºí 
+		//insertï¿½ï¿½ - Buyer_InAï¿½ï¿½ï¿½Ìºï¿½ 
 		int result = buyer_InqService.buyer_inqInsert(buyer_inq_map);
 		
 		String message;
 		
 		if(result > 0) {
-			message = "¹®ÀÇ°¡ µî·ÏµÇ¾ú½À´Ï´Ù.";
+			message = "ï¿½ï¿½ï¿½Ç°ï¿½ ï¿½ï¿½ÏµÇ¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.";
 			
 			return  message;		
 			
 		}else {
-			message = "¿À·ù°¡ ¹ß»ýÇß½À´Ï´Ù. ´Ù½Ã ½ÃµµÇØÁÖ¼¼¿ä.";
+			message = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½. ï¿½Ù½ï¿½ ï¿½Ãµï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.";
 			return  message;
 		}
 		

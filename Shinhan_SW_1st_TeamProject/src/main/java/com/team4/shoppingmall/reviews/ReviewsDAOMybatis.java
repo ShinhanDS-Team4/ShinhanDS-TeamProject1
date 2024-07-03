@@ -15,7 +15,7 @@ public class ReviewsDAOMybatis implements ReviewsDAOInterface {
 	
 	String namespace = "com.saren.reviews.";
 	
-	//ÁÖ¹®ÇÑ »óÇ°ÀÇ ¸®ºäÁ¤º¸
+	//ÃÃ–Â¹Â®Ã‡Ã‘ Â»Ã³Ã‡Â°Ã€Ã‡ Â¸Â®ÂºÃ¤ÃÂ¤ÂºÂ¸
 	public List<Map<String,String>> selectAllProductReviewByProdId(String prod_id){
 		return sqlSession.selectList(namespace+"selectAllProductReviewByProdId", prod_id);
 	};
@@ -43,5 +43,10 @@ public class ReviewsDAOMybatis implements ReviewsDAOInterface {
 	@Override
 	public int reviewsDelete(Integer review_id) {
 		return sqlSession.delete(namespace+"reviewsDelete", review_id);
+	}
+
+	@Override
+	public List<ReviewsDTO> selectBymemId(String member_id) {
+		return sqlSession.selectList(namespace+"selectBymemId", member_id);
 	}
 }

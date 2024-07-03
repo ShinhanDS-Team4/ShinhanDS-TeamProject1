@@ -4,6 +4,23 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.category">
 
+	<!-- 상품의 카테고리명 조회  -->
+	<select id="productCategoryByProdId" parameterType="string"
+			resultType="categoryVO">
+		SELECT 
+		     c1.category_name AS currentCategoryName,
+       		 c2.category_name AS parentCategoryName
+		FROM 
+		    category c1
+		LEFT JOIN 
+		    category c2 ON c1.parent_category_id = c2.category_id
+		WHERE 
+		    c1.category_id = (
+		        SELECT p.category_id 
+		        FROM prod p 
+		        WHERE p.prod_id = #{prod_id}
+		 )
+	</select>
 	<select id="selectById" parameterType="int"
 		resultType="categoryVO">
 		SELECT *

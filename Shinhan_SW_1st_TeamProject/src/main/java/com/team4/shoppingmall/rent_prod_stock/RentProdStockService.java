@@ -1,7 +1,6 @@
 package com.team4.shoppingmall.rent_prod_stock;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,12 +11,12 @@ public class RentProdStockService {
 	@Autowired
 	RentProdStockDAOInterface rentProdStockDAO;
 
-	//¼±ÅÃ ¿É¼Ç »óÇ°ÀÇ ´ë¿© Àç°íid Ã£±â
-	public Map<String,String> selectRentStockByProdId(String prod_id, String optionString) {
-		return rentProdStockDAO.selectRentStockByProdId(prod_id, optionString);
+	//ì„ íƒ ì˜µì…˜ ìƒí’ˆì˜ ëŒ€ì—¬ ì¬ê³ id ì°¾ê¸°
+	public RentProdStockDTO selectRentStockByProdId(String prod_id) {
+		return rentProdStockDAO.selectRentStockByProdId(prod_id);
 	};
 	
-	// ´ë¿©»óÇ°»ó¼¼
+	// ëŒ€ì—¬ìƒí’ˆìƒì„¸
 	public RentProdStockDTO selectById(String r_stock_id) {
 		return rentProdStockDAO.selectById(r_stock_id);
  	}
@@ -27,30 +26,26 @@ public class RentProdStockService {
 	}
 	
 	public List<RentProdStockListDTO> findRentStockList(String member_id){
-		System.out.println("service Á¤»ó ¼öÇàµÊ");
+		System.out.println("service ì •ìƒ ìˆ˜í–‰ë¨");
 		return rentProdStockDAO.findRentStockList(member_id);
 	}
 
-	// ´ë¿©»óÇ°¸ñ·Ï 
+	// ëŒ€ì—¬ìƒí’ˆëª©ë¡ 
 	public List<RentProdStockDTO> selectAll() {
 		return rentProdStockDAO.selectAll();	
  	}
 
-	// ´ë¿©»óÇ°µî·Ï 
+	// ëŒ€ì—¬ìƒí’ˆë“±ë¡ 
 	public int rentProdInsert(RentProdStockDTO rentprod) {
 		return rentProdStockDAO.rentProdInsert(rentprod);	
  	}
 
-	// ´ë¿©»óÇ°¼öÁ¤ 
+	// ëŒ€ì—¬ìƒí’ˆìˆ˜ì • 
 	public int rentProdUpdate(RentProdStockDTO rentprod) {
 		return rentProdStockDAO.rentProdUpdate(rentprod);
  	}
-	
-	public int rentStockUpdate(RentProdStockDTO rentprod) {
-		return rentProdStockDAO.rentStockUpdate(rentprod);
-	}
 
-	// ´ë¿©»óÇ°»èÁ¦ 
+	// ëŒ€ì—¬ìƒí’ˆì‚­ì œ 
 	public int rentProdDelete(String r_stock_id) {
 		return rentProdStockDAO.rentProdDelete(r_stock_id);
  	}

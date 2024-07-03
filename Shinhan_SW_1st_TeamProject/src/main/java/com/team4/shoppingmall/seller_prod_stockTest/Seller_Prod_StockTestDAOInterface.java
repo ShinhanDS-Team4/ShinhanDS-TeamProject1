@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface Seller_Prod_StockTestDAOInterface {
 	
-	//»óÇ°ID·Î ¿É¼Çº° ÆÇ¸Å »óÇ° Àç°í Á¶È¸
+	//ìƒí’ˆIDë¡œ ì˜µì…˜ë³„ íŒë§¤ ìƒí’ˆ ì¬ê³  ì¡°íšŒ
 	public List<Seller_Prod_StockTestDTO> selectSpsOptionByProdId(String prod_id);
 	
 	public Seller_Prod_StockTestDTO selectByStockId(String stock_id);

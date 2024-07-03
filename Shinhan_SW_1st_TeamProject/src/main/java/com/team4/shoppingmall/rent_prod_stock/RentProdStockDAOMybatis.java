@@ -1,12 +1,12 @@
 package com.team4.shoppingmall.rent_prod_stock;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.team4.shoppingmall.coupon.CouponDTO;
 
 @Repository
 public class RentProdStockDAOMybatis implements RentProdStockDAOInterface {
@@ -17,15 +17,12 @@ public class RentProdStockDAOMybatis implements RentProdStockDAOInterface {
 	String namespace = "com.saren.rent_prod_stock.";
 
 	
-	//¼±ÅÃ ¿É¼Ç »óÇ°ÀÇ ´ë¿© Àç°íid Ã£±â
-	public Map<String,String> selectRentStockByProdId(String prod_id, String optionString) {
-		Map<String, String> map = new HashMap<>();
-		map.put("prod_id", prod_id);
-		map.put("optionString", optionString);
-		return sqlSession.selectOne(namespace + "selectRentStockByProdId", map);
+	//ì„ íƒ ì˜µì…˜ ìƒí’ˆì˜ ëŒ€ì—¬ ì¬ê³ id ì°¾ê¸°
+	public RentProdStockDTO selectRentStockByProdId(String prod_id) {
+		return sqlSession.selectOne(namespace + "selectRentStockByProdId", prod_id);
 	};
 	
-	// ´ë¿©»óÇ°»ó¼¼
+	// ëŒ€ì—¬ìƒí’ˆìƒì„¸
 	@Override
 	public RentProdStockDTO selectById(String r_stock_id) {
 		return sqlSession.selectOne(namespace + "selectById", r_stock_id);
@@ -38,35 +35,29 @@ public class RentProdStockDAOMybatis implements RentProdStockDAOInterface {
 	
 	@Override
 	public List<RentProdStockListDTO> findRentStockList(String member_id) {
-		System.out.println("mybatis Á¤»ó ¼öÇàµÊ");
+		System.out.println("mybatis ì •ìƒ ìˆ˜í–‰ë¨");
 		return sqlSession.selectList(namespace+"findRentStockList", member_id);
 	}
 
-	// ´ë¿©»óÇ°¸ñ·Ï
+	// ëŒ€ì—¬ìƒí’ˆëª©ë¡
 	@Override
 	public List<RentProdStockDTO> selectAll() {
 		return sqlSession.selectList(namespace + "selectById");
 	}
 
-	// ´ë¿©»óÇ°µî·Ï
+	// ëŒ€ì—¬ìƒí’ˆë“±ë¡
 	@Override
 	public int rentProdInsert(RentProdStockDTO rentprod) {
 		return sqlSession.insert(namespace + "rentProdInsert", rentprod);
 	}
 
-	// ´ë¿©»óÇ°¼öÁ¤
+	// ëŒ€ì—¬ìƒí’ˆìˆ˜ì •
 	@Override
 	public int rentProdUpdate(RentProdStockDTO rentprod) {
 		return sqlSession.update(namespace + "rentProdUpdate", rentprod);
 	}
-	
-	// ´ë¿©»óÇ°Àç°í¼öÁ¤
-	@Override
-	public int rentStockUpdate(RentProdStockDTO rentprod) {
-		return sqlSession.update(namespace + "rentStockUpdate", rentprod);
-	}
 
-	// ´ë¿©»óÇ°»èÁ¦
+	// ëŒ€ì—¬ìƒí’ˆì‚­ì œ
 	@Override
 	public int rentProdDelete(String r_stock_id) {
 		return sqlSession.delete(namespace + "selectById", r_stock_id);

@@ -13,12 +13,12 @@ public class CartService {
 	@Autowired
 	CartDAOInterface cartDAO;
 	
-	//¼±ÅÃÇÑ ¿É¼Ç »óÇ°ÀÇ Àç°íID Á¶È¸
+	//ì„ íƒí•œ ì˜µì…˜ ìƒí’ˆì˜ ì¬ê³ ID ì¡°íšŒ
 	public String searchStockId(HashMap<String, String> map, String prod_id) {
 		return cartDAO.searchStockId(map, prod_id);
 	}
 	
-	//Àå¹Ù±¸´Ï¿¡ °°Àº »óÇ°ÀÌ Á¸ÀçÇÏ´ÂÁö Á¶È¸
+	//ì¥ë°”êµ¬ë‹ˆì— ê°™ì€ ìƒí’ˆì´ ì¡´ì¬í•˜ëŠ”ì§€ ì¡°íšŒ
 	public CartDTO selectCartBySellstock(Map<String,String> map) {
 		return cartDAO.selectCartBySellstock(map);
 	}
@@ -55,7 +55,7 @@ public class CartService {
 		return cartDAO.cartDelete(cart_id);
 	}
 	
-	//Àå¹Ù±¸´Ï »óÇ° ¼ö·® ¾÷µ¥ÀÌÆ®
+	//ì¥ë°”êµ¬ë‹ˆ ìƒí’ˆ ìˆ˜ëŸ‰ ì—…ë°ì´íŠ¸
 	public int updateCartBySellstock(CartDTO cart) {
 		return cartDAO.updateCartBySellstock(cart);
 	}

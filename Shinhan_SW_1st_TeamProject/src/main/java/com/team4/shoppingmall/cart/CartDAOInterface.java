@@ -4,34 +4,78 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public interface CartDAOInterface {
-	
-	//¼±ÅÃÇÑ ¿É¼Ç »óÇ°ÀÇ Àç°íID Á¶È¸
-	public String searchStockId(HashMap<String, String> map, String prod_id);
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-	//Àå¹Ù±¸´Ï¿¡ °°Àº »óÇ°ÀÌ Á¸ÀçÇÏ´ÂÁö Á¶È¸
-	public CartDTO selectCartBySellstock(Map<String, String> map);
+@Repository
+public class CartDAOMybatis implements CartDAOInterface {
+
+	@Autowired
+	SqlSession sqlSession;
+
+	String namespace = "com.saren.cart.";
+
+	//ì„ íƒí•œ ì˜µì…˜ ìƒí’ˆì˜ ì¬ê³ ID ì¡°íšŒ
+	public String searchStockId(HashMap<String, String> map,String prod_id) {
+		//ì˜µì…˜ëª…ê³¼ ì˜µì…˜ëª…ì„ Mapìœ¼ë¡œ ì €ì¥
+		System.out.println("map: "+ map);
+		CartDynamicVO datas = new CartDynamicVO();
+		datas.prod_id = prod_id;
+		datas.mapData = map;
+		
+		return sqlSession.selectOne(namespace + "searchStockId", datas);
+	}
 	
-	public List<CartDTO> selectSellStockByMemberId(String member_id);
+	//ì¥ë°”êµ¬ë‹ˆì— ê°™ì€ ìƒí’ˆì´ ì¡´ì¬í•˜ëŠ”ì§€ ì¡°íšŒ
+	public CartDTO  selectCartBySellstock(Map<String,String> map) {
+		return sqlSession.selectOne(namespace + "selectCartBySellstock", map);
+	}
 	
-	public List<CartDTO> selectRentStockByMemberId(String member_id);
+	@Override
+	public List<CartDTO> selectSellStockByMemberId(String member_id) {
+		return sqlSession.selectList(namespace + "selectSellStockByMemberId", member_id);
+	}
+
+	@Override
+	public List<CartDTO> selectRentStockByMemberId(String member_id) {
+		return sqlSession.selectList(namespace + "selectRentStockByMemberId", member_id);
+	}
 	
-	public List<CartDTO> selectAllStockByMemberId(String member_id);
+	@Override
+	public List<CartDTO> selectAllStockByMemberId(String member_id) {
+		return sqlSession.selectList(namespace + "selectAllStockByMemberId", member_id);
+	}
+
+	@Override
+	public CartDTO selectByCartId(Integer cart_id) {
+		return sqlSession.selectOne(namespace + "selectByCartId", cart_id);
+	}
+
+	@Override
+	public List<CartDTO> selectAll() {
+		return sqlSession.selectList(namespace + "selectAll");
+	}
+
+	@Override
+	public int cartInsert(CartDTO cart) {
+		return sqlSession.insert(namespace + "cartInsert", cart);
+	}
+
+	@Override
+	public int cartUpdate(CartDTO cart) {
+		return sqlSession.update(namespace + "cartUpdate", cart);
+	}
+
+	@Override
+	public int cartDelete(Integer cart_id) {
+		return sqlSession.delete(namespace + "cartDelete", cart_id);
+	}
 	
-	public CartDTO selectByCartId(Integer cart_id);
-	
-	public List<CartDTO> selectAll();
-	
-//	public List<MemberDTO> selectByCondition();
-	
-	public int cartInsert(CartDTO cart);
-	
-	public int cartUpdate(CartDTO cart);
-	
-	public int cartDelete(Integer cart_id);
-	
-	//Àå¹Ù±¸´Ï »óÇ° ¼ö·® ¾÷µ¥ÀÌÆ®
-	public int updateCartBySellstock(CartDTO cart);
-	
-	
+	//ì¥ë°”êµ¬ë‹ˆ ìƒí’ˆ ìˆ˜ëŸ‰ ì—…ë°ì´íŠ¸
+	public int updateCartBySellstock(CartDTO cart) {
+		return sqlSession.update(namespace + "updateCartBySellstock", cart);
+	};
+
+
 }

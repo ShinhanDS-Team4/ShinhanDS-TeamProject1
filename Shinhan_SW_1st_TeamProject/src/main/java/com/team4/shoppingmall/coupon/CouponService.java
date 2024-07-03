@@ -11,12 +11,12 @@ public class CouponService {
 	@Autowired
 	CouponDAOInterface couponDAO;
 	
-	// ÄíÆù»ó¼¼
+	// ì¿ í°ìƒì„¸
 	public CouponDTO selectById(String coupon_id) {
 		return couponDAO.selectById(coupon_id);
 	}
 	
-	// ÄíÆù¸ñ·Ï
+	// ì¿ í°ëª©ë¡
 	public List<CouponDTO> selectAll() {
 		return couponDAO.selectAll();
 	}
@@ -29,7 +29,7 @@ public class CouponService {
 //		return couponDAO.couponUpdate(coupon);
 //	}
 	
-	// ÄíÆù»ç¿ë
+	// ì¿ í°ì‚¬ìš©
 	public int couponUse(String coupon_id) {
 		return couponDAO.couponUse(coupon_id);
 	}

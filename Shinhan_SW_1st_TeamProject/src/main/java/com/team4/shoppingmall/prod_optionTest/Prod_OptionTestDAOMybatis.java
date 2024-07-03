@@ -16,13 +16,13 @@ public class Prod_OptionTestDAOMybatis implements Prod_OptionTestDAOInterface {
 	
 	String namespace = "com.saren.prod_option.";
 	
-	//¿É¼Ç¸í°ú ¿É¼Ç°ªÀ» ÇÔ²² Á¶È¸
+	//ì˜µì…˜ëª…ê³¼ ì˜µì…˜ê°’ì„ í•¨ê»˜ ì¡°íšŒ
 	@Override
 	public List<Object> selectAllOptionsByProdId(String prod_id){
 		 return sqlSession.selectList(namespace + "selectAllOptionsByProdId", prod_id);
 	};
 	
-	//»óÇ°ÀÇ ¿É¼ÇÁ¶È¸
+	//ìƒí’ˆì˜ ì˜µì…˜ì¡°íšŒ
 	public List<Prod_OptionDTO> productAllOptionsByProdId(String prod_id){
 	 return sqlSession.selectList(namespace + "productAllOptionsByProdId", prod_id);
 	};

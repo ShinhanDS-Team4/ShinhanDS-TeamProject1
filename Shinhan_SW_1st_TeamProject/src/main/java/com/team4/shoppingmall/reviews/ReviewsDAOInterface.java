@@ -5,7 +5,7 @@ import java.util.Map;
 
 public interface ReviewsDAOInterface {
 	
-	//ÁÖ¹®ÇÑ »óÇ°ÀÇ ¸®ºäÁ¤º¸
+	//ÃÃ–Â¹Â®Ã‡Ã‘ Â»Ã³Ã‡Â°Ã€Ã‡ Â¸Â®ÂºÃ¤ÃÂ¤ÂºÂ¸
 	public List<Map<String,String>> selectAllProductReviewByProdId(String prod_id);
 	
 	public ReviewsDTO selectById(Integer review_id);
@@ -19,4 +19,6 @@ public interface ReviewsDAOInterface {
 	public int reviewsUpdate(ReviewsDTO reviews);
 	
 	public int reviewsDelete(Integer review_id);
+
+	public List<ReviewsDTO> selectBymemId(String member_id);
 }

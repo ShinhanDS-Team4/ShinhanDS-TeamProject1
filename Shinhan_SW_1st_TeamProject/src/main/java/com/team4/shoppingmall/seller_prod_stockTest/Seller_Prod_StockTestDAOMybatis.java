@@ -1,3 +1,4 @@
+
 package com.team4.shoppingmall.seller_prod_stockTest;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public class Seller_Prod_StockTestDAOMybatis implements Seller_Prod_StockTestDAO
 	
 	String namespace = "com.saren.seller_prod_stock.";
 	
-	//»óÇ°ID·Î ¿É¼Çº° ÆÇ¸Å »óÇ° Àç°í Á¶È¸
+	//ìƒí’ˆIDë¡œ ì˜µì…˜ë³„ íŒë§¤ ìƒí’ˆ ì¬ê³  ì¡°íšŒ
 	@Override
 	public List<Seller_Prod_StockTestDTO> selectSpsOptionByProdId(String prod_id){
 		return sqlSession.selectList(namespace+"selectSpsOptionByProdId", prod_id);

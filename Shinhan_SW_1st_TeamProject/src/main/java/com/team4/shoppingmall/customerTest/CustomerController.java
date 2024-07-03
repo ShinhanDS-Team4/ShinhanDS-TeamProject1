@@ -36,27 +36,27 @@ public class CustomerController {
 	@Autowired
 	private PaymentService paymentService;
 
-	// »óÇ°°áÁ¦ÆäÀÌÁö
+	// ìƒí’ˆê²°ì œí˜ì´ì§€
 	@GetMapping("/orderPay")
 	public String orderPayPage() {
 		return "customer/customerPay";
 	}
 
-	// »óÇ° °áÁ¦ ¿Ï·áÆäÀÌÁö
+	// ìƒí’ˆ ê²°ì œ ì™„ë£Œí˜ì´ì§€
 	@GetMapping("/orderSuccess")
 	public String orderSuccessPage() {
 		return "customer/customerOrderSuccess";
 	}
 
 
-	//°áÁ¦ Àü »çÀü °ËÁõÀ» À§ÇÑ °áÁ¦±İ¾× »çÀüµî·Ï
+	//ê²°ì œ ì „ ì‚¬ì „ ê²€ì¦ì„ ìœ„í•œ ê²°ì œê¸ˆì•¡ ì‚¬ì „ë“±ë¡
 	@PostMapping("/preparePayment")
 	@ResponseBody
 	public String preparePayment(@RequestParam String merchantUid, @RequestParam int amount) {
 		return paymentService.registerPaymentAmount(merchantUid, amount);
 	}
 
-	//°áÁ¦ ³»¿ë¿¡ ´ëÇÑ °ËÁõ
+	//ê²°ì œ ë‚´ìš©ì— ëŒ€í•œ ê²€ì¦
 	@PostMapping("/verifyPayment")
 	@ResponseBody
 	public String verifyPayment(@RequestParam("imp_uid") String impUid,

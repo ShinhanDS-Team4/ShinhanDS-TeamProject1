@@ -10,6 +10,11 @@
 		FROM RENT
 		WHERE RENTAL_CODE = #{aa}
 	</select>
+	
+	<!-- 시퀀스로 생성된 최근 대여id 찾기 -->
+	<select id="searchRentId" resultType="int">
+		select last_number-1 from user_sequences where sequence_name = 'RENT_SEQUENCE'
+	</select>
 
 	<!-- 대여목록 -->
 	<select id="selectAll" resultType="rentVO">
@@ -18,7 +23,7 @@
 	</select>
 
 	<!-- 대여하기 (주문상태 칼럼 삭제) -->
-	<insert id="rentInsert" parameterType="com.team4.shoppingmall.rent.RentDTO">
+	<insert id="rentInsert" parameterType="rentVO">
 		INSERT
 		INTO RENT(rental_code, rent_start_date, rent_end_date, member_id, total_rent_price)
 		VALUES(
@@ -28,6 +33,9 @@
 			#{member_id}, 
 			#{total_rent_price}
 		)
+		<selectKey keyProperty="rental_code" resultType="Integer" order="AFTER">
+       		SELECT rent_sequence.CURRVAL FROM DUAL
+ 		</selectKey>
 	</insert>
 
 	<!-- 대여상태 수정 -->
@@ -37,11 +45,24 @@
 		"rent_state" = #{rent_state}
 		WHERE "rental_code" = #{rental_code}
 	</update>
+	
+	<!--대여 수정 -->
+	<update id="updateRent" parameterType="rentVO">
+		UPDATE RENT
+		SET
+    		rent_start_date = #{rent_start_date},
+    		rent_end_date = #{rent_end_date},
+    		member_id = #{member_id},
+    		total_rent_price = #{total_rent_price}
+    	WHERE rental_code=#{rental_code}
+    </update>
+    
+     
 
 	<!-- orderlist.jsp에서, 상세상품 옵션 출력시, 모든 옵션 가져오기 -->
 	<select id="selectOptions" resultType="prod_optionVO">
 		SELECT *
-	    FROM PROD_OPTION 
+	    FROM PROD_OPTION
 	</select>
 
 	<!-- orderlist.jsp에 출력할 대여상품 상세정보 -->
@@ -54,9 +75,9 @@
 			   SPS.opt_id4,
 			   SPS.opt_id5,
 			   RD.rent_product_price,			   
-			   PI.img_id,	
+			   PI.img_id,
 			   RD.rent_state,
-			   RD.rentdetail_id 
+			   RD.rentdetail_id   
 		FROM
 			RENT R
 		JOIN

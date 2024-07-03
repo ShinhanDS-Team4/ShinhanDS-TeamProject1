@@ -2,25 +2,43 @@ package com.team4.shoppingmall.rent_detail;
 
 import java.util.List;
 
-public interface RentDetailDAOInterface {
-	
-	// ´ë¿©»ó¼¼ »ó¼¼
-	public RentDetailDTO selectById(Integer rentdetail_id);
-	
-	// ´ë¿©»ó¼¼ ¸ñ·Ï
-	public List<RentDetailDTO> selectAll();
-	
-	public List<RentDetailDTO> selectBySellerID(String member_id);
-	
-	// ´ë¿©»ó¼¼ »ı¼º
-	public int rentDetailInsert(RentDetailDTO rentdetail);
-	
-	// ´ë¿©»ó¼¼ ¼öÁ¤
-	public int rentDetailUpdate(RentDetailDTO rentdetail);
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-	public int rentDetailStatusUpdate(RentDetailDTO rentdetail);
+import com.team4.shoppingmall.coupon.CouponDTO;
+
+@Repository
+public class RentDetailDAOMybatis implements RentDetailDAOInterface {
+
+	@Autowired
+	SqlSession sqlSession;
+
+	String namespace = "com.saren.rentdetail.";
+
+	// æªå’¯æƒ‘æŠ€ æƒ‘æŠ€
+	@Override
+	public RentDetailDTO selectById(Integer rentdetail_id) {
+		return sqlSession.selectOne(namespace+"selectById", rentdetail_id);
+	}
+
+	// æªå’¯æƒ‘æŠ€ æ ¼åºŸ
+	@Override
+	public List<RentDetailDTO> selectAll() {
+		return sqlSession.selectList(namespace+"selectAll");
+	}
+
+	// æªå’¯æƒ‘æŠ€ ç§¯å·±
+	@Override
+	public int rentDetailInsert(RentDetailDTO rentdetail) {
+		return sqlSession.insert(namespace+"rentDetailInsert", rentdetail);
+	}
 	
-	// ´ë¿©»ó¼¼ »èÁ¦
-	public int rentDetailDelete(int rentdetail_id);
-	
+	// æªå’¯æƒ‘æŠ€ èæ²¥
+	@Override
+	public int rentDetailUpdate(RentDetailDTO rentdetail) {
+		return sqlSession.update(namespace+"rentDetailInsert", rentdetail);
+	}
+
+
 }

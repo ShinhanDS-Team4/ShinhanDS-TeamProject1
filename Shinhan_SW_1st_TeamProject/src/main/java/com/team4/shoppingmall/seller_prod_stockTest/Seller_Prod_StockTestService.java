@@ -11,7 +11,7 @@ public class Seller_Prod_StockTestService {
 	@Autowired
 	Seller_Prod_StockTestDAOInterface seller_prod_stockDAO;
 	
-	//»óÇ°ID·Î ¿É¼Çº° ÆÇ¸Å »óÇ° Àç°í Á¶È¸
+	//ìƒí’ˆIDë¡œ ì˜µì…˜ë³„ íŒë§¤ ìƒí’ˆ ì¬ê³  ì¡°íšŒ
 	public List<Seller_Prod_StockTestDTO> selectSpsOptionByProdId(String prod_id){
 		return seller_prod_stockDAO.selectSpsOptionByProdId(prod_id);
 	}

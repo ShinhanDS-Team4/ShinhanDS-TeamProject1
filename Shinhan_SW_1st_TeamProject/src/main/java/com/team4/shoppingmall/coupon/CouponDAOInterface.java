@@ -4,23 +4,23 @@ import java.util.List;
 
 public interface CouponDAOInterface {
 	
-	// ÄíÆù»ó¼¼
+	// ì¿ í°ìƒì„¸
 	public CouponDTO selectById(String coupon_id);
 	
-	// ÄíÆù¸ñ·Ï
+	// ì¿ í°ëª©ë¡
 	public List<CouponDTO> selectAll();
 	
 //	public List<CouponDTO> selectByCondition();
 	
-	// ÄíÆùµî·Ï
+	// ì¿ í°ë“±ë¡
 //	public int couponInsert(CouponDTO coupon);
 	
-	// ÄíÆù¼öÁ¤
+	// ì¿ í°ìˆ˜ì •
 //	public int couponUpdate(CouponDTO coupon);
 	
-	// ÄíÆù»èÁ¦
+	// ì¿ í°ì‚­ì œ
 //	public int couponDelete(String coupon_id);
 	
-	// ÄíÆù»ç¿ë
+	// ì¿ í°ì‚¬ìš©
 	public int couponUse(String coupon_id);
 }

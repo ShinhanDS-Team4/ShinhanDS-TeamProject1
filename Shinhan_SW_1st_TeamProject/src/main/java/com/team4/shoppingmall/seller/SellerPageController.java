@@ -1,22 +1,15 @@
 package com.team4.shoppingmall.seller;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -35,27 +28,12 @@ import com.team4.shoppingmall.buyer_inq.Buyer_InqDAOInterface;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqDTO;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqService;
 import com.team4.shoppingmall.member.MemberService;
-import com.team4.shoppingmall.order_detail.OrderUpdateReqDTO;
-import com.team4.shoppingmall.order_detail.Order_DetailDTO;
-import com.team4.shoppingmall.order_detail.Order_DetailService;
 import com.team4.shoppingmall.prod.ProdService;
-import com.team4.shoppingmall.prod_image.Prod_ImageDTO;
 import com.team4.shoppingmall.prod_image.Prod_ImageService;
-import com.team4.shoppingmall.prod_option.Prod_OptionDTO;
-import com.team4.shoppingmall.prod_option.Prod_OptionService;
-import com.team4.shoppingmall.rent.RentDTO;
-import com.team4.shoppingmall.rent_detail.RentDetailDTO;
-import com.team4.shoppingmall.rent_detail.RentDetailService;
 import com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO;
 import com.team4.shoppingmall.rent_prod_stock.RentProdStockService;
 import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockDTO;
 import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockService;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 @Controller
 @RequestMapping("/seller")
@@ -63,268 +41,110 @@ public class SellerPageController {
 
 	@Autowired
 	Buyer_InqService buyer_inqService;
-
+	
 	@Autowired
 	Admin_InqService admin_inqService;
-
+	
 	@Autowired
 	MemberService memberService;
-
+	
 	@Autowired
 	ProdService prodService;
-
+	
 	@Autowired
 	Prod_ImageService imageService;
-
+	
 	@Autowired
 	Seller_Prod_StockService seller_Prod_StockService;
-
+	
 	@Autowired
 	RentProdStockService rentProdStockService;
+	
+	String member_id = "573-50-00882";// ì„ì‹œë¡œ ì‚¬ìš©í•  íŒë§¤ìID(ì‚¬ì—…ìë“±ë¡ë²ˆí˜¸)
 
-	@Autowired
-	Order_DetailService order_DetailService;
-
-	@Autowired
-	RentDetailService rentDetailService;
-
-	@Autowired
-	Prod_OptionService prod_OptionService;
-
-	String member_id = "573-50-00882";// ÀÓ½Ã·Î »ç¿ëÇÒ ÆÇ¸ÅÀÚID(»ç¾÷ÀÚµî·Ï¹øÈ£)
-
-	// »óÇ° ÀÌ¹ÌÁö ÆÄÀÏ ¾÷·Îµå µğ·ºÅä¸®
-	// 1.¸ŞÀÎ ÀÌ¹ÌÁö ÆÄÀÏ
-	@Value("${file.main-img-upload-dir}")
-	private String mainIMG_uploadDir;
-
-	// 2.¼³¸í ÀÌ¹ÌÁö ÆÄÀÏ
-	@Value("${file.desc-img-upload-dir}")
-	private String descIMG_uploadDir;
-
-	// ¸ŞÀÎ È­¸é º¸¿©ÁÖ±â
+	// ë©”ì¸ í™”ë©´ ë³´ì—¬ì£¼ê¸°
 	@GetMapping("/MainPage.do")
 	public String mainpage(Model model) {
 
-		// ¿©±â¼­ SQL¹®À» »ç¿ëÇØ model·Î µ¥ÀÌÅÍ¸¦ ²ø¾î¿È
-		// ¿©±â¿¡´Â ÆÇ¸ÅÀÚ°¡ ÆÇ¸ÅÇÏ´Â »óÇ°µéÀÇ ÆÇ¸Å·® µ¥ÀÌÅÍ¸¦ ²ø¾î¿À°í, µ¥ÀÌÅÍ¸¦ ±×·¡ÇÁÈ­ÇÏ¿© Ç¥Çö
+
+		// ì—¬ê¸°ì„œ SQLë¬¸ì„ ì‚¬ìš©í•´ modelë¡œ ë°ì´í„°ë¥¼ ëŒì–´ì˜´
+		// ì—¬ê¸°ì—ëŠ” íŒë§¤ìê°€ íŒë§¤í•˜ëŠ” ìƒí’ˆë“¤ì˜ íŒë§¤ëŸ‰ ë°ì´í„°ë¥¼ ëŒì–´ì˜¤ê³ , ë°ì´í„°ë¥¼ ê·¸ë˜í”„í™”í•˜ì—¬ í‘œí˜„
 		// model.addAttribute(result, flashMap);
 		return "seller/sellerMain";
 	}
 
-	// ÆÇ¸Å&´ë¿© »óÇ° ÆäÀÌÁö º¸¿©ÁÖ±â
+	// íŒë§¤&ëŒ€ì—¬ ìƒí’ˆ í˜ì´ì§€ ë³´ì—¬ì£¼ê¸°
 	@GetMapping("/PrdList.do")
 	public String prdList(Model model1, Model model2) {
 
-		// ÆÇ¸Å »óÇ° ¸®½ºÆ®
+		// íŒë§¤ ìƒí’ˆ ë¦¬ìŠ¤íŠ¸
 		model1.addAttribute("stockSList", seller_Prod_StockService.findSellStockList(member_id));
 
-		System.out.println("ÆÇ¸Å»óÇ° ¸®½ºÆ® ºÒ·¯¿È");
-		// ´ë¿© »óÇ° ¸®½ºÆ®
+		System.out.println("íŒë§¤ìƒí’ˆ ë¦¬ìŠ¤íŠ¸ ë¶ˆëŸ¬ì˜´");
+		// ëŒ€ì—¬ ìƒí’ˆ ë¦¬ìŠ¤íŠ¸
 		model2.addAttribute("stockRList", rentProdStockService.findRentStockList(member_id));
 
-		System.out.println("´ë¿©»óÇ° ¸®½ºÆ® ºÒ·¯¿È");
+		System.out.println("ëŒ€ì—¬ìƒí’ˆ ë¦¬ìŠ¤íŠ¸ ë¶ˆëŸ¬ì˜´");
 
 		return "/seller/sellerPrdList";
 	}
 
-	// ÆÇ¸Å&¹è¼Û ÆäÀÌÁö º¸¿©ÁÖ±â
+	// íŒë§¤&ë°°ì†¡ í˜ì´ì§€ ë³´ì—¬ì£¼ê¸°
 	@GetMapping("/DeliveryList.do")
-	public String deliveryList(Model model1, Model model2) {
+	public String deliveryList(Model model, HttpServletRequest request) {
 
-		// ÆÇ¸Å&¹è¼Û ¸®½ºÆ®
-		// 1.ÆÇ¸Å »óÇ° ´ë»ó ÁÖ¹®»ó¼¼¸®½ºÆ®
-		System.out.println(order_DetailService.selectBySellerID(member_id));
-		System.out.println(rentDetailService.selectBySellerID(member_id));
+		// íŒë§¤&ë°°ì†¡ ë¦¬ìŠ¤íŠ¸
+		// model.addAttribute("deliveryList", request);
 
-		model1.addAttribute("orderDetailList", order_DetailService.selectBySellerID(member_id));
-		model2.addAttribute("rentDetailList", rentDetailService.selectBySellerID(member_id));
 		return "/seller/sellerDelivery";
 	}
 
-	// ÆÇ¸Å ÁÖ¹® Ç×¸ñ ÀÏ°ıÃ³¸®
-	@PostMapping("/updateOrderStatus")
-	@ResponseBody
-	public String updateOrderStauts(@RequestBody OrderUpdateReqDTO request) {
-		List<Integer> orderDetailIds = request.getOrderDetailIds();
-		System.out.println(orderDetailIds);
-
-		String status = request.getStatus();
-
-		for (Integer orderDetail : orderDetailIds) {
-
-			Order_DetailDTO order_DetailDTO = new Order_DetailDTO();
-
-			order_DetailDTO.setOrderdetail_id(orderDetail);
-			order_DetailDTO.setOrder_state(status);
-
-			int statusUpdateResult = order_DetailService.orderDetailStatusUpdate(order_DetailDTO);
-		}
-		return "Update Success";
-	}
-
-	// ÆÇ¸Å ÁÖ¹® Ç×¸ñ ÀÏ°ı»èÁ¦
-	@PostMapping("/deleteOrderDetails")
-	@ResponseBody
-	public String deleteOrderDetails(@RequestBody OrderUpdateReqDTO request) {
-		List<Integer> orderDetailIds = request.getOrderDetailIds();
-		System.out.println(orderDetailIds);
-		for (Integer orderDetail : orderDetailIds) {
-			int orderDetailDelResult = order_DetailService.orderDetailDelete(orderDetail);
-		}
-
-		return "Delete Success";
-	}
-
-	// ´ë¿© ÁÖ¹® Ç×¸ñ ÀÏ°ıÃ³¸®
-	@PostMapping("/updateRentStatus")
-	@ResponseBody
-	public String updateRentStatus(@RequestBody OrderUpdateReqDTO request) {
-		List<Integer> rentDetailIds = request.getOrderDetailIds();
-		System.out.println("´ë¿© ÀÏ°ıÃ³¸® ´ë»ó ¸ñ·Ï:" + rentDetailIds);
-
-		String status = request.getStatus();
-
-		for (Integer rentDetail : rentDetailIds) {
-
-			RentDetailDTO rentDatilDTO = new RentDetailDTO();
-
-			rentDatilDTO.setRentdetail_id(rentDetail);
-			rentDatilDTO.setRent_state(status);
-
-			int statusUpdateResult = rentDetailService.rentDetailStatusUpdate(rentDatilDTO);
-		}
-		return "Update Success";
-	}
-
-	// ´ë¿© ÁÖ¹® Ç×¸ñ ÀÏ°ı»èÁ¦
-	@PostMapping("/deleteRentDetails")
-	@ResponseBody
-	public String deleteRentDetails(@RequestBody OrderUpdateReqDTO request) {
-		List<Integer> rentDetailIds = request.getOrderDetailIds();
-		System.out.println(rentDetailIds);
-		for (Integer rentDetail : rentDetailIds) {
-			int rentDetailDelResult = rentDetailService.rentDetailDelete(rentDetail);
-		}
-		return "Delete Success";
-	}
-
-	// ¹®ÀÇ ¸ñ·Ï ÆäÀÌÁö º¸¿©ÁÖ±â
+	// ë¬¸ì˜ ëª©ë¡ í˜ì´ì§€ ë³´ì—¬ì£¼ê¸°
 	@GetMapping("/Q&AList.do")
 	public String qaList(Model model3, Model model4, HttpServletRequest request) {
-
-		// ±¸¸ÅÀÚÀÇ ¹®ÀÇ ¸ñ·Ï
+		
+		// êµ¬ë§¤ìì˜ ë¬¸ì˜ ëª©ë¡
 		System.out.println(buyer_inqService.selectInqList(member_id));
 		model3.addAttribute("buyerQAList", buyer_inqService.selectInqList(member_id));
-		// System.out.println(model1);
+		//System.out.println(model1);
 		model4.addAttribute("adminQAList", admin_inqService.selectByMemberId(member_id));
-
+		
 		return "/seller/sellerQ&dAList";
 	}
 
-	// »óÇ° µî·Ï ÆäÀÌÁö
+	// ìƒí’ˆ ë“±ë¡ í˜ì´ì§€
 	@GetMapping("/AddProduct.do")
 	public String addProduct() {
 		return "/seller/seller_addPrd";
 	}
 
-	// »óÇ° ¼öÁ¤ ÆäÀÌÁö
+	// ìƒí’ˆ ìˆ˜ì • í˜ì´ì§€
 	@GetMapping("/ModifyProduct.do")
-	public String modifyProduct(Model model1, Model model2, Model model3, Model model4, Model model5,
-			@RequestParam("stock_id") String stockID) throws UnsupportedEncodingException {
-
-		String stock_id = URLDecoder.decode(stockID, "UTF-8");// ÇÑ±Û·Î º¯È¯
-		System.out.println("°¡Á®¿Â stock_id:"+stock_id);
-
-		// Àç°íID°¡ ¾î´À Àç°í Å×ÀÌºí¿¡ ¼ÓÇÏ´ÂÁö È®ÀÎ
-		Seller_Prod_StockDTO seller_Prod_StockDTO = seller_Prod_StockService.selectByStockId(stock_id);// Àç°í µ¥ÀÌÅÍ¸¦ ÀüºÎ ²ø¾î¿È
-		System.out.println("È®ÀÎ°á°ú:"+seller_Prod_StockDTO);
-		if (Objects.isNull(seller_Prod_StockDTO)) {// ´ë¿©»óÇ° Àç°íÀÏ °æ¿ì
-			RentProdStockDTO rentProdStockDTO = rentProdStockService.selectById(stock_id);// Àç°íÀÇ ±âº» Á¤º¸ ²ø¾î¿À±â
-			System.out.println("Àç°íID:"+rentProdStockDTO);
-			
+	public String modifyProduct(Model model1, Model model2, Model model3, @RequestParam("stock_id") String stockID) throws UnsupportedEncodingException {
+		
+		String stock_id = URLDecoder.decode(stockID, "UTF-8");//í•œê¸€ë¡œ ë³€í™˜
+		
+		//ì¬ê³ IDê°€ ì–´ëŠ ì¬ê³  í…Œì´ë¸”ì— ì†í•˜ëŠ”ì§€ í™•ì¸
+		Seller_Prod_StockDTO seller_Prod_StockDTO = seller_Prod_StockService.selectByStockId(stock_id);
+		if(Objects.isNull(seller_Prod_StockDTO)) {//ëŒ€ì—¬ìƒí’ˆ ì¬ê³ ì¼ ê²½ìš°
+			RentProdStockDTO rentProdStockDTO = rentProdStockService.selectById(stock_id);//ìƒí’ˆì˜ ê¸°ë³¸ ì •ë³´ë¥¼ ëŒì–´ì˜¤ê¸° ìœ„í•´ ì¬ê³ ë°ì´í„°ì—ì„œ ìƒí’ˆIDë¥¼ ê°€ì ¸ì˜¨ë‹¤.
 			String ProdID = rentProdStockDTO.getProd_id();
-
-			Prod_ImageDTO mainImageDTO = new Prod_ImageDTO();
-			mainImageDTO.setProd_id(ProdID);
-			mainImageDTO.setImg_type(0);
-
-			Prod_ImageDTO descImageDTO = new Prod_ImageDTO();
-			descImageDTO.setProd_id(ProdID);
-			descImageDTO.setImg_type(1);
-
-			// ÇØ´ç Àç°íÀÇ »óÇ°ID¿Í ¿¬µ¿µÇ¾î ÀÖ´Â »óÇ°ÀÌ¹ÌÁöID(=ÀÌ¹ÌÁö ÆÄÀÏ¸í) ¸ñ·ÏÀ» °¡Á®¿Â´Ù.
-			List<String> prodMainImgList = imageService.findMainImgFileNameByProdID(mainImageDTO);
-			List<String> prodDescImgList = imageService.findDescImgFileNameByProdID(descImageDTO);
-
-			List<Integer> optionList = new ArrayList<Integer>();
-
-			optionList.add(rentProdStockDTO.getOpt_id1());
-			optionList.add(rentProdStockDTO.getOpt_id2());
-			optionList.add(rentProdStockDTO.getOpt_id3());
-			optionList.add(rentProdStockDTO.getOpt_id4());
-			optionList.add(rentProdStockDTO.getOpt_id5());
-
-			List<Prod_OptionDTO> optionDTOList = new ArrayList<Prod_OptionDTO>();
-
-			for (Integer option : optionList) {
-				System.out.println(option);
-				if (!Objects.isNull(option)) {
-					Prod_OptionDTO prod_OptionDTO = prod_OptionService.selectByOptionId(option);
-					optionDTOList.add(prod_OptionDTO);
-				}
-			}
-
+			
 			model1.addAttribute("StockInfo", rentProdStockDTO);
 			model2.addAttribute("ProductInfo", prodService.selectByProdId(ProdID));
-			model3.addAttribute("ProdMainImgList", prodMainImgList);
-			model4.addAttribute("ProdDescImgList", prodDescImgList);
-			
-			return "/seller/seller_RentStock_modifyPrd";
-		} else {// ÆÇ¸Å»óÇ° Àç°íÀÏ °æ¿ì
+			model3.addAttribute("ProdImgList",imageService.findAllImgsByProdID(ProdID));
+		}else {//íŒë§¤ìƒí’ˆ ì¬ê³ ì¼ ê²½ìš°
 			String ProdID = seller_Prod_StockDTO.getProd_id();
-			Prod_ImageDTO mainImageDTO = new Prod_ImageDTO();
-			mainImageDTO.setProd_id(ProdID);
-			mainImageDTO.setImg_type(0);
-
-			Prod_ImageDTO descImageDTO = new Prod_ImageDTO();
-			descImageDTO.setProd_id(ProdID);
-			descImageDTO.setImg_type(1);
-
-			// ÇØ´ç Àç°íÀÇ »óÇ°ID¿Í ¿¬µ¿µÇ¾î ÀÖ´Â »óÇ°ÀÌ¹ÌÁöID(=ÀÌ¹ÌÁö ÆÄÀÏ¸í) ¸ñ·ÏÀ» °¡Á®¿Â´Ù.
-			List<String> prodMainImgList = imageService.findMainImgFileNameByProdID(mainImageDTO);
-			List<String> prodDescImgList = imageService.findDescImgFileNameByProdID(descImageDTO);
-
-			List<Integer> optionList = new ArrayList<Integer>();
-
-			optionList.add(seller_Prod_StockDTO.getOpt_id1());
-			optionList.add(seller_Prod_StockDTO.getOpt_id2());
-			optionList.add(seller_Prod_StockDTO.getOpt_id3());
-			optionList.add(seller_Prod_StockDTO.getOpt_id4());
-			optionList.add(seller_Prod_StockDTO.getOpt_id5());
-
-			List<Prod_OptionDTO> optionDTOList = new ArrayList<Prod_OptionDTO>();
-
-			for (Integer option : optionList) {
-				System.out.println(option);
-				if (!Objects.isNull(option)) {
-					Prod_OptionDTO prod_OptionDTO = prod_OptionService.selectByOptionId(option);
-					optionDTOList.add(prod_OptionDTO);
-				}
-			}
-
-			// System.out.println(uploadDir);
+			
 			model1.addAttribute("StockInfo", seller_Prod_StockDTO);
 			model2.addAttribute("ProductInfo", prodService.selectByProdId(ProdID));
-			model3.addAttribute("ProdMainImgList", prodMainImgList);
-			model4.addAttribute("ProdDescImgList", prodDescImgList);
-			model5.addAttribute("optionList", optionDTOList);
-			
-			return "/seller/seller_SellStock_modifyPrd";
+			model3.addAttribute("ProdImgList",imageService.findAllImgsByProdID(ProdID));
 		}
+		
+		return "/seller/seller_modifyPrd";
 	}
 
-	// ±¸¸ÅÀÚ¹®ÀÇ ´äº¯ ÆË¾÷
+	// êµ¬ë§¤ìë¬¸ì˜ ë‹µë³€ íŒì—…
 	@GetMapping("/answerCustomer.do")
 	public String answerCustomer(Model model, @RequestParam("buyer_inq_id") Integer buyer_inq_id,
 			HttpServletRequest request) {
@@ -332,16 +152,17 @@ public class SellerPageController {
 		System.out.println(buyer_inqService.selectByInqIdFORseller(buyer_inq_id));
 
 		System.out.println(buyer_inqService.selectByInqIdFORseller(buyer_inq_id));
-
+		
 		model.addAttribute("bqa", buyer_inqService.selectByInqIdFORseller(buyer_inq_id));
 
 		return "/seller/seller_CustomerQAPopUp";
 	}
 
-	// ±¸¸ÅÀÚ ¹®ÀÇ¿¡ ´äº¯
+	// êµ¬ë§¤ì ë¬¸ì˜ì— ë‹µë³€
 	@PostMapping("/answerCustomer.do")
 	@ResponseBody
-	public String answerCquestion(@RequestParam("buyer_inq_id") Integer buyerInqId,
+	public String answerCquestion(
+			@RequestParam("buyer_inq_id") Integer buyerInqId,
 			/*
 			 * @RequestParam("member_id") String memberId,
 			 * 
@@ -349,77 +170,82 @@ public class SellerPageController {
 			 * 
 			 * @RequestParam("buyer_inq_content") String buyerInqContent,
 			 */
-			@RequestParam("buyer_reply") String buyerReply) throws UnsupportedEncodingException {
+			@RequestParam("buyer_reply") String buyerReply)
+			throws UnsupportedEncodingException {
+		
 
-		String buyer_reply = URLDecoder.decode(buyerReply, "UTF-8");
+		String buyer_reply = URLDecoder.decode(buyerReply,"UTF-8");
 
 		System.out.println(buyer_reply);
-
-		// ¾÷·Îµå ³¯Â¥
-		// ¿À´Ã ³¯Â¥¸¦ LocalDate·Î °¡Á®¿È
+		
+		
+		// ì—…ë¡œë“œ ë‚ ì§œ
+		// ì˜¤ëŠ˜ ë‚ ì§œë¥¼ LocalDateë¡œ ê°€ì ¸ì˜´
 		LocalDate localDate = LocalDate.now();
 
-		// LocalDate¸¦ java.sql.Date·Î º¯È¯
+		// LocalDateë¥¼ java.sql.Dateë¡œ ë³€í™˜
 		Date sqlDate = Date.valueOf(localDate);
-
+		
 		Buyer_InqDTO buyer_InqDTO = new Buyer_InqDTO();
 		buyer_InqDTO.setBuyer_inq_id(buyerInqId);
 		buyer_InqDTO.setBuyer_reply(buyer_reply);
 		buyer_InqDTO.setBuyer_reply_date(sqlDate);
-
+		
 		System.out.println(buyer_InqDTO);
-
+		
 		int result = buyer_inqService.buyer_inqUpdate(buyer_InqDTO);
 		System.out.println(result);
 		return "Answer submitted successfully.";
 	}
 
-	// °ü¸®ÀÚ¹®ÀÇ Á¶È¸ ÆË¾÷
+	// ê´€ë¦¬ìë¬¸ì˜ ì¡°íšŒ íŒì—…
 	@GetMapping("/answerAdmin.do")
-	public String answerAdmin(Model model, @RequestParam("admin_inq_id") Integer admin_inq_id) {
+	public String answerAdmin(Model model, @RequestParam("admin_inq_id") Integer admin_inq_id) {	
 		model.addAttribute("aqa", admin_inqService.selectByInqId(admin_inq_id));
 		return "/seller/seller_AdminAPopUp";
 	}
 
-	// °ü¸®ÀÚ¹®ÀÇ µî·Ï ÆË¾÷
+	// ê´€ë¦¬ìë¬¸ì˜ ë“±ë¡ íŒì—…
 	@GetMapping("/addAdminQA.do")
-	public String addAdminQA(Model model) {
-		String member_id = "573-50-00882";// ÀÓ½Ã·Î »ç¿ëÇÒ ÆÇ¸ÅÀÚID(»ç¾÷ÀÚµî·Ï¹øÈ£)
-		System.out.println("Á¶È¸ : " + memberService.selectById(member_id));
+	public String addAdminQA(Model model){
+		String member_id = "573-50-00882";// ì„ì‹œë¡œ ì‚¬ìš©í•  íŒë§¤ìID(ì‚¬ì—…ìë“±ë¡ë²ˆí˜¸)
+		System.out.println("ì¡°íšŒ : "+ memberService.selectById(member_id));
 		model.addAttribute("aqa", memberService.selectById(member_id));
 		return "/seller/seller_AdminQPopUp";
 	}
 
-	// °ü¸®ÀÚ¿¡°Ô ¹®ÀÇ µî·Ï
+	// ê´€ë¦¬ìì—ê²Œ ë¬¸ì˜ ë“±ë¡
 	@PostMapping("/addAdminQA.do")
 	@ResponseBody
-	public String registerStoAquestion(@RequestParam("member_id") String mid,
-			@RequestParam("admin_inq_title") String StoAqTitle, @RequestParam("admin_inq_content") String StoAq)
-			throws UnsupportedEncodingException {
+	public String registerStoAquestion(
+		@RequestParam("member_id") String mid,
+		@RequestParam("admin_inq_title") String StoAqTitle,
+		@RequestParam("admin_inq_content") String StoAq
+		) throws UnsupportedEncodingException {
 
-		String member_id = URLDecoder.decode(mid, "UTF-8");
-		String admin_inq_title = URLDecoder.decode(StoAqTitle, "UTF-8");
-		String admin_inq_content = URLDecoder.decode(StoAq, "UTF-8");
-
-		// ¾÷·Îµå ³¯Â¥
-		// ¿À´Ã ³¯Â¥¸¦ LocalDate·Î °¡Á®¿È
+		String member_id=URLDecoder.decode(mid,"UTF-8");
+		String admin_inq_title=URLDecoder.decode(StoAqTitle,"UTF-8");
+		String admin_inq_content=URLDecoder.decode(StoAq,"UTF-8");
+		
+		// ì—…ë¡œë“œ ë‚ ì§œ
+		// ì˜¤ëŠ˜ ë‚ ì§œë¥¼ LocalDateë¡œ ê°€ì ¸ì˜´
 		LocalDate localDate = LocalDate.now();
 
-		// LocalDate¸¦ java.sql.Date·Î º¯È¯
+		// LocalDateë¥¼ java.sql.Dateë¡œ ë³€í™˜
 		Date sqlDate = Date.valueOf(localDate);
 
-		// ¹®ÀÇID »ı¼º
+		// ë¬¸ì˜ID ìƒì„±
 		Integer qid = 12305;
 
-		// ÀÌÈÄ¿¡ SQL¹®À¸·Î DB¿¡ µî·Ï
-
+		// ì´í›„ì— SQLë¬¸ìœ¼ë¡œ DBì— ë“±ë¡
+		
 		Admin_InqDTO admin_InqDTO = new Admin_InqDTO();
 		admin_InqDTO.setAdmin_inq_id(qid);
 		admin_InqDTO.setAdmin_inq_title(admin_inq_title);
 		admin_InqDTO.setAdmin_inq_content(admin_inq_content);
 		admin_InqDTO.setAdmin_inq_date(sqlDate);
 		admin_InqDTO.setMember_id(member_id);
-
+		
 		int result = admin_inqService.admin_inqInsert(admin_InqDTO);
 		System.out.println(result);
 		return "Answer submitted successfully.";
