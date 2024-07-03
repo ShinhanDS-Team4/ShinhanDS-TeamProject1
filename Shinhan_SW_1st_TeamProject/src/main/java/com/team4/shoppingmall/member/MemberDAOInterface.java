@@ -44,5 +44,8 @@ public interface MemberDAOInterface {
 	public MemberDTO loginChk(String member_id);
 
 	public int updatePassword(MemberDTO member);
+	
+	public int memberUpdateAccess(MemberDTO member);
+
 }
 

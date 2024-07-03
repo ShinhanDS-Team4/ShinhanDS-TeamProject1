@@ -64,8 +64,7 @@
 	<select id="selectById" parameterType="int" resultType="order_prodVO"> 
 		SELECT *
 		FROM ORDER_PROD
-		WHERE
-		"order_id" = #{order_id}
+		WHERE order_id = #{order_id}
 	</select>
 
 	<!-- 주문목록 -->
@@ -73,6 +72,7 @@
 		SELECT *
 		FROM ORDER_PROD
 	</select>
+
 	
 	<!-- product_detail.jsp 주문생성 -->
 	<!-- DB세팅하고 CURRVAL안될 경우 수정.
@@ -97,9 +97,17 @@
 	<update id="orderprodUpdate" parameterType="order_prodVO">
 		UPDATE ORDER_PROD
 		SET
-			"addr_num" = #{addr_num},
-			"total_price" = #{total_price}
-		WHERE "order_id" = #{order_id}
+		order_date=#{order_date},
+		addr_num = #{addr_num},
+		total_price = #{total_price}
+		WHERE order_id = #{order_id}
+	</update>
+	
+	<update id="updateOrderPrice" parameterType="order_prodVO">
+		UPDATE ORDER_PROD
+		SET
+		total_price = #{total_price}
+		WHERE order_id = #{order_id}
 	</update>
 
 	<!-- orderlist.jsp에서, 상세상품 옵션 출력시, 모든 옵션 가져오기 -->
@@ -107,9 +115,10 @@
 	    SELECT *
 	    FROM PROD_OPTION 
     </select>
- 
-	<!-- orderlist.jsp에 출력할 상품명, 브랜드, 옵션, 상품가격, 이미지URL 
-	<select id="selectById2" parameterType="int" resultType="map"> 
+
+
+	<!-- orderlist.jsp에 출력할 상품명, 브랜드, 옵션, 상품가격, 이미지URL -->
+	<select id="selectById2" parameterType="int" resultType="order_prod_detailVO"> 
 		SELECT
 			P.prod_name,
 		   	M.brand, 
@@ -119,13 +128,13 @@
 			S.opt_id4,
 			S.opt_id5,
 			OD.order_product_price,
-			PI.img_url
+			PI.img_id
 		FROM
 			ORDER_DETAIL OD
 		JOIN
 			ORDER_PROD OP ON OD.order_id = OP.order_id
 		JOIN
-			SELLER_PROD_STOCK S ON OD.stock_id = S.stock_id
+			SELLER_PROD_STOCK S ON OD.s_stock_id = S.s_stock_id
 		JOIN
 			PROD P ON S.prod_id = P.prod_id
 		JOIN
@@ -135,8 +144,8 @@
 		where 
 			OD.ORDER_ID = #{aa}
 	</select>
-	-->
-	<!-- 취소 -->
+
+	<!-- orderlist.jsp에서, 주문취소 -->
 	<update id="orderCancel" parameterType="int">
 		UPDATE 
 			ORDER_PROD 
@@ -146,7 +155,7 @@
 			order_id = #{aa} 
 	</update>
 	
-	<!-- 환불 -->
+	<!-- ordrlist.jsp에서, 환불 -->
 	<update id="orderRefund" parameterType="int">
 		UPDATE 
 			ORDER_PROD 
@@ -156,6 +165,4 @@
 			order_id = #{aa} 
 	</update>
 	
-
-
 </mapper>

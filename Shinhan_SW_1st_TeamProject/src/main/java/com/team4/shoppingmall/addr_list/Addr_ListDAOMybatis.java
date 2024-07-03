@@ -17,13 +17,18 @@ public class Addr_ListDAOMybatis implements Addr_ListDAOInterface{
 	
 	@Override
 	public List<Addr_ListDTO> selectAll(){
-		return sqlSession.selectOne(namespace+"selectAll");
+		return sqlSession.selectList(namespace+"selectAll");
 	};
+	
+	@Override
+	public List<Addr_ListDTO> selectByMember_Id(String member_id) {
+		return sqlSession.selectList(namespace+"selectByMember_Id", member_id);
+	}
 	
 	//나의 배송지 목록 조회
 	@Override
-	public List<Map<String,Object>> selectByMember_Id(String member_id) {
-		return sqlSession.selectList(namespace+"selectByMember_Id", member_id);
+	public List<Map<String,Object>> selectByMember_Id2(String member_id) {
+		return sqlSession.selectList(namespace+"selectByMember_Id2", member_id);
 	}
 	
 	@Override

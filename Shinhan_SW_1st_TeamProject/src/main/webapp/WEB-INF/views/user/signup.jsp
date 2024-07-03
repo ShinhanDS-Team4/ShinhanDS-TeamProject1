@@ -4,7 +4,9 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-	<c:set var="path" value="${pageContext.servletContext.contextPath}" />
+    <c:set var="path" value="${pageContext.servletContext.contextPath}" />
+    <!-- 헤더,푸터 css -->
+    <link rel="stylesheet" href="${path}/resources/css/header_footer.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원가입 페이지</title>
@@ -13,14 +15,12 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f9f9f9;
+            background-color: #ffffff;
             color: #333;
         }
         header {
             background-color: #fff;
             padding: 10px 0;
-            text-align: center;
-            border-bottom: 1px solid #ccc;
         }
         header .logo {
             font-size: 2em;
@@ -37,11 +37,15 @@
             color: #333;
         }
         .container {
-            max-width: 800px;
+            max-width: 600px;
+            height: 800px;
             margin: 0 auto;
             padding: 20px;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* 공간을 고르게 나눔 */
         }
         h1 {
             text-align: center;
@@ -50,6 +54,8 @@
         form {
             display: flex;
             flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between; /* 공간을 고르게 나눔 */
         }
         .form-group {
             display: flex;
@@ -72,7 +78,7 @@
             border-radius: 5px;
         }
         .radio-group, .checkbox-group {
-            margin-bottom: 15px;
+            /* margin-bottom: 15px; 삭제 */
         }
         .radio-group label,
         .checkbox-group label {
@@ -84,21 +90,34 @@
         }
         .btn {
             padding: 10px;
-            background-color: #333;
+            background-color: #513AE4;
             color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 20px;
         }
         .btn:hover {
-            background-color: #555;
+            background-color: #4331B7;
         }
         .error-message {
-            color: red;
             font-size: 0.9em;
             margin-top: -10px;
             margin-bottom: 15px;
+        }
+        .error-message.red {
+            color: red;
+        }
+        .error-message.green {
+            color: green;
+        }
+        .email-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        .email-container input[type="email"] {
+            flex: 1;
+            margin-right: 10px;
         }
         footer {
             background-color: #333;
@@ -127,11 +146,29 @@
             text-decoration: none;
             margin: 0 10px;
         }
+        .hidden {
+            display: none;
+        }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
     $(document).ready(function() {
         var verificationCode = '';
+
+        // 초기 상태: 브랜드 input 숨기기
+        $('#brand-group').addClass('hidden');
+
+        // 구분 선택에 따라 아이디 레이블 변경 및 브랜드 input 표시/숨기기
+        $('#member_type').on('change', function() {
+            var selectedType = $(this).val();
+            if (selectedType == '2') {
+                $('label[for="member_id"]').text('사업자등록번호');
+                $('#brand-group').removeClass('hidden');
+            } else {
+                $('label[for="member_id"]').text('아이디');
+                $('#brand-group').addClass('hidden');
+            }
+        });
 
         // 이메일 인증번호 받기
         $('#email-verify-btn').on('click', function() {
@@ -168,11 +205,34 @@
             }
         });
 
+        // 비밀번호 확인 기능
+        $('#confirm-password').on('input', function() {
+            var password = $('#member_pw').val();
+            var confirmPassword = $(this).val();
+            if (password === '' || confirmPassword === '') {
+                $('#password-error').text('').removeClass('red green');
+            } else if (password !== confirmPassword) {
+                $('#password-error').text('비밀번호가 다릅니다.').removeClass('green').addClass('red');
+            } else {
+                $('#password-error').text('비밀번호가 일치합니다.').removeClass('red').addClass('green');
+            }
+        });
+
         // 회원가입 폼 제출
         $('form').on('submit', function(event) {
-            if (!$('#email').prop('readonly')) {
+            var password = $('#member_pw').val();
+            var confirmPassword = $('#confirm-password').val();
+            var emailVerified = $('#email').prop('readonly');
+
+            if (!emailVerified) {
                 event.preventDefault();
                 $('#email-error').text('이메일을 인증해 주세요.');
+            } else if (password === '' || confirmPassword === '' || password !== confirmPassword) {
+                event.preventDefault();
+                $('#password-error').text('비밀번호를 설정해주세요.').removeClass('green').addClass('red');
+            } else {
+                alert('회원가입 완료!');
+                //조건 더 넣어야 할듯.
             }
         });
     });
@@ -180,21 +240,10 @@
 </head>
 <body>
 <c:set var="path" value="${pageContext.servletContext.contextPath}" />
-    <header>
-        <div class="logo">saren</div>
-    </header>
-
-    <nav class="navbar">
-        <a href="#">여성</a>
-        <a href="#">남성</a>
-        <a href="#">키즈</a>
-        <a href="#">악세서리</a>
-        <a href="#">기타</a>
-    </nav>
-
+    <%@ include file="../common/header.jsp" %>
     <div class="container">
         <h1>회원가입</h1>
-        <form method="post" accept-charset="UTF-8" action="${path}/member_test/signup.do">
+        <form method="post" accept-charset="UTF-8" action="${path}/member_test/signup">
             <div class="form-group">
                 <label for="member_type">구분</label>
                 <select id="member_type" name="member_type">
@@ -214,6 +263,7 @@
                 <label for="confirm-password">비밀번호 확인</label>
                 <input type="password" id="confirm-password" name="confirmPassword">
             </div>
+            <div id="password-error" class="error-message"></div>
             <div class="form-group">
                 <label for="member_name">이름</label>
                 <input type="text" id="member_name" name="member_name">
@@ -224,10 +274,12 @@
             </div>
             <div class="form-group">
                 <label for="email">이메일</label>
-                <input type="email" id="email" name="email">
-                <button type="button" id="email-verify-btn" class="btn">인증번호 받기</button>
-                <div id="email-error" class="error-message"></div>
+                <div class="email-container">
+                    <input type="email" id="email" name="email">
+                    <button type="button" id="email-verify-btn" class="btn">인증번호 받기</button>
+                </div>
             </div>
+            <div id="email-error" class="error-message red"></div>
             <div class="form-group">
                 <label for="birth_date">생년월일</label>
                 <input type="date" id="birth_date" name="birth_date">
@@ -244,7 +296,7 @@
                 <input type="text" id="address" name="address" placeholder="우편번호">
                 <input type="text" id="detail-address" name="detailAddress" placeholder="상세주소">
             </div>
-            <div class="form-group">
+            <div class="form-group hidden" id="brand-group">
                 <label for="brand">브랜드</label>
                 <input type="text" id="brand" name="brand">
             </div>
@@ -263,7 +315,6 @@
     </div>
 
     <footer>
-        <div class="footer-line"></div>
         <div class="footer-text">회사소개 이용약관 개인정보처리방침 이메일무단수집거부 단체주문 제휴문의 입점신청 멤버쉽 안내</div>
         <div class="footer-logo">saren</div>
         <div class="footer-links">

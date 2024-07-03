@@ -13,12 +13,14 @@
 			JOIN MEMBER m ON a.member_id = m.member_id
 			WHERE m.MEMBER_ID = #{member_id}
 	</select>
-	<select id="selectAll" resultType="com.team4.shoppingmall.addr_list.Addr_ListDTO">
+
+	<select id="selectAll" resultType="addr_listVO">
+
 			SELECT *
 			FROM ADDR_LIST 
 	</select>
 
-	<select id="selectByMember_Id"  parameterType="String"
+	<select id="selectByMember_Id2"  parameterType="String"
 			resultType="map">
 			SELECT a.*,  
 		           m.member_name,
@@ -38,6 +40,12 @@
 				   #{is_master_addr}, 
 				   #{sub_address})
 	</insert>
+	<select id="selectByMember_Id"  parameterType="String" resultType="addr_listVO">
+			SELECT *
+			FROM ADDR_LIST
+			WHERE member_id = #{member_id}
+	</select>
+
     <!-- 기존 is_master_addr를 N으로 업데이트 -->
     <update id="updateMasterAddrToN">
         UPDATE ADDR_LIST

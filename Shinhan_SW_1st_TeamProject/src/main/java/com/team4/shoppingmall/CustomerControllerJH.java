@@ -31,10 +31,11 @@ import com.team4.shoppingmall.rent.RentService;
 @RequestMapping("/customer")
 public class CustomerControllerJH {
 	
+
 	@Autowired
 	Addr_ListService addrService; 
 	
-	@Autowired
+    @Autowired
 	MemberService memberService;
 	
 	@Autowired
@@ -174,7 +175,7 @@ public class CustomerControllerJH {
 		String member_id = "testid"; //테스트id
 		
 		//나의 배송지 목록
-		List<Map<String,Object>> addrlist = addrService.selectByMember_Id(member_id);
+		List<Map<String,Object>> addrlist = addrService.selectByMember_Id2(member_id);
 		model.addAttribute("addrlist", addrlist);
 		
 		System.out.println(addrlist);

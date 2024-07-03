@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="path" value="${pageContext.servletContext.contextPath}" />
+
+<%-- 로그인 여부를 확인하기 위한 세션 값 확인 --%>
+<c:set var="isLoggedIn" value="${not empty sessionScope.member}"   />
+
 <%-- header --%>
 <header>
 	<div class="header_top inner">
@@ -20,12 +25,27 @@
 		</div>
 		<div class="rightGnb">
 			<ul>
-				<li>
-					<a href="${path}/member_test/login.do"> <img src="${path}/resources/images/icon-login.gif" alt="로그인">로그인</a>
-				</li>
-				<li>
-					<a href="${path}/member_test/signup.do"><img src="${path}/resources/images/icon-sign-in.png" alt="회원가입">회원가입</a>
-				</li>
+				<c:choose>
+					<c:when test="${isLoggedIn}">
+						<li>
+							<a href="${path}/member_test/logout.do"> 
+								<img src="${path}/resources/images/icon-logout.png" alt="로그아웃">로그아웃
+							</a>
+						</li>
+					</c:when>
+					<c:otherwise>
+						<li>
+							<a href="${path}/member_test/login.do"> 
+								<img src="${path}/resources/images/icon-login.gif" alt="로그인">로그인
+							</a>
+						</li>
+						<li>
+							<a href="${path}/member_test/signup.do">
+								<img src="${path}/resources/images/icon-sign-in.png" alt="회원가입">회원가입
+							</a>
+						</li>
+					</c:otherwise>
+				</c:choose>
 				<li>
 					<a href="${path}/customer/myPage.do"><img src="${path}/resources/images/icon-user.png" alt="마이페이지">마이페이지</a>
 					<%-- 문의 답변오면 나타나는 알림 --%>
@@ -44,7 +64,7 @@
 				<li data-menu="0">
 					<a href="${path}/customer/productlist"
 					class="category_name">여성</a>
-					</li>
+				</li>
 				<li data-menu="1">
 					<a href="${path}/customer/productlist"
 					class="category_name">남성</a>
@@ -52,11 +72,11 @@
 				<li data-menu="2">
 					<a href="${path}/customer/productlist"
 					class="category_name">키즈</a>
-					</li>
+				</li>
 				<li data-menu="3">
 					<a href="${path}/customer/productlist"
 					class="category_name">럭셔리</a>
-					</li>
+				</li>
 				<li data-menu="4">
 					<a href="${path}/customer/productlist"
 					class="category_name">키즈</a>
@@ -64,7 +84,7 @@
 				<li data-menu="5">
 					<a href="${path}/customer/productlist"
 					class="category_name">스포츠</a>
-					</li>
+				</li>
 				<li data-menu="6">
 					<a href="${path}/customer/productlist"
 					class="category_name">가방&신발</a>
@@ -72,13 +92,13 @@
 			</ul>
 			<%-- 오른쪽 메뉴 --%>
 			<ul class="right_menu">
-				<li><a href="javascript:#void" class="highlight">AI추천코디</a></li>
+				<li><a href="javascript:void(0)" class="highlight">AI추천코디</a></li>
 				<li><a href="${path}/customer/productlist" class="highlight">옷대여</a></li>
-				<li><a href="${path}/board/qna">Q&A</a></li>
-				<li><a href="{path}/board/board">공지사항</a></li>
+				<li><a href="${path}/adminqna/myqna.do">Q&A</a></li>
+				<li><a href="${path}/notice/notices">공지사항</a></li>
 			</ul>
 		</div>
-		<%-- 서브 메뉴 부분  --%>
+		<%-- 서브 메뉴 부분 --%>
 		<div class="menu_pan inner">
 			<div class="dropdown_nav">
 				<ul>

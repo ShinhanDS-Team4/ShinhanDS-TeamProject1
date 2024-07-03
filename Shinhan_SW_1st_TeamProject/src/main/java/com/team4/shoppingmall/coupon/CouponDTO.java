@@ -18,4 +18,5 @@ public class CouponDTO {
 	String coupon_name;
 	Double discount_rate;
 	Integer quantity;
+	String coupon_state;
 }

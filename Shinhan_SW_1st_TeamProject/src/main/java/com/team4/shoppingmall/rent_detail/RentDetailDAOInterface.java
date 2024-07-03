@@ -4,19 +4,26 @@ import java.util.List;
 
 public interface RentDetailDAOInterface {
 	
-	// ´ë¿©»ó¼¼ »ó¼¼
+	// ëŒ€ì—¬ìƒì„¸ ìƒì„¸
 	public RentDetailDTO selectById(Integer rentdetail_id);
 	
-	// ´ë¿©»ó¼¼ ¸ñ·Ï
+	// ëŒ€ì—¬ìƒì„¸ ëª©ë¡
 	public List<RentDetailDTO> selectAll();
 	
-	// ´ë¿©»ó¼¼ »ı¼º
+	public List<RentDetailDTO> selectBySellerID(String member_id);
+	
+	// ëŒ€ì—¬ìƒì„¸ ìƒì„±
 	public int rentDetailInsert(RentDetailDTO rentdetail);
 	
-	// ´ë¿©»ó¼¼ ¼öÁ¤
+	// ëŒ€ì—¬ìƒì„¸ ìˆ˜ì •
 	public int rentDetailUpdate(RentDetailDTO rentdetail);
+
+	public int rentDetailStatusUpdate(RentDetailDTO rentdetail);
 	
-	// ´ë¿©»ó¼¼ »èÁ¦
-//	public int rentDetailDelete(Integer rentdetail_id);
+	// ï¿½ë¿©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	public int rentDetailDelete(int rentdetail_id);
+
+	// ï¿½ë¿©IDï¿½ï¿½ ï¿½ë¿©ï¿½ï¿½ ï¿½ï¿½ï¿½
+	public List<RentDetailDTO> selectByRental_code(int rental_code);
 	
 }

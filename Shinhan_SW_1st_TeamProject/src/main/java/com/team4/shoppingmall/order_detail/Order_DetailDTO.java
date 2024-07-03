@@ -11,10 +11,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order_DetailDTO {
-	int orderdetail_id;   	 	//주문상세번호
-	int order_product_price;	//상품가격
-	int order_num;				//주문수량
-	int order_id;				//주문ID
-	String s_stock_id;			//재고ID (수정)
-	String order_state; 		//주문상태 (수정)
+	int orderdetail_id;   	 	
+	int order_product_price;	
+	int order_num;				
+	int order_id;				
+	String s_stock_id;			
+	String order_state; 		
 }

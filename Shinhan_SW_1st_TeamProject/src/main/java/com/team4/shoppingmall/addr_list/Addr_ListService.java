@@ -18,8 +18,12 @@ public class Addr_ListService {
 		return addr_ListDAOMybatis.selectAll();
 	}
 	
-	public List<Map<String,Object>> selectByMember_Id(String member_id) {
+	public List<Addr_ListDTO> selectByMember_Id(String member_id) {
 		return addr_ListDAOMybatis.selectByMember_Id(member_id);
+	}
+	
+	public List<Map<String,Object>> selectByMember_Id2(String member_id) {
+		return addr_ListDAOMybatis.selectByMember_Id2(member_id);
 	}
 
 	@Transactional

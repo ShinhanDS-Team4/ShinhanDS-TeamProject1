@@ -6,10 +6,10 @@ import com.team4.shoppingmall.prod.ProductNewVO;
 
 public interface Seller_Prod_StockTestDAOInterface {
 	
-	//»óÇ°ID·Î ¿É¼Çº° ÆÇ¸Å »óÇ° Àç°í Á¶È¸
+	//ìƒí’ˆIDë¡œ ì˜µì…˜ë³„ íŒë§¤ ìƒí’ˆ ì¬ê³  ì¡°íšŒ
 	public List<Seller_Prod_StockTestDTO> selectSpsOptionByProdId(String prod_id);
 	
-	//ÁÖ¹® »ı¼º½Ã Àç°í¼ö ¾÷µ¥ÀÌÆ®
+	//ì£¼ë¬¸ ìƒì„±ì‹œ ì¬ê³ ìˆ˜ ì—…ë°ì´íŠ¸
 	//public int sellProdStockUpdate(Seller_Prod_StockTestDTO seller_prod_stock);
 	public int sellProdStockUpdate(ProductNewVO prodVO);
 	

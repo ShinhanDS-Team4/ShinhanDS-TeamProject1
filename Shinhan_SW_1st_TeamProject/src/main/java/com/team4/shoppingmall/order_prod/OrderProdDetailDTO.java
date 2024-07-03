@@ -1,5 +1,6 @@
 package com.team4.shoppingmall.order_prod;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,8 @@ public class OrderProdDetailDTO {
 	Integer opt_id4;
 	Integer opt_id5;
 	Integer order_product_price;
-	String img_url;
+	String img_id;
 	String order_state;
+	String orderdetail_id;
 }
+

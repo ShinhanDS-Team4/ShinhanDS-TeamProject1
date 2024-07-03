@@ -24,35 +24,28 @@ public class OrderProdService {
 
 	@Autowired
 	Order_DetailDAOInterface orderDetailDAO;
-	
+
 	@Autowired
-	Seller_Prod_StockTestDAOInterface seller_Prod_StockTestDAO; //Test����
+	Seller_Prod_StockTestDAOInterface seller_Prod_StockTestDAO; 
+
 	
-	//결제 완료된 주문 상품 목록
-//	public List<OrderProdDTO> orderProductById(String member_id){
-//		return orderprodDAO.orderProductById(member_id);
-//	};
+
 	//결제 완료된 주문 상품 목록
 	public List<Map<String,Object>> orderProductById(String member_id){
 		return orderprodDAO.orderProductById(member_id);
 	};
 	
-	//나의 주문 상품 정보 조회
-	public List<OrderProdDetailDTO> selectById2(int order_id) {
-		return orderprodDAO.selectById2(order_id);
-	};
-	
-	
+
 	public OrderProdDTO selectById(Integer order_id) {
 		return orderprodDAO.selectById(order_id);
 	}
 
+
 	public List<OrderProdDTO> selectAll() {
 		return orderprodDAO.selectAll();
 	}
-
-
 	
+
 	@Transactional
 	public int orderprodInsert(ProductNewVO prodVO, int total_price, String member_id) {
 		
@@ -69,7 +62,7 @@ public class OrderProdService {
 		//생성된 주문id 시퀀스 번호 찾기 
 		int order_id = orderprodDAO.sequenceOrderId(); 
 		//Integer orderId = order.getOrder_id(); 
-
+	
 		Order_DetailDTO orderDetailDTO = new Order_DetailDTO();
 		
 		int productPrice = Integer.parseInt(prodVO.getProductPrice()); 
@@ -86,13 +79,22 @@ public class OrderProdService {
 		
 		return result;
 	}
+
 	public int orderprodUpdate(OrderProdDTO orderprod) {
 		return orderprodDAO.orderprodUpdate(orderprod);
 	}
 	
-//	public Map<String, Object> selectById2(int order_id) {
-//        return orderprodDAO.selectById2(order_id);
-//    }
+
+
+	public int updateOrderPrice(OrderProdDTO orderprod) {
+		return orderprodDAO.updateOrderPrice(orderprod);
+	}
+	
+	// orderlist.jsp�� ����� ��ǰ��, �귣��, �ɼ�, ��ǰ����, �̹���URL
+	public List<OrderProdDetailDTO> selectById2(int order_id) {
+        return orderprodDAO.selectById2(order_id);
+    }
+
 
 	public Object selectOptions() { 
         return orderprodDAO.selectOptions();

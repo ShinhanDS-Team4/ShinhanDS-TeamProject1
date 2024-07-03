@@ -18,6 +18,10 @@ public class RentProdStockDAOMybatis implements RentProdStockDAOInterface {
 
 	String namespace = "com.saren.rent_prod_stock.";
 
+<<<<<<< HEAD
+=======
+	
+>>>>>>> main
 	//선택 옵션 상품의 대여 재고id 찾기
 	public Map<String,String> selectRentStockByProdId(String prod_id, String optionString) {
 		Map<String, String> map = new HashMap<>();
@@ -30,14 +34,26 @@ public class RentProdStockDAOMybatis implements RentProdStockDAOInterface {
 	public List<RentProdStockDTO> selectRentStockByProdId2(String prod_id){
 		return sqlSession.selectList(namespace + "selectRentStockByProdId2", prod_id);
 	};
+<<<<<<< HEAD
+=======
+	
+>>>>>>> main
 	//대여 생성시 대여 수량 업데이트
 	public int rentProdStockUpdate(ProductNewVO prodVO) {
 		return sqlSession.update(namespace + "rentProdStockUpdate", prodVO);
 	};
+<<<<<<< HEAD
+=======
+	
+>>>>>>> main
 	//대여 상품 옵션별 재고 조회
 	public List<RentProdStockDTO> selectRpsOptionByProdId(String prod_id){
 		return sqlSession.selectList(namespace + "selectRpsOptionByProdId" , prod_id);
 	};
+<<<<<<< HEAD
+=======
+	
+>>>>>>> main
 	// 대여상품상세
 	@Override
 	public RentProdStockDTO selectById(String r_stock_id) {
@@ -55,21 +71,43 @@ public class RentProdStockDAOMybatis implements RentProdStockDAOInterface {
 		return sqlSession.selectList(namespace+"findRentStockList", member_id);
 	}
 
+<<<<<<< HEAD
+=======
+	// �뿩��ǰ���
+>>>>>>> main
 	@Override
 	public List<RentProdStockDTO> selectAll() {
 		return sqlSession.selectList(namespace + "selectById");
 	}
 
+<<<<<<< HEAD
+=======
+	// �뿩��ǰ���
+>>>>>>> main
 	@Override
 	public int rentProdInsert(RentProdStockDTO rentprod) {
 		return sqlSession.insert(namespace + "rentProdInsert", rentprod);
 	}
 
+<<<<<<< HEAD
+=======
+	// �뿩��ǰ����
+>>>>>>> main
 	@Override
 	public int rentProdUpdate(RentProdStockDTO rentprod) {
 		return sqlSession.update(namespace + "rentProdUpdate", rentprod);
 	}
+	
+	// �뿩��ǰ������
+	@Override
+	public int rentStockUpdate(RentProdStockDTO rentprod) {
+		return sqlSession.update(namespace + "rentStockUpdate", rentprod);
+	}
 
+<<<<<<< HEAD
+=======
+	// �뿩��ǰ����
+>>>>>>> main
 	@Override
 	public int rentProdDelete(String r_stock_id) {
 		return sqlSession.delete(namespace + "selectById", r_stock_id);

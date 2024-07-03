@@ -16,6 +16,8 @@ public interface ProdDAOInterface {
 	
 	public int prodDelete(Integer prod_id);
 
+	public int prodModify(ProdDTO prod);
+
 	public List<Map<String, Object>> selectAll2();
 
 	public List<Map<String, Object>> selectByCategory(int categoryId);

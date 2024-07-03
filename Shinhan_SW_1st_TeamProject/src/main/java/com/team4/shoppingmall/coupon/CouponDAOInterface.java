@@ -22,5 +22,8 @@ public interface CouponDAOInterface {
 //	public int couponDelete(String coupon_id);
 	
 	// 쿠폰사용
-	public int couponUse(String coupon_id);
+	public int couponUse(CouponDTO couponDTO);
+
+	//회원별 보유 쿠폰 목록
+	public List<CouponDTO> selectCustomerCouponList(String member_id);
 }

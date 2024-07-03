@@ -31,7 +31,8 @@
 		SELECT *
 		FROM MEMBER
 	</select>
-		<select id="loginChk" resultType="membervo" parameterType="String"> 
+
+	<select id="loginChk" resultType="membervo" parameterType="String"> 
 		select member_id, member_pw 
 		from MEMBER
 		where member_id = #{member_id}
@@ -39,9 +40,8 @@
 
 	<insert id="memberInsert" parameterType="memberVO">
 		INSERT
-
 		INTO MEMBER(member_id, member_pw, member_name, email, phone,
-					brand, birth_date, last_access, member_type, gender)
+					brand, birth_date, last_access, member_type, gender, seller_authority, create_date)
 		VALUES(#{member_id}, #{member_pw}, #{member_name}, #{email}, #{phone},
 		        <choose>
 		            <when test="brand == null">
@@ -51,9 +51,18 @@
 		                #{brand}
 		            </otherwise>
 		        </choose>,
-				#{birth_date}, #{last_access}, #{member_type}, #{gender})
+				#{birth_date}, #{last_access}, #{member_type}, #{gender}, 
+				<choose>
+					<when test="member_type == 1">
+						'U'
+					</when>
+					<otherwise>
+						'N'
+					</otherwise>
+				</choose>,
+				#{create_date})
 	</insert>
-	
+
 	<!-- 구매자 회원 정보 수정 -->
 	<update id="myInfoUpdate" parameterType="memberVO">
 		UPDATE MEMBER
@@ -64,6 +73,7 @@
 		phone = #{phone}
 		WHERE member_id = #{member_id}
 	</update>
+
 
 	<update id="memberUpdate" parameterType="memberVO">
 		UPDATE MEMBER
@@ -77,6 +87,13 @@
 		last_access = #{last_access}, 
 		member_type = #{member_type}, 
 		gender = #{gender}
+		WHERE member_id = #{member_id}
+	</update>
+
+	<update id="memberUpdateAccess" parameterType="memberVO">
+		UPDATE MEMBER
+		SET
+		last_access = #{last_access}
 		WHERE member_id = #{member_id}
 	</update>
 
@@ -99,7 +116,7 @@
 
 	<select id="selectBySeller_authority" resultType="memberVO">
 		select * from
-		member where member_seller_authority = 'Y'
+		member where seller_authority = 'Y'
 		and member_type = 2
 	</select>
 
@@ -120,13 +137,13 @@
     WITH this_month AS (
         SELECT COUNT(*) AS count_this_month
         FROM member
-        WHERE member_seller_create_date >= TRUNC(SYSDATE, 'MM')
+        WHERE create_date >= TRUNC(SYSDATE, 'MM')
     ),
     last_month AS (
         SELECT COUNT(*) AS count_last_month
         FROM member
-        WHERE member_seller_create_date >= ADD_MONTHS(TRUNC(SYSDATE, 'MM'), -1)
-          AND member_seller_create_date < TRUNC(SYSDATE, 'MM')
+        WHERE create_date >= ADD_MONTHS(TRUNC(SYSDATE, 'MM'), -1)
+          AND create_date < TRUNC(SYSDATE, 'MM')
     )
     SELECT
         CASE 
@@ -151,13 +168,13 @@
     WITH this_month AS (
         SELECT COUNT(*) AS count_this_month
         FROM member
-        WHERE member_customer_create_date >= TRUNC(SYSDATE, 'MM')
+        WHERE create_date >= TRUNC(SYSDATE, 'MM')
     ),
     last_month AS (
         SELECT COUNT(*) AS count_last_month
         FROM member
-        WHERE member_customer_create_date >= ADD_MONTHS(TRUNC(SYSDATE, 'MM'), -1)
-          AND member_customer_create_date < TRUNC(SYSDATE, 'MM')
+        WHERE create_date >= ADD_MONTHS(TRUNC(SYSDATE, 'MM'), -1)
+          AND create_date < TRUNC(SYSDATE, 'MM')
     )
     SELECT
         CASE 
@@ -179,7 +196,7 @@
 		FROM MEMBER
 		WHERE member_type = 2
 		AND
-		TO_CHAR(member_seller_create_date, 'YYYY-MM') = TO_CHAR(SYSDATE,
+		TO_CHAR(create_date, 'YYYY-MM') = TO_CHAR(SYSDATE,
 		'YYYY-MM')
 	</select>
 	<select id="customer_Monthly_IncreaseRate" resultType="int">
@@ -188,20 +205,20 @@
 		FROM MEMBER
 		WHERE member_type = 1
 		AND
-		TO_CHAR(member_customer_create_date, 'YYYY-MM') = TO_CHAR(SYSDATE,
+		TO_CHAR(create_date, 'YYYY-MM') = TO_CHAR(SYSDATE,
 		'YYYY-MM')
 	</select>
 
 	<select id="TodayVisitor" resultType="map">
 		SELECT
-		TO_CHAR(member_last_access, 'YYYY-MM-DD') AS day,
+		TO_CHAR(last_access, 'YYYY-MM-DD') AS day,
 		COUNT(*) AS
 		visitor_count
 		FROM MEMBER
-		WHERE member_last_access BETWEEN
+		WHERE last_access BETWEEN
 		TRUNC(SYSDATE, 'MM') AND LAST_DAY(SYSDATE)
 		GROUP BY
-		TO_CHAR(member_last_access, 'YYYY-MM-DD')
+		TO_CHAR(last_access, 'YYYY-MM-DD')
 		ORDER BY day;
 	</select>
 	

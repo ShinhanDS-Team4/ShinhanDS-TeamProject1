@@ -154,6 +154,10 @@
             text-decoration: none;
             margin: 0 10px;
         }
+        .phone-icon {
+    	width: 25px; /* 원하는 너비로 조정 */
+   		height: auto; /* 비율 유지를 위해 자동 설정 */
+}
     </style>
 	<script>
 	    $(document).ready(function() {
@@ -217,7 +221,7 @@
         <div class="highlight-line"></div>
         <button class="btn-email">이메일 인증으로 찾기</button>
         <div class="contact-info">
-            <p><img src="https://via.placeholder.com/20" alt="전화 아이콘"> 1599-0007 (평일 09:00 - 18:00)</p>
+            <p><img src="${path}/resources/images/phone_icon.png" alt="전화 아이콘" class="phone-icon"> 1599-0007 (평일 09:00 - 18:00)</p>
         </div>
     </div>
     <footer>

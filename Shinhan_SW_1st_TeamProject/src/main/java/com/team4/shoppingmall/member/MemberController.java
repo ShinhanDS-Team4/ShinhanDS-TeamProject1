@@ -1,6 +1,8 @@
 package com.team4.shoppingmall.member;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -38,7 +40,7 @@ public class MemberController {
 	public void defaultpage() {
 
 	}
-	//·Î±×ÀÎ
+	//ë¡œê·¸ì¸í˜ì´ì§€
 	@GetMapping("/login.do")
 	public String loginstart() {
 		return "user/login";
@@ -46,35 +48,73 @@ public class MemberController {
 	
 	@PostMapping("/login.do")
 	public String login(@RequestParam("member_id") String member_id, @RequestParam("member_pw") String member_pw, HttpSession session, HttpServletRequest request) {
-		MemberDTO member = memberService.loginChk(member_id);
+		MemberDTO member = memberService.selectById(member_id);
+		System.out.println(member);
+		String N = "N";
 		if(member == null) {
-			session.setAttribute("loginResult", "Á¸ÀçÇÏÁö ¾Ê´Â ID");
+			session.setAttribute("loginResult", "ì¡´ì¬í•˜ì§€ ì•ŠëŠ” ID");
 			return "redirect:login.do";
 		}else if(!member.getMember_pw().equals(member_pw)) {
-			session.setAttribute("loginResult", "password ¿À·ù");
+			session.setAttribute("loginResult", "password ì˜¤ë¥˜");
+			return "redirect:login.do";
+		}else if(member.seller_authority.equals(N)){
+			session.setAttribute("loginResult", "ê´€ë¦¬ìì˜ ìŠ¹ì¸ì´ í•„ìš”í•œ ê³„ì •ì…ë‹ˆë‹¤.");
 			return "redirect:login.do";
 		}else {
-			session.setAttribute("loginResult", "·Î±×ÀÎ ¼º°ø");
 			session.setAttribute("member", member);
+			String lastRequest = (String)session.getAttribute("lastRequest");
+			String goPage;
+			if(lastRequest==null) {
+				//ì²¨ë¶€í„° ë¡œê·¸ì¸ì°½ìœ¼ë¡œ ë“¤ì–´ê°”ë‹¤ë©´ ë¡œê·¸ì¸ í›„ ë©”ì¸í˜ì´ì§€ë¡œ ì´ë™
+				goPage = "../";
+			}else {
+				int length = request.getContextPath().length();
+				goPage = lastRequest.substring(length);
+				String queryString = (String)session.getAttribute("queryString");
+				if(queryString!=null) goPage = goPage+"?"+queryString;//í…ŒìŠ¤íŠ¸ìš©ì¸ê°€?
+				System.out.println("goPage =>" + goPage);
+			}
+			LocalDate localDate = LocalDate.now();
+			Date sqlDate = Date.valueOf(localDate);
+			//ìµœì¢… ì ‘ì†ì¼ì„ í˜„ì¬ ì¼ìë¡œ ìˆ˜ì •
+			member.setLast_access(sqlDate);
+			memberService.memberUpdateAccess(member);
+			
+			return "redirect:" + goPage;
 		}
-		return "redirect:/";
 	}
 	
+    //ë¡œê·¸ì•„ì›ƒ ê¸°ëŠ¥
+    @GetMapping("/logout.do")
+    public String logout(HttpSession session) {
+        session.removeAttribute("member"); 
+        return "redirect:/"; 
+    }
 	
-	//È¸¿ø°¡ÀÔ
-	@GetMapping("/signup.do")
+	//íšŒì›ê°€ì… ê¸°ëŠ¥
+	@GetMapping("/signup")
 	public String signup() {
 		return "user/signup";
 	}
 	
-	@PostMapping("/signup.do")
-	public String sendSignup(MemberDTO member) {
+	@PostMapping("/signup")
+	public String sendSignup(MemberDTO member, Model model) {
 		System.out.println(member);
-		memberService.memberInsert(member);
+		LocalDate localDate = LocalDate.now();
+		Date sqlDate = Date.valueOf(localDate);
+		member.setCreate_date(sqlDate);
+
+		if(member.member_type == 1) {
+			System.out.println(member.getMember_id());
+			memberService.memberBuyerInsert(member);
+		}else {
+			memberService.memberSellerInsert(member);
+		}
+
 		return "redirect:login.do";
 	}
 	
-	//IDÃ£±â
+	//ID ì°¾ê¸°
 	@GetMapping("/findid")
 	public String findid() {
 		return "user/findid";
@@ -86,13 +126,12 @@ public class MemberController {
 		MemberDTO member = memberService.findId(name, phone);
 		System.out.println(member);
 		if(!member.member_name.equals(name)) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Àß¸øµÈ ¿äÃ»ÀÔ´Ï´Ù.");
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "error.");
 		}
-		System.out.println("¼º°ø");
 		return member;
 	}
 	
-	//ºñ¹øÃ£±â
+	//ë¹„ë²ˆ ì°¾ê¸°
 	@GetMapping("/findpassword")
 	public String findpassword() {
 		return "user/findpassword";
@@ -106,7 +145,7 @@ public class MemberController {
 		return member;
 	}
 
-	//ÀÌ¸ŞÀÏ ÀÎÁõ
+	//ì´ë©”ì¼ í™•ì¸
     @GetMapping("/verify")
     public String showVerificationForm() {
         return "verify";
@@ -130,23 +169,22 @@ public class MemberController {
     
     @GetMapping("/verifypassword")
     public String verifypassword(@RequestParam("userId") String userId, Model model) {
-        // userId¸¦ »ç¿ëÇÏ¿© ÇÊ¿äÇÑ ·ÎÁ÷À» Ã³¸®ÇÕ´Ï´Ù.
-        // ¿¹¸¦ µé¾î, µ¥ÀÌÅÍº£ÀÌ½º¿¡¼­ »ç¿ëÀÚ Á¤º¸¸¦ Á¶È¸ÇÒ ¼ö ÀÖ½À´Ï´Ù.
+
     	MemberDTO member = memberService.selectById(userId);
     	
-    	//º»ÀÎÀÎÁõ È®ÀÎ¹®ÀÚ ¹ß¼Û
+    	//ì´ë©”ì¼ ì¸ì¦
     	String code = generateVerificationCode();
         gmailService.sendEmail(member.email, "Verification Code", "Your verification code is " + code);
     	System.out.println(userId);
     	System.out.println(member.email);
     	System.out.println(code);
         
-        // model¿¡ userId¸¦ Ãß°¡ÇÏ¿© view·Î Àü´ŞÇÕ´Ï´Ù.
+        // modelï¿½ï¿½ userIdï¿½ï¿½ ï¿½ß°ï¿½ï¿½Ï¿ï¿½ viewï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
         model.addAttribute("userId", userId);
         model.addAttribute("email", member.email);
         model.addAttribute("verificationCode", code);
         
-        // ¹İÈ¯ÇÒ view ÀÌ¸§À» ÁöÁ¤ÇÕ´Ï´Ù.
+        
         return "user/findpassword_check";
     }
     
@@ -157,7 +195,6 @@ public class MemberController {
         	MemberDTO member = memberService.selectById(userId);
         	member.member_pw = newPassword;
             memberService.updatePassword(member);
-            System.out.println("ºñ¹øº¯°æ ¼º°ø");
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -174,7 +211,7 @@ public class MemberController {
             gmailService.sendEmail(email, "Email Verification", "Your verification code is " + code);
             emailVerificationCodes.put(email, code);
             response.put("success", true);
-            response.put("verificationCode", code); // µğ¹ö±ë ¸ñÀûÀ¸·Î ¹İÈ¯
+            response.put("verificationCode", code);
         } catch (Exception e) {
             e.printStackTrace();
             response.put("success", false);
@@ -182,7 +219,7 @@ public class MemberController {
         return response;
     }
     
-    //ÀÎÁõ¹øÈ£¸¦ ¹Ş´Â ÄÚµå
+    //ëœë¤ì½”ë“œ ë°œê¸‰
     private String generateVerificationCode() {
         Random random = new Random();
         int code = 100000 + random.nextInt(900000);

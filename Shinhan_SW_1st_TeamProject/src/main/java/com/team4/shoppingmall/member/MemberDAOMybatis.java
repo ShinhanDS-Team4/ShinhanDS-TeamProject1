@@ -122,4 +122,9 @@ public class MemberDAOMybatis implements MemberDAOInterface {
 	public int updatePassword(MemberDTO member) {
 		return sqlSession.update(namespace+"memberUpdatePassword", member);
 	}
+
+	@Override
+	public int memberUpdateAccess(MemberDTO member) {
+		return sqlSession.update(namespace+"memberUpdateAccess", member);
+	}
 }

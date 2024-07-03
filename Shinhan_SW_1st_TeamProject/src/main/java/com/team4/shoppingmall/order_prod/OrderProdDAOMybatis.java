@@ -16,21 +16,23 @@ public class OrderProdDAOMybatis implements OrderProdDAOInterface {
 	SqlSession sqlSession;
 
 	String namespace = "com.saren.orderprod.";
+
 	
 	//결제 완료된 주문 상품 목록
 	public List<Map<String,Object>> orderProductById(String member_id){
 		return sqlSession.selectList(namespace+"orderProductById", member_id);
 	};
 	
-	public List<OrderProdDetailDTO> selectById2(int order_id){
-		return sqlSession.selectList(namespace+"selectById2", order_id);
-	};
+//	public List<OrderProdDetailDTO> selectById2(int order_id){
+//		return sqlSession.selectList(namespace+"selectById2", order_id);
+//	};
 	
 	//나의 주문 상품 정보 조회
 	public int sequenceOrderId() {
 		return sqlSession.selectOne(namespace+"sequenceOrderId");
 	};
-	
+
+
 	@Override
 	public OrderProdDTO selectById(Integer order_id) {
 		return sqlSession.selectOne(namespace+"selectById", order_id);
@@ -50,11 +52,12 @@ public class OrderProdDAOMybatis implements OrderProdDAOInterface {
 	public int orderprodUpdate(OrderProdDTO orderprod) {
 		return sqlSession.update(namespace+"orderprodUpdate", orderprod);
 	}
-	
-//	@Override
-//	public Map<String, Object> selectById2(int order_id) { 
-//        return sqlSession.selectOne(namespace + "selectById2", order_id);
-//    } 
+
+
+	@Override
+	public List<OrderProdDetailDTO> selectById2(int order_id) { 
+        return sqlSession.selectList(namespace + "selectById2", order_id);
+    } 
 	
 	@Override
 	public List<Prod_OptionDTO> selectOptions() { 
@@ -62,16 +65,21 @@ public class OrderProdDAOMybatis implements OrderProdDAOInterface {
         return optlist;
 	}
 
+	// orderlist.jsp����, �ֹ����
 	@Override
 	public int orderCancel(int orderId) {
         return sqlSession.update(namespace + "orderCancel", orderId);
+	}
 
+	// orderlist.jsp����, �ֹ�ȯ��
+	@Override
+	public int orderRefund(int orderId) {
+        return sqlSession.update(namespace + "orderRefund", orderId); 
 	}
 
 	@Override
-	public int orderRefund(int orderId) {
-        return sqlSession.update(namespace + "orderRefund", orderId);
-
+	public int updateOrderPrice(OrderProdDTO orderprod) {
+		return sqlSession.update(namespace+"updateOrderPrice", orderprod);
 	} 
 
 }

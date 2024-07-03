@@ -1,5 +1,5 @@
-/* 기존의 스타일 코드와 추가된 스타일 코드 */
 /* 湲곗〈�쓽 �뒪���씪 肄붾뱶�� 異붽��맂 �뒪���씪 肄붾뱶 */
+/* 疫꿸퀣�덌옙�벥 占쎈뮞占쏙옙占쎌뵬 �굜遺얜굡占쏙옙 �빊遺쏙옙占쎈쭆 占쎈뮞占쏙옙占쎌뵬 �굜遺얜굡 */
 main {
 	width: 80%;
 	margin: 20px auto;
@@ -37,15 +37,16 @@ main h1 {
 
 .info{
 	display: flex;
-  	justify-content: space-between; /* 자식 요소들을 양쪽 끝에 배치 */
-  	align-items: center; /* 세로 가운데 정렬 */
+	
+  	align-items: center;
 }
 
 .left,
 .right {
-  flex: 1; /* 각각의 자식 요소가 동일한 너비를 가지도록 함 */
   padding : 10px;
-  
+}
+.right{
+	width: 300px;
 }
 
 .left p{
@@ -57,6 +58,7 @@ main h1 {
   outline: none;
   text-align: center;
   font-size: 15px;
+  width: 300px;
 }
 
 .order-summary, .delivery-info, .coupon-info {

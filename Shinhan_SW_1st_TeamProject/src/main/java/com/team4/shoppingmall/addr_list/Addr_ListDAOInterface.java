@@ -9,8 +9,10 @@ public interface Addr_ListDAOInterface {
 
 	//public Addr_ListDTO selectByAddr_Num(int addr_num);
 	
+	public List<Addr_ListDTO> selectByMember_Id(String member_id);
+	
 	//나의 배송 목록 검색
-	public List<Map<String,Object>> selectByMember_Id(String member_id);
+	public List<Map<String,Object>> selectByMember_Id2(String member_id);
 	
 	
 	public int addressInsert(Addr_ListDTO addr_list);
