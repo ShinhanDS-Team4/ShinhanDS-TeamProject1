@@ -91,32 +91,33 @@ public class CustomerController {
 	private RentProdStockService rentProdStockService;
 	
 	
-	String customerID = "bih63879";// �ӽ� �� ID. Session���� �޾ƿ� ����
+	String customerID = "bih63879";//고객의 ID는 session에서 끌어온다.
 
 	
 
-	// ��ǰ ���� ���� ������
+	// 상품 구매 결제
 	@GetMapping("/orderPay")
 	public String orderPayPage(Model model1, Model model2, Model model3, Model model4, Model model5, Model model6) {
-		Integer orderID = 1;// �ֹ�ID(�ӽ�), �����δ� �ֹ��ϱ� ��ư Ŭ�� �� �����Ǵ� �ֹ�ID�� �����´�.
+		Integer orderID = 1;//주문ID. 실제로는 주문하기 버튼을 누르면 주문 ID를 받아와서 끌어옴
 		
-		// �ֹ� �׸� ������ ��������
+		// 주문 데이터 가져오기
 		OrderProdDTO orderProdDTO = orderProdService.selectById(orderID);
 
-		// �� �ֹ� ���� ���
+		// 주문에 포함되어 있는 주문 상세 목록들을 가져오기
 		List<Order_DetailDTO> orderDetailList = orderDetailService.selectByOrder_Id(orderID);
 
-		// ȸ������
+		// 주문을 한 고객의 정보 가져오기
 		MemberDTO memberDTO = memberService.selectById(customerID);
 		
-		// ȸ���� �ּ� ���
+		// 고객의 주소 목록 가져오기
 		List<Addr_ListDTO> addr_ListDTOs=addr_ListService.selectByMember_Id(customerID);
 
-		// ȸ���� �ֹ� ȭ�鿡�� ��� ������ ���� ���
+		// 고객이 가지고 있는 쿠폰 목록 가져오기
 		List<CouponDTO> usableCouponList = couponService.selectCustomerCouponList(customerID);
 
+		// 고객이 가지고 있는 회원등급, 포인트를 가져오기
 		CustomerDTO customerDTO = customerService.selectById(customerID);
-		System.out.println("���߰�����:"+customerDTO);
+		
 		model1.addAttribute("orderInfo", orderProdDTO);
 		model2.addAttribute("orderDetailList", orderDetailList);
 		model3.addAttribute("memberInfo", memberDTO);
@@ -127,28 +128,26 @@ public class CustomerController {
 		return "customer/customerPay";
 	}
 	
-	// ��ǰ �뿩 ���� ������
+	// 상품 대여 결제
 	@GetMapping("/rentPay")
 	public String rentPayPage(Model model1, Model model2, Model model3, Model model4, Model model5, Model model6) {
-		Integer rental_code = 2;//�뿩ID(�ӽ�) �����δ� �뿩�ϱ� ��ư�� ������ �� �����Ǵ� �뿩ID�� �����´�.
+		Integer rental_code = 2;//대여ID. 대여하기 버튼을 누르면 끌어옴
 		
-		// �뿩 �׸� ������ ��������
+		// 대여 정보 가져오기
 		RentDTO rentDTO = rentService.selectById(rental_code);
 		
-		// �� �ֹ� ���� ���
+		// 대여가 가지고 있는 상세 대여 정보 목록 가져오기
 		List<RentDetailDTO> rentDetailList = rentDetailService.selectByRental_code(rental_code);
 		
-		// ȸ������
+		// 대여를 한 고객의 정보 가져오기
 		MemberDTO memberDTO = memberService.selectById(customerID);
 		
-		// ȸ���� �ּ� ���
-		List<Addr_ListDTO> addr_ListDTOs=addr_ListService.selectByMember_Id(customerID);
-		
-		// ȸ���� �ֹ� ȭ�鿡�� ��� ������ ���� ���
+		// 고객이 가지고 있는 쿠폰 목록 가져오기
 		List<CouponDTO> usableCouponList = couponService.selectCustomerCouponList(customerID);
 		
+		// 고객이 가지고 있는 회원등급, 포인트를 가져오기
 		CustomerDTO customerDTO = customerService.selectById(customerID);
-		System.out.println("���߰�����:"+customerDTO);
+		
 		model1.addAttribute("rentInfo", rentDTO);
 		model2.addAttribute("rentDetailList", rentDetailList);
 		model3.addAttribute("memberInfo", memberDTO);
@@ -158,6 +157,7 @@ public class CustomerController {
 		return "customer/rentPay";
 	}
 
+	//대여 주문에 쿠폰 적용하기
 	@PostMapping("/applyRentCoupon")
 	@ResponseBody
 	public String applyRentCoupon(@RequestBody CouponRequestDTO couponRequestDTO) {
@@ -165,10 +165,10 @@ public class CustomerController {
 		String couponid = couponRequestDTO.getCouponid();
 		int orderid = couponRequestDTO.getOrderid();
 		
-		if("���þ���".equals(couponid)) {
+		if("선택안함".equals(couponid)) {
 			return "Coupon applied";
 		}else {
-			// �ֹ� �׸� ������ ��������
+			//현재 최종가 가져오기
 			RentDTO rentDTO = rentService.selectById(orderid);
 			int totalPrice = rentDTO.getTotal_rent_price();
 			
@@ -199,6 +199,7 @@ public class CustomerController {
 		
 	}
 	
+	//대여 주문에 포인트 적용하기
 	@PostMapping("/applyRentPoint")
 	@ResponseBody
 	public String applyRentPoint(@RequestBody PointRequestDTO pointRequestDTO) {
@@ -224,6 +225,8 @@ public class CustomerController {
 		
 		return "Point Used";
 	}
+	
+	// 구매 주문에 쿠폰 적용하기
 	@PostMapping("/applyCoupon")
 	@ResponseBody
 	public String applyCoupon(@RequestBody CouponRequestDTO couponRequestDTO) {
@@ -231,7 +234,7 @@ public class CustomerController {
 		String couponid = couponRequestDTO.getCouponid();
 		int orderid = couponRequestDTO.getOrderid();
 
-		if("���þ���".equals(couponid)) {
+		if("선택안함".equals(couponid)) {
 			return "Coupon applied";
 		}else {
 			// �ֹ� �׸� ������ ��������
@@ -267,6 +270,7 @@ public class CustomerController {
 		
 	}
 	
+	// 구매 주문 포인트 적용
 	@PostMapping("/applyPoint")
 	@ResponseBody
 	public String applyCoupon(@RequestBody PointRequestDTO pointRequestDTO) {
@@ -295,6 +299,7 @@ public class CustomerController {
 		return "Point Used";
 	}
 	
+	//주소 선택하기
 	@PostMapping("/applyAddress")
 	@ResponseBody
 	public String applyAddress(@RequestBody AddressRequestDTO request) {
@@ -316,28 +321,30 @@ public class CustomerController {
 	@GetMapping("/sellPaySuccess")
 	public String sellPaySuccess(@RequestParam("order_id") Integer order_id) {
 		
+		//구매 주문에 해당하는 주문 상세 목록들 가져오기
 		List<Order_DetailDTO> orderDetailDTOs = orderDetailService.selectByOrder_Id(order_id);
 		
+		//주문 상세 목록에 대한 반복문 수행
 		for (Order_DetailDTO order_DetailDTO : orderDetailDTOs) {
 			
-			//�ֹ� �� - ���¸� �����Ϸ�� ����
+			//주문 상세의 주문 상태를 '결제완료'로 변경
 			order_DetailDTO.setOrder_state("결제완료");
 			
+			//해당 주문이 구매한 판매 재고 정보를 가져오기
 			String s_stock_id = order_DetailDTO.getS_stock_id();
-			
 			Seller_Prod_StockDTO seller_Prod_StockDTO = seller_Prod_StockService.selectByStockId(s_stock_id);
-			int currentStock = seller_Prod_StockDTO.getStock();
-			int currentSell = seller_Prod_StockDTO.getTotal();
+			int currentStock = seller_Prod_StockDTO.getStock();//해당 재고의 재고량
+			int currentSellTotal = seller_Prod_StockDTO.getTotal();//해당 재고의 판매량
 			
-			//�ֹ� �󼼺� �ֹ� ���� �������
+			//주문량과 해당 주문 제품의 가격 가져오기
 			int orderAmount= order_DetailDTO.getOrder_num();
 			int orderPrice = order_DetailDTO.getOrder_product_price();
 			
-			int orderTotal = orderAmount*orderPrice;
-			
-			//�ش� ����� ��� 1 ����, �Ǹŷ� 1 ����
+			//판매 재고 정보 : 재고량과 판매량 수정
 			seller_Prod_StockDTO.setStock(currentStock-orderAmount);
-			seller_Prod_StockDTO.setTotal(currentSell+orderAmount);
+			seller_Prod_StockDTO.setTotal(currentSellTotal+orderAmount);
+			
+			//고객의 포인트와 고객등급, 누적 등급 가져오기
 			
 			int updateOrderStatus = orderDetailService.orderDetailUpdate(order_DetailDTO);
 			int updateStock = seller_Prod_StockService.seller_prod_stockUpdate(seller_Prod_StockDTO);
@@ -355,23 +362,22 @@ public class CustomerController {
 		
 		for(RentDetailDTO rentDetailDTO : rentDetailDTOs) {
 
-			//�뿩 �� - ���¸� ���� �Ϸ�� ����
+			//대여 상세의 대여 상태를 '결제완료'로 변경
 			rentDetailDTO.setRent_state("결제완료");
 			String r_stock_id = rentDetailDTO.getR_stock_id();
 			
-			//�ش� ����� ���� ��� ��������
+			//해당 대여가 구매한 대여 재고 정보를 가져오기
 			RentProdStockDTO rentProdStockDTO = rentProdStockService.selectById(r_stock_id);
 			int currentStock=rentProdStockDTO.getStock();
-			int currentRent=rentProdStockDTO.getTotal();
+			int currentRentTotal=rentProdStockDTO.getTotal();
 			
-			//�ֹ� �󼼺� �ֹ� ���� �������
+			//대여량과 해당 대여 제품의 가격 가져오기
 			int rentAmount= rentDetailDTO.getRent_num();
 			int rentPrice = rentDetailDTO.getRent_product_price();
 			
-			int rentTotal = rentAmount*rentPrice;
-			
+			//대여 재고 정보 : 재고량과 대여량 갱신
 			rentProdStockDTO.setStock(currentStock - rentAmount); 
-			rentProdStockDTO.setTotal(currentRent + rentAmount); 
+			rentProdStockDTO.setTotal(currentRentTotal + rentAmount);
 			
 			int updateOrderStatus = rentDetailService.rentDetailUpdate(rentDetailDTO);
 			int updateStock = rentProdStockService.rentProdUpdate(rentProdStockDTO);
@@ -381,14 +387,14 @@ public class CustomerController {
 		return "customer/customerOrderSuccess";
 	}
 
-	// ���� �� ���� ������ ���� �����ݾ� �������
+	// 결제 전 결제 내용을 미리 포트원에 업로드
 	@PostMapping("/preparePayment")
 	@ResponseBody
 	public String preparePayment(@RequestParam String merchantUid, @RequestParam int amount) {
 		return paymentService.registerPaymentAmount(merchantUid, amount);
 	}
 
-	// ���� ���뿡 ���� ����
+	// 결제검증
 	@PostMapping("/verifyPayment")
 	@ResponseBody
 	public String verifyPayment(@RequestParam("imp_uid") String impUid,
