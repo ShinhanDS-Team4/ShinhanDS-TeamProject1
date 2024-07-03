@@ -76,6 +76,11 @@ public class RentDAOMybatis implements RentDAOInterface {
 	public int updateRent(RentDTO rent) {
 		return sqlSession.update(namespace+"updateRent", rent);
 	}
+	
+	@Override
+	public int rentprodDelete(int rental_code) {
+		return sqlSession.delete(namespace+"rentprodDelete",rental_code);
+	}
 
 
 }

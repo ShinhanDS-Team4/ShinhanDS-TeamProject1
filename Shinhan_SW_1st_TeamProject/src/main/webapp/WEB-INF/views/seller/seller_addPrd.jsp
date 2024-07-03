@@ -53,7 +53,7 @@
 		fileRemove.type = 'button';
 		fileRemove.innerText = '삭제';
 		fileRemove.onclick = function() {
-			removeFile(this);
+			removeMainFile(this);
 		};
 
 		fileItem.appendChild(fileField);
@@ -96,7 +96,7 @@
 		fileRemove.type = 'button';
 		fileRemove.innerText = '삭제';
 		fileRemove.onclick = function() {
-			removeFile(this);
+			removeDescFile(this);
 		};
 
 		fileItem.appendChild(fileField);
@@ -111,10 +111,16 @@
 		return document.querySelectorAll('#prdDescImgFileContainer .file-item').length;
 	}
 	
-	function removeFile(button) {
+	function removeMainFile(button) {
 		// 부모 요소(file-item) 제거
 		button.parentNode.remove();
-		fileCount = getFileItemCount();
+		mainImgFileCount = getMainFileItemCount();
+	}
+	
+	function removeDescFile(button) {
+		// 부모 요소(file-item) 제거
+		button.parentNode.remove();
+		descImgFileCount = getDescFileItemCount();
 	}
 	
 	function setProdDescribeImg(event, fileItem) {
@@ -213,10 +219,8 @@
 			<h2>마이페이지</h2>
 			<hr />
 			<div class="user-info">
-				<p>김철수</p>
-				<!-- 판매자 회원의 이름 -->
-				<p>573-50-00882</p>
-				<!-- 판매자 회원의 ID(사업자등록번호) -->
+				<p>${sellerInfo.member_name}</p>
+				<p>${sellerInfo.member_id}</p>
 			</div>
 
 			<div class="container">
@@ -247,14 +251,14 @@
 					<!-- 상품의 메인 사진으로 사용할 여러 개의 사진을 집어넣는 곳 -->
 					<div class="form-group">
 						<label>메인사진</label>
-						<button type="button" onclick="addMainImgFile()">사진 추가</button>
+						<button type="button" id="addImageBtn" onclick="addMainImgFile()">사진 추가</button>
 					</div>
 					<div id="prdMainImgFileContainer"></div>
 
 					<!-- 상품 설명에 사용할 여러 개의 사진들을 집어넣는 곳  -->
 					<div class="form-group">
 						<label>상품 설명 사진 등록</label>
-						<button type="button" onclick="addDescImgFile()">사진 추가</button>
+						<button type="button" id="addImageBtn" onclick="addDescImgFile()">사진 추가</button>
 					</div>
 					<div id="prdDescImgFileContainer"></div>
 
@@ -282,7 +286,7 @@
 		</section>
 
 		<!-- 여기부터는 오른쪽에 있는 알림버튼창 관련 -->
-		<aside class="notifications">
+		<%-- <aside class="notifications">
 			<div class="notify_icon">
 				<img src="${path}/resources/images/bell.png" alt="알림"
 					class="bell_icon" />
@@ -294,20 +298,7 @@
 					<p>결제 대기 주문 : 23건</p>
 				</div>
 			</div>
-		</aside>
+		</aside> --%>
 	</main>
-	<script>
-		document.querySelector(".notifications .bell_icon").addEventListener(
-				"click",
-				function() {
-					document.querySelector(".notifications .popup").classList
-							.toggle("show");
-				});
-	</script>
-	<style>
-.notifications .popup.show {
-	display: block;
-}
-</style>
 </body>
 </html>

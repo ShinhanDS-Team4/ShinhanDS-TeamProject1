@@ -30,7 +30,8 @@ main h1 {
 }
 
 #orderTable th {
-	background-color: #f0f0f0;
+	background-color: black;
+	color:white;
 }
 
 
@@ -133,6 +134,7 @@ form {
 .form-group {
 	display: flex;
 	align-items: center;
+	padding-bottom: 10px;
 }
 
 .form-group label {
@@ -172,6 +174,7 @@ form {
 
 .submit-button {
 	align-self: flex-end;
+	margin: 5px;
 }
 
 .payment-summary {
@@ -196,6 +199,10 @@ form {
 	flex: 1;
 }
 
+.payment-group{
+	text-align: center;
+}
+
 .payment-button {
 	background-color: #6200ea;
 	color: white;
@@ -206,6 +213,7 @@ form {
 	cursor: pointer;
 	align-self: center;
 	width: 200px;
+	margin: 20px;
 }
 
 footer {
@@ -231,4 +239,17 @@ footer ul li a {
 	text-decoration: none;
 	color: #000;
 	font-size: 16px;
+}
+
+.select-button {
+	background-color: black;
+	color: white;
+	font-size: 15px;
+	padding: 6px 10px;
+	margin: 5px;
+	border-radius: 5px;
+}
+
+.addrListClass td{
+	margin:5px;
 }

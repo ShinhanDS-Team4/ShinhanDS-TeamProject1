@@ -58,4 +58,10 @@ public class RentDetailDAOMybatis implements RentDetailDAOInterface {
 		// TODO Auto-generated method stub
 		return sqlSession.selectList(namespace+"selectByRental_code",rental_code);
 	}
+
+	@Override
+	public int rentDetailDelByRentCode(Integer rental_code) {
+		return sqlSession.delete(namespace+"rentDetailDelByRentCode", rental_code);
+	}
 }
+

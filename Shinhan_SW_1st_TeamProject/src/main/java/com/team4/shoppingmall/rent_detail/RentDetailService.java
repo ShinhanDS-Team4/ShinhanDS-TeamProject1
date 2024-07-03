@@ -48,5 +48,9 @@ public class RentDetailService {
 	public int rentDetailDelete(Integer rentdetail_id) {
 		return rentDetailDAO.rentDetailDelete(rentdetail_id);
 	}
+	
+	public int rentDetailDelByRentCode(Integer rental_code) {
+		return rentDetailDAO.rentDetailDelByRentCode(rental_code);
+	}
 
 }
