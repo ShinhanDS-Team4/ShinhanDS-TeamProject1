@@ -118,3 +118,31 @@ span {
   padding: 5px 10px;
   border-radius: 50%;
 }
+
+
+.sellPrdList th{
+	background-color: black;
+	color:white;
+}
+
+.orderStatus{
+	width:150px;
+	height:30px;
+}
+
+#batch_process_button{
+	background-color:black;
+	color:white; 
+	width:90px;
+	height:30px;
+	font-size: 15px;
+	border-radius: 5px;
+}
+#delete_selected_button{
+	background-color:black;
+	color:white; 
+	width:120px;
+	height:30px;
+	font-size: 15px;
+	border-radius: 5px;
+}
