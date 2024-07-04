@@ -16,11 +16,11 @@ public class MemberService {
 	@Autowired
 	CustomerDAOInterface customerDAO;
 	
-	//援щℓ�옄 �쉶�썝 �젙蹂� �닔�젙
+	//구매자 회원 정보 수정
 	public int myInfoUpdate(MemberDTO member) {
 		return memberDAO.myInfoUpdate(member);
 	};
-	//濡쒓렇�씤 �쉶�썝 �젙蹂� �닔�젙�슜 鍮꾨�踰덊샇 泥댄겕
+	//로그인 회원 정보 수정용 비밀번호 체크
 	public int memberCheckByPw(MemberDTO member) {
 		return memberDAO.memberCheckByPw(member);
 	}

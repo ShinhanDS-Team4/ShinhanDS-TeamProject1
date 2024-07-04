@@ -38,13 +38,13 @@ main h1 {
 
 .info{
 	display: flex;
-  	justify-content: space-between; /* �옄�떇 �슂�냼�뱾�쓣 �뼇履� �걹�뿉 諛곗튂 */
-  	align-items: center; /* �꽭濡� 媛��슫�뜲 �젙�젹 */
+  	justify-content: space-between; /* 자식 요소들을 양쪽 끝에 배치 */
+  	align-items: center; /* 세로 가운데 정렬 */
 }
 
 .left,
 .right {
-  flex: 1; /* 媛곴컖�쓽 �옄�떇 �슂�냼媛� �룞�씪�븳 �꼫鍮꾨�� 媛�吏��룄濡� �븿 */
+  flex: 1; /* 각각의 자식 요소가 동일한 너비를 가지도록 함 */
   padding : 10px;
   
 }
