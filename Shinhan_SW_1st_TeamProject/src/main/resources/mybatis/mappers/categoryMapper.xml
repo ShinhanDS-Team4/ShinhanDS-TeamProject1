@@ -42,10 +42,10 @@
 
 	<insert id="categoryInsert" parameterType="categoryVO">
 		INSERT 
-		INTO CATEGORY(category_id, category_name, 
-					  category_depth, parent_category_id) 
+		INTO CATEGORY(category_id, category_name,  
+					  category_depth, parent_category_id, is_lowest) 
 		VALUES(#{category_id}, #{category_name}, 
-			   #{category_depth}, #{parent_category_id})
+			   #{category_depth}, #{parent_category_id}, #{is_lowest})
 	</insert>
 
 	<update id="categoryUpdate" parameterType="categoryVO">
@@ -62,5 +62,18 @@
 		FROM CATEGORY
 		WHERE "category_id" = #{category_id}
 	</delete>
+	
+	<select id = "firstDepthCategoryList" resultType="categoryVO">
+		SELECT *
+		FROM CATEGORY
+		WHERE category_depth = 1
+	</select>
+	
+	
+	<select id = "categoryListBydepth" parameterType="categoryVO" resultType="categoryVO">
+		SELECT *
+		FROM CATEGORY
+		WHERE category_depth = #{category_depth} AND parent_category_id = #{parent_category_id}
+	</select>
 	
 </mapper>

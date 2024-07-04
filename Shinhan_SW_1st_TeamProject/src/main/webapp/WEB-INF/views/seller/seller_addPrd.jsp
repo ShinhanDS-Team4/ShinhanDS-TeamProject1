@@ -32,7 +32,7 @@
 			alert("메인 사진은 최대 5개까지 추가할 수 있습니다.");
 			return;
 		}
-
+		
 		// 새로운 파일 항목 생성
 		const fileItem = document.createElement('div');
 		fileItem.className = 'file-item';
@@ -199,6 +199,27 @@
 	if (message) {
 		alert(message);
 	}
+	
+	function firstDepth(){
+		var selectedValue = document.getElementById("depth1").value;
+		
+		// Save the state in localStorage
+        localStorage.setItem("depth2Select", "false");
+		
+		$.ajax({
+			type:'POST',
+			url:'${path}/seller/findNextCategoryList.do',
+			contentType: 'application/json',
+            data: JSON.stringify(selectedValue),
+			successs:function(response){
+				alert(response);
+				location.reload();
+			},
+			error: function(xhr, status, error) {
+                console.error('AJAX 오류:', status, error);
+            }
+		})
+	}
 </script>
 
 </head>
@@ -240,13 +261,50 @@
 					<div class="form-group">
 						<label>가격</label> <input type="number" name="prdPrice">
 					</div>
+					
+					<!-- 카테고리 -->
 					<div class="form-group">
-						<label>카테고리</label> <select name="prdCategory">
+						<label>카테고리</label>
+						<select name="prdCategory">
 							<option value=0>선택</option>
 							<option value=1>카테고리 1</option>
 							<option value=2>카테고리 2</option>
 						</select>
 					</div>
+					
+					<%-- <!-- 카테고리 -->
+					<div class="form-group">
+						<label>카테고리</label>
+						<div class="categoryContainer">
+							<select class="prdCategory" id="depth1" onchange="firstDepth()">
+								<option value=0>선택 안함</option>
+								<c:forEach var = "category1" items="${depth1categoryList}">
+									<option value="${category1.category_id}">${category1.category_name}</option>
+								</c:forEach>
+							</select>
+							
+							<select class="prdCategory" id="depth2">
+								<option value=0>선택 안함</option>
+								<c:forEach var = "category2" items="${depth2categoryList}">
+									<option value="${category3.category_id}">${category3.category_name}</option>
+								</c:forEach>
+							</select>
+							
+							<select class="prdCategory" id="depth3" >
+								<option value=0>선택 안함</option>
+								<c:forEach var = "category3" items="${depth3categoryList}">
+									<option value="${category3.category_id}">${category3.category_name}</option>
+								</c:forEach>
+							</select>
+							
+							<select class="prdCategory" id="depth4" >
+								<option value=0>선택 안함</option>
+								<c:forEach var = "category4" items="${depth4categoryList}">
+									<option value="${category.category_id}">${category.category_name}</option>
+								</c:forEach>
+							</select>
+						</div>
+					</div> --%>
 					
 					<!-- 상품의 메인 사진으로 사용할 여러 개의 사진을 집어넣는 곳 -->
 					<div class="form-group">
@@ -254,6 +312,7 @@
 						<button type="button" id="addImageBtn" onclick="addMainImgFile()">사진 추가</button>
 					</div>
 					<div id="prdMainImgFileContainer"></div>
+					
 
 					<!-- 상품 설명에 사용할 여러 개의 사진들을 집어넣는 곳  -->
 					<div class="form-group">

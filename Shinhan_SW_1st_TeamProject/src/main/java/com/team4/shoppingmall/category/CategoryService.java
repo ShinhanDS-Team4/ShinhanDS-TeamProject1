@@ -11,7 +11,7 @@ public class CategoryService {
 	@Autowired
 	CategoryDAOInterface categoryDAO;
 	
-	//상품의 카테고리명 조회
+	//�긽�뭹�쓽 移댄뀒怨좊━紐� 議고쉶
 	public CategoryDTO productCategoryByProdId(String prod_id) {
 		return categoryDAO.productCategoryByProdId(prod_id);
 	};
@@ -37,5 +37,13 @@ public class CategoryService {
 	
 	public int categoryDelete(Integer category_id) {
 		return categoryDAO.categoryDelete(category_id);
+	}
+	
+	public List<CategoryDTO> firstDepthCategoryList() {
+		return categoryDAO.firstDepthCategoryList();
+	}
+	
+	public List<CategoryDTO> categoryListBydepth(CategoryDTO category){
+		return categoryDAO.categoryListBydepth(category);
 	}
 }
