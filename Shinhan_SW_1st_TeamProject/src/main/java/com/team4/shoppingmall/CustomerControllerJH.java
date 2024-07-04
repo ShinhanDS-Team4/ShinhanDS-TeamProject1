@@ -59,8 +59,8 @@ public class CustomerControllerJH {
 	public String myPage(HttpSession session, Model model) {
 		
 		MemberDTO member =  (MemberDTO) session.getAttribute("member");
-		//String member_id = member.getMember_id();
-		String member_id = "testid";  //member.get~~~
+		String member_id = member.getMember_id();
+		//String member_id = "testid";  //테스트
 		
 		//1.회원정보 조회
 //		MemberDTO member = memberService.selectById(member_id);
@@ -87,7 +87,7 @@ public class CustomerControllerJH {
 	    CustomerDTO customer =customerService.selectById(member_id);
 	    model.addAttribute("myPoints", customer);
 	   
-	 
+	    //생년월일 포맷 변경
 	    
 		return "customer/myPage";
 	}
@@ -119,8 +119,9 @@ public class CustomerControllerJH {
 		
 		System.out.println(addressData);
 
-		String member_id = "testid";
-
+		MemberDTO member =  (MemberDTO) session.getAttribute("member");
+		String member_id = member.getMember_id();
+		
         // 주소 처리 로직
 		String zipcode = addressData.get("zipcode");
 		String main_address = addressData.get("main_address");
@@ -155,15 +156,38 @@ public class CustomerControllerJH {
 							 Model model,
 							 @RequestBody Map<String, String> addrData) {
 		
-		String member_id = "testid";
+		MemberDTO member =  (MemberDTO) session.getAttribute("member");
+		String member_id = member.getMember_id();
 		
 		String addr_numstr = addrData.get("addr_num");
-		int addr_num = Integer.parseInt(addr_numstr); 
+		int addr_num = Integer.parseInt(addr_numstr);
         System.out.println(addr_num);
 
 		//1.삭제 완료
 		int result = addrService.addressDelete(addr_num);
 		
+		
+		return result ;
+		
+	}
+	
+	//대표 주소지로 업데이트
+	@ResponseBody
+	@PostMapping("/masterAddrUpdate.do")
+	public int masterAddrUpdate( HttpSession session, 
+							 Model model,
+							 @RequestBody Map<String, String> addrData) {
+				
+		String addr_numstr = addrData.get("addr_num");
+		int addr_num = Integer.parseInt(addr_numstr);
+		System.out.println(addr_num);
+
+		//기존에 Y인 주소는 N으로 업데이트
+		//클릭한 addr_num의 주소 Y로 업데이트
+		//서비스에서 트랜잭션널 처리
+		int result = addrService.updateMasterAddrToY(addr_num);
+		
+	
 		return result ;
 		
 	}
@@ -172,7 +196,8 @@ public class CustomerControllerJH {
 	@GetMapping("/myInfoUpdate.do")
 	public String myInfoUpdate( HttpSession session, Model model) {
 		
-		String member_id = "testid"; //테스트id
+		MemberDTO member =  (MemberDTO) session.getAttribute("member");
+		String member_id = member.getMember_id();
 		
 		//나의 배송지 목록
 		List<Map<String,Object>> addrlist = addrService.selectByMember_Id2(member_id);
@@ -185,11 +210,11 @@ public class CustomerControllerJH {
 
 	//step2 - 비밀번호 확인 창
 	//jsp페이지 로드
-	@PostMapping("/myInfoUpdatePwPage.do")
+	@GetMapping("/myInfoUpdateStep2.do")
 	public String myInfoUpdatePwPage(HttpSession session, 
 			 Model model){
 		
-		return "customer/myInfoUpdate_step2";
+		return "customer/myInfoUpdateStep2";  
 	}
 	
 	//비밀번호 체크 
@@ -199,34 +224,31 @@ public class CustomerControllerJH {
 							   @RequestBody Map<String,String> pwData ) 
 	{
 	
-		String member_id = "testid"; //테스트id
+		//MemberDTO member =  (MemberDTO) session.getAttribute("member");
+		//String member_id = member.getMember_id();
+		String member_id ="testid";
+		
+		String member_pw = pwData.get("password"); //입력 받은 pw
 		//1.회원정보 조회
-		MemberDTO member = new MemberDTO();
-		member.setMember_id(member_id);
-		member.setMember_pw(pwData.get("password"));
+		MemberDTO memberDTO = new MemberDTO();
+		memberDTO.setMember_id(member_id); 
+		memberDTO.setMember_pw(member_pw); 
 		
-		int result = memberService.memberCheckByPw(member); 
+		MemberDTO result = memberService.memberCheckByPw(memberDTO);  
+		//System.out.println(result==null?0:1);
 		
-		return result;
+		return result == null ? 0 :1 ;
 	}
 	
-	//!!!팝업창으로 띄우기
-	//비밀번호 체크 후 다음 스텝(step3)  !
-//	@GetMapping("/myInfoUpdate_step3.do")
-//	public String myInfoUpdatePwCheck(HttpSession session, Model model) {
-		
-		//String member_id = "testid";
-		
-//        return "customer/myInfoUpdate_step3"; //jsp페이지 태그
-//	}
-	
-	//step3 - 수정할 회원 정보 입력창	
+	//step3 - 정보 수정 입력창	
 	@ResponseBody
 	@PostMapping("/myInfoUpdateForm")
 	public int myInfoUpdateForm(HttpSession session, Model model,
 		 	@RequestBody Map<String,String> myInfoData) 
 	{
-		String member_id = "testid";
+		
+		MemberDTO member =  (MemberDTO) session.getAttribute("member");
+		String member_id = member.getMember_id();
 		
 		System.out.println("myInfoData: " + myInfoData);
 		String member_pw = myInfoData.get("member_pw");
@@ -234,16 +256,17 @@ public class CustomerControllerJH {
 		String email = myInfoData.get("email");
 		
 		
-		MemberDTO member = new MemberDTO();
-		member.setMember_id(member_id);
-		member.setMember_pw(member_pw);
-		member.setPhone(phone);
-		member.setEmail(email);
+		MemberDTO memberDTO = new MemberDTO();
+		memberDTO.setMember_id(member_id);
+		memberDTO.setMember_pw(member_pw);
+		memberDTO.setPhone(phone);
+		memberDTO.setEmail(email);
 		
 		System.out.println(member_pw);
 		
 		//업데이트- 이름/비밀번호/휴대번호/이메일
-		int result = memberService.myInfoUpdate(member);
+		int result = memberService.myInfoUpdate(memberDTO);
+		//업데이트 된 회원 정보 세션에 새로 저장
 		session.setAttribute("member", member);
 	
 		return result;
@@ -253,6 +276,8 @@ public class CustomerControllerJH {
 	/* 회원 탈퇴 */
 	@PostMapping("/memberDelete.do")
 	public String memberDelete() {
+		
+		
 		
 		return "customer/memberDelete";
 	}

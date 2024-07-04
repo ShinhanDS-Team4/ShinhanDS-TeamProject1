@@ -15,7 +15,7 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
-<%-- 카카오API --%>
+<%-- 카카오 우편번호 및 주소입력 API 연결 --%>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <style>
     .overlay {
@@ -106,10 +106,6 @@
 	}
 </style>
 <script type="text/javascript">
-	function findAddress() {
-	    // 주소 찾기 기능 
-	    alert("주소 찾기 기능");
-	}
 	$(function() {
          $('#addrAddButton').click(function() {
              $('.overlay, #addrAdd_wrap').show();
@@ -125,67 +121,74 @@
              }
          });
          
-         //클릭한 주소 목록 화면에서 삭제  (작업중)
+         //클릭한 주소 목록 삭제  
          $('.delete-btn').click(function(e) {
         	 e.preventDefault();
         	 
-       	 
-        	 
         	 // 클릭된 버튼의 부모 요소인 address-box를 찾음
-       		 var addressBox = $(this).parent('.address-box');
-        	 var addr_num = addressBox.find('input[type="hidden"]').val();
+       		 var addressBoxWrap = $(this).parent('.address-box-wrap');
+        	 var addr_num = addressBoxWrap.find('.address-box').find('input[type="hidden"]').val();
         	 console.log('삭제할 주소 번호: ' + addr_num);
        	    
        	 	 // 현재 address-box의 개수를 계산
        	     var addressBoxCount = $('.address-box').length;
        	     console.log('현재 address-box 개수: ' + addressBoxCount);
        	     
+       	     // masterCheck 값을 확인 (여기서는 #masterTest 요소의 텍스트 값)
+       	     var masterCheck = $('#masterTest').text().trim();
+       	     console.log('masterCheck 값: ' + masterCheck);
+       	          
        	     
-       	    // 삭제 요청을 위한 데이터
-       	    var addrData = {
-       	        addr_num: addr_num
-       	    };
-       	    console.log(addrData);
-       
-       	    // 주소가 1개 이상일 때만 삭제 요청
-       	    if (addressBoxCount > 1) {
-	       	    // 확인 절차 추가
-	       	    if (!confirm("정말로 이 주소를 삭제하시겠습니까?")) {
-	       	    	
-	       	        return;
+	       	  // '대표' 주소인지 확인하여 삭제를 막음
+	       	  if (masterCheck == "대표") {
+	       	        alert("대표 주소는 삭제할 수 없습니다.");
+	       	        //location.reload();
+	       	        return 
 	       	    }
-				$.ajax({
-	                url: "${path}/customer/myAddrDelete.do",
-	                type: "POST",
-	                contentType: 'application/json',
-	                data: JSON.stringify(addrData),
-	                success: function(resultData) {
-	                	
-	                	if(resultData == 1){
-	                		
-	 	                    //$(".resultText_here").text("삭제되었습니다."); //아직 css 없음
-	 	                    alert("배송지가 삭제되었습니다.");
-	                	}else{
-	                		//$(".resultText_here").test("오류가 발생했습니다. 다시 시도해주세요.");
-	 	                    alert("오류가 발생했습니다. 다시 시도해주세요.");
-	                	}
-	                	
-	                },
-	                error: function(xhr, status, error) {
-	                    console.error("Error: " + error);
-	                    //$(".resultText_here").text("서버 오류가 발생했습니다. 다시 시도해주세요.");
-	                }
-	            });
-       	    } else {
-       	        alert("주소는 최소 1개 이상 존재해야 합니다. 삭제할 수 없습니다.");
-       	    }
-				
-		 });
+       	  
+       	    
+	       	    // 삭제 요청을 위한 데이터
+	       	    var addrData = {
+	       	        addr_num: addr_num
+	       	    };
+	       	    console.log(addrData);
+	       
+	       	    // 주소가 1개 이상일 때만 삭제 요청
+	       	    if (addressBoxCount > 1) {
+		       	    // 확인 절차 추가
+		       	    if (!confirm("정말로 이 주소를 삭제하시겠습니까?")) {
+		       	        return;
+		       	    }
+		       	    
+					$.ajax({
+		                url: "${path}/customer/myAddrDelete.do",
+		                type: "POST",
+		                contentType: 'application/json',
+		                data: JSON.stringify(addrData),
+		                success: function(resultData) {
+		                	
+		                	if(resultData == 1){
+		 	                    //$(".resultText_here").text("삭제되었습니다."); //아직 css 없음
+		 	                    alert("배송지가 삭제되었습니다.");
+		 	                    location.reload();
+		                	}else{
+		                		//$(".resultText_here").test("오류가 발생했습니다. 다시 시도해주세요.");
+		 	                    alert("오류가 발생했습니다. 다시 시도해주세요.");
+		                	}
+		                	
+		                },
+		                error: function(xhr, status, error) {
+		                    console.error("Error: " + error);
+		                    //$(".resultText_here").text("서버 오류가 발생했습니다. 다시 시도해주세요.");
+		                }
+		            });
+	       	    } else {
+	       	        alert("주소는 1개 이상 존재해야 합니다.");
+	       	    }
+					
+			 });
          
-        //대표 주소로 설정
-        $('.address-box').click(function() {
-			
-		}) 
+       
 	});
 </script>
 <body>
@@ -203,10 +206,10 @@
 	        <label for="address">주소 <span style="color: red;">*</span></label>
 
 	        <%-- 우편번호API --%>	
-			<input type="text" id="sample6_postcode" placeholder="우편번호" name="zipcode">
-			<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" id="searchPostcode"><br>
-			<input type="text" id="sample6_address" placeholder="주소" name="main_address"><br>
-			<input type="text" id="sample6_detailAddress" placeholder="상세주소" name="detail_address">
+			<input type="text" id="sample6_postcode" placeholder="우편번호" name="zipcode" required="required">
+			<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" id="searchPostcode" required="required"><br>
+			<input type="text" id="sample6_address" placeholder="주소" name="main_address" required="required"><br>
+			<input type="text" id="sample6_detailAddress" placeholder="상세주소" name="detail_address" required="required">
 			<input type="text" id="sample6_extraAddress" placeholder="참고항목" name="sub_address">
 			<br/>
 			<span>대표주소 설정</span>
@@ -215,45 +218,213 @@
 	        <input type="button" id="submitBtn" value="확인">
 	    </form>
     </div>
-    <script type="text/javascript">
-    $(function() {
-    	
-    	//배송지 팝업 확인 버튼
-    	$('#submitBtn').on('click', function(e) {
-    		e.preventDefault();
-    		
-    		var isMasterAddrChecked = $("#isMasterAddr").is(":checked") ? "Y" : "N";
-    		var addrAddFormData = {
-                zipcode: $("#sample6_postcode").val(),
-                main_address: $("#sample6_address").val(),
-                detail_address: $("#sample6_detailAddress").val(),
-                is_master_addr:  isMasterAddrChecked,
-                sub_address: $("#sample6_extraAddress").val()
-            };
-    		console.log(addrAddFormData);
-            $.ajax({
-                type: "POST",
-                url: "${path}/customer/myAddrInsert.do",
-                data: JSON.stringify(addrAddFormData),
-                contentType: 'application/json',
-                dataType: 'json',
-                success: function(resultData) {
-                    if(resultData == 1){
-                    	alert("배송지가 추가되었습니다.");
-                    	location.reload();
-                    	
-                    }else{
-                    	alert("오류가 발생되었습니다. 다시 시도해 주세요.");
-                    	location.reload();
-                    }
-                },
-                error: function(request, status, error) {
-                    console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-                }
-            });
-    	});
-    	
-    });
+ 
+	<%-- 마이페이지 : 회원정보수정 --%>
+	<div class="mypage_wrap">
+		<div class="myinfo inner">
+			<nav>
+				<ul>
+					<li>
+						<h3>
+							<a href="${path}/customer/orderlist">나의주문</a>
+						</h3>
+					</li>
+					<li>
+						<h3>
+							<a href="${path}/customer/rentlist">나의대여</a>
+						</h3>
+					</li>
+					<li>
+						<h3>
+							<a href="${path}/cart/cart">장바구니</a>
+						</h3>
+					</li>
+					<li>
+						<h3>
+							<a href="${path}/board/reviewjsp">나의글</a>
+						</h3>
+						<ul class="myinfo_submenu">
+							<li><a href="javascript:#void">문의글</a></li>
+							<li><a href="${path}/board/reviewjsp">리뷰</a></li>
+						</ul>
+					</li>
+					<li>
+						<h3>
+							<a href="javascript:#void">회원정보</a>
+						</h3>
+						<ul class="myinfo_submenu">
+							<li><a href="${path}/customer/myInfoUpdate.do">정보수정</a></li>
+							<li><a href="${path}/customer/memberDelete.do">회원탈퇴</a></li>
+						</ul>
+					</li>
+				</ul>
+			</nav>
+			<div class="mypage_here">
+				<div class="section_wrap">
+					<h1 class="myinfo_title">회원 정보 수정</h1>
+					<div class="section myinfo_update">
+						<!-- "비밀번호 확인" 버튼 클릭: myinfo_update에서 페이지 업데이트 -->
+						<div class="pw-check">
+							<p>회원님의 개인정보보호를 위한 본인 확인절차를 위해 비밀번호를 입력해 주세요.</p>
+							<button id="loadButton"
+							 onclick="location.href='${path}/customer/myInfoUpdateStep2.do'" 
+							 class="button" type="button">비밀번호 확인</button>
+						</div>
+					</div>
+					<h2 class="myinfo_title">나의 배송지</h2>
+				<form id="addrListForm" method="post">
+					<div class="section">
+						<c:forEach items="${addrlist}" var="addr">
+							<div class="address-box-wrap">
+								<div class="address-box">
+									<div class="label" id="masterTest">
+										${addr.IS_MASTER_ADDR == "Y" ? "대표" : ""}
+									</div>
+									<input type="hidden" value="${addr.ADDR_NUM}">
+									<div class="info">
+										${addr.MEMBER_NAME}<strong>${addr.PHONE}</strong><br> >
+										(${addr.ZIPCODE}) 
+										${addr.MAIN_ADDRESS}
+										${addr.DETAIL_ADDRESS}
+										${addr.SUB_ADDRESS}
+									</div>
+								</div>
+								<button class="delete-btn">삭제</button>
+							</div>
+						</c:forEach>
+						<div class="adress-add">
+							<button id="addrAddButton" type="button" class="button">배송지 추가</button>
+						</div>
+					</div>
+				</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<%@ include file="../common/footer.jsp" %>
+   <script type="text/javascript">
+	    $(function() {
+	    	
+ 			//대표 주소로 설정 
+	         $('.address-box').click(function() {
+	 			console.log($('#masterTest').text().trim());
+
+	 			var masterCheck = $('#masterTest').text().trim();
+	 			
+	 			// 클릭된 address-box를 찾음
+        		var addr_num = $(this).find('input[type="hidden"]').val();
+        		console.log('변경할 주소 번호: ' + addr_num);
+        		
+        		 //var addressBox = $(this).parent('.address-box');
+            	 //var addr_num = addressBox.find('input[type="hidden"]').val();
+        		
+	       	    
+	 			console.log("대표임");
+	 				
+ 				if(confirm("대표 주소로 설정하시겠습니까?")){
+	 				
+	 	       	    // 삭제 요청을 위한 데이터
+	 	       	    var addrData = {
+	 	       	        addr_num: addr_num
+	 	       	    };
+ 				
+	 				//대표로 update
+	 				 $.ajax({
+	 	                type: "POST",
+	 	                url: "${path}/customer/masterAddrUpdate.do",
+		                contentType: 'application/json',
+		                data: JSON.stringify(addrData),
+	 	                success: function(resultData) {
+	 	                   /* if(resultData == 1){
+	 	                    	alert("대표 배송지 설정 완료");
+	 	                    	// 현재 페이지 새로고침
+	 	                       location.reload();
+	 	                    }else{
+	 	                    	alert("오류가 발생되었습니다. 다시 시도해 주세요.");
+	 	                    	location.reload();
+	 	                    }
+	 	                    */
+	 	                	 if(resultData == 1){
+	 	                        alert("대표 배송지 설정 완료");
+
+	 	                        // 대표 주소가 업데이트되었음을 DOM에 반영
+	 	                        $('.label').each(function() {
+	 	                            if ($(this).text().trim() === "대표") {
+	 	                                $(this).text("");
+	 	                            }
+	 	                        });
+	 	                        $(this).find('.label').text("대표");
+	 	                       location.reload();
+	 	                       
+	 	                    } else {
+	 	                        alert("오류가 발생되었습니다. 다시 시도해 주세요.");
+	 	                    }
+	 	                    
+	 	                },
+	 	                error: function(request, status, error) {
+	 	                    console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+	 	                }
+	 				 });
+	 				
+	 			}else{
+	 				
+ 				    return;
+	 			}
+	 				
+	 		}); 
+	    	
+	    	//비밀번호 확인하러 가는 버튼 
+		 	$('#loadButton').click(function(e) {
+
+		 		$.ajax({
+	                type: "GET",
+	                url: "${path}/customer/myInfoUpdate.do",
+	                success: function(resultData) {
+	                	console.log("페이지 이동");
+	                },
+	                error: function(request, status, error) {
+	                    console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+	                }
+	            });
+         		
+			});
+	    	
+	    	//배송지 팝업 확인 버튼
+	    	$('#submitBtn').on('click', function(e) {
+	    		e.preventDefault();
+	    		
+	    		var isMasterAddrChecked = $("#isMasterAddr").is(":checked") ? "Y" : "N";
+	    		var addrAddFormData = {
+	                zipcode: $("#sample6_postcode").val(),
+	                main_address: $("#sample6_address").val(),
+	                detail_address: $("#sample6_detailAddress").val(),
+	                is_master_addr:  isMasterAddrChecked,
+	                sub_address: $("#sample6_extraAddress").val()
+	            };
+	    		console.log(addrAddFormData);
+	            $.ajax({
+	                type: "POST",
+	                url: "${path}/customer/myAddrInsert.do",
+	                data: JSON.stringify(addrAddFormData),
+	                contentType: 'application/json',
+	                dataType: 'json',
+	                success: function(resultData) {
+	                    if(resultData == 1){
+	                    	alert("배송지가 추가되었습니다.");
+	                    	location.reload();
+	                    	
+	                    }else{
+	                    	alert("오류가 발생되었습니다. 다시 시도해 주세요.");
+	                    	location.reload();
+	                    }
+	                },
+	                error: function(request, status, error) {
+	                    console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+	                }
+	            });
+	    	});
+	    	
+	    });
     </script>
 	<script>
 	    function sample6_execDaumPostcode() {
@@ -304,101 +475,5 @@
 	        }).open();
 	    }
 	</script>
-	<%-- 마이페이지 : 회원정보수정 --%>
-	<div class="mypage_wrap">
-		<div class="myinfo inner">
-			<nav>
-				<ul>
-					<li>
-						<h3>
-							<a href="${path}/customer/orderlist">나의주문</a>
-						</h3>
-					</li>
-					<li>
-						<h3>
-							<a href="${path}/customer/rentlist">나의대여</a>
-						</h3>
-					</li>
-					<li>
-						<h3>
-							<a href="${path}/cart/cart">장바구니</a>
-						</h3>
-					</li>
-					<li>
-						<h3>
-							<a href="${path}/board/reviewjsp">나의글</a>
-						</h3>
-						<ul class="myinfo_submenu">
-							<li><a href="javascript:#void">문의글</a></li>
-							<li><a href="${path}/board/reviewjsp">리뷰</a></li>
-						</ul>
-					</li>
-					<li>
-						<h3>
-							<a href="javascript:#void">회원정보</a>
-						</h3>
-						<ul class="myinfo_submenu">
-							<li><a href="${path}/customer/myInfoUpdate.do">정보수정</a></li>
-							<li><a href="${path}/customer/memberDelete.do">회원탈퇴</a></li>
-						</ul>
-					</li>
-				</ul>
-			</nav>
-			<div class="mypage_here">
-				<div class="section_wrap">
-					<h1 class="myinfo_title">회원 정보 수정</h1>
-					<div class="section myinfo_update">
-						<!-- "비밀번호 확인" 버튼 클릭: myinfo_update에서 페이지 업데이트 -->
-						<div class="pw-check">
-							<p>회원님의 개인정보보호를 위한 본인 확인절차를 위해 비밀번호를 입력해 주세요.</p>
-							<button id="loadButton" class="button" type="">비밀번호 확인</button>
-						</div>
-					</div>
-					<h2 class="myinfo_title">나의 배송지</h2>
-				<form id="addrListForm" method="post">
-					<div class="section">
-						<c:forEach items="${addrlist}" var="addr">
-							<div class="address-box">
-								<div class="label">
-									${addr.IS_MASTER_ADDR == "Y" ? "대표" : ""}
-								</div>
-								<input type="hidden" value="${addr.ADDR_NUM}">
-								<div class="info">
-									${addr.MEMBER_NAME}<strong>${addr.PHONE}</strong><br> >
-									(${addr.ZIPCODE}) 
-									${addr.MAIN_ADDRESS}
-									${addr.DETAIL_ADDRESS}
-									${addr.SUB_ADDRESS}
-								</div>
-								<button class="delete-btn">삭제</button>
-							</div>
-						</c:forEach>
-						<div class="adress-add">
-							<button id="addrAddButton" type="button" class="button">배송지 추가</button>
-						</div>
-					</div>
-				</form>
-				</div>
-			</div>
-			<script type="text/javascript">
-				 $(document).ready(function(){
-		            $("#loadButton").click(function(){
-		                //비밀번호 확인 페이지로 이동
-		                $.ajax({
-		                    url: "${path}/customer/myInfoUpdatePwPage.do",
-		                    type: "POST",
-		                    success: function(data) {
-		                        $(".mypage_here").html(data);
-		                    },
-		                    error: function(xhr, status, error) {
-		                        console.error("Error: " + error);
-		                    }
-		                });
-		            });
-		        });
-			</script>
-		</div>
-	</div>
-	<%@ include file="../common/footer.jsp" %>
 </body>
 </html>

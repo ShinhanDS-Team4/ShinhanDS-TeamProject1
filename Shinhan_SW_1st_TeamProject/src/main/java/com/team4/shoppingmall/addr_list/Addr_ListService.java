@@ -51,4 +51,17 @@ public class Addr_ListService {
 		return addr_ListDAOMybatis.countAddresses(member_id);
 	}
 	
+	//주소id에 해당하는 주소를 대표'Y'로 설정
+	@Transactional
+	public int updateMasterAddrToY(int addr_num) {
+		
+		// 기존 is_master_addr 값을 N으로 업데이트
+		int updateToNresult = addr_ListDAOMybatis.updateMasterAddrToN();
+				
+		//대표 주소'Y'로 업데이트
+		int result = addr_ListDAOMybatis.updateMasterAddrToY(addr_num);
+	
+			
+		return result;
+	}
 }

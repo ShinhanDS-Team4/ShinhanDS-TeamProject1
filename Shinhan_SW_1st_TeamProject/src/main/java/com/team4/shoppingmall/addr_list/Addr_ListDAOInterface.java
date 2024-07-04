@@ -26,6 +26,7 @@ public interface Addr_ListDAOInterface {
 	//나의 주소 개수 
 	public int countAddresses(String member_id);
 	
-	
+	//주소id에 해당하는 주소를 대표'Y'로 설정
+	public int updateMasterAddrToY(int addr_num);
 	
 }

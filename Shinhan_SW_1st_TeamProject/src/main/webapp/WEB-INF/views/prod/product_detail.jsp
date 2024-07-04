@@ -138,8 +138,6 @@
 					</div>
 	                <p>
 	                <strong>대여량:</strong> 
-	               <%--  <input type="number" id="rent_prod_quantity" class="rent-prod-quantity" 
-	                	   name="rent_prod_quantity" value="1" min="1">개 --%>
 	                	   <input type="number" id="rent_num" class="rent-prod-quantity" 
 	                	   name="rent_num" value="0" min="0">개
 	                </p>
@@ -223,7 +221,11 @@
 							</p>
 						</div>
 						<p class="rate">
-							★${reviewInfo.avg_rate} <span><a href="javascript:#void" class="review-rate-btn">리뷰 ${reviewInfo.review_count}건</a></span>
+							★${reviewInfo.avg_rate != nul ? reviewInfo.avg_rate : 0} <span>
+							<a href="javascript:#void" class="review-rate-btn">
+								리뷰 ${reviewInfo.review_count != null ? reviewInfo.review_count : 0 }건
+							</a>
+							</span>
 						</p>
 						<form id="prodOptionForm">
 							<div class="choose_wrap">
@@ -725,7 +727,7 @@
         if (!allOptionsSelected) {
             alert("모든 옵션을 선택해 주세요.");
             return;
-     		  }
+     	}
 	
         // 컨트롤러에 상품 옵션 값 보내기
 	    var formArray = $("#prodOptionForm").serializeArray();
