@@ -2,114 +2,67 @@
 <!DOCTYPE mapper
       PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.saren.rent">
+<mapper namespace="com.saren.prod_option">
 
-	<!-- 대여상세 -->
-	<select id="selectById" parameterType="int" resultType="rentVO">
-		SELECT *
-		FROM RENT
-		WHERE RENTAL_CODE = #{aa}
+	<!-- 옵션명과 옵션값들 한번에 조회 -->
+ 	<select id="selectAllOptionsByProdId" parameterType="string" resultType="map">
+        SELECT 
+            PO.OPT_NAME AS OPT_NAME,
+            LISTAGG(  PO.OPT_VALUE||'-'||PO.OPT_ID, ',' )WITHIN GROUP (ORDER BY PO.OPT_VALUE||'-'||PO.OPT_ID) AS OPT_VALUE
+		FROM PROD_OPTION PO
+		WHERE PO.PROD_ID = #{prod_id} 
+		GROUP BY PO.OPT_NAME
+    </select>
+    <!-- 상품의 옵션조회 -->
+ 	<select id="productAllOptionsByProdId" parameterType="string" 
+ 		resultType="prod_optionVO">
+        select *
+		from PROD_OPTION 
+		where PROD_ID= #{prod_id}
+    </select>
+    
+	<select id="selectByOptionId" parameterType="int" resultType="prod_optionVO">
+		SELECT * 
+		FROM PROD_OPTION 
+		WHERE opt_id = #{opt_id}
 	</select>
 	
-	<!-- 시퀀스로 생성된 최근 대여id 찾기 -->
-	<select id="searchRentId" resultType="int">
-		select last_number-1 from user_sequences where sequence_name = 'RENT_SEQUENCE'
+	<select id="selectByProdId" parameterType="string" resultType="prod_optionVO">
+		SELECT * 
+		FROM PROD_OPTION 
+		WHERE prod_id = #{prod_id}
+	</select>
+	
+	<select id="findMaxOptId" resultType="integer">
+		SELECT
+    		MAX(opt_id) AS max_opt_id
+		FROM
+    		PROD_OPTION
 	</select>
 
-	<!-- 대여목록 -->
-	<select id="selectAll" resultType="rentVO">
+	<select id="selectAll" resultType="prod_optionVO">
 		SELECT *
-		FROM RENT
+		FROM PROD_OPTION
 	</select>
 
-	<!-- 대여하기 (주문상태 칼럼 삭제) -->
-	<insert id="rentInsert" parameterType="rentVO">
-		INSERT
-		INTO RENT(rental_code, rent_start_date, rent_end_date, member_id, total_rent_price)
-		VALUES(
-			rent_sequence.nextval, 
-			#{rent_start_date}, 
-			#{rent_end_date}, 
-			#{member_id}, 
-			#{total_rent_price}
-		)
-		<selectKey keyProperty="rental_code" resultType="Integer" order="AFTER">
-       		SELECT rent_sequence.CURRVAL FROM DUAL
- 		</selectKey>
+	<insert id="prod_optionInsert" parameterType="prod_optionVO">
+		INSERT 
+		INTO PROD_OPTION(opt_id, opt_name, opt_value, prod_id) 
+		VALUES(#{opt_id}, #{opt_name}, #{opt_value}, #{prod_id})
 	</insert>
 
-	<!-- 대여상태 수정 -->
-	<update id="memberUpdate" parameterType="rentVO">
-		UPDATE RENT
+	<update id="prod_optionUpdate" parameterType="prod_optionVO">
+		UPDATE PROD_OPTION
 		SET
-		"rent_state" = #{rent_state}
-		WHERE "rental_code" = #{rental_code}
-	</update>
-	
-	<!--대여 수정 -->
-	<update id="updateRent" parameterType="rentVO">
-		UPDATE RENT
-		SET
-    		rent_start_date = #{rent_start_date},
-    		rent_end_date = #{rent_end_date},
-    		member_id = #{member_id},
-    		total_rent_price = #{total_rent_price}
-    	WHERE rental_code=#{rental_code}
-    </update>
-    
-     
-
-	<!-- orderlist.jsp에서, 상세상품 옵션 출력시, 모든 옵션 가져오기 -->
-	<select id="selectOptions" resultType="prod_optionVO">
-		SELECT *
-	    FROM PROD_OPTION
-	</select>
-
-	<!-- orderlist.jsp에 출력할 대여상품 상세정보 -->
-	<select id="selectById2" parameterType="int" resultType="rent_selectVO">
-		SELECT P.prod_name,
-		   	   M.brand, 
-			   SPS.opt_id1,
-			   SPS.opt_id2,
-			   SPS.opt_id3,
-			   SPS.opt_id4,
-			   SPS.opt_id5,
-			   RD.rent_product_price,			   
-			   PI.img_id	   
-		FROM
-			RENT R
-		JOIN
-			RENT_DETAIL RD ON R.rental_code = RD.rental_code
-		JOIN
-			RENT_PROD_STOCK SPS ON RD.r_stock_id = SPS.r_stock_id
-		JOIN
-			PROD P ON SPS.prod_id = P.prod_id
-		JOIN
-			MEMBER M ON P.member_id = M.member_id
-		JOIN
-			PROD_IMAGE PI ON P.prod_id = PI.prod_id
-		where
-			r.rental_code = #{aa}
-	</select>
-	
-	<!-- rentlist.jsp에서, 대여취소 -->
-	<update id="cancelRent" parameterType="int">
-		UPDATE 
-			RENT
-		SET
-			rent_state = 'cancelled'
-		WHERE 
-			rental_code = #{aa}
-	</update>
-	
-	<!-- rentlist.jsp에서, 반납 -->
-	<update id="returnRent" parameterType="int">
-		UPDATE 
-			RENT
-		SET
-			rent_state = 'returned'
-		WHERE
-	    	rental_code = #{aa}
+		opt_name = #{opt_name}, opt_value = #{opt_value}, 
+		prod_id = #{prod_id}
+		WHERE opt_id = #{opt_id}
 	</update>
 
+	<delete id="prod_optionDelete" parameterType="int">
+		DELETE
+		FROM PROD_OPTION
+		WHERE opt_id = #{opt_id}
+	</delete>
+	
 </mapper>
