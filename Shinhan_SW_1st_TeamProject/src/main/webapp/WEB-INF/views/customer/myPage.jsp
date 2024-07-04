@@ -49,7 +49,7 @@
 						</h3>
 						<ul class="myinfo_submenu">
 							<li><a href="${path}/adminqna/myqna.do">문의글</a></li>
-							<li><a href="${path}/review/myreview.do">리뷰</a></li>
+							<li><a href="${path}/board/myreview.do">리뷰</a></li>
 						</ul>
 					</li>
 					<li>
@@ -74,7 +74,7 @@
 							</div>
 							<div class="profile_text">
 								<h3>
-									${member.member_name}님 <span>(${member.member_id})</span>
+									${member.member_name}님 <span>(${member.member_id})</span> <span>${member.birth_date}</span>
 								</h3>
 								<div class="profile_text_box">
 									<p>

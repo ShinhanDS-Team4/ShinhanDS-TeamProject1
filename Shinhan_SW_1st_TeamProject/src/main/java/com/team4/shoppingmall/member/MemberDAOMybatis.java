@@ -22,7 +22,7 @@ public class MemberDAOMybatis implements MemberDAOInterface {
 	}
 	
 	//로그인 회원 정보 수정용 비밀번호 체크
-	public int memberCheckByPw(MemberDTO member) {
+	public MemberDTO memberCheckByPw(MemberDTO member) {
 		return sqlSession.selectOne(namespace+"memberCheckByPw", member);
 	}
 	
