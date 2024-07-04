@@ -46,18 +46,18 @@ public class CategoryController {
 	@GetMapping("/dbset")
 	public void dbSet() throws IOException, ParseException {
 		String[] sizes = new String[] {"S", "M", "L"};
-		String[] names = new String[] {"源��젙�쁽", "諛깆긽�샇", "�씠醫낃꼍", "諛깆씤�쁺", "�씠�옱�솚", "議곗쑄�옱"};
+		String[] names = new String[] {"김정현", "백상호", "이종경", "백인혁", "이재환", "조윤재"};
 		String[] emails = new String[] {"jh441122jh@gmail.com", "baeksh0118@gmail.com", " ljk5252525@gmail.com", "baekinhyeok998@gmail.com", "1nth2bleakmidwinter@gmail.com", "dbrmfgks@gmail.com"};
 		String[] phones = new String[] {"010-6349-3464", "010-9723-4740", "010-2717-9614", "010-7552-8293", "010-4590-9812", "010-7137-8144"};
 		
 		JSONParser parser = new JSONParser();
-		//Reader pl_reader = new FileReader("C:/shinhan_project/ShinhanDS-TeamProject1/Shinhan_SW_1st_TeamProject/src/main/webapp/resources/dbset/products_list.json");
-		//Reader bm_reader = new FileReader("C:/shinhan_project/ShinhanDS-TeamProject1/Shinhan_SW_1st_TeamProject/src/main/webapp/resources/dbset/business_mans.json");
-		Reader ctg_reader = new FileReader("C:\\University\\GitHub\\ShinhanDS-TeamProject1\\Shinhan_SW_1st_TeamProject\\src\\main\\webapp\\resources\\dbset/ctg_url_matching.json");
-		//JSONObject prod_list = (JSONObject) parser.parse(pl_reader);
-		//JSONObject bm_list = (JSONObject) parser.parse(bm_reader);
+		Reader pl_reader = new FileReader("C:/shinhan_project/ShinhanDS-TeamProject1/Shinhan_SW_1st_TeamProject/src/main/webapp/resources/dbset/products_list.json");
+		Reader bm_reader = new FileReader("C:/shinhan_project/ShinhanDS-TeamProject1/Shinhan_SW_1st_TeamProject/src/main/webapp/resources/dbset/business_mans.json");
+		Reader ctg_reader = new FileReader("C:/shinhan_project/ShinhanDS-TeamProject1/Shinhan_SW_1st_TeamProject/src/main/webapp/resources/dbset/ctg_url_matching.json");
+		JSONObject prod_list = (JSONObject) parser.parse(pl_reader);
+		JSONObject bm_list = (JSONObject) parser.parse(bm_reader);
 		JSONObject ctg_list = (JSONObject) parser.parse(ctg_reader);
-		//JSONObject prod_detail;
+		JSONObject prod_detail;
 		
 		ProdDTO prod;
 		Seller_Prod_StockDTO sps;
@@ -67,7 +67,7 @@ public class CategoryController {
 		
 		Long tmp;
 		
-		/*
+		
 		int stock;
 		for(Object prod_id :prod_list.keySet()) {
 			prod = new ProdDTO();
@@ -126,7 +126,7 @@ public class CategoryController {
 		}
 		
 		System.out.println("member(seller) table set end.");
-		*/
+		
 		String parent;
 		for(CategoryEnum ce :CategoryEnum.values()) {
 			if(ce.name().equals("highest")) continue;
