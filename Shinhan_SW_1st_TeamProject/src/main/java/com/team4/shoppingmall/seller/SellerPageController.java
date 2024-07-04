@@ -34,6 +34,8 @@ import com.team4.shoppingmall.admin_inq.Admin_InqService;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqDAOInterface;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqDTO;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqService;
+import com.team4.shoppingmall.category.CategoryDTO;
+import com.team4.shoppingmall.category.CategoryService;
 import com.team4.shoppingmall.member.MemberService;
 import com.team4.shoppingmall.order_detail.OrderUpdateReqDTO;
 import com.team4.shoppingmall.order_detail.Order_DetailDTO;
@@ -73,6 +75,9 @@ public class SellerPageController {
 
 	@Autowired
 	ProdService prodService;
+	
+	@Autowired
+	CategoryService categoryService;
 
 	@Autowired
 	Prod_ImageService imageService;
@@ -99,7 +104,7 @@ public class SellerPageController {
 	@Value("${file.main-img-upload-dir}")
 	private String mainIMG_uploadDir;
 
-	// 2.�꽕紐� �씠誘몄� �뙆�씪
+	// 2.설명 이미지 파일
 	@Value("${file.desc-img-upload-dir}")
 	private String descIMG_uploadDir;
 
@@ -253,7 +258,16 @@ public class SellerPageController {
 	@GetMapping("/AddProduct.do")
 	public String addProduct(Model model) {
 
+		//Depth 값이 1이고, 부모 카테고리 ID가 Null인 카테고리들을 가져오기
+		CategoryDTO categoryDTO = new CategoryDTO();
+		categoryDTO.setCategory_depth(1);
+		categoryDTO.setParent_category_id(null);
+		
+		List<CategoryDTO> firstCategoryList = categoryService.firstDepthCategoryList();
+
+		
 		model.addAttribute("sellerInfo", memberService.selectById(member_id));
+		model.addAttribute("depth1categoryList", firstCategoryList);
 		return "/seller/seller_addPrd";
 	}
 

@@ -14,7 +14,7 @@ public class CategoryDAOMybatis implements CategoryDAOInterface {
 	
 	String namespace = "com.saren.category.";
 	
-	//상품의 카테고리명 조회
+	//�긽�뭹�쓽 移댄뀒怨좊━紐� 議고쉶
 	public CategoryDTO productCategoryByProdId(String prod_id) {
 		return sqlSession.selectOne(namespace+"productCategoryByProdId", prod_id);
 	};
@@ -47,5 +47,15 @@ public class CategoryDAOMybatis implements CategoryDAOInterface {
 	@Override
 	public int categoryDelete(Integer category_id) {
 		return sqlSession.delete(namespace+"categoryDelete", category_id);
+	}
+
+	@Override
+	public List<CategoryDTO> categoryListBydepth(CategoryDTO category) {
+		return sqlSession.selectList(namespace+"categoryListBydepth", category);
+	}
+
+	@Override
+	public List<CategoryDTO> firstDepthCategoryList() {
+		return sqlSession.selectList(namespace+"firstDepthCategoryList");
 	}
 }
