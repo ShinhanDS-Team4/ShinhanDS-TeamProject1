@@ -45,14 +45,6 @@
 			FROM ADDR_LIST
 			WHERE member_id = #{member_id}
 	</select>
-  
-	<insert id="addressInsert" parameterType="addr_listVO">
-		INSERT
-		INTO ADDR_LIST(addr_num, member_id, zipcode, main_address, detail_address,
-					is_master_addr, sub_address)
-		VALUES(seq_addr_num.nextval, #{member_id}, #{zipcode}, #{main_address}, #{detail_address},
-			   #{is_master_addr}, #{sub_address})
-	</insert>
 
     <!-- 기존 is_master_addr를 N으로 업데이트 -->
     <update id="updateMasterAddrToN">
