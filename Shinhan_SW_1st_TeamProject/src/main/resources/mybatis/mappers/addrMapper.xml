@@ -45,8 +45,15 @@
 			FROM ADDR_LIST
 			WHERE member_id = #{member_id}
 	</select>
+	
+	<!-- 주소id에 해당하는 주소를 대표'Y'로 설정 -->
+	<update id="updateMasterAddrToY">
+		UPDATE ADDR_LIST
+		SET is_master_addr = 'Y'
+		WHERE addr_num = #{addr_num}
+	</update>
 
-    <!-- 기존 is_master_addr를 N으로 업데이트 -->
+    <!-- 기존 is_master_addr를 'N'으로 업데이트 -->
     <update id="updateMasterAddrToN">
         UPDATE ADDR_LIST
         SET is_master_addr = 'N'

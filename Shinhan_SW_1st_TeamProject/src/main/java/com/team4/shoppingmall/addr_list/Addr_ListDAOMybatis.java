@@ -54,5 +54,9 @@ public class Addr_ListDAOMybatis implements Addr_ListDAOInterface{
 	public int countAddresses(String member_id){
 		return sqlSession.selectOne(namespace+"countAddresses", member_id);
 	};
+	//주소id에 해당하는 주소를 대표'Y'로 설정
+	public int updateMasterAddrToY(int addr_num) {
+		return sqlSession.update(namespace+"updateMasterAddrToY", addr_num);
+	};
 	
 }

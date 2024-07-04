@@ -21,13 +21,14 @@ public class CartService {
 	}
 	
 	//장바구니에 같은 상품이 존재하는지 조회
-//	public CartDTO selectCartBySellstock(Map<String,String> map) {
-//		return cartDAO.selectCartBySellstock(map);
-//	}
 	public CartDTO selectCartBySellstock(CartDTO cartDTO) {
 		return cartDAO.selectCartBySellStock(cartDTO);
 	}
 
+	//장바구니 상품 수량 업데이트
+	public int updateCartBySellstock(CartDTO cart) {
+		return cartDAO.updateCartBySellStock(cart);
+	}
 	public List<CartDTO> selectSellStockByMemberId(String member_id) {
 		return cartDAO.selectSellStockByMemberId(member_id);
 	}
@@ -107,11 +108,6 @@ public class CartService {
 			int result = cartDAO.cartRentProductInsert(cartDTO);
 			return result;
 		}
-	}
-
-	//장바구니 상품 수량 업데이트
-	public int updateCartBySellstock(CartDTO cart) {
-		return cartDAO.updateCartBySellstock(cart);
 	}
 	
 }
