@@ -1,5 +1,7 @@
 @import url(./common.css);
 
+
+
 /* header */
 .header_top {
     display: flex;
@@ -92,11 +94,11 @@ a.category_name:hover {
     position: relative;
 }
 .dropdown_nav {
-    display: bock; /* ¼öÁ¤: ¾Ö´Ï¸ÞÀÌ¼Ç Ã³¸®¿¡ ÇÊ¿ä */
+    display: bock; /* ï¿½ï¿½ï¿½ï¿½: ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ Ã³ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ */
     position: relative; 
-    overflow: hidden; /* Ãß°¡: ¼û±è Ã³¸® */
-    height: 0; /* Ãß°¡: ÃÊ±â ³ôÀÌ ¼³Á¤ */
-    transition: height 0.1s; /* Ãß°¡: ³ôÀÌ º¯°æ ¾Ö´Ï¸ÞÀÌ¼Ç */
+    overflow: hidden; /* ï¿½ß°ï¿½: ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ */
+    height: 0; /* ï¿½ß°ï¿½: ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
+    transition: height 0.1s; /* ï¿½ß°ï¿½: ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ */
    
 }
 .dropdown_nav ul{
@@ -104,7 +106,7 @@ a.category_name:hover {
     left: 0;
     width: 100%;
     height: 0px; 
-    overflow: hidden; /* Ãß°¡: ³ôÀÌ º¯°æ ½Ã ³»¿ë ¼û±è */
+    overflow: hidden; /* ï¿½ß°ï¿½: ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
     background-color: rgba(0, 0, 0, 0.8);
     z-index: 2;
 }
@@ -124,5 +126,9 @@ a.category_name:hover {
     color: var(--accent-color);
 }
 
+.rightGnb>ul>li img.myPageIcon{
+    width: 40px;
+    left: 4px;
+}
 
 /* footer */

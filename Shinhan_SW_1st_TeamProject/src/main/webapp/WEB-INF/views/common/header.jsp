@@ -23,7 +23,7 @@
 				</label>
 			</form>
 		</div>
-		<div class="rightGnb">
+		<div class="rightGnb">  
 			<ul>
 				<c:choose>
 					<c:when test="${isLoggedIn}">
@@ -36,25 +36,34 @@
 					<c:otherwise>
 						<li>
 							<a href="${path}/member_test/login.do"> 
-								<img src="${path}/resources/images/icon-login.gif" alt="로그인">로그인
+								<p>로그인</p>
+								<img src="${path}/resources/images/icon-login.gif" alt="로그인">
 							</a>
 						</li>
 						<li>
 							<a href="${path}/member_test/signup.do">
-								<img src="${path}/resources/images/icon-sign-in.png" alt="회원가입">회원가입
+								<p>회원가입</p>
+								<img src="${path}/resources/images/icon-sign-in.png" alt="회원가입">
 							</a>
 						</li>
 					</c:otherwise>
 				</c:choose>
 				<li>
-					<a href="${path}/customer/myPage.do"><img src="${path}/resources/images/icon-user.png" alt="마이페이지">마이페이지</a>
+					<a href="${path}/customer/myPage.do">
+						<p>마이페이지</p>
+						<img src="${path}/resources/images/icon-person2.png" alt="마이페이지" class="myPageIcon">
+					</a>
 					<%-- 문의 답변오면 나타나는 알림 --%>
 					<%-- <span class="hidden">N</span> --%>
 				</li>
 				<li>
-					<a href="${path}/cart/cart"><img src="${path}/resources/images/icon-shopping.png" alt="장바구니">장바구니</a>
+					<a href="${path}/cart/cart">
+						<p>장바구니</p>
+						<img src="${path}/resources/images/icon-cart.png" alt="장바구니">
+					</a>
 				</li>
 			</ul>
+	
 		</div>
 	</div>
 	<div class="header_bottom">
