@@ -3,37 +3,8 @@
       PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.prod">
-	
+
 	<!-- 상품 상세 정보 조회 -->
-	<!-- 상품 이름,상품 가격,브랜드명,카테고리명(부모카테고리명,세부카테고리명),상품의 리뷰 수,문의 수 조회 
-	<select id="selectProdDetailInfoByProdId" parameterType="string"
-		resultType="map">
-		
-		SELECT 
-		    P.prod_name, 
-		    P.prod_price,
-		    M.brand,
-		    C.category_name AS sub_category_name,
-		    PC.category_name AS parent_category_name,
-		    (SELECT COUNT(R.review_id) 
-		     FROM REVIEWS R 
-		     JOIN SELLER_PROD_STOCK SPS ON R.review_id = SPS.review_id 
-		     WHERE SPS.prod_id = P.prod_id) AS review_count,
-		    (SELECT AVG(R.rate) 
-		     FROM REVIEWS R 
-		     JOIN SELLER_PROD_STOCK SPS ON R.review_id = SPS.review_id 
-		     WHERE SPS.prod_id = P.prod_id) AS average_rate,
-		    (SELECT COUNT(BI.buyer_inq_id) 
-		     FROM BUYER_INQ BI 
-		     WHERE BI.prod_id = P.prod_id) AS inquiry_count
-		FROM PROD P
-		JOIN MEMBER M ON P.member_id = M.member_id
-		JOIN CATEGORY C ON P.CATEGORY_ID = C.category_id
-		LEFT JOIN CATEGORY PC ON C.parent_category_id = PC.category_id
-		WHERE P.prod_id = #{prod_id}
-	</select>
-	-->
-	<!-- 0701 수정중 -->
 	<select id="selectProdDetailInfoByProdId" parameterType="string"
 		resultType="map">
 		SELECT  P.* , M.*, C.*
@@ -41,7 +12,6 @@
 		JOIN MEMBER M ON P.MEMBER_ID = M.MEMBER_ID 
 		JOIN CATEGORY C ON P.CATEGORY_ID = C.CATEGORY_ID
 		WHERE PROD_ID  =  #{prod_id} 
-		
 	</select>
 	<select id="selectByProdId" parameterType="string"
 		resultType="prodVO">

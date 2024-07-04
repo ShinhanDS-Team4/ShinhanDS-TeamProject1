@@ -178,7 +178,7 @@
 	<%-- 상품 문의 모달 창 --%>
 	<form id="productQnaForm">
 		
-		<input type="hidden" name="prod_id" var="${prod_detail_info.prod_id}">
+		<input type="hidden" name="prod_id" value="${prod_detail_info.prod_id}">
 		
 		<div id="myModal" class="modal">
 			<div class="modal-content">
@@ -211,6 +211,7 @@
 					<div class="product-image">
 						<img src="${path}/resources/images/product1.png" alt="상품">  
 					</div>
+					
 					<div class="product-details">
 						<p class="free">무료배송</p>
 						<h1>${prod_detail_info.BRAND}</h1>
@@ -397,7 +398,6 @@
 			            alert("옵션을 선택해 주세요.");
 			        }
 				 	
-				 	
 				}
 		    </script>
 			
@@ -407,10 +407,32 @@
 				<button type="button" data-tab="container-review">리뷰</button>
 			</div>
 			
-			<%-- 상세 정보 --%>
+			<%-- 상세 정보 (사진, 설명) --%>
 			<div class="container-detail active">
-				<h1 style="text-align: center;">상품 정보 이미지 등록할 부분</h1>
-				<div class="container-detail-here"></div>
+				<h1 style="text-align: center;">상품 정보 이미지 등록할 부분(텍스트 삭제예정)</h1>
+				<div class="container-detail-img-wrap">
+					<div class="container-detail-prod-img">  <%-- 스크롤처리 --%>
+						<ul class="prod-img-scroll">
+							<li><img alt="사진테스트1" src="${path}/resources/images/product1.png" /></li>
+							<li><img alt="사진테스트2" src="${path}/resources/images/product1.png" /></li>
+							<li><img alt="사진테스트3" src="${path}/resources/images/product1.png" /></li>
+							<li><img alt="사진테스트1" src="${path}/resources/images/product1.png" /></li>
+							<li><img alt="사진테스트2" src="${path}/resources/images/product1.png" /></li>
+							<li><img alt="사진테스트3" src="${path}/resources/images/product1.png" /></li>
+							<li><img alt="사진테스트1" src="${path}/resources/images/product1.png" /></li>
+							<li><img alt="사진테스트2" src="${path}/resources/images/product1.png" /></li>
+							<li><img alt="사진테스트3" src="${path}/resources/images/product1.png" /></li>
+						</ul>
+					</div>
+					<div class="container-detail-prod-subtext">  <%-- fixed --%>
+						<h1>설명 텍스트 박스</h1>
+						<div class="prod-subtext-scroll">
+							<h2>설명 제목</h2>
+							<p>서브 설명 설명</p>
+							<p>설명설명설명설명설명설명설명설명설명설명설명설명</p>
+						</div>
+					</div>				
+				</div>
 			</div>
 			
 			<%-- 리뷰 목록 --%>

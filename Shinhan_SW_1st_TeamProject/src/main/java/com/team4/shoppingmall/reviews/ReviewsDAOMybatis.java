@@ -54,4 +54,5 @@ public class ReviewsDAOMybatis implements ReviewsDAOInterface {
 	public List<ReviewsDTO> selectBymemId(String member_id) {
 		return sqlSession.selectList(namespace+"selectBymemId", member_id);
 	}
+	
 }

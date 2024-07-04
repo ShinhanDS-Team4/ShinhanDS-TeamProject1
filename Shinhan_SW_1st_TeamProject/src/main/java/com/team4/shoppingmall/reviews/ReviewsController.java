@@ -77,7 +77,22 @@ public class ReviewsController {
         model.addAttribute("uploadedImageUrls", uploadedImageUrls);  // 모델에 URL 리스트 추가
         return "board/displayImage";  // 이미지 표시 페이지로 이동
     }
+    
 	
+	@GetMapping("myreview.do")
+	public String myReview(Model model, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		MemberDTO mem = (MemberDTO)session.getAttribute("member");
+		//나중에 필터링 하겠지만 우선은 임시방편으로 분기점 만들어놓음
+		if(mem == null) {
+			return "redirect:/member_test/login.do";
+		}
+		String member_Id = mem.getMember_id();
+		
+		List<ReviewsDTO> reviews = reviewsService.selectBymemId(member_Id);
+		model.addAttribute("reviews", reviews);
+		return "board/myreview";
+	}
 	
 	
 
