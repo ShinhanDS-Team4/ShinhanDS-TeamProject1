@@ -78,5 +78,4 @@ public class RentProdStockDAOMybatis implements RentProdStockDAOInterface {
 	public int rentProdDelete(String r_stock_id) {
 		return sqlSession.delete(namespace + "selectById", r_stock_id);
 	}
-
 }

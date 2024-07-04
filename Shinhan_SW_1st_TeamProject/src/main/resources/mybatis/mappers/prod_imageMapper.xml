@@ -16,30 +16,35 @@
 		SELECT *
 		FROM PROD_IMAGE 
 		WHERE prod_id = #{prod_id}
+		ORDER BY prod_id ASC
 	</select>
 	
 	<select id="findAllImgsByProdID" parameterType="string" resultType="prod_imageVO">
 		SELECT *
 		FROM PROD_IMAGE 
 		WHERE prod_id = #{prod_id}
+		ORDER BY prod_id ASC
 	</select>
 	
 	<select id="findAllImgFileNameByProdID" parameterType="string" resultType="string">
 		SELECT IMG_ID
 		FROM PROD_IMAGE 
 		WHERE prod_id = #{prod_id}
+		ORDER BY prod_id ASC
 	</select>
 	
 	<select id="findMainImgFileNameByProdID" parameterType="prod_imageVO" resultType="string">
 		SELECT IMG_ID
 		FROM PROD_IMAGE 
 		WHERE prod_id = #{prod_id} AND img_type=#{img_type}
+		ORDER BY prod_id ASC
 	</select>
 	
 	<select id="findDescImgFileNameByProdID" parameterType="prod_imageVO" resultType="string">
 		SELECT IMG_ID
 		FROM PROD_IMAGE 
 		WHERE prod_id = #{prod_id} AND img_type=#{img_type}
+		ORDER BY prod_id ASC
 	</select>
 
 	<select id="selectAll" resultType="prod_imageVO">
@@ -62,7 +67,7 @@
 	<delete id="prod_imageDelete" parameterType="string">
 		DELETE
 		FROM PROD_IMAGE
-		WHERE prod_id = #{prod_id}
+		WHERE img_id = #{img_id}
 	</delete>
 	
 </mapper>

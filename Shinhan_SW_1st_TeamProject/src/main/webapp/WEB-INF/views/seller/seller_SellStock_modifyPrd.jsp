@@ -227,7 +227,7 @@
 
 			<div class="container">
 
-				<h1>판매 상품 정보 수정</h1>
+				<h1>상품 정보 수정</h1>
 				<form method="post" action="/shoppingmall/seller/modifyPrdouct"
 					enctype="multipart/form-data" accept-charset="UTF-8">
 					
@@ -259,7 +259,7 @@
 					<div id="prdMainImgPreview">
 						<div class="form-group">
 							<label>메인 사진목록</label>
-							<button type="button" onclick="resetMainProdImg()">사진 항목 초기화</button>
+							<button type="button" id="addImageBtn" onclick="resetMainProdImg()">사진 항목 초기화</button>
 						</div>
 						<div id="prdMainImgFileContainer">
 							<c:forEach var="mainImgName" items="${ProdMainImgList}">
@@ -275,7 +275,7 @@
 					<div id="mainImgSection" class="hidden">
 						<div class="form-group">
 							<label>메인사진</label>
-							<button type="button" onclick="addMainImgFile()">사진 추가</button>
+							<button type="button" id="addImageBtn" onclick="addMainImgFile()">사진 추가</button>
 						</div>
 						<div id="prdMainImgFileContainer"></div>
 					</div>
@@ -284,9 +284,9 @@
 					<div id="prdDescImgPreview">
 						<div class="form-group">
 							<label>설명 사진목록</label>
-							<button type="button" onclick="resetDescProdImg()">사진 항목 초기화</button>
+							<button type="button" id="addImageBtn" onclick="resetDescProdImg()">사진 항목 초기화</button>
 						</div>
-						<div id="prdImgFileContainer">
+						<div id="prdDescImgFileContainer">
 							<c:forEach var="imgName" items="${ProdDescImgList}">
 								<img
 									src="http://localhost:9090/saren/ProdImgFile/desc/${imgName}"
@@ -299,7 +299,7 @@
 					<div id="descImgSection" class="hidden">
 						<div class="form-group">
 							<label>상품 설명 사진 등록</label>
-							<button type="button" onclick="addDescImgFile()">사진 추가</button>
+							<button type="button" id="addImageBtn" onclick="addDescImgFile()">사진 추가</button>
 						</div>
 						<div id="prdDescImgFileContainer"></div>
 					</div>
@@ -314,7 +314,7 @@
 					
 					<hr>
 					
-					<h1>판매 재고 정보 조회 및 재고 수정</h1>
+					<h1>판매용 재고 정보 조회 / 재고 수정</h1>
 					<div class="form-group">
 						<label>재고명</label> <input type="text" name="stockid"
 							value="${StockInfo.s_stock_id}">

@@ -64,7 +64,7 @@ public class TestControllerYun {
 	 * return "customer/productlist"; }
 	 */
 
-	@GetMapping("/rentlist.do")
+	@GetMapping("/rentlist")
 	public String test2(Model model, HttpServletRequest request) {
 	    System.out.println("/customer/rentlist.jsp");
 	
@@ -118,18 +118,11 @@ public class TestControllerYun {
 	@PostMapping("/returnRent.do")
 	@ResponseBody
 	public String returnRent(@RequestParam("rentalCode") int rentalCode, HttpServletResponse response) {
-<<<<<<< HEAD
-	
-		int returnSuccess = rentService.returnRent(rentalCode);
-		String message = "";
-		
-=======
-		System.out.println("대여코드: " + rentalCode);
+		//System.out.println("대여코드: " + rentalCode);
 
 		int returnSuccess = rentService.returnRent(rentalCode);
 		String message = "";
-		 
->>>>>>> main
+
 		
 		if (returnSuccess > 0) { 
 			message = "success"; 
@@ -140,8 +133,8 @@ public class TestControllerYun {
 		}
 	}
 
-	@GetMapping("/orderlist.do")
-	public String test3(Model model, HttpServletRequest request) {
+	@GetMapping("/orderlist")
+	public String test3(Model model) {
 	    System.out.println("/customer/orderlist.jsp");
 
 	    // 모든 주문 정보 가져오기

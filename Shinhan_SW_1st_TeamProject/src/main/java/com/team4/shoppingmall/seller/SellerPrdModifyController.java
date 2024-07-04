@@ -80,20 +80,24 @@ public class SellerPrdModifyController {
 		System.out.println("메인 사진 목록 삭제 작업 시작");
 		String prod_id = (String) request.get("prodid");
 		System.out.println("상품ID:" + prod_id);
-		System.out.println(prod_id);
 
-		List<String> imgIdList = imageService.findAllImgFileNameByProdID(prod_id);
+		Prod_ImageDTO imageDTO = new Prod_ImageDTO();
+		imageDTO.setImg_id("imageDTOforSearch");
+		imageDTO.setProd_id(prod_id);
+		imageDTO.setImg_type(0);
 
-		int imgDeleteResult = imageService.prod_imageDelete(prod_id);
+		List<String> imgIdList = imageService.findMainImgFileNameByProdID(imageDTO);
+		System.out.println(imgIdList);
+
 		System.out.println("수행 완료");
-		if (imgDeleteResult > 0) {
-			for (String imgID : imgIdList) {
 
-				Path filePath = Paths.get(mainIMG_uploadDir).resolve(imgID);
-				Files.delete(filePath);
+		for (String imgID : imgIdList) {
+			int imgDeleteResult = imageService.prod_imageDelete(imgID);
+			Path filePath = Paths.get(mainIMG_uploadDir).resolve(imgID);
+			System.out.println("메인사진파일경로:" + filePath);
+			Files.delete(filePath);
 
-				System.out.println(imgID + "삭제 완료");
-			}
+			System.out.println(imgID + "삭제 완료");
 		}
 
 		return "resetImgSuccess";
@@ -105,20 +109,24 @@ public class SellerPrdModifyController {
 		System.out.println("설명 사진 목록 삭제 작업 시작");
 		String prod_id = (String) request.get("prodid");
 		System.out.println("상품ID:" + prod_id);
-		System.out.println(prod_id);
 
-		List<String> imgIdList = imageService.findAllImgFileNameByProdID(prod_id);
+		Prod_ImageDTO imageDTO = new Prod_ImageDTO();
+		imageDTO.setImg_id("imageDTOforSearch");
+		imageDTO.setProd_id(prod_id);
+		imageDTO.setImg_type(1);
 
-		int imgDeleteResult = imageService.prod_imageDelete(prod_id);
+		List<String> imgIdList = imageService.findMainImgFileNameByProdID(imageDTO);
+		System.out.println(imgIdList);
+
 		System.out.println("수행 완료");
-		if (imgDeleteResult > 0) {
-			for (String imgID : imgIdList) {
 
-				Path filePath = Paths.get(descIMG_uploadDir).resolve(imgID);
-				Files.delete(filePath);
+		for (String imgID : imgIdList) {
+			int imgDeleteResult = imageService.prod_imageDelete(imgID);
+			Path filePath = Paths.get(descIMG_uploadDir).resolve(imgID);
+			System.out.println("설명사진파일경로:" + filePath);
+			Files.delete(filePath);
 
-				System.out.println(imgID + "삭제 완료");
-			}
+			System.out.println(imgID + "삭제 완료");
 		}
 
 		return "resetImgSuccess";
@@ -127,8 +135,8 @@ public class SellerPrdModifyController {
 	@PostMapping("/modifyPrdouct")
 	public String updateStockInfo(@RequestParam("prdId") String prdID, @RequestParam("prdPrice") int prdPrice,
 			@RequestParam("prdCategory") int prdCategory,
-			@RequestParam(value="mainImgFile",required = false) List<MultipartFile> mainFiles,
-			@RequestParam(value="descImgFile",required = false) List<MultipartFile> descFiles,
+			@RequestParam(value = "mainImgFile", required = false) List<MultipartFile> mainFiles,
+			@RequestParam(value = "descImgFile", required = false) List<MultipartFile> descFiles,
 			@RequestParam("prdDescription") String prdDescription, @RequestParam("stockid") String stockid,
 			@RequestParam("prdStock") int prdStock, RedirectAttributes redirectAttributes)
 			throws UnsupportedEncodingException {
@@ -177,6 +185,7 @@ public class SellerPrdModifyController {
 
 					imageDTO.setImg_id(filename);// 상품명_판매자ID_image_fileindex
 					imageDTO.setProd_id(prod_id);// 상품_판매자ID
+					imageDTO.setImg_type(0);
 
 					System.out.println(imageDTO);
 
@@ -215,6 +224,7 @@ public class SellerPrdModifyController {
 
 					imageDTO.setImg_id(filename);// 상품명_판매자ID_image_fileindex
 					imageDTO.setProd_id(prod_id);// 상품_판매자ID
+					imageDTO.setImg_type(1);
 
 					System.out.println(imageDTO);
 
@@ -232,25 +242,25 @@ public class SellerPrdModifyController {
 
 		// 재고ID-재고량 변경
 		String stock_id = URLDecoder.decode(stockid, "UTF-8");
-		
-		System.out.println("재고ID:"+stock_id);
-		
+
+		System.out.println("재고ID:" + stock_id);
+
 		if (stock_id.contains("_SELL_")) {// 판매재고인 경우
 			Seller_Prod_StockDTO seller_Prod_StockDTO = new Seller_Prod_StockDTO();
 			seller_Prod_StockDTO.setS_stock_id(stock_id);
 			seller_Prod_StockDTO.setStock(prdStock);
-			
-			System.out.println("판매재고 수정데이터:"+seller_Prod_StockDTO);
+
+			System.out.println("판매재고 수정데이터:" + seller_Prod_StockDTO);
 
 			int changeSellStock = seller_Prod_StockService.sellStockUpdate(seller_Prod_StockDTO);
 
 		} else if (stock_id.contains("_RENT_")) {// 대여재고인 경우
 			RentProdStockDTO rentProdStockDTO = new RentProdStockDTO();
-			
+
 			rentProdStockDTO.setR_stock_id(stock_id);
 			rentProdStockDTO.setStock(prdStock);
-			
-			System.out.println("대여재고 수정데이터:"+rentProdStockDTO);
+
+			System.out.println("대여재고 수정데이터:" + rentProdStockDTO);
 
 			int changeRentStock = rentProdStockService.rentStockUpdate(rentProdStockDTO);
 		}

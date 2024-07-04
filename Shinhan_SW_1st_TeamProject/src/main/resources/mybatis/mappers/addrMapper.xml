@@ -59,6 +59,7 @@
         SET is_master_addr = 'N'
         WHERE is_master_addr = 'Y'
     </update>
+  
 	<update id="addressUpdate" parameterType="com.team4.shoppingmall.addr_list.Addr_ListDTO">
 		UPDATE ADDR_LIST
 		SET

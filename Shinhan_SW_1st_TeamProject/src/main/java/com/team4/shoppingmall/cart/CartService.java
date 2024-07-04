@@ -26,7 +26,7 @@ public class CartService {
 	}
 
 	//장바구니 상품 수량 업데이트
-	public int updateCartBySellstock(CartDTO cart) {
+	public int updateCartBySellStock(CartDTO cart) {
 		return cartDAO.updateCartBySellStock(cart);
 	}
 	public List<CartDTO> selectSellStockByMemberId(String member_id) {
@@ -109,5 +109,6 @@ public class CartService {
 			return result;
 		}
 	}
+
 	
 }
