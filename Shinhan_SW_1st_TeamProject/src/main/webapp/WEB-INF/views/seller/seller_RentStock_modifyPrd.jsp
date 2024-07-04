@@ -230,6 +230,12 @@
 				<form method="post" action="/shoppingmall/seller/modifyPrdouct"
 					enctype="multipart/form-data" accept-charset="UTF-8">
 					<div class="form-group">
+						<label>상품ID</label>
+						<input type="text" name="prdId"
+							value="${ProductInfo.prod_id}">
+					</div>
+					
+					<div class="form-group">
 						<label>상품명</label> <input type="text" name="prdName"
 							value="${ProductInfo.prod_name}">
 					</div>
@@ -275,7 +281,7 @@
 							<label>설명 사진목록</label>
 							<button type="button" onclick="resetDescProdImg()">사진 항목 초기화</button>
 						</div>
-						<div id="prdImgFileContainer">
+						<div id="prdDescImgFileContainer">
 							<c:forEach var="imgName" items="${ProdDescImgList}">
 								<img
 									src="http://localhost:9090/saren/ProdImgFile/desc/${imgName}"
@@ -303,7 +309,7 @@
 					
 					<hr>
 					
-					<h1>판매 재고 정보 조회 및 재고 수정</h1>
+					<h1>대여용 재고 정보 조회 / 재고 수정</h1>
 					<div class="form-group">
 						<label>재고명</label> <input type="text" name="stockid"
 							value="${StockInfo.r_stock_id}">

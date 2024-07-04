@@ -112,6 +112,7 @@ button {
   font-weight: bold;
   color: white;
   background-color: black;
+  border-radius: 5px;
 }
 
 .bell {
@@ -133,4 +134,9 @@ span {
   color: #fff;
   padding: 5px 10px;
   border-radius: 50%;
+}
+
+.sellPrdList th{
+	background-color: black;
+	color:white;
 }

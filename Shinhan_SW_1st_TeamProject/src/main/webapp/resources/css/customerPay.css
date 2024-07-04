@@ -1,5 +1,5 @@
-/* 기존의 스타일 코드와 추가된 스타일 코드 */
 /* 湲곗〈�쓽 �뒪���씪 肄붾뱶�� 異붽��맂 �뒪���씪 肄붾뱶 */
+/* 疫꿸퀣�덌옙�벥 占쎈뮞占쏙옙占쎌뵬 �굜遺얜굡占쏙옙 �빊遺쏙옙占쎈쭆 占쎈뮞占쏙옙占쎌뵬 �굜遺얜굡 */
 main {
 	width: 80%;
 	margin: 20px auto;
@@ -30,26 +30,28 @@ main h1 {
 }
 
 #orderTable th {
-	background-color: #f0f0f0;
+	background-color: black;
+	color:white;
 }
 
 
 
 .info{
 	display: flex;
-  	justify-content: space-between; /* 자식 요소들을 양쪽 끝에 배치 */
-  	align-items: center; /* 세로 가운데 정렬 */
+  	justify-content: space-between; /* �옄�떇 �슂�냼�뱾�쓣 �뼇履� �걹�뿉 諛곗튂 */
+  	align-items: center; /* �꽭濡� 媛��슫�뜲 �젙�젹 */
 }
 
 .left,
 .right {
-  flex: 1; /* 각각의 자식 요소가 동일한 너비를 가지도록 함 */
+  flex: 1; /* 媛곴컖�쓽 �옄�떇 �슂�냼媛� �룞�씪�븳 �꼫鍮꾨�� 媛�吏��룄濡� �븿 */
   padding : 10px;
   
 }
 
 .left p{
 	font-size: 15px;
+	
 }
 
 .right input{
@@ -57,6 +59,7 @@ main h1 {
   outline: none;
   text-align: center;
   font-size: 15px;
+  width:300px;
 }
 
 .order-summary, .delivery-info, .coupon-info {
@@ -131,6 +134,7 @@ form {
 .form-group {
 	display: flex;
 	align-items: center;
+	padding-bottom: 10px;
 }
 
 .form-group label {
@@ -170,6 +174,7 @@ form {
 
 .submit-button {
 	align-self: flex-end;
+	margin: 5px;
 }
 
 .payment-summary {
@@ -194,6 +199,10 @@ form {
 	flex: 1;
 }
 
+.payment-group{
+	text-align: center;
+}
+
 .payment-button {
 	background-color: #6200ea;
 	color: white;
@@ -204,6 +213,7 @@ form {
 	cursor: pointer;
 	align-self: center;
 	width: 200px;
+	margin: 20px;
 }
 
 footer {
@@ -229,4 +239,16 @@ footer ul li a {
 	text-decoration: none;
 	color: #000;
 	font-size: 16px;
+}
+.select-button {
+	background-color: black;
+	color: white;
+	font-size: 15px;
+	padding: 6px 10px;
+	margin: 5px;
+	border-radius: 5px;
+}
+
+.addrListClass td{
+	margin:5px;
 }
