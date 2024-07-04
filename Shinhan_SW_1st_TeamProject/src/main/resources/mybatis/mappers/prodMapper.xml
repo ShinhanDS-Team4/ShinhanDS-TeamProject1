@@ -94,4 +94,15 @@
 		WHERE "prod_id" = #{prod_id}
 	</delete>
 
+	<select id="selectAll2" resultType="map">
+		SELECT
+		M.brand,
+		P.prod_name,
+		P.prod_price
+		FROM
+		MEMBER M
+		JOIN
+		PROD P ON M.member_id = P.member_id
+	</select>
+
 </mapper>

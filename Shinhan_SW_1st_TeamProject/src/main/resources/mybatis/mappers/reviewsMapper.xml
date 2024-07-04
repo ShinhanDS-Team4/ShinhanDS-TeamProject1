@@ -73,7 +73,7 @@
 		INSERT
 		INTO REVIEWS(review_id, review_title, rate, review_date, 
 					 review_img, review_content, orderdetail_id, member_id)
-		VALUES(#{review_id}, #{review_title}, #{rate}, #{review_date}, 
+		VALUES(seq_reviews.nextval, #{review_title}, #{rate}, #{review_date}, 
 			   #{review_img}, #{review_content}, #{orderdetail_id}, #{member_id})
 	</insert>
 

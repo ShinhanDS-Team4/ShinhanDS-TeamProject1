@@ -243,10 +243,10 @@
                     <span>상품명/옵션</span>
                     <input type="text" name="review_title" placeholder="상품명/옵션을 입력하세요">
                 </label>
-                <label>
-                    <span>작성일자</span>
-                    <input type="date" name="review_date" placeholder="2024-05-29" value="2024-05-29" readonly>
-                </label>
+			    <label>
+			        <span>작성일자</span>
+			        <input type="date" name="review_date" id="review_date" readonly>
+			    </label>
                 <label>
                     <span>사진</span>
                     <input type="file" name="reviewImg">
@@ -270,7 +270,13 @@
                 </label>
                 <button type="submit">등록하기</button>
             </form>
-        </div>
+			<script>
+			    document.addEventListener('DOMContentLoaded', (event) => {
+			        const today = new Date().toISOString().split('T')[0];
+			        document.getElementById('review_date').value = today;
+			    });
+			</script>
+		</div>
     </div>
 </body>
 
