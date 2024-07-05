@@ -32,7 +32,7 @@
 			alert("메인 사진은 최대 5개까지 추가할 수 있습니다.");
 			return;
 		}
-		
+
 		// 새로운 파일 항목 생성
 		const fileItem = document.createElement('div');
 		fileItem.className = 'file-item';
@@ -45,7 +45,7 @@
 		fileField.accept = '.jpg,.jpeg,.png';
 		fileField.onchange = function(event) {
 			setProdDescribeImg(event, fileItem);
-        };
+		};
 
 		//파일 항목 삭제 버튼 생성
 		const fileRemove = document.createElement('button');
@@ -59,7 +59,8 @@
 		fileItem.appendChild(fileField);
 		fileItem.appendChild(fileRemove);
 
-		document.getElementById('prdMainImgFileContainer').appendChild(fileItem);
+		document.getElementById('prdMainImgFileContainer')
+				.appendChild(fileItem);
 
 		mainImgFileCount = getMainFileItemCount();
 	}
@@ -67,8 +68,7 @@
 	function getMainFileItemCount() {
 		return document.querySelectorAll('#prdMainImgFileContainer .file-item').length;
 	}
-	
-	
+
 	//2.설명사진 업로드 추가
 	function addDescImgFile() {
 		if (descImgFileCount >= 8) {
@@ -88,7 +88,7 @@
 		fileField.accept = '.jpg,.jpeg,.png';
 		fileField.onchange = function(event) {
 			setProdDescribeImg(event, fileItem);
-        };
+		};
 
 		//파일 항목 삭제 버튼 생성
 		const fileRemove = document.createElement('button');
@@ -102,7 +102,8 @@
 		fileItem.appendChild(fileField);
 		fileItem.appendChild(fileRemove);
 
-		document.getElementById('prdDescImgFileContainer').appendChild(fileItem);
+		document.getElementById('prdDescImgFileContainer')
+				.appendChild(fileItem);
 
 		descImgFileCount = getDescFileItemCount();
 	}
@@ -110,19 +111,19 @@
 	function getDescFileItemCount() {
 		return document.querySelectorAll('#prdDescImgFileContainer .file-item').length;
 	}
-	
+
 	function removeMainFile(button) {
 		// 부모 요소(file-item) 제거
 		button.parentNode.remove();
 		mainImgFileCount = getMainFileItemCount();
 	}
-	
+
 	function removeDescFile(button) {
 		// 부모 요소(file-item) 제거
 		button.parentNode.remove();
 		descImgFileCount = getDescFileItemCount();
 	}
-	
+
 	function setProdDescribeImg(event, fileItem) {
 		var file = event.target.files[0];
 		var reader = new FileReader();
@@ -132,7 +133,7 @@
 			var img = document.createElement("img");
 			img.setAttribute("src", event.target.result);
 			imgContainer.appendChild(img);
-			
+
 			fileItem.appendChild(imgContainer);
 		};
 		reader.readAsDataURL(file);
@@ -192,32 +193,170 @@
 		return document.querySelectorAll('#optionsContainer .option-item').length;
 	}
 
-	//URL 파라미터에서 메시지 가져오기
+	/* //URL 파라미터에서 메시지 가져오기
 	const urlParams = new URLParams(window.location.search);
 	const message = urlParams.get('PrdRegisterResult');
 
 	if (message) {
 		alert(message);
+	} */
+
+	//Depth = 1인 항목들에서 선택
+	function firstDepth() {
+		var selectedValue = document.getElementById("depth1").value;
+
+		$.ajax({
+			type : 'POST',
+			url : '${path}/seller/find2ndCategoryList.do',
+			contentType : 'application/json',
+			data : JSON.stringify(selectedValue),
+			success : function(response) {
+				console.log(response);
+				//location.reload();
+
+				// depth2 요소가 이미 존재하는 경우 제거
+				var existingSelect = document.getElementById('depth2');
+				if (existingSelect) {
+					existingSelect.remove();
+				}
+
+
+				// 새로운 <select> 요소 depth2 생성
+				var newSelect = document.createElement('select');
+				newSelect.className = 'prdCategory';
+				newSelect.id = 'depth2'; // ID가 중복되지 않도록 확인 필요
+				newSelect.setAttribute('onchange', 'secondDepth()');
+
+				
+				// Add default option
+                var defaultOption = document.createElement('option');
+                defaultOption.value = 0;
+                defaultOption.textContent = '카테고리 선택';
+                newSelect.appendChild(defaultOption);
+
+				// Add options based on response
+				response.forEach(function(category) {
+					var option = document.createElement('option');
+					option.value = category.category_id;
+					option.textContent = category.category_name;
+					newSelect.appendChild(option);
+				});
+
+				// categoryContainer에 새로운 <select> 추가
+				var categoryContainer = document
+						.querySelector('.categoryContainer');
+				categoryContainer.appendChild(newSelect);
+			},
+			error : function(xhr, status, error) {
+				console.error('AJAX 오류:', status, error);
+			}
+		})
+	}
+
+	function secondDepth() {
+		var selectedValue = document.getElementById("depth2").value;
+
+		$.ajax({
+			type : 'POST',
+			url : '${path}/seller/find3rdCategoryList.do',
+			contentType : 'application/json',
+			data : JSON.stringify(selectedValue),
+			success : function(response) {
+				console.log(response);
+				//location.reload();
+				
+				// depth3 요소가 이미 존재하는 경우 제거
+				var existingSelect = document.getElementById('depth3');
+				if (existingSelect) {
+					existingSelect.remove();
+				}
+
+				// 새로운 <select> 요소 depth3 생성
+				var newSelect = document.createElement('select');
+				newSelect.className = 'prdCategory';
+				newSelect.id = 'depth3'; // ID가 중복되지 않도록 확인 필요
+				newSelect.setAttribute('onchange', 'ThirdDepth()');
+
+				// Add default option
+                var defaultOption = document.createElement('option');
+                defaultOption.value = 0;
+                defaultOption.textContent = '카테고리 선택';
+                newSelect.appendChild(defaultOption);
+				
+				// Add options based on response
+				response.forEach(function(category) {
+					var option = document.createElement('option');
+					option.value = category.category_id;
+					option.textContent = category.category_name;
+					newSelect.appendChild(option);
+				});
+
+				// categoryContainer에 새로운 <select> 추가
+				var categoryContainer = document
+						.querySelector('.categoryContainer');
+				categoryContainer.appendChild(newSelect);
+			},
+			error : function(xhr, status, error) {
+				console.error('AJAX 오류:', status, error);
+			}
+		})
 	}
 	
-	function firstDepth(){
-		var selectedValue = document.getElementById("depth1").value;
-		
-		// Save the state in localStorage
-        localStorage.setItem("depth2Select", "false");
+	function ThirdDepth() {
+		var selectedValue = document.getElementById("depth3").value;
 		
 		$.ajax({
-			type:'POST',
-			url:'${path}/seller/findNextCategoryList.do',
-			contentType: 'application/json',
-            data: JSON.stringify(selectedValue),
-			successs:function(response){
-				alert(response);
-				location.reload();
+			type : 'POST',
+			url : '${path}/seller/find4thCategoryList.do',
+			contentType : 'application/json',
+			data : JSON.stringify(selectedValue),
+			success : function(response) {
+				console.log(response);
+				//location.reload();
+				
+				// depth4 요소가 이미 존재하는 경우 제거
+				var existingSelect = document.getElementById('depth4');
+				if (existingSelect) {
+					existingSelect.remove();
+				}
+				
+				//case 1. response가 비어있는 경우 >> 3단계가 마지막 선택항목임
+				if(response.length===0){
+					document.getElementById('depth3').setAttribute('name', 'finalCategory');
+				}else{//case 2. response가 비어있지 않은 경우 >> 해당 항목은 4단계 선택지가 있음
+					
+					// 새로운 <select> 요소 depth4 생성
+					var newSelect = document.createElement('select');
+					newSelect.className = 'prdCategory';
+					newSelect.id = 'depth4'; // ID가 중복되지 않도록 확인 필요
+					//newSelect.setAttribute('onchange', 'FourthDepth()');
+					newSelect.setAttribute('name', 'finalCategory');
+					
+					// Add default option
+	                var defaultOption = document.createElement('option');
+	                defaultOption.value = 0;
+	                defaultOption.textContent = '카테고리 선택';
+	                newSelect.appendChild(defaultOption);
+
+					// Add options based on response
+					response.forEach(function(category) {
+						var option = document.createElement('option');
+						option.value = category.category_id;
+						option.textContent = category.category_name;
+						newSelect.appendChild(option);
+					});
+
+					// categoryContainer에 새로운 <select> 추가
+					var categoryContainer = document
+							.querySelector('.categoryContainer');
+					categoryContainer.appendChild(newSelect);
+				
+				}
+				
 			},
-			error: function(xhr, status, error) {
-                console.error('AJAX 오류:', status, error);
-            }
+			error : function(xhr, status, error) {
+				console.error('AJAX 오류:', status, error);
+			}
 		})
 	}
 </script>
@@ -261,63 +400,34 @@
 					<div class="form-group">
 						<label>가격</label> <input type="number" name="prdPrice">
 					</div>
-					
+
 					<!-- 카테고리 -->
-					<div class="form-group">
-						<label>카테고리</label>
-						<select name="prdCategory">
-							<option value=0>선택</option>
-							<option value=1>카테고리 1</option>
-							<option value=2>카테고리 2</option>
-						</select>
-					</div>
-					
-					<%-- <!-- 카테고리 -->
 					<div class="form-group">
 						<label>카테고리</label>
 						<div class="categoryContainer">
 							<select class="prdCategory" id="depth1" onchange="firstDepth()">
 								<option value=0>선택 안함</option>
-								<c:forEach var = "category1" items="${depth1categoryList}">
+								<c:forEach var="category1" items="${depth1categoryList}">
 									<option value="${category1.category_id}">${category1.category_name}</option>
 								</c:forEach>
 							</select>
-							
-							<select class="prdCategory" id="depth2">
-								<option value=0>선택 안함</option>
-								<c:forEach var = "category2" items="${depth2categoryList}">
-									<option value="${category3.category_id}">${category3.category_name}</option>
-								</c:forEach>
-							</select>
-							
-							<select class="prdCategory" id="depth3" >
-								<option value=0>선택 안함</option>
-								<c:forEach var = "category3" items="${depth3categoryList}">
-									<option value="${category3.category_id}">${category3.category_name}</option>
-								</c:forEach>
-							</select>
-							
-							<select class="prdCategory" id="depth4" >
-								<option value=0>선택 안함</option>
-								<c:forEach var = "category4" items="${depth4categoryList}">
-									<option value="${category.category_id}">${category.category_name}</option>
-								</c:forEach>
-							</select>
 						</div>
-					</div> --%>
-					
+					</div>
+
 					<!-- 상품의 메인 사진으로 사용할 여러 개의 사진을 집어넣는 곳 -->
 					<div class="form-group">
 						<label>메인사진</label>
-						<button type="button" id="addImageBtn" onclick="addMainImgFile()">사진 추가</button>
+						<button type="button" id="addImageBtn" onclick="addMainImgFile()">사진
+							추가</button>
 					</div>
 					<div id="prdMainImgFileContainer"></div>
-					
+
 
 					<!-- 상품 설명에 사용할 여러 개의 사진들을 집어넣는 곳  -->
 					<div class="form-group">
 						<label>상품 설명 사진 등록</label>
-						<button type="button" id="addImageBtn" onclick="addDescImgFile()">사진 추가</button>
+						<button type="button" id="addImageBtn" onclick="addDescImgFile()">사진
+							추가</button>
 					</div>
 					<div id="prdDescImgFileContainer"></div>
 
