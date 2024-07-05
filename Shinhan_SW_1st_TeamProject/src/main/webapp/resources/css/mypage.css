@@ -157,7 +157,8 @@
     right: 50%;
     transform: translate(50%, -50%);
     color: #fff;
-    font-size: 18px;
+    font-size: 23px;
+    font-weight: bold;
 }
 .profile_text{
     padding: 40px 0;
@@ -173,7 +174,9 @@
     color: var(--accent-color);
     font-weight: bold;
 }
-
+.birthText{
+	color: #ccc;
+}
 .profile_text_box{
     display: flex;
     margin-top: 20px;
@@ -181,6 +184,7 @@
 }
 .profile_text_box>p span{
     font-size: 20px;
+    font-weight: bold;
 }
 .profile_text_box>p:nth-child(1){
     padding-right: 50px;
@@ -191,8 +195,9 @@
     border-radius: 5px;
     background-color: var(--accent-color);
     color: white;
-    padding: 5px 30px;
     margin-left: 50px;
+    padding: 10px 30px;
+    font-weight: bold;
 }
 .info_text{
     text-align: center;
@@ -204,13 +209,32 @@
 }
 
 
-
 .order_table {
     width: 100%;
-    border: 1px solid #666;
+   
+}
+.order_table>thead>tr>th {
+    border-right: 1px solid #eee;
+    padding: 0 6px;
+    font-size: 15px;
+}
+.order_table>thead>tr>th:last-child {
+	 border-right: none;
+}
+.order_table>tbody>tr>td:nth-child(1){
+	/* width: 7%; */
+}
+.order_table>tbody>tr>td:nth-child(4){
+	/* width: 10%; */
+}
+.order_table>tbody>tr>td:nth-child(6){
+	width: 10%;
 }
 .product-info{
     width: 300px;
+}
+.product-info>strong{
+	color:red;
 }
 .order_table>thead>tr{
     height: 50px;
@@ -222,8 +246,12 @@
 }
 .order_table>tbody td{
     padding: 30px 0;
+    background-color: #f4f4f4;
+    border-right: 1px solid #fff;
 }
-
+.order_table>tbody td.rentDateText{
+	width: 200px;
+}
 
 /* STEP-1  */
 .mypage_here{

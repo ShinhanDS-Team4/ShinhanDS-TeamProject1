@@ -58,22 +58,18 @@ public class CustomerControllerJH {
 	@GetMapping("/myPage.do")
 	public String myPage(HttpSession session, Model model) {
 		
+		//1.회원정보 조회
 		MemberDTO member =  (MemberDTO) session.getAttribute("member");
 		String member_id = member.getMember_id();
-		//String member_id = "testid";  //테스트
 		
-		//1.회원정보 조회
-//		MemberDTO member = memberService.selectById(member_id);
-//		model.addAttribute("member", member);
-//		
-		//2.나의 주문 내역
+		//2.나의 주문 내역 (결제 완료된 주문)
 	    //List<OrderProdDTO> myAllOrders = orderProdService.orderProductById(member_id);
 		List<Map<String,Object>> myAllOrders = orderProdService.orderProductById(member_id);
 	    model.addAttribute("myAllOrders", myAllOrders);
 	    model.addAttribute("orderCount", myAllOrders.size());
 	    System.out.println("전체 주문 목록: " + myAllOrders);
 	    
-		//3.나의 대여 내역
+		//3.나의 대여 내역 (대여신청완료된 주문)
 	    List<Map<String,Object>> myAllRentOrders = rentService.rentProductById(member_id);
 	    model.addAttribute("myAllRentOrders", myAllRentOrders);
 	    model.addAttribute("rentCount", myAllRentOrders.size());
@@ -87,7 +83,7 @@ public class CustomerControllerJH {
 	    CustomerDTO customer =customerService.selectById(member_id);
 	    model.addAttribute("myPoints", customer);
 	   
-	    //생년월일 포맷 변경
+	    
 	    
 		return "customer/myPage";
 	}

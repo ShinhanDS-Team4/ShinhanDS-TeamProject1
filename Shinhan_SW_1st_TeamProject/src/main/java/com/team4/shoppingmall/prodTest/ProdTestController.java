@@ -168,8 +168,9 @@ public class ProdTestController {
 		List<Prod_ImageDTO> imgIdList = imageService.findAllImgsByProdID(prod_id);
 		System.out.println("imgIdList" + imgIdList);
 		
-		//메인 사진 uri-id
+		//메인 사진들 조회
 		
+		//상품 정보 사진 조회
 				
 	}
 	
