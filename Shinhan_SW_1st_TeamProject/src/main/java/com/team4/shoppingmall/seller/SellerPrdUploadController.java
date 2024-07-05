@@ -77,7 +77,9 @@ public class SellerPrdUploadController {
 	@Value("${file.desc-img-upload-dir}")
 	private String descIMG_uploadDir;
 	
-	@PostMapping("/findNextCategoryList.do")
+	
+	//선택한 상품에 대해서 다음 항목들 찾기
+	@PostMapping("/find2ndCategoryList.do")
 	@ResponseBody
 	public List<CategoryDTO> findNextCategoryList(@RequestBody Integer categoryID) {
 		System.out.println("받은 카테고리 ID : "+categoryID);
@@ -94,6 +96,43 @@ public class SellerPrdUploadController {
 		return categoryList;
 		
 	}
+	
+	//선택한 상품에 대해서 다음 항목들 찾기
+	@PostMapping("/find3rdCategoryList.do")
+	@ResponseBody
+	public List<CategoryDTO> find3rdCategoryList(@RequestBody Integer categoryID) {
+		System.out.println("받은 카테고리 ID : "+categoryID);
+		
+		CategoryDTO categoryDTO = new CategoryDTO();
+		
+		categoryDTO.setCategory_id(0);
+		categoryDTO.setCategory_depth(3);
+		categoryDTO.setParent_category_id(categoryID);
+		
+		List<CategoryDTO> categoryList = categoryService.categoryListBydepth(categoryDTO);
+		System.out.println(categoryList);
+		
+		return categoryList;
+		
+	}
+	
+	@PostMapping("/find4thCategoryList.do")
+	@ResponseBody
+	public List<CategoryDTO> find4thCategoryList(@RequestBody Integer categoryID) {
+		System.out.println("받은 카테고리 ID : "+categoryID);
+		
+		CategoryDTO categoryDTO = new CategoryDTO();
+		
+		categoryDTO.setCategory_id(0);
+		categoryDTO.setCategory_depth(4);
+		categoryDTO.setParent_category_id(categoryID);
+		
+		List<CategoryDTO> categoryList = categoryService.categoryListBydepth(categoryDTO);
+		System.out.println(categoryList);
+		
+		return categoryList;
+		
+	}
 
 
 	@PostMapping("/uploadPrd")
@@ -101,7 +140,7 @@ public class SellerPrdUploadController {
 			@RequestParam("prdType") String prdType,
 			@RequestParam("prdName") String prdName,
 			@RequestParam("prdPrice") int prdPrice, 
-			@RequestParam("prdCategory") int prdCategory,
+			@RequestParam("finalCategory") int prdCategory,
 			@RequestParam("mainImgFile") List<MultipartFile> mainFiles, 
 			@RequestParam("descImgFile") List<MultipartFile> descFiles, 
 			@RequestParam("prdDescription") String prdDescription,
