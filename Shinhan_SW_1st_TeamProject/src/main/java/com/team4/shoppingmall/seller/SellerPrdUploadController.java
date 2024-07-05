@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -31,6 +33,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.team4.shoppingmall.category.CategoryDTO;
 import com.team4.shoppingmall.category.CategoryService;
+import com.team4.shoppingmall.member.MemberDTO;
 import com.team4.shoppingmall.prod.ProdDTO;
 import com.team4.shoppingmall.prod.ProdService;
 import com.team4.shoppingmall.prod_image.Prod_ImageDTO;
@@ -145,10 +148,12 @@ public class SellerPrdUploadController {
 			@RequestParam("descImgFile") List<MultipartFile> descFiles, 
 			@RequestParam("prdDescription") String prdDescription,
 			@RequestParam("optName") List<String> optNames, @RequestParam("optValue") List<String> optValues,
-			@RequestParam("prdStock") int prdStock, RedirectAttributes redirectAttributes)
+			@RequestParam("prdStock") int prdStock, RedirectAttributes redirectAttributes, HttpSession session)
 			throws UnsupportedEncodingException {
 
-		String member_id = "573-50-00882";
+		MemberDTO mem = (MemberDTO)session.getAttribute("member");
+		String sellerID = mem.getMember_id();
+		//String member_id = "573-50-00882";
 
 		String productType = URLDecoder.decode(prdType, "UTF-8");
 		String productName = URLDecoder.decode(prdName, "UTF-8");
@@ -169,7 +174,7 @@ public class SellerPrdUploadController {
 		Date sqlDate = Date.valueOf(localDate);
 
 		
-		String prod_id = productName + "_" + member_id; 
+		String prod_id = productName + "_" + sellerID; 
 
 		System.out.println("상품ID : " + prod_id);
 
@@ -190,7 +195,7 @@ public class SellerPrdUploadController {
 			prodDTO2.setProd_price(prdPrice);
 			prodDTO2.setProd_added_date(sqlDate);
 			prodDTO2.setCategory_id(prdCategory);
-			prodDTO2.setMember_id(member_id);
+			prodDTO2.setMember_id(sellerID);
 
 			int prdRegResult = prodService.prodInsert(prodDTO2);
 			System.out.println(prdRegResult);
@@ -373,6 +378,8 @@ public class SellerPrdUploadController {
 				optionDTO.setOpt_name(optionName);
 				optionDTO.setOpt_value(optionValue);
 				optionDTO.setProd_id(prod_id);
+				
+				int optRegResult = optionService.optionInsert(optionDTO);
 
 				switch (i) {
 				case 0:

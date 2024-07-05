@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.velocity.runtime.resource.loader.URLResourceLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.team4.shoppingmall.admin_inq.Admin_InqService;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqService;
+import com.team4.shoppingmall.member.MemberDTO;
 import com.team4.shoppingmall.member.MemberService;
 import com.team4.shoppingmall.prod.ProdDTO;
 import com.team4.shoppingmall.prod.ProdService;
@@ -63,7 +66,7 @@ public class SellerPrdModifyController {
 	@Autowired
 	RentProdStockService rentProdStockService;
 
-	String member_id = "573-50-00882";// 임시로 사용할 판매자ID(사업자등록번호)
+	//String member_id = "573-50-00882";// 임시로 사용할 판매자ID(사업자등록번호)
 
 	// 상품 이미지 파일 업로드 디렉토리
 	// 1.메인 이미지 파일
@@ -134,23 +137,27 @@ public class SellerPrdModifyController {
 
 	@PostMapping("/modifyPrdouct")
 	public String updateStockInfo(@RequestParam("prdId") String prdID, @RequestParam("prdPrice") int prdPrice,
-			@RequestParam("prdCategory") int prdCategory,
+			@RequestParam(value = "prdCategory", required = false) Integer prdCategory,
 			@RequestParam(value = "mainImgFile", required = false) List<MultipartFile> mainFiles,
 			@RequestParam(value = "descImgFile", required = false) List<MultipartFile> descFiles,
 			@RequestParam("prdDescription") String prdDescription, @RequestParam("stockid") String stockid,
-			@RequestParam("prdStock") int prdStock, RedirectAttributes redirectAttributes)
+			@RequestParam("prdStock") int prdStock, RedirectAttributes redirectAttributes, HttpSession session)
 			throws UnsupportedEncodingException {
-		String member_id = "573-50-00882";// 판매자ID 임시, Session에서 받아올 것임
+		MemberDTO mem = (MemberDTO)session.getAttribute("member");
+		String sellerID = mem.getMember_id();
+		//String member_id = "573-50-00882";
 
 		String prod_id = URLDecoder.decode(prdID, "UTF-8");// 상품ID
 		String prd_desc = URLDecoder.decode(prdDescription, "UTF-8");// 상품설명
-		int prd_category = prdCategory;
-
-		ProdDTO prodDTO = new ProdDTO();
+		ProdDTO prodDTO = prodService.selectByProdId(prod_id);
 
 		prodDTO.setProd_id(prod_id);
 		prodDTO.setProd_desc(prd_desc);
-		prodDTO.setCategory_id(prd_category);
+		
+		if(!Objects.isNull(prdCategory)) {
+			prodDTO.setCategory_id(prdCategory);
+		}
+		
 		prodDTO.setProd_price(prdPrice);
 
 		int prdUpdateResult = prodService.prodModify(prodDTO);
