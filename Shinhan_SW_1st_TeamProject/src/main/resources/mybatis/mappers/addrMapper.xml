@@ -29,7 +29,11 @@
 			JOIN member m ON (a.member_id = m.member_id)
 			WHERE m.member_id = #{member_id}
 	</select>
+<<<<<<< HEAD
  	<!-- 시퀀스 추가 -->
+=======
+	<!-- 시퀀스 추가 -->
+>>>>>>> 19b1e00cd5361213216226eee57367a7a99310f2
 <!-- 	<insert id="addressInsert" parameterType="com.team4.shoppingmall.addr_list.Addr_ListDTO"> -->
 <!-- 		   INSERT INTO ADDR_LIST (addr_num, member_id, zipcode, main_address, detail_address, is_master_addr, sub_address) -->
 <!-- 		    VALUES( ADDR_LIST_SEQUENCE.NEXTVAL ,  -->
@@ -45,16 +49,15 @@
 			FROM ADDR_LIST
 			WHERE member_id = #{member_id}
 	</select>
-  
-	<insert id="addressInsert" parameterType="addr_listVO">
-		INSERT
-		INTO ADDR_LIST(addr_num, member_id, zipcode, main_address, detail_address,
-					is_master_addr, sub_address)
-		VALUES(seq_addr_num.nextval, #{member_id}, #{zipcode}, #{main_address}, #{detail_address},
-			   #{is_master_addr}, #{sub_address})
-	</insert>
+	
+	<!-- 주소id에 해당하는 주소를 대표'Y'로 설정 -->
+	<update id="updateMasterAddrToY">
+		UPDATE ADDR_LIST
+		SET is_master_addr = 'Y'
+		WHERE addr_num = #{addr_num}
+	</update>
 
-    <!-- 기존 is_master_addr를 N으로 업데이트 -->
+    <!-- 기존 is_master_addr를 'N'으로 업데이트 -->
     <update id="updateMasterAddrToN">
         UPDATE ADDR_LIST
         SET is_master_addr = 'N'

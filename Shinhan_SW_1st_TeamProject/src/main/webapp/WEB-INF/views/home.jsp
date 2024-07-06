@@ -83,7 +83,7 @@
                </li>
            </ul>
            <section>
-               <h2 class="main_title">인기 상품 상품</h2>
+               <h2 class="main_title">인기 상품</h2>
                <div class="main_product_list">
                    <ul>
                       <li>

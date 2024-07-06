@@ -41,7 +41,7 @@ public class TestControllerYun {
 	public String test1(Model model, HttpServletRequest request) {
 		System.out.println("/customer/productlist.jsp"); // ��� ��ǰ���
 		List<Map<String, Object>> prodAllOrders = prodService.selectAll2();
-		System.out.println("��ü��ǰ���" + prodAllOrders);
+		System.out.println(prodAllOrders);
 		model.addAttribute("prodAllOrders", prodAllOrders);
 
 		return "customer/productlist";
@@ -64,7 +64,7 @@ public class TestControllerYun {
 	 * return "customer/productlist"; }
 	 */
 
-	@GetMapping("/rentlist.do")
+	@GetMapping("/rentlist")
 	public String test2(Model model, HttpServletRequest request) {
 	    System.out.println("/customer/rentlist.jsp");
 	
@@ -133,8 +133,8 @@ public class TestControllerYun {
 		}
 	}
 
-	@GetMapping("/orderlist.do")
-	public String test3(Model model, HttpServletRequest request) {
+	@GetMapping("/orderlist")
+	public String test3(Model model) {
 	    System.out.println("/customer/orderlist.jsp");
 
 	    // 모든 주문 정보 가져오기

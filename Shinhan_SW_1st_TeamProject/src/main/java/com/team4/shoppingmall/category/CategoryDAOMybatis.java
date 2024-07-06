@@ -48,4 +48,14 @@ public class CategoryDAOMybatis implements CategoryDAOInterface {
 	public int categoryDelete(Integer category_id) {
 		return sqlSession.delete(namespace+"categoryDelete", category_id);
 	}
+
+	@Override
+	public List<CategoryDTO> categoryListBydepth(CategoryDTO category) {
+		return sqlSession.selectList(namespace+"categoryListBydepth", category);
+	}
+
+	@Override
+	public List<CategoryDTO> firstDepthCategoryList() {
+		return sqlSession.selectList(namespace+"firstDepthCategoryList");
+	}
 }

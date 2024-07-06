@@ -43,6 +43,8 @@ public interface CartDAOInterface {
 	public int cartUpdate(CartDTO cart);
 	
 	public int cartDelete(Integer cart_id);
+
+
 	
 	
 }
