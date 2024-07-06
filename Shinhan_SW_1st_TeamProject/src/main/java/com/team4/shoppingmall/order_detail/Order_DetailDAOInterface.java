@@ -1,10 +1,7 @@
 package com.team4.shoppingmall.order_detail;
 
 import java.util.List;
-
-import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import java.util.Map;
 
 
 public interface Order_DetailDAOInterface {
@@ -25,9 +22,5 @@ public interface Order_DetailDAOInterface {
 	
 	public int orderDetailDelete(int orderdetail_id);
 
-	
-
-	
-
-	
+	public List<Map<String, Object>> searchCustomerOrderList(String searchOrderList);
 }

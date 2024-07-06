@@ -1,6 +1,7 @@
 package com.team4.shoppingmall.order_detail;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,5 +37,9 @@ public class Order_DetailService {
 
 	public int orderDetailDelete(int orderdetail_id) {
 		return order_DetailDAO.orderDetailDelete(orderdetail_id);
+	}
+	
+	public List<Map<String, Object>> searchCustomerOrderList(String searchOrderList) {
+		return order_DetailDAO.searchCustomerOrderList(searchOrderList);
 	}
 }

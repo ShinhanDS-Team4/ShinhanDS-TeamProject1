@@ -38,4 +38,8 @@ public class NoticeDAOMybatis implements NoticeDAOInterface {
 	public int noticeDelete(Integer not_id) {
 		return sqlSession.delete(namespace+"noticeDelete", not_id);
 	}
+	@Override
+	public List<NoticeDTO> noticeBysearch(String search_title) {
+		return sqlSession.selectList(namespace+"noticeBysearch", search_title);
+	}
 }

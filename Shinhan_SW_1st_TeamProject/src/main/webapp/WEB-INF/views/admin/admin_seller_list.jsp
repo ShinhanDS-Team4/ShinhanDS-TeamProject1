@@ -45,7 +45,7 @@
 	                            <td>${seller.gender}</td>
 	                            <td>${seller.seller_authority}</td>                          
 	                            <td>	                            	
-	                                <button class="btn btn-sm btn-danger" onclick="location.href='admin_seller_delete?member_id=${seller.member_id}'">삭제</button>
+	                                <button class="btn btn-sm btn-danger" onclick="location.href='admin_seller_delete?returnUrl=sellerList&member_id=${seller.member_id}'">삭제</button>
 	                            </td>
 	                        </tr>
 	                    </c:forEach>

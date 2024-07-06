@@ -8,7 +8,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>판매자 등록 신청</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <%-- <link href="${pageContext.servletContext.contextPath}/resources/css/admin/admin_page.css" rel="stylesheet"> --%>
 </head>
 <body>
 <jsp:include page="common.jsp" />
@@ -44,8 +43,8 @@
 	                            <td>${seller.create_date}</td>
 	                            <td id="status-${seller.member_id}">${seller.seller_authority}</td>
 	                            <td colspan="2">
-	                                <button class="btn btn-sm btn-primary" onclick="updateSellerStatus(${seller.member_id}, 'Access')">허용</button>
-	                                <button class="btn btn-sm btn-danger" onclick="updateSellerStatus(${seller.member_id}, 'Deny')">거부</button>
+	                                <button class="btn btn-sm btn-primary" onclick="updateSellerStatus('${seller.member_id}', 'Y')">허용</button>
+	                                <button class="btn btn-sm btn-danger" onclick="updateSellerStatus('${seller.member_id}', 'N')">거부</button>
 	                            </td>
                         </tr>                      
 	                    </c:forEach>
@@ -61,17 +60,20 @@
     </div>
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
-    function updateSellerStatus(sellerId, status) {
+    function updateSellerStatus(member_id, seller_authority) {
         $.ajax({
-            url: 'update_seller_status.jsp',
+            url: 'update_seller_register',
             type: 'POST',
             data: {
-                seller_id: sellerId,
-                status: status
+                member_id: member_id,
+                seller_authority: seller_authority
             },
             success: function(response) {
-                if (response === 'success') {
-                    document.getElementById('status-' + sellerId).innerText = status;
+            	if (response === 'success') {
+            		console.log(response);
+            		$("#status-"+member_id).text(seller_authority);
+                    alert('판매자 등록 수정되었습니다.');     
+                    
                 } else {
                     alert('상태 업데이트에 실패했습니다.');
                 }
