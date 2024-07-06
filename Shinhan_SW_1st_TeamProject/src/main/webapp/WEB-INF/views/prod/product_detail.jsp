@@ -1178,7 +1178,7 @@
 	       	param.r_stock_id =  currentStock.r_stock_id;   
            	param[item.name] = item.value;
     });
-debugger	
+	
 	 console.log(param);
 	 
 	//모든 옵션이 선택된 경우 서버에 전송
