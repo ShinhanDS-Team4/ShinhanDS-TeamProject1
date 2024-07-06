@@ -36,6 +36,8 @@
 	</delete>
 	
 	<select id="noticeBysearch" parameterType="string" resultType="noticeVO">
-		select * from notice where not_title LIKE '%' || #{search_title} || '%' ORDER BY not_id	
+		SELECT *
+		FROM NOTICE
+		WHERE not_title = #{search_title}
 	</select>
 </mapper>

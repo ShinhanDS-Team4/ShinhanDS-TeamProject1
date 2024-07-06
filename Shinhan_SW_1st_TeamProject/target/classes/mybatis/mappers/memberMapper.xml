@@ -11,7 +11,8 @@
 		FROM MEMBER
 		WHERE member_pw = #{member_pw} and
 		member_id = #{member_id}
-
+	</select>
+	
 	<!-- 로그인 회원 정보 수정용 비밀번호 체크  -->
 	<select id="memberCheckByPw" parameterType="memberVO"
 		resultType="memberVO">
@@ -19,8 +20,8 @@
 		FROM MEMBER
 		WHERE member_pw = #{member_pw}
 		and member_id = #{member_id}
-
 	</select>
+	
 	<!-- 회원 정보 검색 -->
 	<select id="selectById" parameterType="string"
 		resultType="memberVO">
@@ -383,5 +384,5 @@
 		WHERE
 		m.member_id = #{member_id}
 	</select>
-
+	
 </mapper>
