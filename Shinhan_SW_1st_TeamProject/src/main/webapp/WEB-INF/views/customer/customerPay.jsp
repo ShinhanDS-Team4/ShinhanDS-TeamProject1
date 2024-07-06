@@ -368,8 +368,6 @@
 						onclick="applyPoint()">사용</button>
 				</div>
 			</div>
-
-
 		</div>
 
 		<div class="form-group">
@@ -382,5 +380,6 @@
 		</div>
 
 	</main>
+	<%@ include file="../common/footer.jsp"%>
 </body>
 </html>

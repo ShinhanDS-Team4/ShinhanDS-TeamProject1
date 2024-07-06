@@ -92,11 +92,14 @@ public class CustomerController {
 	@Autowired
 	private RentProdStockService rentProdStockService;
 
-	String customerID = "bih63879";// 고객의 ID는 session에서 끌어온다.
+	//String customerID = "bih63879";// 고객의 ID는 session에서 끌어온다.
 
 	// 상품 구매 결제
-	@GetMapping("/orderPay")
-	public String orderPayPage(Model model1, Model model2, Model model3, Model model4, Model model5, Model model6) {
+	@GetMapping("/orderPay.do")
+	public String orderPayPage(Model model1, Model model2, Model model3, Model model4, Model model5, Model model6, HttpSession session) {
+		MemberDTO mem = (MemberDTO)session.getAttribute("member");
+		String customerID = mem.getMember_id();
+		
 		Integer orderID = 1;// 주문ID. 실제로는 주문하기 버튼을 누르면 주문 ID를 받아와서 끌어옴
 
 		// 주문 데이터 가져오기
@@ -128,8 +131,11 @@ public class CustomerController {
 	}
 
 	// 상품 대여 결제
-	@GetMapping("/rentPay")
-	public String rentPayPage(Model model1, Model model2, Model model3, Model model4, Model model5, Model model6) {
+	@GetMapping("/rentPay.do")
+	public String rentPayPage(Model model1, Model model2, Model model3, Model model4, Model model5, Model model6, HttpSession session) {
+		MemberDTO mem = (MemberDTO)session.getAttribute("member");
+		String customerID = mem.getMember_id();
+		
 		Integer rental_code = 2;// 대여ID. 대여하기 버튼을 누르면 끌어옴
 
 		// 대여 정보 가져오기
@@ -157,7 +163,7 @@ public class CustomerController {
 	}
 
 	// 대여 주문에 쿠폰 적용하기
-	@PostMapping("/applyRentCoupon")
+	@PostMapping("/applyRentCoupon.do")
 	@ResponseBody
 	public String applyRentCoupon(@RequestBody CouponRequestDTO couponRequestDTO) {
 
@@ -199,9 +205,12 @@ public class CustomerController {
 	}
 
 	// 대여 주문에 포인트 적용하기
-	@PostMapping("/applyRentPoint")
+	@PostMapping("/applyRentPoint.do")
 	@ResponseBody
-	public String applyRentPoint(@RequestBody PointRequestDTO pointRequestDTO) {
+	public String applyRentPoint(@RequestBody PointRequestDTO pointRequestDTO, HttpSession session) {
+		MemberDTO mem = (MemberDTO)session.getAttribute("member");
+		String customerID = mem.getMember_id();
+		
 		int point = pointRequestDTO.getPoint();
 		System.out.println("보유포인트:" + point);
 		int orderid = pointRequestDTO.getOrderid();
@@ -210,7 +219,7 @@ public class CustomerController {
 		int totalPrice = rentDTO.getTotal_rent_price();
 
 		int pointAppliedPrice = totalPrice - point;
-		System.out.println("����Ʈ ��� �� ������:" + pointAppliedPrice);
+		System.out.println("포인트가 적용된 가격:" + pointAppliedPrice);
 
 		rentDTO.setTotal_rent_price(pointAppliedPrice);
 
@@ -226,7 +235,7 @@ public class CustomerController {
 	}
 
 	// 구매 주문에 쿠폰 적용하기
-	@PostMapping("/applyCoupon")
+	@PostMapping("/applyCoupon.do")
 	@ResponseBody
 	public String applyCoupon(@RequestBody CouponRequestDTO couponRequestDTO) {
 
@@ -271,9 +280,12 @@ public class CustomerController {
 	}
 
 	// 구매 주문 포인트 적용
-	@PostMapping("/applyPoint")
+	@PostMapping("/applyPoint.do")
 	@ResponseBody
-	public String applyCoupon(@RequestBody PointRequestDTO pointRequestDTO) {
+	public String applyCoupon(@RequestBody PointRequestDTO pointRequestDTO, HttpSession session) {
+		MemberDTO mem = (MemberDTO)session.getAttribute("member");
+		String customerID = mem.getMember_id();
+		
 		int point = pointRequestDTO.getPoint();
 		System.out.println("포인트 보유량:" + point);
 		int orderid = pointRequestDTO.getOrderid();
@@ -300,7 +312,7 @@ public class CustomerController {
 	}
 
 	// 주소 선택하기
-	@PostMapping("/applyAddress")
+	@PostMapping("/applyAddress.do")
 	@ResponseBody
 	public String applyAddress(@RequestBody AddressRequestDTO request, HttpSession session) {
 		System.out.println(request);
@@ -320,7 +332,7 @@ public class CustomerController {
 	}
 
 	// 구매 결제 완료 후 프로세스
-	@GetMapping("/sellPaySuccess")
+	@GetMapping("/sellPaySuccess.do")
 	public String sellPaySuccess(@RequestParam("order_id") Integer order_id) {
 
 		OrderProdDTO orderProdDTO = orderProdService.selectById(order_id);
@@ -402,7 +414,7 @@ public class CustomerController {
 	}
 
 	// 대여 결제 완료 후 프로세스
-	@GetMapping("/rentPaySuccess")
+	@GetMapping("/rentPaySuccess.do")
 	public String rentPaySuccess(@RequestParam("rental_code") Integer rental_code) {
 
 		RentDTO rentDTO = rentService.selectById(rental_code);

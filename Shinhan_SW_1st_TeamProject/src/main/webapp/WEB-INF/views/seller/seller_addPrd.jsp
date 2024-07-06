@@ -155,13 +155,13 @@
 		optionName.type = 'text';
 		optionName.id = 'option-name';
 		optionName.name = 'optName';
-		optionName.placeholder = '옵션명 ' + optionCount;
+		optionName.placeholder = '옵션명 입력';
 
 		// 옵션값 입력 필드 생성
 		const optionValue = document.createElement('input');
 		optionValue.type = 'text';
 		optionValue.name = 'optValue';
-		optionValue.placeholder = '옵션값 ' + optionCount;
+		optionValue.placeholder = '옵션값 입력';
 
 		// 삭제 버튼 생성
 		const removeButton = document.createElement('button');
@@ -395,10 +395,10 @@
 							type="radio" name="prdType" value="대여">대여</label>
 					</div>
 					<div class="form-group">
-						<label>상품명</label> <input type="text" name="prdName">
+						<label>상품명</label> <input id="prdPrice" type="text" name="prdName">
 					</div>
 					<div class="form-group">
-						<label>가격</label> <input type="number" name="prdPrice">
+						<label>가격</label> <input id="prdPrice" type="number" name="prdPrice">
 					</div>
 
 					<!-- 카테고리 -->
@@ -445,7 +445,9 @@
 						<div id="optionsContainer"></div>
 					</div>
 					<div class="form-group">
-						<label>재고량</label> <input type="text" name="prdStock">
+						<label style="display: inline-block; width: 100px;">재고량</label>
+						<input id="prdPrice" type="number" name="prdStock">
+						<label style="display: inline-block; width: 100px;">개</label>
 					</div>
 					<div class="buttons">
 						<button type="submit">등록하기</button>

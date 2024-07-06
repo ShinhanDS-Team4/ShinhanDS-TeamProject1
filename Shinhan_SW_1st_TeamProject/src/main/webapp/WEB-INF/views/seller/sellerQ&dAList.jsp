@@ -129,10 +129,11 @@
 						</c:forEach>
 					</tbody>
 				</table>
-				<div class="actions">
+				
+			</div>
+			<div class="actions">
 					<button onclick="addAdminQAPopUp()">문의 등록</button>
 				</div>
-			</div>
 		</section>
 		<%-- <aside class="notifications">
 			<div class="notify_icon">

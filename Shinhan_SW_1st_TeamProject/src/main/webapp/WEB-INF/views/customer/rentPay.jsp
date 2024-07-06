@@ -255,7 +255,7 @@
 				<input type="hidden" id="totalPrice" name="totalPrice" value="${rentInfo.total_rent_price}" />
 					<input type="hidden" id="orderId" name="orderId" value="${rentInfo.rental_code}" />
 				<div class="buttons">
-					<button type="button" id="apply_coupon" onclick="applyCoupon()">선택하기</button>
+					<button type="button" class="select-button" id="apply_coupon" onclick="applyCoupon()">선택하기</button>
 				</div>
 
 			</div>
@@ -268,17 +268,20 @@
 				<label for="pointLeft">사용할 포인트</label> <input type="number"
 					id="usePoint" name="usePoint">
 				<div class="buttons">
-					<button type="button" id="apply_point" onclick="applyPoint()">사용</button>
+					<button type="button" id="apply_point" class="select-button" onclick="applyPoint()">사용</button>
 				</div>
 			</div>
 		</div>
-`
+
 		<div class="form-group">
 			<label>최종 결제 금액</label> <input type="number" readonly="readonly"
 				value="${rentInfo.total_rent_price}">
 		</div>
-		<button class="payment-button" id="orderBtn">결제하기</button>
-		<button class="payment-button" id="cancelBtn">뒤로가기</button>
+		<div class="payment-group">
+			<button class="payment-button" id="orderBtn">결제하기</button>
+			<button class="payment-button" id="cancelBtn">뒤로가기</button>
+		</div>
 	</main>
+	<%@ include file="../common/footer.jsp"%>
 </body>
 </html>

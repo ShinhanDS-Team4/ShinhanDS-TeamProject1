@@ -42,6 +42,7 @@ import com.team4.shoppingmall.member.MemberService;
 import com.team4.shoppingmall.order_detail.OrderUpdateReqDTO;
 import com.team4.shoppingmall.order_detail.Order_DetailDTO;
 import com.team4.shoppingmall.order_detail.Order_DetailService;
+import com.team4.shoppingmall.prod.ProdDTO;
 import com.team4.shoppingmall.prod.ProdService;
 import com.team4.shoppingmall.prod_image.Prod_ImageDTO;
 import com.team4.shoppingmall.prod_image.Prod_ImageService;
@@ -287,11 +288,17 @@ public class SellerPageController {
 
 	// 상품 수정 페이지
 	@GetMapping("/ModifyProduct.do")
-	public String modifyProduct(Model model, Model model1, Model model2, Model model3, Model model4, Model model5,
-			@RequestParam("stock_id") String stockID, HttpSession session) throws UnsupportedEncodingException {
+	public String modifyProduct(Model model, @RequestParam("stock_id") String stockID, HttpSession session) throws UnsupportedEncodingException {
 
 		MemberDTO mem = (MemberDTO)session.getAttribute("member");
 		String sellerID = mem.getMember_id();
+		
+		//Depth 값이 1이고, 부모 카테고리 ID가 Null인 카테고리들을 가져오기
+		CategoryDTO categoryList = new CategoryDTO();
+		categoryList.setCategory_depth(1);
+		categoryList.setParent_category_id(null);
+		
+		List<CategoryDTO> firstCategoryList = categoryService.firstDepthCategoryList();
 		
 		String stock_id = URLDecoder.decode(stockID, "UTF-8");// 한글로 변환
 		System.out.println("가져온 stock_id:" + stock_id);
@@ -302,8 +309,15 @@ public class SellerPageController {
 		if (Objects.isNull(seller_Prod_StockDTO)) {// 대여상품 재고일 경우
 			RentProdStockDTO rentProdStockDTO = rentProdStockService.selectById(stock_id);// 재고의 기본 정보 끌어오기
 			System.out.println("�옱怨쟅D:" + rentProdStockDTO);
-
+			
 			String ProdID = rentProdStockDTO.getProd_id();
+			
+			//해당 재고와 연동되어 있는 상품의 정보 가져오기
+			ProdDTO prodDTO = prodService.selectByProdId(ProdID);
+			
+			//해당 재고와 연결되어 있는 상품ID와 연동되어 있는 카테고리 정보 가져오기
+			int category_id = prodDTO.getCategory_id();
+			CategoryDTO categoryDTO =categoryService.selectById(category_id);
 
 			Prod_ImageDTO mainImageDTO = new Prod_ImageDTO();
 			mainImageDTO.setProd_id(ProdID);
@@ -338,14 +352,26 @@ public class SellerPageController {
 				}
 			}
 
-			model1.addAttribute("StockInfo", rentProdStockDTO);
-			model2.addAttribute("ProductInfo", prodService.selectByProdId(ProdID));
-			model3.addAttribute("ProdMainImgList", prodMainImgList);
-			model4.addAttribute("ProdDescImgList", prodDescImgList);
+			model.addAttribute("sellerInfo", memberService.selectById(sellerID));
+			model.addAttribute("StockInfo", rentProdStockDTO);
+			model.addAttribute("ProductInfo", prodDTO);
+			model.addAttribute("CategoryInfo", categoryDTO);
+			model.addAttribute("ProdMainImgList", prodMainImgList);
+			model.addAttribute("ProdDescImgList", prodDescImgList);
+			model.addAttribute("optionList", optionDTOList);
+			model.addAttribute("depth1categoryList", firstCategoryList);
 
 			return "/seller/seller_RentStock_modifyPrd";
 		} else {// 판매상품 재고일 경우
 			String ProdID = seller_Prod_StockDTO.getProd_id();
+			
+			//해당 재고와 연동되어 있는 상품의 정보 가져오기
+			ProdDTO prodDTO = prodService.selectByProdId(ProdID);
+			
+			//해당 재고와 연결되어 있는 상품ID와 연동되어 있는 카테고리 정보 가져오기
+			int category_id = prodDTO.getCategory_id();
+			CategoryDTO categoryDTO =categoryService.selectById(category_id);
+			
 			Prod_ImageDTO mainImageDTO = new Prod_ImageDTO();
 			mainImageDTO.setProd_id(ProdID);
 			mainImageDTO.setImg_type(0);
@@ -378,11 +404,13 @@ public class SellerPageController {
 
 			// System.out.println(uploadDir);
 			model.addAttribute("sellerInfo", memberService.selectById(sellerID));
-			model1.addAttribute("StockInfo", seller_Prod_StockDTO);
-			model2.addAttribute("ProductInfo", prodService.selectByProdId(ProdID));
-			model3.addAttribute("ProdMainImgList", prodMainImgList);
-			model4.addAttribute("ProdDescImgList", prodDescImgList);
-			model5.addAttribute("optionList", optionDTOList);
+			model.addAttribute("StockInfo", seller_Prod_StockDTO);
+			model.addAttribute("ProductInfo", prodDTO);
+			model.addAttribute("CategoryInfo", categoryDTO);
+			model.addAttribute("ProdMainImgList", prodMainImgList);
+			model.addAttribute("ProdDescImgList", prodDescImgList);
+			model.addAttribute("optionList", optionDTOList);
+			model.addAttribute("depth1categoryList", firstCategoryList);
 
 			return "/seller/seller_SellStock_modifyPrd";
 		}
@@ -467,13 +495,16 @@ public class SellerPageController {
 		// LocalDate를 java.sql.Date로 변환
 		Date sqlDate = Date.valueOf(localDate);
 
-		// 문의ID 생성
-		Integer qid = 12305;
+		Integer maxAdminInqID = admin_inqService.findMaxAdminInqId();
+		
+		if (Objects.isNull(maxAdminInqID))
+			maxAdminInqID = 0;
+		maxAdminInqID++;
 
 		// 이후에 SQL문으로 DB에 등록
 
 		Admin_InqDTO admin_InqDTO = new Admin_InqDTO();
-		admin_InqDTO.setAdmin_inq_id(qid);
+		admin_InqDTO.setAdmin_inq_id(maxAdminInqID);
 		admin_InqDTO.setAdmin_inq_title(admin_inq_title);
 		admin_InqDTO.setAdmin_inq_content(admin_inq_content);
 		admin_InqDTO.setAdmin_inq_date(sqlDate);
