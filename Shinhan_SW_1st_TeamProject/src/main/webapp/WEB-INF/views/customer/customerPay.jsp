@@ -278,7 +278,6 @@
 					주소 선택</button>
 			</div>
 
-
 			<div class="form-group">
 				<label for="coupon">쿠폰 선택</label> <select name="selectedCoupon"
 					id="selectedCoupon">
