@@ -83,8 +83,10 @@
 			                   type: "get",
 			                   data: { password: password },
 			                   success: function(data) {
-			                	   alert("회원 탈퇴 성공");
-			                	   window.location.href = "${path}/";
+			                	   alert(data); 
+			                	   if(data == "회원 탈퇴 완료") {
+			                		   window.location.href = "${path}/";
+			                	   }
 			                   },
 			                   error: function(xhr, status, error) {
 			                       console.error("Error: " + error);
