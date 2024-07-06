@@ -46,6 +46,9 @@ public interface MemberDAOInterface {
 	public int updatePassword(MemberDTO member);
 	
 	public int memberUpdateAccess(MemberDTO member);
+	
+	public MemberDTO memberCheckByPw2(MemberDTO member);
+	 
 
 }
 

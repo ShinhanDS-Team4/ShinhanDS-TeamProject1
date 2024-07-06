@@ -108,5 +108,8 @@ public class MemberService {
 	public int memberUpdateAccess(MemberDTO member) {
 		return memberDAO.memberUpdateAccess(member);
 	}
+	public MemberDTO memberCheckByPw2(MemberDTO member) {
+		return memberDAO.memberCheckByPw2(member); 
+	} 
 
 }

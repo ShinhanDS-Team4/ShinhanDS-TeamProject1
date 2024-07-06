@@ -21,7 +21,9 @@ public class RentSelectDTO {
 	Integer opt_id4;
 	Integer opt_id5;
 	Integer rent_product_price;
-	Integer img_id;
+	String img_id;
 	String rent_state;
 	Integer rentdetail_id;
+	String prod_id;
+	Integer rent_num;
 }
