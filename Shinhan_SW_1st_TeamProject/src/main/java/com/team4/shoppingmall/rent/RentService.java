@@ -70,12 +70,13 @@ public class RentService {
 		rentDetailDTO.setRent_num(prodVO.getRent_num()); 
 		rentDetailDTO.setRent_product_price(prodVO.getRent_product_price()); 
 		rentDetailDTO.setRental_code(rental_code);
+		
 		//3.
 		result = rentDetailDAO.rentDetailInsert(rentDetailDTO);
 		
 		rentProdStockDAO.rentProdStockUpdate(prodVO);
 		
-		return result;
+		return rental_code;
 
 	};
 

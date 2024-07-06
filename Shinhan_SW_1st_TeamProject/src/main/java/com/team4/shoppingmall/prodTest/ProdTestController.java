@@ -241,53 +241,75 @@ public class ProdTestController {
 	//ProductNewVO 생성
 	@PostMapping("/productOrderInsert.do")
 	@ResponseBody
-	public int productOrderInsert(HttpServletRequest request, 
+	public Map<String, Object> productOrderInsert(HttpServletRequest request, 
 								  Model model,
 								  @RequestBody ProductNewVO prodVO,
 								  HttpSession session) throws UnsupportedEncodingException
 	{
+		
+		Map<String, Object> response = new HashMap<>();
+		 
     	//session
 		MemberDTO member =  (MemberDTO) session.getAttribute("member");
 		String member_id = member.getMember_id();
         String prod_id = prodVO.getProd_id();
         System.out.println("구매하기상품id=" + prod_id);
         
-      //재고 체크 (프론트에서 체크 했는데 백도 나중에 추가)
+        //재고 체크 (프론트에서 체크 했는데 백도 나중에 추가)
     	if(prodVO.getS_stock_id() == null || prodVO == null) {
-    		return 0; 
+    		  return response;  
 		}
     	
 		int productPrice = Integer.parseInt(prodVO.getProductPrice());
 		int total_price = productPrice * prodVO.getOrder_num();   //주문 총금액
 		
 		//1.주문,주문상세 생성 (서비스에서 로직 처리)
-		int orderProdInsert =  orderProdService.orderprodInsert(prodVO, total_price, member_id);
-		
-		return orderProdInsert; 
+	    try {
+	        //1.주문,주문상세 생성 (서비스에서 로직 처리)
+	        int order_id = orderProdService.orderprodInsert(prodVO, total_price, member_id);
+
+	        response.put("status", "success");
+	        response.put("order_id", order_id);
+	    } catch (Exception e) {
+	        response.put("status", "error");
+	        response.put("message", e.getMessage());
+	    }
+
+	    return response; 
     }
 	
 	/* 대여하기 */
 	@PostMapping("/rentProductOrderInsert.do")
 	@ResponseBody
-	public int rentProductOrderInsert(HttpServletRequest request, 
+	public Map<String, Object> rentProductOrderInsert(HttpServletRequest request, 
 								  Model model,
 								  @RequestBody ProductNewVO prodVO,
 								  HttpSession session) 
 	{
+		Map<String, Object> response = new HashMap<>();
+		
+		//session
 		MemberDTO member =  (MemberDTO) session.getAttribute("member");
 		String member_id = member.getMember_id();
         String prod_id = prodVO.getProd_id();
         
         
         if(prodVO.getR_stock_id() == null || prodVO == null) {
-        	return 0; 
+        	return response; 
         }
         
-      
-        int rentProdInsert = rentService.rentInsert2(prodVO, member_id);
+        try {
+        	//대여 생성 후 대여id 반환 (서비스에서 로직 처리)
+        	int rental_code = rentService.rentInsert2(prodVO, member_id);
+        	response.put("status", "success");
+	        response.put("rental_code", rental_code);
+        } catch (Exception e) {
+	        response.put("status", "error");
+	        response.put("message", e.getMessage());
+	    }
         
         
-        return rentProdInsert; 
+        return response; 
         
 	}
 

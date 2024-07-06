@@ -868,13 +868,13 @@
                 contentType:"application/json;charset=utf-8",
                 success: function(response) {
                     console.log(response);
-                    if(response > 0 ){
-	                   	  alert("주문 저장 완료");
-	                   	  //주문페이지로 이동
-	                   	  location.href="${path}/customer/orderPay";
-	                    }else{
-	                    	alert("상품 재고가 없습니다.");
-	                    }
+                    if(response.status === 'success'){
+                        alert("주문 저장 완료");
+                        //주문페이지로 이동
+                        location.href = "${path}/customer/orderPay.do?order_id=" + response.order_id;
+                    } else {
+                        alert("상품 재고가 없습니다.");
+                    }
                 },
                 error: function(error) {
                     alert("Error: " + error);
@@ -1108,13 +1108,15 @@
                data:JSON.stringify(rentFormParam),
                contentType:"application/json;charset=utf-8",
                success: function(response) {
-              	 if(response > 0){
-              		 alert("대여 저장 완료 (현재 남은 재고" + currentStock.stock + "개)");
-                   	 //location.href=""; 주문 페이지로 이동
-                   	 
-              	 }else{
-              		 alert("오류가 발생했습니다. 다시 시도해주세요.");
-              	 }
+              	if(response.status === 'success'){
+              		alert("대여 저장 완료 (현재 남은 재고" + currentStock.stock + "개)");
+                    //대여 결제페이지로 이동
+                    location.href = "${path}/customer/rentPay.do?rental_code=" + response.rental_code;
+                } else {
+                	 alert("오류가 발생했습니다. 다시 시도해주세요.");
+                }
+              	 
+              	 
                },
                error: function(error) {
               	 	 alert("Error: "+error);
