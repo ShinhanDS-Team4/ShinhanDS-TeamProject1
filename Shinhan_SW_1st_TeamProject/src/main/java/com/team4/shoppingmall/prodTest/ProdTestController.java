@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,9 +27,12 @@ import com.team4.shoppingmall.buyer_inq.Buyer_InqService;
 import com.team4.shoppingmall.cart.CartService;
 import com.team4.shoppingmall.category.CategoryDTO;
 import com.team4.shoppingmall.category.CategoryService;
+import com.team4.shoppingmall.member.MemberDTO;
 import com.team4.shoppingmall.order_detail.Order_DetailService;
 import com.team4.shoppingmall.order_prod.OrderProdService;
 import com.team4.shoppingmall.prod.ProductNewVO;
+import com.team4.shoppingmall.prod_image.Prod_ImageDTO;
+import com.team4.shoppingmall.prod_image.Prod_ImageService;
 import com.team4.shoppingmall.prod_option.Prod_OptionDTO;
 import com.team4.shoppingmall.prod_optionTest.Prod_OptionTestService;
 import com.team4.shoppingmall.rent.RentService;
@@ -53,7 +57,7 @@ public class ProdTestController {
 	ProdTestService prodTestService; 
 	
 	@Autowired
-	Prod_OptionTestService prod_OptionSerTestService; 
+	Prod_OptionTestService prod_OptionTestService; 
 	
 	@Autowired
 	Buyer_InqService buyer_InqService; 
@@ -82,6 +86,9 @@ public class ProdTestController {
 	@Autowired
 	CategoryService categoryService; 
 	
+	@Autowired
+	Prod_ImageService imageService;
+	
 	
 	@GetMapping("/productlistTest")
 	public void productList() {
@@ -90,15 +97,20 @@ public class ProdTestController {
 		
 	/* 상품 상세 페이지 */
 	@GetMapping("/product_detail")
-	public void productDetail(String prod_id, Model model) throws JsonProcessingException {
+	public void productDetail(String prod_id, 
+								Model model
+								//,@RequestBody Map<String, Object> request 
+	) throws JsonProcessingException {
 		
 		//나중에 삭제하기
-		//prod_id = "논아이론 사틴 솔리드 드레스 셔츠 - 화이트_199-81-22242"; //대여재고없는상품 test
-		prod_id = "자수 미니 원피스 - 화이트_199-81-21909";
+		//prod_id = "논아이론 사틴 솔리드 드레스 셔츠 - 화이트_199-81-22242"; //판매에 있고 ,대여재고없는상품 test
+		prod_id = "자수 미니 원피스 - 화이트_199-81-21909"; //판매,대여 둘다 는 상품
+		//prod_id = "[대여상품]원피스 - 화이트_222-81-77709"; //대여재고만 있는 상품	
+		//prod_id = "세일러 셔츠-스카이블루_199-81-22361";
 		
 		//상품의 정보와 옵션 조회
 		//옵션명과 값 전부 조회
-		ArrayList<Object> prod_Options = (ArrayList<Object>) prod_OptionSerTestService.selectAllOptionsByProdId(prod_id);
+		ArrayList<Object> prod_Options = (ArrayList<Object>) prod_OptionTestService.selectAllOptionsByProdId(prod_id);
 		model.addAttribute("prod_Options", prod_Options);
 		 
 		//판매 상품 옵션별 재고량 조회
@@ -112,6 +124,8 @@ public class ProdTestController {
 		Map<String,Object> prod_detail_info = prodTestService.selectProdDetailInfoByProdId(prod_id);
 		prod_detail_info.put("prod_id", prod_id); 
 		model.addAttribute("prod_detail_info", prod_detail_info);
+		
+		System.out.println("상품id=" + prod_id);
 		
 		//상품 카테고리 조회
 		CategoryDTO category = categoryService.productCategoryByProdId(prod_id);
@@ -133,7 +147,7 @@ public class ProdTestController {
 		model.addAttribute("productReviews", productReviews);
 		
 		//리뷰 목록에 불러올 상품의 옵션 목록
-		List<Prod_OptionDTO> prodOptions = prod_OptionSerTestService.productAllOptionsByProdId(prod_id);
+		List<Prod_OptionDTO> prodOptions = prod_OptionTestService.productAllOptionsByProdId(prod_id);
 		model.addAttribute("prodOptions", prodOptions);
 		
 		/* 상품 전체 문의 목록 */
@@ -144,10 +158,36 @@ public class ProdTestController {
 		List<RentProdStockDTO> rentProductStockCheck = rentProdStockService.selectRentStockByProdId2(prod_id);
 		model.addAttribute("rentProductStockCheck", rentProductStockCheck);
 		
+		//상품의 이미지
+		Prod_ImageDTO imageDTO = new Prod_ImageDTO();
+		//imageDTO.setImg_id("imageDTOforSearch");
+		//imageDTO.setProd_id(prod_id);
+		//imageDTO.setImg_type(0);
+		
+		//상품id로 전체 사진 조회
+		List<Prod_ImageDTO> imgIdList = imageService.findAllImgsByProdID(prod_id);
+		System.out.println("imgIdList" + imgIdList);
+		
+		//메인 사진들 조회
+		List<Map<String,Object>> mainImgIdList = imageService.prodMainImgInfoByProdId(prod_id); 
+		//상품 정보 사진 조회
+		List<Map<String,Object>> subImgIdList = imageService.prodSubImgInfoByProdId(prod_id); 
+		
+		System.out.println("mainImgIdList" + mainImgIdList);
+		System.out.println("subImgIdList" + subImgIdList);
 	}
 	
+
+   // 로그인 여부 확인 
+   @GetMapping("/checkLoginStatus")
+    public ResponseEntity<Map<String, Boolean>> checkLoginStatus(HttpSession session) {
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("isLoggedIn", session.getAttribute("member") != null);
+        return ResponseEntity.ok(response);
+    }
 	
-  //장바구니 - 상품(판매)
+	
+    //장바구니 - 상품(판매)
 	@PostMapping("/productCartInsert.do")
 	@ResponseBody
 	public int productCartInsert(String prod_id,
@@ -157,10 +197,9 @@ public class ProdTestController {
 								 @RequestBody ProductNewVO prodVO) 
 	{
 		//session
-		//MemberDTO member =  session.getAttribute("member");
-		//String member_id = member.getMember_id();
-        String member_id = "testid";
-        prod_id = "";
+		MemberDTO member =  (MemberDTO) session.getAttribute("member");
+		String member_id = member.getMember_id();
+		prod_id = prodVO.getProd_id();
         
         if(prodVO.getS_stock_id() == null || prodVO == null) {
     		return 0; 
@@ -178,16 +217,15 @@ public class ProdTestController {
 	@PostMapping("/rentProductCartInsert.do")
 	@ResponseBody
 	public int rentProductCartInsert(String prod_id,
-								 HttpServletRequest request, 
-								 HttpSession session, 
-								 Model model,
-								 @RequestBody ProductNewVO prodVO) 
+									 HttpServletRequest request, 
+									 HttpSession session, 
+									 Model model,
+									 @RequestBody ProductNewVO prodVO) 
 	{
 		//session
-		//MemberDTO member =  session.getAttribute("member");
-		//String member_id = member.getMember_id();
-        String member_id = "testid";
-        prod_id = "";
+		MemberDTO member =  (MemberDTO) session.getAttribute("member");
+		String member_id = member.getMember_id();
+        prod_id = prodVO.getProd_id();
         
         if(prodVO == null || prodVO.getR_stock_id() == null) {
     		return 0; 
@@ -209,11 +247,11 @@ public class ProdTestController {
 								  HttpSession session) throws UnsupportedEncodingException
 	{
     	//session
-		//MemberDTO member =  session.getAttribute("member");
-		//String member_id = member.getMember_id();
-        String member_id = "testid";
-        String prod_id = "";
-		
+		MemberDTO member =  (MemberDTO) session.getAttribute("member");
+		String member_id = member.getMember_id();
+        String prod_id = prodVO.getProd_id();
+        System.out.println("구매하기상품id=" + prod_id);
+        
       //재고 체크 (프론트에서 체크 했는데 백도 나중에 추가)
     	if(prodVO.getS_stock_id() == null || prodVO == null) {
     		return 0; 
@@ -236,10 +274,10 @@ public class ProdTestController {
 								  @RequestBody ProductNewVO prodVO,
 								  HttpSession session) 
 	{
-		//MemberDTO member =  session.getAttribute("member");
-		//String member_id = member.getMember_id();
-		String member_id = "testid";	 
-        String prod_id = "";
+		MemberDTO member =  (MemberDTO) session.getAttribute("member");
+		String member_id = member.getMember_id();
+        String prod_id = prodVO.getProd_id();
+        
         
         if(prodVO.getR_stock_id() == null || prodVO == null) {
         	return 0; 
@@ -267,11 +305,12 @@ public class ProdTestController {
 		
 		Map<String,String> buyer_inq_map = new HashMap<String,String>();
 		
-		//MemberDTO member =  session.getAttribute("member");
-		//String member_id = member.getMember_id();
-		String member_id = "testid";
-		 prod_id = "자수 미니 원피스 - 화이트_199-81-21909";
+		MemberDTO member =  (MemberDTO) session.getAttribute("member");
+		String member_id = member.getMember_id();
+		//String member_id = "testid";
+		//prod_id = "자수 미니 원피스 - 화이트_199-81-21909";
 		//prod_id = "논아이론 사틴 솔리드 드레스 셔츠 - 화이트_199-81-22242";
+		
 		
          buyer_inq_map.put("buyer_inq_title", qnaTitle); 
 		 buyer_inq_map.put("buyer_inq_content", qnaTestarea); 
@@ -293,5 +332,4 @@ public class ProdTestController {
 		}
 		
 	}
-	
 }

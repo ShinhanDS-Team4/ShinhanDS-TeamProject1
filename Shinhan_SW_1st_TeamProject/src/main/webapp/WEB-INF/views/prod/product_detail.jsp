@@ -4,6 +4,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"  %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:set var="path" value="${pageContext.servletContext.contextPath}" />
+<%-- 로그인 여부를 확인하기 위한 세션 값 확인 --%>
+<c:set var="isLoggedIn" value="${not empty sessionScope.member}"   />
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,14 +19,22 @@
 <script src="${path}/resources/js/jquery-3.7.1.min.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- bxSlider 플러그인 연결 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bxslider@4.2.17/dist/jquery.bxslider.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bxslider@4.2.17/dist/jquery.bxslider.min.js"></script>
 <script>
 	$(function() {
 		//배송 안내 정보 토글
-		$('.toggle-button').click(function() {
-			$('.toggle-content').slideToggle();
-			$('.arrow').toggleClass('open');
-		});
+	    $(".toggle-button").click(function() {
+	        var content = $(this).next(".toggle-content");
+	        var arrow = $(this).find(".arrow");
 
+	        content.slideToggle(300); // 내용의 표시/숨기기 
+	        arrow.toggleClass("open"); // 화살표의 방향 변경
+	    });
+	    
+	    
 		//상품 상세 정보, 리뷰 버튼 조작  (동작 수정필요 - 리뷰버튼 클릭하고 상품정보버튼 클릭하면 상품정보내용이 안나타남)
 		$('.detailbtn_wrap button').click(function(e) {
 			e.preventDefault();
@@ -89,7 +99,18 @@
                   }
               });
          });
-       
+		//메인 상품 사진 슬라이드
+        $('.product-img-slide').bxSlider({
+        	  // auto: true,           // 자동 슬라이드		
+               controls: true,      // 양옆 화살표 노출 여부
+               pager: true,         // 슬라이드 밑 버튼 노출 여부
+               minSlides: 1,
+               maxSlides: 1
+               //slideWidth: 500,
+               //slideMargin: 10
+    	});
+        
+        
 	});
 </script>
 </head>
@@ -101,6 +122,7 @@
 	<div class="popup-background" id="popupBackground_rent">
 	    <div class="popup-container">	       
 	        <div class="popup-icon">!</div>	       
+	         <p class="saveCartText">선택한 상품이 장바구니에 저장됩니다.</p> 
 	        <p>장바구니로 이동하시겠습니까?</p>	        
 	        <button id="yesRentCartBtn" class="popup-button yes-button">네</button>
 	        <button id="noRentCartBtn" class="popup-button no-button">아니요</button>
@@ -170,7 +192,8 @@
 	<div class="popup-background" id="popupBackground">
 	    <div class="popup-container">	       
 	        <div class="popup-icon">!</div>	       
-	        <p>장바구니가 저장됩니다. 장바구니로 이동하시겠습니까?</p>	        
+	        <p class="saveCartText">선택한 상품이 장바구니에 저장됩니다.</p> 
+	        <p>장바구니로 이동하시겠습니까?</p>	        
 	        <button class="popup-button yes-button">네</button>
 	        <button class="popup-button no-button">아니요</button>
 	    </div>
@@ -178,7 +201,7 @@
 	<%-- 상품 문의 모달 창 --%>
 	<form id="productQnaForm">
 		
-		<input type="hidden" name="prod_id" var="${prod_detail_info.prod_id}">
+		<input type="hidden" name="prod_id" value="${prod_detail_info.prod_id}">
 		
 		<div id="myModal" class="modal">
 			<div class="modal-content">
@@ -204,13 +227,18 @@
 	<%-- 본문 --%>
 	<div class="container">
 		<div class="product_detail-inner">
-				<p>home > ${category.parentCategoryName} > ${category.currentCategoryName}</p>
+				<p class="categoryName"><span class="homeText">home</span> > ${category.parentCategoryName} > ${category.currentCategoryName}</p>
 				<div class="product-detail_wrap">
 				
 					<%-- 메인 상품 사진 :판매자가 등록한 이미지 중 첫번째 --%>
 					<div class="product-image">
-						<img src="${path}/resources/images/product1.png" alt="상품">  
+						<ul class="product-img-slide">
+							<li><img src="${path}/resources/images/testImg/testimg1.jpg" alt="1"></li>
+							<li><img src="${path}/resources/images/testImg/testimg2.jpg" alt="2"></li>
+							<li><img src="${path}/resources/images/testImg/testimg3.jpg" alt="3"></li>
+						</ul>
 					</div>
+					
 					<div class="product-details">
 						<p class="free">무료배송</p>
 						<h1>${prod_detail_info.BRAND}</h1>
@@ -285,12 +313,38 @@
 		        	var currentStock = {}; ////선택한 옵션 상품의 재고id
 					    
 					var previousValues = {};//수량, 가격 처리
-						
+					
+
+		            // 로그인 여부 확인 함수
+		            function checkLoginStatus(callback) {
+		                $.ajax({
+		                    url: '${path}/prod/checkLoginStatus', // 서버에서 로그인 상태를 확인하는 엔드포인트
+		                    type: 'GET',
+		                    success: function(response) {
+		                        if (response.isLoggedIn) {
+		                             callback(); // 로그인 상태일 경우 콜백 함수 실행
+		                        	 console.log("로그인 확인 성공");
+		                        } else {
+		                            alert('로그인이 필요합니다.');
+		                        	// 로그인 페이지로 리다이렉트
+		                            window.location.href = '${path}/member_test/login.do'; 
+		                        }
+		                    },
+		                    error: function(error) {
+		                        console.error('Error checking login status:', error);
+		                    }
+		                });
+		            }
 						
 		    		/* 장바구니 버튼 클릭 시 나타나는 팝업창 */ 
 		    		$('#cartButton').on('click', function(e) {
 		    			e.preventDefault();
 		    			$('.popup-background').show();
+		    			
+		    		    checkLoginStatus(function() {
+		    		    	console.log("로그인 체크 콜백함수 호출");
+		    		    	loacation.reload(); 
+		    	        });
 		    		});
 		    		
 		    		//네 선택 시 장바구니페이지로 이동
@@ -309,7 +363,7 @@
 	        		});
 	        		
 		        });
-				//버튼 클릭 -> 컨트롤러에 선택한 상품 옵션 값 넘김 (수정중)
+				//버튼 클릭 -> 컨트롤러에 선택한 상품 옵션 값 넘김
 				function sendProdOption(){
 				
 				   
@@ -397,7 +451,6 @@
 			            alert("옵션을 선택해 주세요.");
 			        }
 				 	
-				 	
 				}
 		    </script>
 			
@@ -407,10 +460,74 @@
 				<button type="button" data-tab="container-review">리뷰</button>
 			</div>
 			
-			<%-- 상세 정보 --%>
+			<%-- 상세 정보 (사진, 설명) --%>
 			<div class="container-detail active">
-				<h1 style="text-align: center;">상품 정보 이미지 등록할 부분</h1>
-				<div class="container-detail-here"></div>
+				<div class="container-detail-img-wrap">
+					<div class="container-detail-prod-img">  <%-- 스크롤처리 --%>
+						<ul class="prod-img-scroll">
+							<li><img src="${path}/resources/images/testImg/testimg1.jpg" alt="1"></li>
+							<li><img src="${path}/resources/images/testImg/testimg2.jpg" alt="2"></li>
+							<li><img src="${path}/resources/images/testImg/testimg3.jpg" alt="3"></li>
+							<li><img src="${path}/resources/images/testImg/testimg1.jpg" alt="1"></li>
+							<li><img src="${path}/resources/images/testImg/testimg2.jpg" alt="2"></li>
+							<li><img src="${path}/resources/images/testImg/testimg3.jpg" alt="3"></li>
+						</ul>
+					</div>
+					<div class="container-detail-prod-subtext">  <%-- fixed --%>
+						<h1>설명 텍스트 박스</h1>
+						<div class="prod-subtext-scroll">
+							<h2>설명 제목</h2>
+							<p>서브 설명 설명</p>
+							<p>설명설명설명설명설명설명설명설명설명설명설명설명</p>
+						</div>
+					</div>				
+				</div>
+				<%-- 배송 정보 안내 --%>
+				<div class="toggle-button inner">
+					<h2>배송/교환/반품 안내</h2>
+					<span class="arrow">▼</span>
+				</div>
+				<div class="toggle-content inner">
+					<h3>배송안내</h3>
+					<table>
+						<tr>
+							<td>일반 택배</td>
+							<td>
+								<p>전제품 국내산지에서 직접 배송하는 상품입니다.</p>
+								<p>일반 택배: 전제품 국내산지에서 3일 이내 배송 (토,일,공휴일 제외)</p>
+							</td>
+						</tr>
+						<tr>
+							<td>교환/반품비용</td>
+							<td>교환/반품 배송비: 2,500원 (CJ대한통운 교환/반품 수거 비용)</td>
+						</tr>
+						<tr>
+							<td>교환/반품</td>
+							<td>
+								<p>1. 마이페이지에서 교환 신청 (단순 변심인 경우, 교환은 원하는 옵션 선택 후 교환신청)</p>
+								<p>2. 교환 요청한 제품 회수하기 위해 반송비가 부과되는 경우 결제 완료 교환 선수</p>
+								<p>3. 1~3일 내 반품 제품 수거 (택배 선택 검토 필요)</p>
+								<p>4. 회수 제품 확인 후 상품 배송 (반품/교환 신청된 제품 외 교환/반품 배송)</p>
+							</td>
+						</tr>
+						<tr>
+							<td>안내사항</td>
+							<td>
+								<p>교환 기간: 교환은 제품을 받은 후 7일 내 가능합니다.</p>
+								<p>반품 기간: 반품은 제품을 받은 후 7일 내 가능합니다.</p>
+								<p>단순 변심일 경우 최초 배송한 상품의 상태와 다를 시 (세탁 또는 착용 후 외형 변형) 교환 및 반품이
+									불가합니다.</p>
+								<p>교환/반품 배송비: 2,500원 (CJ대한통운 교환/반품 수거 비용)</p>
+							</td>
+						</tr>
+						<tr>
+							<td>고객 A/S 안내</td>
+							<td>이 상품은 입점사상품으로, 입점사의 A/S 정책에 따라 서비스가 제공됩니다. 상세한 문의사항은
+								상품정보고객센터 및 A/S센터가 갖춘 정보를 확인해주세요.
+							</td>
+						</tr>
+					</table>
+				</div>
 			</div>
 			
 			<%-- 리뷰 목록 --%>
@@ -593,9 +710,10 @@
 	
 	//선택한 옵션 상품의 재고id 변수 선언
     var currentStock = {};
-	
 	//수량, 가격 처리
 	var previousValues = {};
+	
+
 	// 상품 원래 가격 (숫자만 추출)
     var originalPrice = parseInt($('.productPrice').text().replace(/[^0-9]/g, ''));
     $('.total').text(originalPrice + '원');
@@ -715,7 +833,6 @@
 
 	//구매하기 버튼 클릭 
 	$('#orderButton').on('click', function(){
-	
 		var allOptionsSelected = true;
         $('#prodOptionForm select').each(function() {
             if ($(this).val() === null || $(this).val() === "선택") {
@@ -754,7 +871,7 @@
                     if(response > 0 ){
 	                   	  alert("주문 저장 완료");
 	                   	  //주문페이지로 이동
-	                   	  //location.href
+	                   	  location.href="${path}/customer/orderPay";
 	                    }else{
 	                    	alert("상품 재고가 없습니다.");
 	                    }

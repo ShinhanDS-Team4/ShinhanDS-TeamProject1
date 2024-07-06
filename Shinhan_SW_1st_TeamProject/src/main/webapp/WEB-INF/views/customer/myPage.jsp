@@ -22,7 +22,7 @@
 }
 </style>
 <body>
-	<%@ include file="../common/header.jsp" %>
+	<%@ include file="../common/header.jsp" %>	
 	<%-- 마이페이지 : 메인 --%>
 	<div class="mypage_wrap">
 		<div class="myinfo inner">
@@ -45,11 +45,11 @@
 					</li>
 					<li>
 						<h3>
-							<a href="${path}/board/myreview.do">나의글</a>
+							<a href="${path}/review/myreview.do">나의글</a>
 						</h3>
 						<ul class="myinfo_submenu">
 							<li><a href="${path}/adminqna/myqna.do">문의글</a></li>
-							<li><a href="${path}/board/myreview.do">리뷰</a></li>
+							<li><a href="${path}/review/myreview.do">리뷰</a></li>
 						</ul>
 					</li>
 					<li>
@@ -74,7 +74,7 @@
 							</div>
 							<div class="profile_text">
 								<h3>
-									${member.member_name}님 <span>(${member.member_id})</span> <span>${member.birth_date}</span>
+									${member.member_name}님 <span>(${member.member_id})</span> <span class="birthText">${member.birth_date}</span>
 								</h3>
 								<div class="profile_text_box">
 									<p>
@@ -104,7 +104,7 @@
 						<table class="order_table">
 							<thead>
 								<tr>
-									<th>주문 번호</th>
+									<th>No.</th>
 									<th>상품이미지</th>
 									<th>상품 가격</th>
 									<th>상품 정보</th>
@@ -123,9 +123,8 @@
 						                        	<td>${order.ORDER_ID}</td>
 						                            <td style="background-color:powderblue;"><img src="${order.IMG_ID}" alt="${order.IMG_ID}" width="100"></td>
 						                            <td class="product-info">
-						                                <strong>${order.BRAND}</strong><br>
-						                                ${order.PROD_NAME}<br>
-						                                <span>${order.ORDER_NUM}개</span>
+						                                <strong>${order.ORDER_STATE}</strong><br>
+						                                <p>${order.PROD_NAME} (${order.ORDER_NUM}개)</p>
 						                            </td>
 						                            <td>${order.ORDER_PRODUCT_PRICE}원<br></td>
 						                            <td>
@@ -138,7 +137,7 @@
 						            </c:when>
 						            <c:otherwise>
 						                <tr>
-						                    <td colspan="5">주문 내역이 없습니다.</td>
+						                    <td colspan="6">주문 내역이 없습니다.</td>
 						                </tr>
 						            </c:otherwise>
 						        </c:choose>
@@ -153,9 +152,9 @@
 						<table class="order_table">
 							<thead>
 								<tr>
-									<th>대여 번호</th>
-									<th>대여 가격</th>
+									<th>No.</th>
 									<th>상품 정보</th>
+									<th>대여 가격</th>
 									<th>주문 기간</th>
 									<th>총 대여 금액</th>
 								</tr>
@@ -169,13 +168,14 @@
 						                        <tr>
 						                        	<td>${rent.RENTAL_CODE}</td>
 						                            <td class="product-info">
-						                                <strong>${rent.BRAND}</strong><br>
-						                                ${rent.PROD_NAME}<br>
-						                                <span>${rent.RENT_NUM}개</span>
+						                                <strong>${rent.RENT_STATE}</strong><br>
+						                               <span> ${rent.PROD_NAME}</span><span>(${rent.RENT_NUM}개)</span>
 						                            </td>
 						                            <td>${rent.RENT_PRODUCT_PRICE}원<br></td>
-						                            <td>
-						                            	${rent.RENT_START_DATE} ~ ${rent.RENT_END_DATE}
+						                            <td class="rentDateText">
+						                            	<p class="rent-start">${rent.RENT_START_DATE}</p>
+						                            	<p>~</p>
+						                            	<p class="rent-end">${rent.RENT_END_DATE}</p>
 						                            </td>
 						                            <td class="price">${rent.TOTAL_RENT_PRICE}원</td>
 						                        </tr>
