@@ -108,11 +108,15 @@ public class MemberService {
 	
 	public int memberUpdateAccess(MemberDTO member) {
 		return memberDAO.memberUpdateAccess(member);
-	}
+	} 
+  
+	public MemberDTO memberCheckByPw2(MemberDTO member) {
+		return memberDAO.memberCheckByPw2(member); 
+	}  
 	
 	public int seller_authority_access_deny(String member_id, String seller_authority) {
 		return memberDAO.seller_authority_access_deny(member_id, seller_authority);
-	}
+	} 
 
 	public List<MemberCustomerDTO> selectByAllCustomer() {
 		return memberDAO.selectByAllCustomer();

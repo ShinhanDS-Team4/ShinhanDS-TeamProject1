@@ -1,6 +1,5 @@
 package com.team4.shoppingmall.admin;
 
-import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -14,11 +13,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.team4.shoppingmall.customer.CustomerService;
+import com.team4.shoppingmall.event.EventDTO;
+import com.team4.shoppingmall.event.EventService;
 import com.team4.shoppingmall.member.MemberCustomerDTO;
 import com.team4.shoppingmall.member.MemberDTO;
 import com.team4.shoppingmall.member.MemberService;
@@ -44,6 +45,8 @@ public class AdminController {
 	NoticeService nService;
 	@Autowired
 	ProdService pService;
+	@Autowired
+	EventService evService;
 
 	Logger logger = LoggerFactory.getLogger(AdminController.class);
 
@@ -99,7 +102,7 @@ public class AdminController {
 		}
 		return findIdResult;
 	}
-
+	
 	// 비밀번호 찾기
 	@PostMapping("admin_findpw")
 	@ResponseBody
@@ -184,17 +187,11 @@ public class AdminController {
 	}
 
 	// 판매자 부분
-	// 판매자 목록 페이지
-	
-	Logger logger = LoggerFactory.getLogger(AdminController.class);
-	
-	@GetMapping("admin_page")
-	public String productlist() {
-		return "admin/admin_page";
-	}
-	
+	// 판매자 목록 페이지		
 	@GetMapping("admin_seller_list")
-	public String adminsellerlist() {
+	public String adminsellerlist(Model model) {
+		List<MemberDTO> mDto = mService.selectBySeller_authority();
+		model.addAttribute("sellers", mDto);
 		return "admin/admin_seller_list";
 	}
 
@@ -219,7 +216,9 @@ public class AdminController {
 
 	// 판매자 허용/거부 페이지	
 	@GetMapping("admin_seller_register")
-	public String adminsellerregister() {
+	public String adminsellerregister(Model model) {
+		List<MemberDTO> mDto = mService.selectBySeller();
+		model.addAttribute("sellers", mDto);
 		return "admin/admin_seller_register";
 	}
 
@@ -340,10 +339,18 @@ public class AdminController {
 		model.addAttribute("notices", nService.selectAll());
 		return "admin/admin_notice_list";
 	}
+	
 	@GetMapping("admin_notice_select")
+	@ResponseBody
 	public String adminnoticeselect(Model model, int not_id) {
 		model.addAttribute("notices", nService.selectById(not_id));
 		return "admin/admin_notice_select";
+	}
+	
+	@GetMapping("admin_notice_insert")
+	@ResponseBody
+	public String adminnoticeinsert0(NoticeDTO nDTO) {
+		return "admin/admin_notice_list";
 	}
 	
 	@PostMapping("admin_notice_insert")
@@ -355,39 +362,55 @@ public class AdminController {
 	}
 	
 	@GetMapping("admin_notice_update")
+	@ResponseBody
 	public int adminnoticeupdate(NoticeDTO nDTO) {
 		int update = nService.noticeUpdate(nDTO);
 		return update;
 	}
-	@GetMapping("admin_notice_delete")
+	
+	@PostMapping("admin_notice_delete")
+	@ResponseBody
 	public int adminnoticedelete(int not_id) {
 		int delete = nService.noticeDelete(not_id);
 		return delete;
 	}
 	
 	@GetMapping("admin_notice_search")
-	public @ResponseBody String adminnoticesearch(Model model, String search_title) {
-		List<NoticeDTO> noticeList = nService.noticeBysearch(search_title);
-		System.out.println(noticeList);
-		model.addAttribute("notices", noticeList);
-		return "admin/admin_customer_list_searchresult";
+	@ResponseBody
+	public String adminnoticesearch(Model model, String search_title) {
+		System.out.println(search_title);
+		List<NoticeDTO> notices = nService.noticeBysearch(search_title);
+		System.out.println(notices);
+		model.addAttribute("notices", notices);
+		return "admin/admin_notice_list_searchresult";
 	}	
 	
 	// 관리자 이벤트 게시판
 	@GetMapping("admin_event_list")
-	public String admineventlist() {
+	public String admineventlist(Model model) {
+		model.addAttribute("events", evService.selectAll());
 		return "admin/admin_event_list";
 	}
-	@GetMapping("admin_event_insert")
-	public String admineventinsert() {
+	@GetMapping("admin_event_select")
+	public String admineventselect(Model model, Integer event_id) {
+		System.out.println(event_id);
+		return "admin/admin_event_select";
+	}
+	@GetMapping("admin_event_create")
+	public String admineventcreate(EventDTO evDto) {
+		return "admin/admin_event_insert";
+	}
+	@PostMapping("admin_event_insert")
+	@ResponseBody
+	public String admineventinsert(EventDTO evDto) {
 		return "admin/admin_event_insert";
 	}
 	@GetMapping("admin_event_update")
-	public String admineventupdate() {
+	public String admineventupdate(EventDTO evDto) {
 		return "admin/admin_event_update";
 	}
 	@GetMapping("admin_event_delete")
-	public String admineventdelete() {
+	public String admineventdelete(Integer event_id) {
 		return "admin/admin_event_delete";
 	}
 	@GetMapping("admin_event_search")
@@ -397,88 +420,6 @@ public class AdminController {
 	@GetMapping("admin_event_search_result")
 	public String admineventsearchresult() {
 		return "admin/admin_event_search_result";
-	}
-	
-	@GetMapping("admin_faq")
-	public String adminsellerfaq() {
-		return "admin/admin_faq";
-	}
-	@GetMapping("admin_login")
-	public void adminlogindispaly() {
-		logger.debug("login요청(debug)");
-		logger.info("login요청(info)");
-		logger.warn("login요청(warn)");
-		logger.error("login요청(error)");	
-	}
-	
-	@GetMapping("admin_logout")
-	public String logout(HttpSession session) {
-		session.invalidate();
-		return "redirect:admin_login";		
-	}
-	
-	@PostMapping("admin_login")
-	public String loginCheck(@RequestParam("admin_id") String admin_id, @RequestParam("admin_pw") String admin_pw, HttpSession session, HttpServletRequest request) {
-		AdminDTO aDto = aService.loginChk(admin_id,admin_pw);
-		System.out.println(aDto);
-		if(aDto == null) {
-			session.setAttribute("loginResult", "존재하지 않는 ID입니다.");
-			return "redirect:admin_login";
-		} else if(!aDto.getAdmin_pw().equals(admin_pw)) {
-			session.setAttribute("loginResult", "존재하지 않는 PW입니다.");
-			return "redirect:admin_login";
-		} else {
-			session.setAttribute("loginResult", "login성공");
-			session.setAttribute("aDto", aDto);
-			
-			String lastRequest = (String)session.getAttribute("lastRequest");
-			System.out.println(lastRequest);
-			String goPage;
-			if(lastRequest == null || lastRequest.endsWith("admin_findid") || lastRequest.endsWith("admin_findpw")) {
-				goPage = "admin_page";
-			} else {
-				int length = request.getContextPath().length();
-				goPage = lastRequest.substring(length);
-				String queryString = (String)session.getAttribute("queryString");
-				if(queryString != null) goPage = goPage + "?" + queryString;
-			}
-			return "redirect:" + goPage;
-		}
-	}
-	
-	@GetMapping("admin_findid")
-	public String findIdForm() {
-		return "admin/admin_findid";		
-	}
-	
-	@PostMapping("admin_findid")
-	public String findId(@RequestParam("admin_email") String admin_email, @RequestParam("admin_name") String admin_name, Model model) {
-		String admin_id = aService.findById(admin_email, admin_name);
-		
-		if(admin_id == null) {
-            model.addAttribute("findIdResult", "해당하는 이메일과 이름에 해당하는 ID가 없습니다.");
-        } else {
-            model.addAttribute("findIdResult", "해당 아이디는: " + admin_id + " 입니다.");
-        }
-		return "admin/admin_findid_result";
-	}
-	
-	@GetMapping("admin_findpw")
-	public String findPwForm() {
-		return "admin/admin_findpw";		
-	}
-	
-	@PostMapping("admin_findpw")
-	public String findPw(@RequestParam("admin_id") String admin_id, @RequestParam("admin_name") String admin_name, @RequestParam("admin_phone") String admin_phone, Model model) {
-		String admin_pw = aService.findByPw(admin_id, admin_name, admin_phone);
-		
-		if(admin_pw == null) {
-            model.addAttribute("findPwResult", "해당 정보에 해당하는 아이디, 이름, 연락처가 없습니다.");
-        } else {
-            model.addAttribute("findPwResult", "요청하신 비밀번호는: " + admin_pw + " 입니다.");
-        }
-		
-		return "admin/admin_findpw_result";
 	}
 
 }

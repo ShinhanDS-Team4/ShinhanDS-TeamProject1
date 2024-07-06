@@ -123,11 +123,18 @@ function submitRent() {
     });
 }
 </script>
+
+<style type="text/css">
+ .cart-container{
+ 	margin: 80px auto;
+ }
+</style>	
+
 </head>
 <body>
 	<%@ include file="../common/header.jsp" %>	
 	
-	 <div class="container">
+	<div class="container">
         <h1>장바구니</h1>
         <div class="cart-header">
             <div>구매(개수)</div>

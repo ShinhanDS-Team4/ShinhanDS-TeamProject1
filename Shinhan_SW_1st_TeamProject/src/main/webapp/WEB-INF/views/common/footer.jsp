@@ -9,13 +9,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Footer Example</title>
 <style>
-html, body {
-	height: 100%; /* HTML과 BODY 요소의 높이를 100%로 설정하여 페이지 전체를 차지하도록 합니다 */
-	margin: 0; /* 기본 margin을 제거하여 요소들이 페이지 가장자리에 붙도록 합니다 */
-	display: flex; /* HTML과 BODY 요소를 flex 컨테이너로 설정하여 flexbox 레이아웃을 사용합니다 */
-	flex-direction: column; /* flex 방향을 세로로 설정하여 위에서 아래로 배치되도록 합니다 */
-}
-
 main {
 	flex: 1;
 	/* main 요소가 남은 공간을 모두 차지하도록 합니다. 이렇게 하면 footer가 항상 페이지 하단에 위치하게 됩니다 */

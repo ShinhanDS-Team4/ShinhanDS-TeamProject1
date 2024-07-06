@@ -108,7 +108,9 @@
 			   RD.rent_product_price,			   
 			   PI.img_id,
 			   RD.rent_state,
-			   RD.rentdetail_id   
+			   RD.rentdetail_id,
+			   SPS.prod_id,
+			   RD.rent_num   
 		FROM
 			RENT R
 		JOIN
@@ -120,7 +122,9 @@
 		JOIN
 			MEMBER M ON P.member_id = M.member_id
 		JOIN
-			PROD_IMAGE PI ON P.prod_id = PI.prod_id
+			(SELECT prod_id, img_id
+    		 FROM PROD_IMAGE
+    		 WHERE img_id = CONCAT(prod_id, '_mainimage_1')) PI ON P.prod_id = PI.prod_id
 		where
 			r.rental_code = #{aa}
 	</select>

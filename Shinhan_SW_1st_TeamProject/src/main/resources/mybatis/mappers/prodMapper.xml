@@ -4,17 +4,11 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.prod">
 
-
 	<!-- 상품 상세 정보 조회 -->
 	<select id="selectProdDetailInfoByProdId" parameterType="string"
 		resultType="map">
 		SELECT P.* , M.*, C.*
 		FROM PROD P
-		JOIN MEMBER M ON
-		P.MEMBER_ID = M.MEMBER_ID
-		JOIN CATEGORY C ON P.CATEGORY_ID =
-		C.CATEGORY_ID
-		WHERE PROD_ID = #{prod_id}
 		JOIN MEMBER M ON P.MEMBER_ID = M.MEMBER_ID 
 		JOIN CATEGORY C ON P.CATEGORY_ID = C.CATEGORY_ID
 		WHERE PROD_ID  =  #{prod_id} 
