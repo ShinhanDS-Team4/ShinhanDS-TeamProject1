@@ -77,7 +77,7 @@ public class OrderProdService {
 		//3.수량 업데이트
 		seller_Prod_StockTestDAO.sellProdStockUpdate(prodVO);
 		
-		return result;
+		return order_id;
 	}
 
 	public int orderprodUpdate(OrderProdDTO orderprod) {
