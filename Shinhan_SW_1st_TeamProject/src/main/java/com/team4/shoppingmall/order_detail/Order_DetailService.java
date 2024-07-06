@@ -45,7 +45,6 @@ public class Order_DetailService {
 	public List<Map<String, Object>> searchCustomerOrderList(String searchOrderList) {
 		return order_DetailDAO.searchCustomerOrderList(searchOrderList);
 	}
-}
 
 	public int orderDetailDelByOrderID(int order_id) {
 		return order_DetailDAO.orderDetailDelByOrderID(order_id);
