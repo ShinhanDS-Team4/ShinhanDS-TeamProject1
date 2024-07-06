@@ -18,4 +18,5 @@ public class RentDTO {
 	Date rent_end_date; 
 	String member_id;
 	Integer total_rent_price;
+	String rent_state;
 }

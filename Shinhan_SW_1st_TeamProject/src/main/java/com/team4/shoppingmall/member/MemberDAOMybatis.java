@@ -128,7 +128,11 @@ public class MemberDAOMybatis implements MemberDAOInterface {
 		return sqlSession.update(namespace+"memberUpdateAccess", member);
 	}
 	
-	@Override
+	@Override 
+	public MemberDTO memberCheckByPw2(MemberDTO member)  {
+		return sqlSession.selectOne(namespace+"memberCheckByPw2", member);
+	}
+ 
 	public int seller_authority_access_deny(String member_id, String seller_authority) {
 		Map<String, Object> upset = new HashMap<>();
 		upset.put("member_id", member_id);
@@ -152,3 +156,4 @@ public class MemberDAOMybatis implements MemberDAOInterface {
 	}
 
 }
+ 

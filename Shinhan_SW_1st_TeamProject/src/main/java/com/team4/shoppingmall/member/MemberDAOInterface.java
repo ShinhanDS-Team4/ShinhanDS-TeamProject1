@@ -48,14 +48,16 @@ public interface MemberDAOInterface {
 	public int updatePassword(MemberDTO member);
 	
 	public int memberUpdateAccess(MemberDTO member);
-	
+	 
+	public MemberDTO memberCheckByPw2(MemberDTO member); 
+  
 	public int seller_authority_access_deny(String member_id, String seller_authority);
 	
 	public List<MemberCustomerDTO> selectByAllCustomer();
 	
 	public List<MemberCustomerDTO> searchByCustomer(String searchCustomer);
 	
-	public MemberCustomerDTO customerByInfo(String member_id);
+	public MemberCustomerDTO customerByInfo(String member_id); 
 
 }
 
