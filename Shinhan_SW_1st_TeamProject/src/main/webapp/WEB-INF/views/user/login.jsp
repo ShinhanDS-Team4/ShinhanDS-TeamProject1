@@ -278,9 +278,9 @@ footer .footer-links a {
 		<form id="seller-form" action="${path }/member_test/login.do" method="post">
 			<div class="input-group">
 				<div class="input-fields">
-					<input type="text" name="sellerId" placeholder="사업자등록번호">
+					<input type="text" name="member_id" placeholder="사업자등록번호">
 					<div class="password-container">
-						<input type="password" id="sellerPassword" name="sellerPassword"
+						<input type="password" id="sellerPassword" name="member_pw"
 							placeholder="비밀번호"> <img src="${path}/resources/images/eye-icon.png"
 							class="toggle-password"
 							onclick="togglePassword('sellerPassword')">
