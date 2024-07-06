@@ -79,7 +79,6 @@ public class CartController {
 		
 		MemberDTO member = (MemberDTO)session.getAttribute("member");
 		String member_id = member.getMember_id();
-				
 		
 		List<CartDTO> sellStockCartList = cartService.selectSellStockByMemberId(member_id);
 		model.addAttribute("sellStockCartList", sellStockCartList);
@@ -89,15 +88,25 @@ public class CartController {
 		model.addAttribute("rentStockCartList", rentStockCartList);
 		System.out.println("rentStockCartList=" + rentStockCartList);
 		
-	
-		List<Map<String,Object>> cartProdInfoList = cartService.selectCartProdInfo(member_id);
-		model.addAttribute("cartProdInfoList", cartProdInfoList);
+		//판매 장바구니 상품 정보 모두 조회
+		List<Map<String,Object>> cartProdInfo = cartService.selectSellCartProdInfo(member_id);
+		model.addAttribute("cartProdInfo", cartProdInfo);
+		System.out.println("cartProdInfo=" + cartProdInfo);
+		//대여 장바구니 상품 정보 모두 조회
+		List<Map<String,Object>> cartRentProdInfo = cartService.selectRentCartProdInfo(member_id);
+		model.addAttribute("cartRentProdInfo", cartRentProdInfo);
+		System.out.println("cartRentProdInfo=" + cartRentProdInfo);	
 		
-		
+		//판매 장바구니 건수
+		int countSellproduct = cartService.countSellCartList(member_id);
+		model.addAttribute("countSellproduct", countSellproduct);
+		//대여 장바구니 건수
+		int countRentproduct = cartService.countRentCartList(member_id);
+		model.addAttribute("countRentproduct", countRentproduct);
 		
 		return "cart/cart";
 	}
-	
+/*	
 	@PostMapping("/createOrder.do")
 	@ResponseBody
 	public String createOrder(@RequestBody Integer request, HttpSession session) {
@@ -204,7 +213,7 @@ public class CartController {
 			return "rent Created";
 		}		
 	}
-	
+*/
 	@PostMapping("/deleteCart.do")
 	@ResponseBody
 	public String deleteCart(@RequestParam("cart_id") Integer cartID) {
