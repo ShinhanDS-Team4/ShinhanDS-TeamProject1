@@ -2,6 +2,8 @@ package com.team4.shoppingmall.member;
 
 import java.util.List;
 
+import org.springframework.ui.Model;
+
 public interface MemberDAOInterface {
 
 	//구매자 회원 정보 수정
@@ -46,6 +48,14 @@ public interface MemberDAOInterface {
 	public int updatePassword(MemberDTO member);
 	
 	public int memberUpdateAccess(MemberDTO member);
+	
+	public int seller_authority_access_deny(String member_id, String seller_authority);
+	
+	public List<MemberCustomerDTO> selectByAllCustomer();
+	
+	public List<MemberCustomerDTO> searchByCustomer(String searchCustomer);
+	
+	public MemberCustomerDTO customerByInfo(String member_id);
 
 }
 

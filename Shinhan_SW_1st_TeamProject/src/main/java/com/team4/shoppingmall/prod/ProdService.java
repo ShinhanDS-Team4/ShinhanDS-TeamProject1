@@ -47,4 +47,20 @@ public class ProdService {
 	public int prodModify(ProdDTO prod) {
 		return prodDAO.prodModify(prod);
 	}
+	
+	public List<SellerProdDTO> sellerByProd(String member_id) {
+		return prodDAO.sellerByProd(member_id);
+	}
+	
+	public List<Map<String, Object>> sellerProdRank() {
+		return prodDAO.sellerProdRank();
+	}
+	
+	public List<SellerProdDTO> allProd() {
+		return prodDAO.allProd();
+	}
+	
+	public List<SellerProdDTO> searchSellerByProd(String searchType) {
+		return prodDAO.searchSellerByProd(searchType);
+	}
 }
