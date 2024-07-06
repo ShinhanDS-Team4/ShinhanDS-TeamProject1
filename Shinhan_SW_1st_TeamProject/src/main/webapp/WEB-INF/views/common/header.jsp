@@ -23,38 +23,48 @@
 				</label>
 			</form>
 		</div>
-		<div class="rightGnb">
+		<div class="rightGnb">  
 			<ul>
 				<c:choose>
 					<c:when test="${isLoggedIn}">
 						<li>
 							<a href="${path}/member_test/logout.do"> 
-								<img src="${path}/resources/images/icon-logout.png" alt="로그아웃">로그아웃
+								<p>로그아웃</p>
+								<img src="${path}/resources/images/icon-logout.png" alt="로그아웃">
 							</a>
 						</li>
 					</c:when>
 					<c:otherwise>
 						<li>
 							<a href="${path}/member_test/login.do"> 
-								<img src="${path}/resources/images/icon-login.gif" alt="로그인">로그인
+								<p>로그인</p>
+								<img src="${path}/resources/images/icon-login.gif" alt="로그인">
 							</a>
 						</li>
 						<li>
 							<a href="${path}/member_test/signup.do">
-								<img src="${path}/resources/images/icon-sign-in.png" alt="회원가입">회원가입
+								<p>회원가입</p>
+								<img src="${path}/resources/images/icon-sign-in.png" alt="회원가입">
 							</a>
 						</li>
 					</c:otherwise>
 				</c:choose>
 				<li>
-					<a href="${path}/customer/myPage.do"><img src="${path}/resources/images/icon-user.png" alt="마이페이지">마이페이지</a>
+					<a href="${path}/customer/myPage.do">
+						<p>마이페이지</p>
+						<img src="${path}/resources/images/icon-person2.png" alt="마이페이지" class="myPageIcon">
+					</a>
 					<%-- 문의 답변오면 나타나는 알림 --%>
 					<%-- <span class="hidden">N</span> --%>
 				</li>
 				<li>
-					<a href="${path}/cart/cart"><img src="${path}/resources/images/icon-shopping.png" alt="장바구니">장바구니</a>
+					<a href="${path}/cart/cart">
+						<p>장바구니</p>
+						<img src="${path}/resources/images/icon-cart.png" alt="장바구니">
+					</a>
 				</li>
 			</ul>
+	
 		</div>
 	</div>
 	<div class="header_bottom">
@@ -99,78 +109,81 @@
 			</ul>
 		</div>
 		<%-- 서브 메뉴 부분 --%>
-		<div class="menu_pan inner">
+		<div class="menu-backgorund"></div>
+		<div class="menu_pan">
 			<div class="dropdown_nav">
-				<ul>
-					<li><a href="#">신상품</a></li>
-					<li><a href="#">전체 상품</a></li>
-					<li><a href="#">아우터</a></li>
-					<li><a href="#">재킷/베스트</a></li>
-					<li><a href="#">니트</a></li>
-					<li><a href="#">셔츠/블라우스</a></li>
-					<li><a href="#">티셔츠</a></li>
-					<li><a href="#">원피스</a></li>
-					<li><a href="#">팬츠</a></li>
-					<li><a href="#">스커트</a></li>
-					<li><a href="#">쥬얼리/시계</a></li>
-				</ul>
-				<ul>
-					<li><a href="#">신상품</a></li>
-					<li><a href="#">전체 상품</a></li>
-					<li><a href="#">정장</a></li>
-					<li><a href="#">아우터</a></li>
-					<li><a href="#">재킷/베스트</a></li>
-					<li><a href="#">니트</a></li>
-					<li><a href="#">셔츠/블라우스</a></li>
-					<li><a href="#">티셔츠</a></li>
-					<li><a href="#">원피스</a></li>
-					<li><a href="#">팬츠</a></li>
-				</ul>
-				<ul>
-					<li><a href="#">신상품</a></li>
-					<li><a href="#">전체 상품</a></li>
-					<li><a href="#">남아</a></li>
-					<li><a href="#">여아</a></li>
-				</ul>
-				<ul>
-					<li><a href="#">신상품</a></li>
-					<li><a href="#">전체 상품</a></li>
-					<li><a href="#">여성의류</a></li>
-					<li><a href="#">여성가방/지갑</a></li>
-					<li><a href="#">여성슈즈</a></li>
-					<li><a href="#">여성 쥬얼리/시계</a></li>
-					<li><a href="#">남성의류</a></li>
-					<li><a href="#">남성가방/지갑</a></li>
-					<li><a href="#">남성슈즈</a></li>
-					<li><a href="#">선글라스/안경테</a></li>
-				</ul>
-				<ul>
-					<li><a href="#">신상품</a></li>
-					<li><a href="#">전체 상품</a></li>
-					<li><a href="#">아우터</a></li>
-					<li><a href="#">재킷/베스트</a></li>
-					<li><a href="#">니트</a></li>
-					<li><a href="#">셔츠/블라우스</a></li>
-					<li><a href="#">티셔츠</a></li>
-					<li><a href="#">원피스</a></li>
-					<li><a href="#">팬츠</a></li>
-					<li><a href="#">스커트</a></li>
-					<li><a href="#">쥬얼리/시계</a></li>
-				</ul>
-				<ul>
-					<li><a href="#">신상품</a></li>
-					<li><a href="#">전체 상품</a></li>
-					<li><a href="#">아웃도어/캠핑</a></li>
-					<li><a href="#">피트니스</a></li>
-				</ul>
-				<ul>
-					<li><a href="#">신상품</a></li>
-					<li><a href="#">전체 상품</a></li>
-					<li><a href="#">여성 가방</a></li>
-					<li><a href="#">여성 슈즈</a></li>
-					<li><a href="#">남성 가방</a></li>
-					<li><a href="#">남성 슈즈</a></li>
-				</ul>
+				<div class="inner">
+					<ul>
+						<li><a href="#">신상품</a></li>
+						<li><a href="#">전체 상품</a></li>
+						<li><a href="#">아우터</a></li>
+						<li><a href="#">재킷/베스트</a></li>
+						<li><a href="#">니트</a></li>
+						<li><a href="#">셔츠/블라우스</a></li>
+						<li><a href="#">티셔츠</a></li>
+						<li><a href="#">원피스</a></li>
+						<li><a href="#">팬츠</a></li>
+						<li><a href="#">스커트</a></li>
+						<li><a href="#">쥬얼리/시계</a></li>
+					</ul>
+					<ul>
+						<li><a href="#">신상품</a></li>
+						<li><a href="#">전체 상품</a></li>
+						<li><a href="#">정장</a></li>
+						<li><a href="#">아우터</a></li>
+						<li><a href="#">재킷/베스트</a></li>
+						<li><a href="#">니트</a></li>
+						<li><a href="#">셔츠/블라우스</a></li>
+						<li><a href="#">티셔츠</a></li>
+						<li><a href="#">원피스</a></li>
+						<li><a href="#">팬츠</a></li>
+					</ul>
+					<ul>
+						<li><a href="#">신상품</a></li>
+						<li><a href="#">전체 상품</a></li>
+						<li><a href="#">남아</a></li>
+						<li><a href="#">여아</a></li>
+					</ul>
+					<ul>
+						<li><a href="#">신상품</a></li>
+						<li><a href="#">전체 상품</a></li>
+						<li><a href="#">여성의류</a></li>
+						<li><a href="#">여성가방/지갑</a></li>
+						<li><a href="#">여성슈즈</a></li>
+						<li><a href="#">여성 쥬얼리/시계</a></li>
+						<li><a href="#">남성의류</a></li>
+						<li><a href="#">남성가방/지갑</a></li>
+						<li><a href="#">남성슈즈</a></li>
+						<li><a href="#">선글라스/안경테</a></li>
+					</ul>
+					<ul>
+						<li><a href="#">신상품</a></li>
+						<li><a href="#">전체 상품</a></li>
+						<li><a href="#">아우터</a></li>
+						<li><a href="#">재킷/베스트</a></li>
+						<li><a href="#">니트</a></li>
+						<li><a href="#">셔츠/블라우스</a></li>
+						<li><a href="#">티셔츠</a></li>
+						<li><a href="#">원피스</a></li>
+						<li><a href="#">팬츠</a></li>
+						<li><a href="#">스커트</a></li>
+						<li><a href="#">쥬얼리/시계</a></li>
+					</ul>
+					<ul>
+						<li><a href="#">신상품</a></li>
+						<li><a href="#">전체 상품</a></li>
+						<li><a href="#">아웃도어/캠핑</a></li>
+						<li><a href="#">피트니스</a></li>
+					</ul>
+					<ul>
+						<li><a href="#">신상품</a></li>
+						<li><a href="#">전체 상품</a></li>
+						<li><a href="#">여성 가방</a></li>
+						<li><a href="#">여성 슈즈</a></li>
+						<li><a href="#">남성 가방</a></li>
+						<li><a href="#">남성 슈즈</a></li>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -183,7 +196,16 @@
 
 		$(".left_menu > li").on("mouseenter", function() {
 			var menuIndex = $(this).data("menu"); // data-menu 속성 값을 가져옴
-
+			
+	        $(".left_menu > li").css({
+	            "color": "#ccc",
+	            "font-weight": "normal"
+	        }); // 모든 li를 #ccc 색상으로 변경하고 폰트 두께를 정상으로 설정
+	        $(this).css({
+	            "color": "black",
+	            "font-weight": "bold"
+	        }); // 호버한 li만 검정색으로 변경하고 폰트 두께를 두껍게 설정
+			
 			if (isFirstHover) {
 				$(".dropdown_nav ul").stop().animate({
 					height : "0"
@@ -194,19 +216,30 @@
 				$(".dropdown_nav").stop().animate({
 					height : "400px"
 				}, 500); // 서브메뉴 표시
+	            $(".menu-backgorund").css("display","block");
+				
 				isFirstHover = false; // 이후 마우스 이동 시 애니메이션 제거
 			} else {
 				$(".dropdown_nav ul").css("height", "0"); // 모든 서브메뉴 높이 0으로 설정
 				$(".dropdown_nav ul").eq(menuIndex).css("height", "400px");
 				$(".dropdown_nav").css("height", "400px"); // 서브메뉴 표시
+	            $(".menu-backgorund").css("display", "blcok"); // 배경 표시
+	            
 			}
 		});
 
-		$(".menu_pan").on("mouseleave", function() {
+		$(".dropdown_nav").on("mouseleave", function() {
+		   $(".left_menu > li").css({
+	            "color": "black",
+	            "font-weight": "normal"
+	        }); // 모든 li 색상을 기본으로 변경하고 폰트 두께를 정상으로 설정
 			// 마우스가 떠났을 때 서브메뉴 높이 초기화
 			$(".dropdown_nav ul").css("height", "0");
 			$(".dropdown_nav").css("height", "0");
+	        $(".menu-backgorund").css("display","none"); // 배경 숨김
 			isFirstHover = true; // 마우스를 떠났을 때 다시 애니메이션 활성화
+			
+			
 		});
 
 	});

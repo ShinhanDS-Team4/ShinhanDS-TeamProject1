@@ -1,6 +1,7 @@
 package com.team4.shoppingmall.prod_image;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,15 @@ public class Prod_ImageDAOMybatis implements Prod_ImageDAOInterface {
 	SqlSession sqlSession;
 	
 	String namespace = "com.saren.prod_image.";
+	
+	//메인 이미지 조회
+	public List<Map<String,Object>> prodMainImgInfoByProdId(String prod_id){
+		return sqlSession.selectList(namespace+"prodMainImgInfoByProdId", prod_id);
+	};
+	//서브 이미지 조회
+	public List<Map<String,Object>> prodSubImgInfoByProdId(String prod_id){
+		return sqlSession.selectList(namespace+"prodSubImgInfoByProdId", prod_id);
+	};
 	
 	@Override
 	public Prod_ImageDTO selectByImageId(String img_id) {

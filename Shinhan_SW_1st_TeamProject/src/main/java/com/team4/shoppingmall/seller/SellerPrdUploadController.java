@@ -20,12 +20,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.team4.shoppingmall.category.CategoryDTO;
+import com.team4.shoppingmall.category.CategoryService;
 import com.team4.shoppingmall.prod.ProdDTO;
 import com.team4.shoppingmall.prod.ProdService;
 import com.team4.shoppingmall.prod_image.Prod_ImageDTO;
@@ -60,6 +65,8 @@ public class SellerPrdUploadController {
 	@Autowired
 	RentProdStockService rentProdStockService;
 
+	@Autowired
+	CategoryService categoryService;
 
 	//상품 이미지 파일 업로드 디렉토리
 	//1.메인 이미지 파일
@@ -69,6 +76,63 @@ public class SellerPrdUploadController {
 	//2.설명 이미지 파일
 	@Value("${file.desc-img-upload-dir}")
 	private String descIMG_uploadDir;
+	
+	
+	//선택한 상품에 대해서 다음 항목들 찾기
+	@PostMapping("/find2ndCategoryList.do")
+	@ResponseBody
+	public List<CategoryDTO> findNextCategoryList(@RequestBody Integer categoryID) {
+		System.out.println("받은 카테고리 ID : "+categoryID);
+		
+		CategoryDTO categoryDTO = new CategoryDTO();
+		
+		categoryDTO.setCategory_id(0);
+		categoryDTO.setCategory_depth(2);
+		categoryDTO.setParent_category_id(categoryID);
+		
+		List<CategoryDTO> categoryList = categoryService.categoryListBydepth(categoryDTO);
+		System.out.println(categoryList);
+		
+		return categoryList;
+		
+	}
+	
+	//선택한 상품에 대해서 다음 항목들 찾기
+	@PostMapping("/find3rdCategoryList.do")
+	@ResponseBody
+	public List<CategoryDTO> find3rdCategoryList(@RequestBody Integer categoryID) {
+		System.out.println("받은 카테고리 ID : "+categoryID);
+		
+		CategoryDTO categoryDTO = new CategoryDTO();
+		
+		categoryDTO.setCategory_id(0);
+		categoryDTO.setCategory_depth(3);
+		categoryDTO.setParent_category_id(categoryID);
+		
+		List<CategoryDTO> categoryList = categoryService.categoryListBydepth(categoryDTO);
+		System.out.println(categoryList);
+		
+		return categoryList;
+		
+	}
+	
+	@PostMapping("/find4thCategoryList.do")
+	@ResponseBody
+	public List<CategoryDTO> find4thCategoryList(@RequestBody Integer categoryID) {
+		System.out.println("받은 카테고리 ID : "+categoryID);
+		
+		CategoryDTO categoryDTO = new CategoryDTO();
+		
+		categoryDTO.setCategory_id(0);
+		categoryDTO.setCategory_depth(4);
+		categoryDTO.setParent_category_id(categoryID);
+		
+		List<CategoryDTO> categoryList = categoryService.categoryListBydepth(categoryDTO);
+		System.out.println(categoryList);
+		
+		return categoryList;
+		
+	}
 
 
 	@PostMapping("/uploadPrd")
@@ -76,7 +140,7 @@ public class SellerPrdUploadController {
 			@RequestParam("prdType") String prdType,
 			@RequestParam("prdName") String prdName,
 			@RequestParam("prdPrice") int prdPrice, 
-			@RequestParam("prdCategory") int prdCategory,
+			@RequestParam("finalCategory") int prdCategory,
 			@RequestParam("mainImgFile") List<MultipartFile> mainFiles, 
 			@RequestParam("descImgFile") List<MultipartFile> descFiles, 
 			@RequestParam("prdDescription") String prdDescription,
@@ -101,7 +165,7 @@ public class SellerPrdUploadController {
 		
 		LocalDate localDate = LocalDate.now();
 
-		// LocalDate�뜝�룞�삕 java.sql.Date�뜝�룞�삕 �뜝�룞�삕�솚
+		// LocalDate로 현재 날짜를 받아와 SQL.Date로 전환
 		Date sqlDate = Date.valueOf(localDate);
 
 		

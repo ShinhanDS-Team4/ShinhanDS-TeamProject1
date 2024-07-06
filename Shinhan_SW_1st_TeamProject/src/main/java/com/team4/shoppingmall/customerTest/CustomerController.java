@@ -171,18 +171,18 @@ public class CustomerController {
 			RentDTO rentDTO = rentService.selectById(orderid);
 			int totalPrice = rentDTO.getTotal_rent_price();
 
-			System.out.println("����ID:" + couponid);
+			System.out.println("쿠폰ID:" + couponid);
 			CouponDTO selectCouponDTO = couponService.selectById(couponid);
 
-			System.out.println("��������:" + selectCouponDTO);
+			System.out.println("선택한 쿠폰 정보:" + selectCouponDTO);
 			double discountRate = selectCouponDTO.getDiscount_rate();
 
 			int discountAmount = (int) Math.round(totalPrice * (discountRate / 100.0));
 
 			int discountedPrice = totalPrice - discountAmount;
 
-			System.out.println("����:" + discountAmount);
-			System.out.println("���ΰ���:" + discountedPrice);
+			System.out.println("할인:" + discountAmount);
+			System.out.println("할인 후 가격:" + discountedPrice);
 
 			int couponAmount = selectCouponDTO.getQuantity();
 			selectCouponDTO.setQuantity(couponAmount - 1);
@@ -203,7 +203,7 @@ public class CustomerController {
 	@ResponseBody
 	public String applyRentPoint(@RequestBody PointRequestDTO pointRequestDTO) {
 		int point = pointRequestDTO.getPoint();
-		System.out.println("����� ����Ʈ:" + point);
+		System.out.println("보유포인트:" + point);
 		int orderid = pointRequestDTO.getOrderid();
 
 		RentDTO rentDTO = rentService.selectById(orderid);

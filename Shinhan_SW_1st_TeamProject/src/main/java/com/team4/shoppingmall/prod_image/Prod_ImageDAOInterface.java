@@ -1,8 +1,13 @@
 package com.team4.shoppingmall.prod_image;
 
 import java.util.List;
+import java.util.Map;
 
 public interface Prod_ImageDAOInterface {
+	//메인 이미지 조회
+	public List<Map<String,Object>> prodMainImgInfoByProdId(String prod_id);
+	//서브 이미지 조회
+	public List<Map<String,Object>> prodSubImgInfoByProdId(String prod_id);
 	
 	public Prod_ImageDTO selectByImageId(String img_id);
 
