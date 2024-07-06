@@ -1,9 +1,12 @@
 package com.team4.shoppingmall.cart;
 
+
+import java.util.List;
+import java.util.Map;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
+
 
 import javax.servlet.http.HttpSession;
 
@@ -34,6 +37,8 @@ import com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO;
 import com.team4.shoppingmall.rent_prod_stock.RentProdStockService;
 import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockDTO;
 import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockService;
+
+import com.team4.shoppingmall.member.MemberDTO;
 
 @Controller
 @RequestMapping("/cart")
@@ -68,6 +73,30 @@ public class CartController {
 	
 	@Autowired
 	RentDetailService rentDetailService;
+  
+  @GetMapping("/cart.do")
+	public String cartPage(HttpSession session, Model model) {
+		
+		MemberDTO member = (MemberDTO)session.getAttribute("member");
+		String member_id = member.getMember_id();
+				
+		
+		List<CartDTO> sellStockCartList = cartService.selectSellStockByMemberId(member_id);
+		model.addAttribute("sellStockCartList", sellStockCartList);
+		System.out.println("sellStockCartList=" + sellStockCartList);
+		
+		List<CartDTO> rentStockCartList =cartService.selectRentStockByMemberId(member_id);
+		model.addAttribute("rentStockCartList", rentStockCartList);
+		System.out.println("rentStockCartList=" + rentStockCartList);
+		
+	
+		List<Map<String,Object>> cartProdInfoList = cartService.selectCartProdInfo(member_id);
+		model.addAttribute("cartProdInfoList", cartProdInfoList);
+		
+		
+		
+		return "cart/cart";
+	}
 	
 	@PostMapping("/createOrder.do")
 	@ResponseBody
@@ -77,27 +106,27 @@ public class CartController {
 		String customerID = mem.getMember_id();
 		
 		LocalDate localDate = LocalDate.now();
-		// LocalDate·Î ÇöÀç ³¯Â¥¸¦ ¹Ş¾Æ¿Í SQL.Date·Î ÀüÈ¯
+		// LocalDateë¡œ í˜„ì¬ ë‚ ì§œë¥¼ ë°›ì•„ì™€ SQL.Dateë¡œ ì „í™˜
 		Date sqlDate = Date.valueOf(localDate);
 		
-		// 7ÀÏ µÚÀÇ ³¯Â¥¸¦ LocalDate·Î °è»ê
+		// 7ì¼ ë’¤ì˜ ë‚ ì§œë¥¼ LocalDateë¡œ ê³„ì‚°
         LocalDate futureDate = localDate.plusDays(7);
 
-        // 7ÀÏ µÚÀÇ ³¯Â¥¸¦ SQL Date·Î ÀüÈ¯
+        // 7ì¼ ë’¤ì˜ ë‚ ì§œë¥¼ SQL Dateë¡œ ì „í™˜
         Date sqlFutureDate = Date.valueOf(futureDate);
 		
-		//Àå¹Ù±¸´Ï¿¡¼­ Àå¹Ù±¸´Ï ID ¸ñ·Ï ³Ñ°Ü¹Ş±â
+		//ì¥ë°”êµ¬ë‹ˆì—ì„œ ì¥ë°”êµ¬ë‹ˆ ID ëª©ë¡ ë„˜ê²¨ë°›ê¸°
 		List<Integer> cartIdList = request.getCartIds();
 		
-		//´ë¿© Ç×¸ñ°ú ÁÖ¹® Ç×¸ñÀÇ ÃÖ´ë°ªÀ» °¢°¢ °¡Á®¿À±â
+		//ëŒ€ì—¬ í•­ëª©ê³¼ ì£¼ë¬¸ í•­ëª©ì˜ ìµœëŒ€ê°’ì„ ê°ê° ê°€ì ¸ì˜¤ê¸°
 		int maxOrder_id = orderprodDAO.sequenceOrderId()+1; 
 		int maxRent_id = rentprodDAO.searchRentId()+1;
 		
-		//ÃÑ ±¸¸Å°¡
+		//ì´ êµ¬ë§¤ê°€
 		int orderTotal_price = 0;
 		int rentTotal_price = 0;
 		
-		//°¢ Àå¹Ù±¸´Ï ID¿¡ ´ëÇÑ ¹İº¹¹® Ã³¸®
+		//ê° ì¥ë°”êµ¬ë‹ˆ IDì— ëŒ€í•œ ë°˜ë³µë¬¸ ì²˜ë¦¬
 		for(Integer cartId : cartIdList) {
 			CartDTO cartDTO = cartService.selectByCartId(cartId);
 			
@@ -105,40 +134,40 @@ public class CartController {
 			String r_stock_ID = cartDTO.getR_stock_id();
 			Integer amount = cartDTO.getCart_amount();
 			
-			//Àå¹Ù±¸´Ï ID°¡ ÆÇ¸Å »óÇ°À» °¡Áø °æ¿ì
+			//ì¥ë°”êµ¬ë‹ˆ IDê°€ íŒë§¤ ìƒí’ˆì„ ê°€ì§„ ê²½ìš°
 			if(!Objects.isNull(s_stock_ID)&&Objects.isNull(r_stock_ID)) {
-				//ÇØ´ç »ó¼¼ ÁÖ¹®ÀÇ ÆÇ¸Å Àç°íÀÇ °¡°İÀ» ¾Ë¾Æ³¿
+				//í•´ë‹¹ ìƒì„¸ ì£¼ë¬¸ì˜ íŒë§¤ ì¬ê³ ì˜ ê°€ê²©ì„ ì•Œì•„ëƒ„
 				Seller_Prod_StockDTO seller_Prod_StockDTO = seller_Prod_StockService.selectByStockId(s_stock_ID);
 				ProdDTO prodDTO = prodService.selectByProdId(seller_Prod_StockDTO.getProd_id());
 				
-				//ÇØ´ç Àç°í¿¡ ´ëÇÑ ÆÇ¸Å »ó¼¼ °´Ã¼ »ı¼º
+				//í•´ë‹¹ ì¬ê³ ì— ëŒ€í•œ íŒë§¤ ìƒì„¸ ê°ì²´ ìƒì„±
 				Order_DetailDTO order_DetailDTO = new Order_DetailDTO();
-				order_DetailDTO.setOrderdetail_id(0);//ÆÇ¸Å»ó¼¼ ID ¼³Á¤
+				order_DetailDTO.setOrderdetail_id(0);//íŒë§¤ìƒì„¸ ID ì„¤ì •
 				order_DetailDTO.setOrder_num(amount);
 				order_DetailDTO.setOrder_id(maxOrder_id);
 				order_DetailDTO.setOrder_product_price(prodDTO.getProd_price());
 				order_DetailDTO.setS_stock_id(s_stock_ID);
-				order_DetailDTO.setOrder_state("°áÁ¦´ë±âÁß");
+				order_DetailDTO.setOrder_state("ê²°ì œëŒ€ê¸°ì¤‘");
 				
 				int price = amount * prodDTO.getProd_price();
 				orderTotal_price += price;
 				
 				int ordDetailInsertResult = order_DetailService.orderDetailInsert(order_DetailDTO);
 			}
-			//Àå¹Ù±¸´Ï ID°¡ ´ë¿© »óÇ°À» °¡Áø °æ¿ì
+			//ì¥ë°”êµ¬ë‹ˆ IDê°€ ëŒ€ì—¬ ìƒí’ˆì„ ê°€ì§„ ê²½ìš°
 			else if(Objects.isNull(s_stock_ID)&&!Objects.isNull(r_stock_ID)) {
-				//ÇØ´ç »ó¼¼ ÁÖ¹¶ÀÇ ´ë¿© Àç°í °¡°İÀ» ¾Ë¾Æ³¿
+				//í•´ë‹¹ ìƒì„¸ ì£¼ë­‰ì˜ ëŒ€ì—¬ ì¬ê³  ê°€ê²©ì„ ì•Œì•„ëƒ„
 				RentProdStockDTO rentProdStockDTO = rentProdStockService.selectById(r_stock_ID);
 				ProdDTO prodDTO = prodService.selectByProdId(rentProdStockDTO.getProd_id());
 				
-				//ÇØ´ç Àç°í¿¡ ´ëÇÑ ´ë¿© »ó¼¼ °´Ã¼ »ı¼º
+				//í•´ë‹¹ ì¬ê³ ì— ëŒ€í•œ ëŒ€ì—¬ ìƒì„¸ ê°ì²´ ìƒì„±
 				RentDetailDTO rentDetailDTO = new RentDetailDTO();
-				rentDetailDTO.setRentdetail_id(0);//´ë¿©»ó¼¼ID¼³Á¤
+				rentDetailDTO.setRentdetail_id(0);//ëŒ€ì—¬ìƒì„¸IDì„¤ì •
 				rentDetailDTO.setRent_num(amount);
 				rentDetailDTO.setRental_code(maxRent_id);
 				rentDetailDTO.setRent_product_price(prodDTO.getProd_price());
 				rentDetailDTO.setR_stock_id(r_stock_ID);
-				rentDetailDTO.setRent_state("´ë¿©½ÅÃ»¿Ï·á");
+				rentDetailDTO.setRent_state("ëŒ€ì—¬ì‹ ì²­ì™„ë£Œ");
 				
 				int price = amount * prodDTO.getProd_price();
 				rentTotal_price += price;

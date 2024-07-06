@@ -339,11 +339,12 @@
 		    		/* 장바구니 버튼 클릭 시 나타나는 팝업창 */ 
 		    		$('#cartButton').on('click', function(e) {
 		    			e.preventDefault();
-		    			$('.popup-background').show();
+		    			//$('.popup-background').show();
 		    			
 		    		    checkLoginStatus(function() {
 		    		    	console.log("로그인 체크 콜백함수 호출");
-		    		    	loacation.reload(); 
+		    		    	//로그인 여부 체크 후 팝업창 열기
+		    		    	$('.popup-background').show();
 		    	        });
 		    		});
 		    		
@@ -436,9 +437,10 @@
 			                contentType:"application/json;charset=utf-8",
 			                success: function(response) {
 			                    console.log("장바구니 response: " + response);
-			                    if(response > 0 ){
+			                	if(response.status === 'success'){
 			                   	  alert("장바구니에 저장 완료(현재 남은 재고" + currentStock.stock + "개)");
-			                      location.reload(); 
+			                   	 location.href = "${path}/cart/cart.do?cart_id=" + response.cart_id;
+			                      
 			                    }else{
 			                    	alert("상품 재고가 없습니다.");
 			                    }
@@ -713,6 +715,26 @@
 	//수량, 가격 처리
 	var previousValues = {};
 	
+    // 로그인 여부 확인 함수
+    function checkLoginStatus(callback) {
+        $.ajax({
+            url: '${path}/prod/checkLoginStatus', // 서버에서 로그인 상태를 확인하는 엔드포인트
+            type: 'GET',
+            success: function(response) {
+                if (response.isLoggedIn) {
+                     callback(); // 로그인 상태일 경우 콜백 함수 실행
+                	 console.log("로그인 확인 성공");
+                } else {
+                    alert('로그인이 필요합니다.');
+                	// 로그인 페이지로 리다이렉트
+                    window.location.href = '${path}/member_test/login.do'; 
+                }
+            },
+            error: function(error) {
+                console.error('Error checking login status:', error);
+            }
+        });
+    }
 
 	// 상품 원래 가격 (숫자만 추출)
     var originalPrice = parseInt($('.productPrice').text().replace(/[^0-9]/g, ''));
@@ -748,6 +770,7 @@
 
     // 모든 select 요소에 change 이벤트 리스너 추가
     $('#prodOptionForm select').on('change', function() {
+    	 
         var allOptionsSelected = true;
         var isChanged = false;
 
@@ -833,56 +856,62 @@
 
 	//구매하기 버튼 클릭 
 	$('#orderButton').on('click', function(){
-		var allOptionsSelected = true;
-        $('#prodOptionForm select').each(function() {
-            if ($(this).val() === null || $(this).val() === "선택") {
-                allOptionsSelected = false;
-                return false; // each 루프 중지
-            }
-        });
-
-        if (!allOptionsSelected) {
-            alert("모든 옵션을 선택해 주세요.");
-            return;
-     	}
-	
-        // 컨트롤러에 상품 옵션 값 보내기
-	    var formArray = $("#prodOptionForm").serializeArray();
-		var param = { };
-
-	
-		// 배열을 JSON 객체로 변환
-	    $.each(formArray, function(index, item) {
-            	param.s_stock_id =  currentStock.s_stock_id;
-		    	param[item.name] = item.value;
-	    });
-		console.log(formArray);
-		console.log("param: " + param);
 		
-		//모든 옵션이 선택된 경우 서버에 전송
-  		if (allOptionsSelected) {	
-       		$.ajax({
-                url: "${path}/prod/productOrderInsert.do",
-                type: 'POST',
-                data:JSON.stringify(param),
-                contentType:"application/json;charset=utf-8",
-                success: function(response) {
-                    console.log(response);
-                    if(response.status === 'success'){
-                        alert("주문 저장 완료");
-                        //주문페이지로 이동
-                        location.href = "${path}/customer/orderPay.do?order_id=" + response.order_id;
-                    } else {
-                        alert("상품 재고가 없습니다.");
-                    }
-                },
-                error: function(error) {
-                    alert("Error: " + error);
-                }
-            });
-        } else {
-            alert("옵션을 선택해 주세요.");
-        }
+
+    	//checkLoginStatus(function() {
+  		   
+    	
+			var allOptionsSelected = true;
+	        $('#prodOptionForm select').each(function() {
+	            if ($(this).val() === null || $(this).val() === "선택") {
+	                allOptionsSelected = false;
+	                return false; // each 루프 중지
+	            }
+	        });
+	
+	        if (!allOptionsSelected) {
+	            alert("모든 옵션을 선택해 주세요.");
+	            return;
+	     	}
+		
+	        // 컨트롤러에 상품 옵션 값 보내기
+		    var formArray = $("#prodOptionForm").serializeArray();
+			var param = { };
+	
+		
+			// 배열을 JSON 객체로 변환
+		    $.each(formArray, function(index, item) {
+	            	param.s_stock_id =  currentStock.s_stock_id;
+			    	param[item.name] = item.value;
+		    });
+			console.log(formArray);
+			console.log("param: " + param);
+			
+			//모든 옵션이 선택된 경우 서버에 전송
+	  		if (allOptionsSelected) {	
+	       		$.ajax({
+	                url: "${path}/prod/productOrderInsert.do",
+	                type: 'POST',
+	                data:JSON.stringify(param),
+	                contentType:"application/json;charset=utf-8",
+	                success: function(response) {
+	                    console.log(response);
+	                    if(response.status === 'success'){
+	                        alert("주문 저장 완료");
+	                        //주문페이지로 이동
+	                        location.href = "${path}/customer/orderPay.do?order_id=" + response.order_id;
+	                    } else {
+	                        alert("상품 재고가 없습니다.");
+	                    }
+	                },
+	                error: function(error) {
+	                    alert("Error: " + error);
+	                }
+	            });
+	        } else {
+	            alert("옵션을 선택해 주세요.");
+	        }
+    	//});
 	});
 </script>
 <script type="text/javascript">
@@ -1146,11 +1175,10 @@
 
 	// 배열을 JSON 객체로 변환
     $.each(formArray, function(index, item) {
-	       	param.r_stock_id =  currentStock.r_stock_id;    	
-           	//param.s_stock_id =  currentStock.s_stock_id;
+	       	param.r_stock_id =  currentStock.r_stock_id;   
            	param[item.name] = item.value;
     });
-	
+debugger	
 	 console.log(param);
 	 
 	//모든 옵션이 선택된 경우 서버에 전송
@@ -1163,9 +1191,9 @@
                contentType:"application/json;charset=utf-8",
                success: function(response) {
                    console.log(response);
-                   if(response > 0){
+               	  if(response.status === 'success'){
 	                   alert("대여상품 장바구니 저장 완료(현재 남은 재고" + currentStock.stock + "개)");
-	                   location.reload();
+	                   location.href = "${path}/cart/cart.do?cart_id=" + response.rentCartId;
                    }else{
                 	   alert("현재 대여 재고가 없습니다.");
                    }

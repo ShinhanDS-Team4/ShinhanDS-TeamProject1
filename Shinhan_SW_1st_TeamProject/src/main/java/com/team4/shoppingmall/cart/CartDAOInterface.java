@@ -6,6 +6,9 @@ import java.util.Map;
 
 public interface CartDAOInterface {
 	
+	//장바구니 상품 정보 조회
+	public List<Map<String,Object>> selectCartProdInfo(String member_id);
+
 	//선택한 옵션 상품의 재고ID 조회
 	public String searchStockId(HashMap<String, String> map, String prod_id);
 
