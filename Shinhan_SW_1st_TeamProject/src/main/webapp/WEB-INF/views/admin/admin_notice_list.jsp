@@ -12,38 +12,45 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>공지사항 목록</h1>
-        <form class="form-inline mb-3">
-            <input type="text" name="searchTerm" class="form-control mr-2" placeholder="공지사항 제목 검색">
-            <button type="submit" class="btn btn-primary">검색</button>
-            <button type="button" class="btn btn-success ml-auto" onclick="openCreatePopup()">등록</button>
-        </form>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>공지사항 ID</th>
-                    <th>제목</th>
-                    <th>내용</th>
-                    <th>작성 일자</th>
-                    <th>작업</th>
-                </tr>
-            </thead>
-            <tbody>
-                <c:forEach var="notice" items="${notices}">
-                    <tr>
-                        <td>${notice.notice_id}</td>
-                        <td><a href="#" onclick="openEditPopup(${notice.notice_id})">${notice.notice_title}</a></td>
-                        <td>${notice.notice_content}</td>
-                        <td>${notice.notice_date}</td>
-                        <td>
-                            <button class="btn btn-primary btn-sm" onclick="openEditPopup(${notice.notice_id})">수정</button>
-                            <button class="btn btn-danger btn-sm" onclick="deleteNotice(${notice.notice_id})">삭제</button>
-                        </td>
-                    </tr>
-                </c:forEach>
-            </tbody>
-        </table>
+<jsp:include page="common.jsp" />
+    <div class="content">
+        <div class="container-fluid">
+            <h1>공지사항 목록</h1>
+            <form id="searchForm" class="form-inline mb-3" method="get" action="admin_notice_search">
+                <input type="text" name="search_title" id="searchTerm" placeholder="공지사항 제목 검색" class="form-control mr-2">
+                <button type="submit" class="btn btn-primary">검색</button>
+                <input type="button" class="btn btn-secondary ml-2" onclick="resetSearch()" value="초기화"/>
+                <button type="button" class="btn btn-success ml-auto" onclick="openCreatePopup()">등록</button>
+            </form>
+
+            <div class="table-container">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>공지사항 ID</th>
+                            <th>제목</th>
+                            <th>내용</th>
+                            <th>작성 일자</th>
+                            <th>작업</th>
+                        </tr>
+                    </thead>
+                    <tbody id="noticeList">
+                        <c:forEach var="notice" items="${notices}">
+                        <tr>
+                            <td>${notice.not_id}</td>
+                            <td><a href="#" onclick="openViewPopup(${notice.not_id})">${notice.not_title}</a></td>
+                            <td>${notice.not_content}</td>
+                            <td>${notice.not_date}</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm" onclick="openEditPopup(${notice.not_id})">수정</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteNotice(${notice.not_id})">삭제</button>
+                            </td>
+                        </tr>                
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <!-- Notice Popup Modal -->
@@ -58,18 +65,18 @@
                 </div>
                 <div class="modal-body">
                     <form id="noticeForm">
-                        <input type="hidden" id="notice_id" name="notice_id">
+                        <input type="hidden" id="not_id" name="not_id">
                         <div class="form-group">
-                            <label for="notice_title">제목</label>
-                            <input type="text" class="form-control" id="notice_title" name="notice_title" required>
+                            <label for="not_title">제목</label>
+                            <input type="text" class="form-control" id="not_title" name="not_title" required>
                         </div>
                         <div class="form-group">
-                            <label for="notice_content">내용</label>
-                            <textarea class="form-control" id="notice_content" name="notice_content" rows="5" required></textarea>
+                            <label for="not_content">내용</label>
+                            <textarea class="form-control" id="not_content" name="not_content" rows="5" required></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="notice_date">작성 일자</label>
-                            <input type="date" class="form-control" id="notice_date" name="notice_date" required>
+                            <label for="not_date">작성 일자</label>
+                            <input type="date" class="form-control" id="not_date" name="not_date" required>
                         </div>
                         <button type="submit" class="btn btn-success" id="saveButton">저장</button>
                         <button type="button" class="btn btn-danger" id="deleteButton" onclick="deleteNotice()">삭제</button>
@@ -80,42 +87,72 @@
     </div>
 
     <script>
+        function resetSearch() {
+            $('#searchTerm').val('');
+        }
+
         function openCreatePopup() {
             $('#noticeModalLabel').text('공지사항 등록');
-            $('#noticeForm').attr('action', '${pageContext.request.contextPath}/notice/create');
-            $('#notice_id').val('');
-            $('#notice_title').val('');
-            $('#notice_content').val('');
-            $('#notice_date').val('');
+            $('#noticeForm').attr('action', 'admin_notice_insert');
+            $('#not_id').val('');
+            $('#not_title').val('');
+            $('#not_content').val('');
+            $('#not_date').val('');
+            $('#saveButton').show();
             $('#deleteButton').hide();
             $('#noticeModal').modal('show');
         }
 
+        function openViewPopup(noticeId) {
+            $.ajax({
+                url: 'admin_notice_select',
+                type: 'GET',
+                data: { not_id: noticeId },
+                success: function(data) {
+                    $('#noticeModalLabel').text('공지사항 조회');
+                    $('#noticeForm').attr('action', '');
+                    $('#not_id').val(data.not_id);
+                    $('#not_title').val(data.not_title);
+                    $('#not_content').val(data.not_content);
+                    $('#not_date').val(data.not_date);
+                    $('#saveButton').hide();
+                    $('#deleteButton').hide();
+                    $('#noticeModal').modal('show');
+                }
+            });
+        }
+
         function openEditPopup(noticeId) {
             $.ajax({
-                url: '${pageContext.request.contextPath}/notice/get/' + noticeId,
-                method: 'GET',
+                url: 'admin_notice_select',
+                type: 'GET',
+                data: { not_id: noticeId },
                 success: function(data) {
                     $('#noticeModalLabel').text('공지사항 수정');
-                    $('#noticeForm').attr('action', '${pageContext.request.contextPath}/notice/edit');
-                    $('#notice_id').val(data.notice_id);
-                    $('#notice_title').val(data.notice_title);
-                    $('#notice_content').val(data.notice_content);
-                    $('#notice_date').val(data.notice_date);
-                    $('#deleteButton').show();
+                    $('#noticeForm').attr('action', 'admin_notice_update');
+                    $('#not_id').val(data.not_id);
+                    $('#not_title').val(data.not_title);
+                    $('#not_content').val(data.not_content);
+                    $('#not_date').val(data.not_date);
+                    $('#saveButton').show();
+                    $('#deleteButton').show().attr('onclick', `deleteNotice(${noticeId})`);
                     $('#noticeModal').modal('show');
                 }
             });
         }
 
         function deleteNotice(noticeId) {
-            if (confirm('공지사항을 삭제하시겠습니까?')) {
+            if (confirm('정말로 이 공지사항을 삭제하시겠습니까?')) {
                 $.ajax({
-                    url: '${pageContext.request.contextPath}/notice/delete/' + noticeId,
-                    method: 'POST',
+                    url: 'admin_notice_delete',
+                    type: 'POST',
+                    data: { not_id: noticeId },
                     success: function() {
                         alert('공지사항이 삭제되었습니다.');
                         location.reload();
+                    },
+                    error: function() {
+                        alert('공지사항 삭제에 실패했습니다.');
                     }
                 });
             }
@@ -126,12 +163,15 @@
             var formData = $(this).serialize();
             $.ajax({
                 url: $(this).attr('action'),
-                method: 'POST',
+                method: 'GET',
                 data: formData,
                 success: function() {
                     alert('공지사항이 저장되었습니다.');
                     $('#noticeModal').modal('hide');
                     location.reload();
+                },
+                error: function() {
+                    alert('공지사항 저장에 실패했습니다.');
                 }
             });
         });
