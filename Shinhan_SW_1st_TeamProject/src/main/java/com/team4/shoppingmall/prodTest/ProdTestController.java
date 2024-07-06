@@ -190,51 +190,70 @@ public class ProdTestController {
     //장바구니 - 상품(판매)
 	@PostMapping("/productCartInsert.do")
 	@ResponseBody
-	public int productCartInsert(String prod_id,
+	public Map<String, Object> productCartInsert(String prod_id,
 								 HttpServletRequest request, 
 								 HttpSession session, 
 								 Model model,
 								 @RequestBody ProductNewVO prodVO) 
 	{
+		
+		Map<String, Object> response = new HashMap<>();
+		
 		//session
 		MemberDTO member =  (MemberDTO) session.getAttribute("member");
 		String member_id = member.getMember_id();
 		prod_id = prodVO.getProd_id();
         
         if(prodVO.getS_stock_id() == null || prodVO == null) {
-    		return 0; 
+    		return response; 
 		}
        
-        
-        int cart_amount = prodVO.getOrder_num();
-
-		int sellProdCartInsert = cartService.cartInsert(prodVO, member_id, cart_amount);
+        try {
+        	//판매상품 장바구니ID
+	        int cart_amount = prodVO.getOrder_num();
+			int cart_id = cartService.cartInsert(prodVO, member_id, cart_amount);
+			response.put("status", "success");
+	        response.put("cart_id", cart_id);
+        }catch (Exception e) {
+       	 	 response.put("status", "error");
+	         response.put("message", e.getMessage());
+        }
 		
-		return sellProdCartInsert;
+		return response;
 		
 	}
 	//장바구니 - 상품(대여)
 	@PostMapping("/rentProductCartInsert.do")
 	@ResponseBody
-	public int rentProductCartInsert(String prod_id,
+	public Map<String, Object> rentProductCartInsert(String prod_id,
 									 HttpServletRequest request, 
 									 HttpSession session, 
 									 Model model,
 									 @RequestBody ProductNewVO prodVO) 
 	{
+		
+		Map<String, Object> response = new HashMap<>();
+		
 		//session
 		MemberDTO member =  (MemberDTO) session.getAttribute("member");
 		String member_id = member.getMember_id();
         prod_id = prodVO.getProd_id();
         
         if(prodVO == null || prodVO.getR_stock_id() == null) {
-    		return 0; 
+    		return response; 
 		}
         
-		int cartRentProductInsert = cartService.cartRentProductInsert(prodVO, member_id);
+        try {
+        	//장바구니ID - 대여상품
+        	int rentCartId = cartService.cartRentProductInsert(prodVO, member_id);
+        	response.put("status", "success");
+	        response.put("rentCartId", rentCartId);
+        }catch (Exception e) {
+        	 response.put("status", "error");
+ 	         response.put("message", e.getMessage());
+		}
 		
-		return cartRentProductInsert;
-		
+		return response;		
 	}
 	    
 	/* 구매하기 */ 

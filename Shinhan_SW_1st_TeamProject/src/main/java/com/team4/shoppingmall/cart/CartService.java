@@ -2,6 +2,7 @@ package com.team4.shoppingmall.cart;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,11 @@ public class CartService {
 	
 	@Autowired
 	CartDAOInterface cartDAO;
+	
+	//장바구니 상품 정보 조회
+	public List<Map<String,Object>> selectCartProdInfo(String member_id) {
+		return cartDAO.selectCartProdInfo(member_id);
+	};
 	
 	//선택한 옵션 상품의 재고ID 조회
 	public String searchStockId(HashMap<String, String> map, String prod_id) {
@@ -70,7 +76,7 @@ public class CartService {
 		//cartDTO.setCart_amount(prodVO.getOrder_num()); 
 		cartDTO.setCart_amount(cart_amount); 
 		
-		//재고 있는지 조회
+		//같은 재고 있는지 조회
 		CartDTO isExistsSellCart = cartDAO.selectCartBySellStock(cartDTO);
 		
 		if(isExistsSellCart != null){
@@ -83,7 +89,11 @@ public class CartService {
 		}else {
 			
 			int result = cartDAO.cartInsert(cartDTO);
-			return result;
+			
+			//insert된 장바구니 ID 저장
+			int cart_id = cartDTO.getCart_id();
+			
+			return cart_id;
 		}
 	}
 	//대여상품 장바구니 insert문
@@ -91,10 +101,11 @@ public class CartService {
 		
 		CartDTO cartDTO = new CartDTO();
 		cartDTO.setMember_id(member_id);
-		cartDTO.setS_stock_id(prodVO.getS_stock_id());
-		cartDTO.setCart_amount(prodVO.getRent_num());//����
+		cartDTO.setR_stock_id(prodVO.getR_stock_id());  //대여재고ID
+		//cartDTO.setS_stock_id(prodVO.getS_stock_id());
+		cartDTO.setCart_amount(prodVO.getRent_num());
 		
-		//재고 있는지 조회
+		//같은 대여상품 재고 있는지 조회
 		CartDTO isExistsRentCart = cartDAO.selectCartByRentStock(cartDTO);
 		
 		if(isExistsRentCart != null){
@@ -106,7 +117,10 @@ public class CartService {
 			
 		}else {
 			int result = cartDAO.cartRentProductInsert(cartDTO);
-			return result;
+			
+			int rentCartId = cartDTO.getCart_id();
+			
+			return rentCartId;
 		}
 	}
 

@@ -4,6 +4,48 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.cart">
 
+	<!-- 회원의 장바구니 상품 정보 전체 조회  -->
+	<select id="selectCartProdInfo" parameterType="string" resultType="map">
+		SELECT
+		    c.cart_id,
+		    c.member_id,
+		    p.prod_name,
+		    p.prod_price,
+		    sps.s_stock_id,
+		    rps.r_stock_id,
+		    o1.opt_name AS opt_name1,
+		    o2.opt_name AS opt_name2,
+		    o3.opt_name AS opt_name3,
+		    o4.opt_name AS opt_name4,
+		    o5.opt_name AS opt_name5,
+		    o1.opt_value AS opt_value1,
+		    o2.opt_value AS opt_value2,
+		    o3.opt_value AS opt_value3,
+		    o4.opt_value AS opt_value4,
+		    o5.opt_value AS opt_value5,
+		    c.cart_amount,
+		    c.product_type
+		FROM
+		    CART c
+		LEFT JOIN
+		    SELL_PROD_STOCK sps ON c.s_stock_id = sps.s_stock_id
+		LEFT JOIN
+		    RENT_PROD_STOCK rps ON c.r_stock_id = rps.r_stock_id
+		LEFT JOIN
+		    PROD p ON p.prod_id = COALESCE(sps.prod_id, rps.prod_id)
+		LEFT JOIN
+		    PROD_OPTION o1 ON o1.opt_id = COALESCE(sps.opt_id1, rps.opt_id1)
+		LEFT JOIN
+		    PROD_OPTION o2 ON o2.opt_id = COALESCE(sps.opt_id2, rps.opt_id2)
+		LEFT JOIN
+		    PROD_OPTION o3 ON o3.opt_id = COALESCE(sps.opt_id3, rps.opt_id3)
+		LEFT JOIN
+		    PROD_OPTION o4 ON o4.opt_id = COALESCE(sps.opt_id4, rps.opt_id4)
+		LEFT JOIN
+		    PROD_OPTION o5 ON o5.opt_id = COALESCE(sps.opt_id5, rps.opt_id5)
+		WHERE
+		    c.member_id = #{member_id} 
+	</select>
 	<!-- CART테이블에 넣을 선택한 옵션 이름으로 상품의 재고ID 찾기(parameterType = 동적VO)  -->
     <select id="searchStockId" parameterType="com.team4.shoppingmall.cart.CartDynamicVO" 
     		resultType="string">
@@ -35,7 +77,7 @@
 		resultType="cartVO">
 		SELECT *
 		FROM CART
-		WHERE member_id = #{member_id} and rentstock_id IS NOT NULL
+		WHERE member_id = #{member_id} and r_stock_id IS NOT NULL
 	</select>
 
 	<select id="selectAllStockByMemberId" parameterType="string"
@@ -75,10 +117,11 @@
 	<!-- 장바구니(구매상품) 생성 : 시퀀스 사용(cart_squence), product_type칼럼 추가  -->
 	<insert id="cartInsert" parameterType="cartVO">
 		INSERT 
-		INTO CART(cart_id, member_id, s_stock_id, cart_amount, product_type) 
+		INTO CART(cart_id, member_id, s_stock_id, r_stock_id, cart_amount, product_type) 
 		VALUES(cart_sequence.nextval, 
 			  #{member_id}, 
 			  #{s_stock_id}, 
+			  null,
 			  #{cart_amount}, 
 			  'sell')
 			  
@@ -86,13 +129,15 @@
 	        SELECT cart_sequence.CURRVAL FROM DUAL
 	    </selectKey>
 	</insert>
-	<!-- 장바구니(대여상품) 생성 -->
+	<!-- 장바구니(대여상품) 생성, 대여재고id 칼럼 추가 -->
 	<insert id="cartRentProductInsert" parameterType="cartVO">
 		INSERT 
-		INTO CART(cart_id, member_id, s_stock_id, cart_amount, product_type) 
-		VALUES(cart_sequence.nextval, 
+		INTO CART(cart_id, member_id, s_stock_id, r_stock_id, cart_amount, product_type) 
+		VALUES(
+			  cart_sequence.nextval, 
 			  #{member_id}, 
-			  #{s_stock_id}, 
+			  null,
+			  #{r_stock_id},
 			  #{cart_amount}, 
 			  'rent')
 			  
