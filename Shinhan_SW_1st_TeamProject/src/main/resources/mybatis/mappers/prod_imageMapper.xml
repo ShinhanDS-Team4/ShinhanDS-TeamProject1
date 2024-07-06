@@ -10,7 +10,7 @@
 		FROM PROD_IMAGE PM
 		RIGHT JOIN PROD P ON(P.prod_id = PM.prod_id)
 		WHERE P.prod_id  = #{prod_id} 
-		AND PM.img_type = #{img_type}
+		AND PM.img_type = 0
 	</select>
 	<!-- 서브 이미지 조회 -->
 	<select id="prodSubImgInfoByProdId" parameterType="string"
@@ -19,7 +19,7 @@
 		FROM PROD_IMAGE PM
 		RIGHT JOIN PROD P ON(P.prod_id = PM.prod_id)
 		WHERE P.prod_id  = #{prod_id} 
-		AND PM.img_type = #{img_type}
+		AND PM.img_type = 1
 	</select>
 	<select id="selectByImageId" parameterType="int"
 		resultType="prod_imageVO">

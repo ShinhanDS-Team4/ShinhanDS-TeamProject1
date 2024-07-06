@@ -4,6 +4,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"  %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:set var="path" value="${pageContext.servletContext.contextPath}" />
+<%-- 로그인 여부를 확인하기 위한 세션 값 확인 --%>
+<c:set var="isLoggedIn" value="${not empty sessionScope.member}"   />
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,7 +23,6 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bxslider@4.2.17/dist/jquery.bxslider.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bxslider@4.2.17/dist/jquery.bxslider.min.js"></script>
-
 <script>
 	$(function() {
 		//배송 안내 정보 토글
@@ -98,23 +99,7 @@
                   }
               });
          });
-
-       	/* 메인 사진 슬릭 슬라이더 
-        // jQuery를 $ 대신 사용할 수 있도록 설정
-        var jq = $.noConflict();
-        jq(document).ready(function(){
-            jq('.product-img-slide').slick({
-               // infinite: true,
-                slidesToShow: 1, // 한번에 보여줄 슬라이드 수
-                slidesToScroll: 1, // 한번에 스크롤할 슬라이드 수
-               // autoplay: true,
-               // autoplaySpeed: 3000,
-                dots: true,
-                arrows : true,
-                centerMode: true,
-                centerPadding: '32px'
-            });
-        });*/
+		//메인 상품 사진 슬라이드
         $('.product-img-slide').bxSlider({
         	  // auto: true,           // 자동 슬라이드		
                controls: true,      // 양옆 화살표 노출 여부
@@ -328,12 +313,38 @@
 		        	var currentStock = {}; ////선택한 옵션 상품의 재고id
 					    
 					var previousValues = {};//수량, 가격 처리
-						
+					
+
+		            // 로그인 여부 확인 함수
+		            function checkLoginStatus(callback) {
+		                $.ajax({
+		                    url: '${path}/prod/checkLoginStatus', // 서버에서 로그인 상태를 확인하는 엔드포인트
+		                    type: 'GET',
+		                    success: function(response) {
+		                        if (response.isLoggedIn) {
+		                             callback(); // 로그인 상태일 경우 콜백 함수 실행
+		                        	 console.log("로그인 확인 성공");
+		                        } else {
+		                            alert('로그인이 필요합니다.');
+		                        	// 로그인 페이지로 리다이렉트
+		                            window.location.href = '${path}/member_test/login.do'; 
+		                        }
+		                    },
+		                    error: function(error) {
+		                        console.error('Error checking login status:', error);
+		                    }
+		                });
+		            }
 						
 		    		/* 장바구니 버튼 클릭 시 나타나는 팝업창 */ 
 		    		$('#cartButton').on('click', function(e) {
 		    			e.preventDefault();
 		    			$('.popup-background').show();
+		    			
+		    		    checkLoginStatus(function() {
+		    		    	console.log("로그인 체크 콜백함수 호출");
+		    		    	loacation.reload(); 
+		    	        });
 		    		});
 		    		
 		    		//네 선택 시 장바구니페이지로 이동
@@ -699,9 +710,10 @@
 	
 	//선택한 옵션 상품의 재고id 변수 선언
     var currentStock = {};
-	
 	//수량, 가격 처리
 	var previousValues = {};
+	
+
 	// 상품 원래 가격 (숫자만 추출)
     var originalPrice = parseInt($('.productPrice').text().replace(/[^0-9]/g, ''));
     $('.total').text(originalPrice + '원');
@@ -821,7 +833,6 @@
 
 	//구매하기 버튼 클릭 
 	$('#orderButton').on('click', function(){
-	
 		var allOptionsSelected = true;
         $('#prodOptionForm select').each(function() {
             if ($(this).val() === null || $(this).val() === "선택") {
@@ -860,7 +871,7 @@
                     if(response > 0 ){
 	                   	  alert("주문 저장 완료");
 	                   	  //주문페이지로 이동
-	                   	  //location.href
+	                   	  location.href="${path}/customer/orderPay";
 	                    }else{
 	                    	alert("상품 재고가 없습니다.");
 	                    }

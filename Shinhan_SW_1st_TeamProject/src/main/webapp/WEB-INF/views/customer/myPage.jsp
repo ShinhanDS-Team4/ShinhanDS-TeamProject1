@@ -22,7 +22,7 @@
 }
 </style>
 <body>
-	<%@ include file="../common/header.jsp" %>
+	<%@ include file="../common/header.jsp" %>	
 	<%-- 마이페이지 : 메인 --%>
 	<div class="mypage_wrap">
 		<div class="myinfo inner">

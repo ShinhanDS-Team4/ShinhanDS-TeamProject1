@@ -220,9 +220,9 @@ public class CustomerControllerJH {
 							   @RequestBody Map<String,String> pwData ) 
 	{
 	
-		//MemberDTO member =  (MemberDTO) session.getAttribute("member");
-		//String member_id = member.getMember_id();
-		String member_id ="testid";
+		MemberDTO member =  (MemberDTO) session.getAttribute("member");
+		String member_id = member.getMember_id();
+		//String member_id ="testid";
 		
 		String member_pw = pwData.get("password"); //입력 받은 pw
 		//1.회원정보 조회
@@ -269,12 +269,9 @@ public class CustomerControllerJH {
 	}
 	
 	
-	/* 회원 탈퇴 */
+	/* 회원 탈퇴 - 진행중 */
 	@PostMapping("/memberDelete.do")
 	public String memberDelete() {
-		
-		
-		
 		return "customer/memberDelete";
 	}
 
@@ -287,5 +284,7 @@ public class CustomerControllerJH {
 		}
 		
 	}
+	
+	
 	
 }

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -104,8 +105,7 @@ public class ProdTestController {
 		//나중에 삭제하기
 		//prod_id = "논아이론 사틴 솔리드 드레스 셔츠 - 화이트_199-81-22242"; //판매에 있고 ,대여재고없는상품 test
 		prod_id = "자수 미니 원피스 - 화이트_199-81-21909"; //판매,대여 둘다 는 상품
-		//prod_id = "[대여상품]원피스 - 화이트_222-81-77709"; //대여재고만 있는 상품
-		
+		//prod_id = "[대여상품]원피스 - 화이트_222-81-77709"; //대여재고만 있는 상품	
 		//prod_id = "세일러 셔츠-스카이블루_199-81-22361";
 		
 		//상품의 정보와 옵션 조회
@@ -169,12 +169,25 @@ public class ProdTestController {
 		System.out.println("imgIdList" + imgIdList);
 		
 		//메인 사진들 조회
-		
+		List<Map<String,Object>> mainImgIdList = imageService.prodMainImgInfoByProdId(prod_id); 
 		//상품 정보 사진 조회
-				
+		List<Map<String,Object>> subImgIdList = imageService.prodSubImgInfoByProdId(prod_id); 
+		
+		System.out.println("mainImgIdList" + mainImgIdList);
+		System.out.println("subImgIdList" + subImgIdList);
 	}
 	
-  //장바구니 - 상품(판매)
+
+   // 로그인 여부 확인 
+   @GetMapping("/checkLoginStatus")
+    public ResponseEntity<Map<String, Boolean>> checkLoginStatus(HttpSession session) {
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("isLoggedIn", session.getAttribute("member") != null);
+        return ResponseEntity.ok(response);
+    }
+	
+	
+    //장바구니 - 상품(판매)
 	@PostMapping("/productCartInsert.do")
 	@ResponseBody
 	public int productCartInsert(String prod_id,
@@ -186,8 +199,7 @@ public class ProdTestController {
 		//session
 		MemberDTO member =  (MemberDTO) session.getAttribute("member");
 		String member_id = member.getMember_id();
-       // String member_id = "testid";
-        prod_id = "";
+		prod_id = prodVO.getProd_id();
         
         if(prodVO.getS_stock_id() == null || prodVO == null) {
     		return 0; 
@@ -213,8 +225,6 @@ public class ProdTestController {
 		//session
 		MemberDTO member =  (MemberDTO) session.getAttribute("member");
 		String member_id = member.getMember_id();
-        //String member_id = "testid";
-        //prod_id = "";
         prod_id = prodVO.getProd_id();
         
         if(prodVO == null || prodVO.getR_stock_id() == null) {
@@ -239,10 +249,7 @@ public class ProdTestController {
     	//session
 		MemberDTO member =  (MemberDTO) session.getAttribute("member");
 		String member_id = member.getMember_id();
-        //String member_id = "testid";
-        //String prod_id = "";  
         String prod_id = prodVO.getProd_id();
-       // prod_id = "세일러 셔츠-스카이블루_199-81-22361";
         System.out.println("구매하기상품id=" + prod_id);
         
       //재고 체크 (프론트에서 체크 했는데 백도 나중에 추가)
@@ -269,8 +276,6 @@ public class ProdTestController {
 	{
 		MemberDTO member =  (MemberDTO) session.getAttribute("member");
 		String member_id = member.getMember_id();
-		//String member_id = "testid";	 
-       //String prod_id = "";
         String prod_id = prodVO.getProd_id();
         
         
@@ -327,5 +332,4 @@ public class ProdTestController {
 		}
 		
 	}
-	
 }
