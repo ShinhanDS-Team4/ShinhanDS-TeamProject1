@@ -43,4 +43,9 @@ public class Admin_InqDAOMybatis implements Admin_InqDAOInterface {
 	public int admin_inqDelete(Integer admin_inq_id) {
 		return sqlSession.delete(namespace+"admin_inqDelete", admin_inq_id);
 	}
+
+	@Override
+	public Integer findMaxAdminInqId() {
+		return sqlSession.selectOne(namespace+"findMaxAdminInqId");
+	}
 }

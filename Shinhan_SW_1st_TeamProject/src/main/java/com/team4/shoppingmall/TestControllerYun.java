@@ -37,12 +37,11 @@ public class TestControllerYun {
 	@Autowired
 	ProdService prodService;
 
-	// ��ǰ��� - selectAll2 
 	@GetMapping("/productlist.do")
 	public String test1(Model model, HttpServletRequest request) {
 		System.out.println("/customer/productlist.jsp"); // ��� ��ǰ���
 		List<Map<String, Object>> prodAllOrders = prodService.selectAll2();
-		System.out.println("��ü��ǰ���" + prodAllOrders);
+		System.out.println(prodAllOrders);
 		model.addAttribute("prodAllOrders", prodAllOrders);
 
 		return "customer/productlist";
@@ -65,18 +64,17 @@ public class TestControllerYun {
 	 * return "customer/productlist"; }
 	 */
 
-	// �뿩���
-	@GetMapping("/rentlist.do")
+	@GetMapping("/rentlist")
 	public String test2(Model model, HttpServletRequest request) {
 	    System.out.println("/customer/rentlist.jsp");
-
+	
 	    // 모든 렌트 정보 가져오기
 	    List<RentDTO> rentAllOrders = rentService.selectAll();
 	    System.out.println("전체 렌트 목록: " + rentAllOrders);
-
+	
 	    // 렌트 상세 정보를 담을 Map
 	    Map<Integer, List<RentSelectDTO>> rentDetailsMap = new HashMap<>();
-
+	
 	    // 각 렌트에 대한 상세 정보 가져오기
 	    for (RentDTO rent : rentAllOrders) {
 	        int rental_code = rent.getRental_code();
@@ -84,16 +82,17 @@ public class TestControllerYun {
 	        rentDetailsMap.put(rental_code, rentDetails);
 	    }
 	    System.out.println("렌트 상세 정보 목록: " + rentDetailsMap);
-
+	
 	    // 렌트 상품 옵션 리스트 가져오기
 	    List<RentProdStockDTO> optionList = rentService.selectOptions();
-
+	
 	    model.addAttribute("rentAllOrders", rentAllOrders);
 	    model.addAttribute("rentDetailsMap", rentDetailsMap);
 	    model.addAttribute("optionList", optionList);
-
+	
 	    return "customer/rentlist";
 	}
+
 
 
 	// �뿩���
@@ -116,16 +115,14 @@ public class TestControllerYun {
 		}
 	}
 
-	// �ݳ�
 	@PostMapping("/returnRent.do")
 	@ResponseBody
 	public String returnRent(@RequestParam("rentalCode") int rentalCode, HttpServletResponse response) {
-		System.out.println("�ݳ���û(�ֹ���ȣ): " + rentalCode);
+		//System.out.println("대여코드: " + rentalCode);
 
 		int returnSuccess = rentService.returnRent(rentalCode);
 		String message = "";
-		
-		// �Ǹ��ڿ��� ��û������?
+
 		
 		if (returnSuccess > 0) { 
 			message = "success"; 
@@ -136,9 +133,8 @@ public class TestControllerYun {
 		}
 	}
 
-	// �ֹ����
-	@GetMapping("/orderlist.do")
-	public String test3(Model model, HttpServletRequest request) {
+	@GetMapping("/orderlist")
+	public String test3(Model model) {
 	    System.out.println("/customer/orderlist.jsp");
 
 	    // 모든 주문 정보 가져오기
@@ -163,17 +159,13 @@ public class TestControllerYun {
 	    return "customer/orderlist";
 	}
 
-
-
-	// ��ҿ�û
 	@PostMapping("/cancel.do")
 	@ResponseBody
 	public String processCancel(@RequestParam("orderId") int orderId, HttpServletResponse response) throws IOException {
-		System.out.println("��ҿ�û(�ֹ���ȣ): " + orderId);
 
-		// �Ǹ��ڿ��� ��ҿ�û ������
 
 		int cancelSuccess = orderProdService.orderCancel(orderId); 
+
 		String message = "";
 
 		if (cancelSuccess > 0) { 
@@ -185,11 +177,11 @@ public class TestControllerYun {
 		}
 	}
 
-	// ȯ�ҿ�û
+	
 	@PostMapping("/refund.do")
 	@ResponseBody
 	public String processRefund(@RequestParam("orderId") int orderId, HttpServletResponse response) throws IOException {
-		System.out.println("ȯ�ҿ�û(�ֹ���ȣ): " + orderId);
+		System.out.println("orderId: " + orderId);
 
 		// �Ǹ��ڿ��� ȯ�ҿ�û ������
 

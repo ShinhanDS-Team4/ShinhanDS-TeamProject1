@@ -3,7 +3,38 @@
       PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.rent">
-
+	
+	<!-- 대여 신청 완료된 대여 상품 목록 -->
+	<select id="rentProductById" parameterType="string"
+		resultType="map">
+		SELECT
+             r.rental_code,
+             p.prod_name, 
+             r.TOTAL_RENT_PRICE, 
+             rd.rent_num,
+             rd.RENT_PRODUCT_PRICE,         
+             r.RENT_START_DATE,
+             r.RENT_END_DATE,
+             pi.img_id,
+             rd.rent_state
+		FROM 
+		    RENT r
+		JOIN 
+		   RENT_DETAIL rd ON r.rental_code = rd.rental_code
+		JOIN 
+		    RENT_PROD_STOCK rps ON rps.r_stock_id = rd.r_stock_id
+        JOIN 
+           PROD p ON p.prod_id = rps.prod_id 
+        RIGHT JOIN 
+            PROD_IMAGE pi ON p.prod_id = pi.prod_id AND pi.img_id = (
+            SELECT MIN(img_id)
+            FROM PROD_IMAGE
+            WHERE prod_id = p.prod_id
+        )
+		WHERE 
+		    r.member_id = #{member_id}          
+	    AND rd.rent_state = '대여신청완료'
+	</select>
 	<!-- 대여상세 -->
 	<select id="selectById" parameterType="int" resultType="rentVO">
 		SELECT *
@@ -75,7 +106,9 @@
 			   SPS.opt_id4,
 			   SPS.opt_id5,
 			   RD.rent_product_price,			   
-			   PI.img_id	   
+			   PI.img_id,
+			   RD.rent_state,
+			   RD.rentdetail_id   
 		FROM
 			RENT R
 		JOIN
@@ -105,11 +138,11 @@
 	<!-- rentlist.jsp에서, 반납 -->
 	<update id="returnRent" parameterType="int">
 		UPDATE 
-			RENT
+			RENT_DETAIL
 		SET
 			rent_state = 'returned'
 		WHERE
-	    	rental_code = #{aa}
+	    	rentdetail_id = #{aa}
 	</update>
 
 </mapper>

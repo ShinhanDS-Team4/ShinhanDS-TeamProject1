@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.team4.shoppingmall.addr_list.Addr_ListDTO;
+import com.team4.shoppingmall.addr_list.Addr_ListService;
+
 @Controller
 @RequestMapping("/member_test")
 public class MemberController {
@@ -28,9 +31,12 @@ public class MemberController {
     MemberService memberService;
     @Autowired
     private GmailService gmailService;
+    @Autowired
+    Addr_ListService addrService;
     
     private Map<String, String> emailVerificationCodes = new HashMap<>();
 
+    
 	@GetMapping("/member_test.do")
 	public void detailTest(Model model, String member_id) {
 		model.addAttribute("memberVO", memberService.selectById(member_id));
@@ -40,7 +46,7 @@ public class MemberController {
 	public void defaultpage() {
 
 	}
-	//로그인페이지
+	//濡쒓렇�씤�럹�씠吏�
 	@GetMapping("/login.do")
 	public String loginstart() {
 		return "user/login";
@@ -52,31 +58,31 @@ public class MemberController {
 		System.out.println(member);
 		String N = "N";
 		if(member == null) {
-			session.setAttribute("loginResult", "존재하지 않는 ID");
+			session.setAttribute("loginResult", "議댁옱�븯吏� �븡�뒗 ID");
 			return "redirect:login.do";
 		}else if(!member.getMember_pw().equals(member_pw)) {
-			session.setAttribute("loginResult", "password 오류");
+			session.setAttribute("loginResult", "Password 불일치");
 			return "redirect:login.do";
 		}else if(member.seller_authority.equals(N)){
-			session.setAttribute("loginResult", "관리자의 승인이 필요한 계정입니다.");
+			session.setAttribute("loginResult", "관리자의 인가를 받지 않은 판매자입니다.");
 			return "redirect:login.do";
 		}else {
 			session.setAttribute("member", member);
 			String lastRequest = (String)session.getAttribute("lastRequest");
 			String goPage;
 			if(lastRequest==null) {
-				//첨부터 로그인창으로 들어갔다면 로그인 후 메인페이지로 이동
+				//泥⑤��꽣 濡쒓렇�씤李쎌쑝濡� �뱾�뼱媛붾떎硫� 濡쒓렇�씤 �썑 硫붿씤�럹�씠吏�濡� �씠�룞
 				goPage = "../";
 			}else {
 				int length = request.getContextPath().length();
 				goPage = lastRequest.substring(length);
 				String queryString = (String)session.getAttribute("queryString");
-				if(queryString!=null) goPage = goPage+"?"+queryString;//테스트용인가?
+				if(queryString!=null) goPage = goPage+"?"+queryString;//�뀒�뒪�듃�슜�씤媛�?
 				System.out.println("goPage =>" + goPage);
 			}
 			LocalDate localDate = LocalDate.now();
 			Date sqlDate = Date.valueOf(localDate);
-			//최종 접속일을 현재 일자로 수정
+			//理쒖쥌 �젒�냽�씪�쓣 �쁽�옱 �씪�옄濡� �닔�젙
 			member.setLast_access(sqlDate);
 			memberService.memberUpdateAccess(member);
 			
@@ -84,22 +90,23 @@ public class MemberController {
 		}
 	}
 	
-    //로그아웃 기능
+    //濡쒓렇�븘�썐 湲곕뒫
     @GetMapping("/logout.do")
     public String logout(HttpSession session) {
         session.removeAttribute("member"); 
         return "redirect:/"; 
     }
 	
-	//회원가입 기능
+	//�쉶�썝媛��엯 湲곕뒫
 	@GetMapping("/signup")
 	public String signup() {
 		return "user/signup";
 	}
 	
 	@PostMapping("/signup")
-	public String sendSignup(MemberDTO member, Model model) {
+	public String sendSignup(MemberDTO member, Addr_ListDTO addr, Model model) {
 		System.out.println(member);
+		System.out.println(addr);
 		LocalDate localDate = LocalDate.now();
 		Date sqlDate = Date.valueOf(localDate);
 		member.setCreate_date(sqlDate);
@@ -110,11 +117,13 @@ public class MemberController {
 		}else {
 			memberService.memberSellerInsert(member);
 		}
+		addr.setIs_master_addr("Y");
+		addrService.addressInsert(addr);
 
 		return "redirect:login.do";
 	}
 	
-	//ID 찾기
+	//ID 李얘린
 	@GetMapping("/findid")
 	public String findid() {
 		return "user/findid";
@@ -131,7 +140,7 @@ public class MemberController {
 		return member;
 	}
 	
-	//비번 찾기
+	//鍮꾨쾲 李얘린
 	@GetMapping("/findpassword")
 	public String findpassword() {
 		return "user/findpassword";
@@ -145,7 +154,7 @@ public class MemberController {
 		return member;
 	}
 
-	//이메일 확인
+	//�씠硫붿씪 �솗�씤
     @GetMapping("/verify")
     public String showVerificationForm() {
         return "verify";
@@ -172,14 +181,14 @@ public class MemberController {
 
     	MemberDTO member = memberService.selectById(userId);
     	
-    	//이메일 인증
+    	//�씠硫붿씪 �씤利�
     	String code = generateVerificationCode();
         gmailService.sendEmail(member.email, "Verification Code", "Your verification code is " + code);
     	System.out.println(userId);
     	System.out.println(member.email);
     	System.out.println(code);
         
-        // model�� userId�� �߰��Ͽ� view�� �����մϴ�.
+        // model占쏙옙 userId占쏙옙 占쌩곤옙占싹울옙 view占쏙옙 占쏙옙占쏙옙占쌌니댐옙.
         model.addAttribute("userId", userId);
         model.addAttribute("email", member.email);
         model.addAttribute("verificationCode", code);
@@ -219,7 +228,7 @@ public class MemberController {
         return response;
     }
     
-    //랜덤코드 발급
+    //�옖�뜡肄붾뱶 諛쒓툒
     private String generateVerificationCode() {
         Random random = new Random();
         int code = 100000 + random.nextInt(900000);

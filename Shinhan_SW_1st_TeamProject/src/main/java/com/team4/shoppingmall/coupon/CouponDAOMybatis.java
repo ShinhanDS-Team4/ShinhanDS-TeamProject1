@@ -14,19 +14,19 @@ public class CouponDAOMybatis implements CouponDAOInterface {
 	
 	String namespace = "com.saren.coupon.";
 	
-	// ÄíÆù»ó¼¼
+	// ì¿ í°ìƒì„¸
 	@Override
 	public CouponDTO selectById(String coupon_id) {
 		return sqlSession.selectOne(namespace+"couponSelectById", coupon_id);
 	}
 
-	// ÄíÆù¸ñ·Ï
+	// ì¿ í°ëª©ë¡
 	@Override
 	public List<CouponDTO> selectAll() {
 		return sqlSession.selectList(namespace+"selectAll");
 	}
 	
-	// ÄíÆù»ç¿ë
+	// ì¿ í°ì‚¬ìš©
 	@Override
 	public int couponUse(CouponDTO couponDTO) {
 		return sqlSession.update(namespace+"couponUse", couponDTO);

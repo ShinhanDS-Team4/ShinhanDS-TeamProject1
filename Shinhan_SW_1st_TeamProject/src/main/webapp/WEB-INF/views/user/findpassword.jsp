@@ -26,30 +26,6 @@
             color: #333;
             display: flex;
             flex-direction: column;
-            align-items: center;
-        }
-        header {
-            background-color: #333;
-            width: 100%;
-            padding: 10px 0;
-            text-align: center;
-            color: #fff;
-        }
-        header .logo {
-            font-size: 2em;
-            font-weight: bold;
-        }
-        nav.navbar {
-            background-color: #333;
-            width: 100%;
-            text-align: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #555;
-        }
-        nav.navbar a {
-            margin: 0 15px;
-            text-decoration: none;
-            color: #fff;
         }
         .password_container {
             max-width: 600px;
@@ -198,16 +174,7 @@
 	</script>
 </head>
 <body>
-    <header>
-        <div class="logo">saren</div>
-    </header>
-    <nav class="navbar">
-        <a href="#">여성</a>
-        <a href="#">남성</a>
-        <a href="#">키즈</a>
-        <a href="#">악세서리</a>
-        <a href="#">기타</a>
-    </nav>
+	<%@ include file="../common/header.jsp" %>
     <div class="password_container">
         <h1>아이디 / 비밀번호 찾기</h1>
         <div class="tab">

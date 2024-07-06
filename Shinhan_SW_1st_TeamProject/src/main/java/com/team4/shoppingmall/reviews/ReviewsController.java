@@ -32,58 +32,73 @@ public class ReviewsController {
 	@Value("${aws.accesskey}")
 	private String accessKey;
 	
-	//¾÷·Îµå ÆûÀ» º¸¿©ÁÖ´Â ¸Ş¼­µå(upload¶û display ÆäÀÌÁö´Â Å×½ºÆ®¿ëÀÔ´Ï´Ù.)
+
+	//ì—…ë¡œë“œ í¼ì„ ë³´ì—¬ì£¼ëŠ” ë©”ì„œë“œ(uploadë‘ display í˜ì´ì§€ëŠ” í…ŒìŠ¤íŠ¸ìš©ì…ë‹ˆë‹¤.)
 	@GetMapping("/upload")
     public String showUploadForm() {
         return "board/reviewWritetest";
     }
 
-	// ¿©·¯ ÆÄÀÏÀ» ¾÷·ÎµåÇÏ´Â ¸Ş¼­µå
+	// ì—¬ëŸ¬ íŒŒì¼ì„ ì—…ë¡œë“œí•˜ëŠ” ë©”ì„œë“œ
     @PostMapping("/upload")
-    public String uploadFiles(HttpServletRequest request,
-    		@RequestParam("files") MultipartFile[] files,
-    		RedirectAttributes redirectAttributes) throws Exception {
-        List<String> imageUrls = new ArrayList<>();  // ¾÷·ÎµåµÈ ÆÄÀÏÀÇ URLÀ» ÀúÀåÇÒ ¸®½ºÆ®
+    public String uploadFiles(HttpServletRequest request, @RequestParam("files") MultipartFile[] files, RedirectAttributes redirectAttributes) throws Exception {
+        List<String> imageUrls = new ArrayList<>();  // ì—…ë¡œë“œëœ íŒŒì¼ì˜ URLì„ ì €ì¥í•  ë¦¬ìŠ¤íŠ¸
 
-        // ¾÷·ÎµåµÈ °¢ ÆÄÀÏÀ» Ã³¸®
+        // ì—…ë¡œë“œëœ ê° íŒŒì¼ì„ ì²˜ë¦¬
         for (MultipartFile file : files) {
             if (!file.isEmpty()) {
-                String originalFileName = file.getOriginalFilename();  // ¿øº» ÆÄÀÏ¸í
-                String uuidFileName = getUuidFileName(originalFileName);  // UUID¸¦ »ç¿ëÇÏ¿© ÆÄÀÏ¸í »ı¼º
+                String originalFileName = file.getOriginalFilename();  // ì›ë³¸ íŒŒì¼ëª…
+                String uuidFileName = getUuidFileName(originalFileName);  // UUIDë¥¼ ì‚¬ìš©í•˜ì—¬ íŒŒì¼ëª… ìƒì„±
 
-                // ÆÄÀÏÀ» S3¿¡ ¾÷·ÎµåÇÏ°í URLÀ» ¹ŞÀ½
+                // íŒŒì¼ì„ S3ì— ì—…ë¡œë“œí•˜ê³  URLì„ ë°›ìŒ
                 String fileUrl = s3Service.uploadObject(file, uuidFileName);
-                imageUrls.add(fileUrl);  // URLÀ» ¸®½ºÆ®¿¡ Ãß°¡
+                imageUrls.add(fileUrl);  // URLì„ ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€
             }
         }
 
-        // ¼¼¼Ç¿¡ URL ¸®½ºÆ® ÀúÀå
+        // ì„¸ì…˜ì— URL ë¦¬ìŠ¤íŠ¸ ì €ì¥
         HttpSession session = request.getSession();
         session.setAttribute("uploadedImageUrls", imageUrls);
 
-        // ¸®µğ·º¼ÇÇÒ ¶§ URL ¸®½ºÆ® Àü´Ş
+        // ë¦¬ë””ë ‰ì…˜í•  ë•Œ URL ë¦¬ìŠ¤íŠ¸ ì „ë‹¬
         redirectAttributes.addFlashAttribute("uploadedImageUrls", imageUrls);
-        return "redirect:display";  // ÀÌ¹ÌÁö Ç¥½Ã ÆäÀÌÁö·Î ¸®µğ·º¼Ç
+        return "redirect:display";  // ì´ë¯¸ì§€ í‘œì‹œ í˜ì´ì§€ë¡œ ë¦¬ë””ë ‰ì…˜
     }
+    
+	@GetMapping("myreview.do")
+	public String myReview(Model model, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		MemberDTO mem = (MemberDTO)session.getAttribute("member");
+		//ë‚˜ì¤‘ì— í•„í„°ë§ í•˜ê² ì§€ë§Œ ìš°ì„ ì€ ì„ì‹œë°©í¸ìœ¼ë¡œ ë¶„ê¸°ì  ë§Œë“¤ì–´ë†“ìŒ
+		if(mem == null) {
+			return "redirect:/member_test/login.do";
+		}
+		String member_Id = mem.getMember_id();
+		
+		List<ReviewsDTO> reviews = reviewsService.selectBymemId(member_Id);
+		model.addAttribute("reviews", reviews);
+		return "board/myreview";
+	}
 
-    // ¾÷·ÎµåµÈ ÀÌ¹ÌÁö¸¦ Ç¥½ÃÇÏ´Â ¸Ş¼­µå
+    // ì—…ë¡œë“œëœ ì´ë¯¸ì§€ë¥¼ í‘œì‹œí•˜ëŠ” ë©”ì„œë“œ
     @GetMapping("/display")
     public String displayImages(HttpSession session, Model model) {
-        // ¼¼¼Ç¿¡¼­ ¾÷·ÎµåµÈ ÀÌ¹ÌÁö URL ¸®½ºÆ®¸¦ °¡Á®¿È
+        // ì„¸ì…˜ì—ì„œ ì—…ë¡œë“œëœ ì´ë¯¸ì§€ URL ë¦¬ìŠ¤íŠ¸ë¥¼ ê°€ì ¸ì˜´
         List<String> uploadedImageUrls = (List<String>) session.getAttribute("uploadedImageUrls");
         if (uploadedImageUrls == null || uploadedImageUrls.isEmpty()) {
-            model.addAttribute("message", "No images uploaded yet!");  // ¾÷·ÎµåµÈ ÀÌ¹ÌÁö°¡ ¾øÀ» ¶§ ¸Ş½ÃÁö ¼³Á¤
-            return "errorPage";  // ¿¡·¯ ÆäÀÌÁö ¶Ç´Â ÀûÀıÇÑ ¸Ş½ÃÁö¸¦ º¸¿©ÁÙ ÆäÀÌÁö·Î ¸®ÅÏ
+            model.addAttribute("message", "No images uploaded yet!");  // ì—…ë¡œë“œëœ ì´ë¯¸ì§€ê°€ ì—†ì„ ë•Œ ë©”ì‹œì§€ ì„¤ì •
+            return "errorPage";  // ì—ëŸ¬ í˜ì´ì§€ ë˜ëŠ” ì ì ˆí•œ ë©”ì‹œì§€ë¥¼ ë³´ì—¬ì¤„ í˜ì´ì§€ë¡œ ë¦¬í„´
         }
-        model.addAttribute("uploadedImageUrls", uploadedImageUrls);  // ¸ğµ¨¿¡ URL ¸®½ºÆ® Ãß°¡
-        return "board/displayImage";  // ÀÌ¹ÌÁö Ç¥½Ã ÆäÀÌÁö·Î ÀÌµ¿
+        model.addAttribute("uploadedImageUrls", uploadedImageUrls);  // ëª¨ë¸ì— URL ë¦¬ìŠ¤íŠ¸ ì¶”ê°€
+        return "board/displayImage";  // ì´ë¯¸ì§€ í‘œì‹œ í˜ì´ì§€ë¡œ ì´ë™
     }
+    
 	
 	@GetMapping("myreview.do")
 	public String myReview(Model model, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		MemberDTO mem = (MemberDTO)session.getAttribute("member");
-		//³ªÁß¿¡ ÇÊÅÍ¸µ ÇÏ°ÚÁö¸¸ ¿ì¼±Àº ÀÓ½Ã¹æÆíÀ¸·Î ºĞ±âÁ¡ ¸¸µé¾î³õÀ½
+		//ë‚˜ì¤‘ì— í•„í„°ë§ í•˜ê² ì§€ë§Œ ìš°ì„ ì€ ì„ì‹œë°©í¸ìœ¼ë¡œ ë¶„ê¸°ì  ë§Œë“¤ì–´ë†“ìŒ
 		if(mem == null) {
 			return "redirect:/member_test/login.do";
 		}
@@ -94,12 +109,13 @@ public class ReviewsController {
 		return "board/myreview";
 	}
 	
+	
 
 	@GetMapping("/write.do")
 	public String writeReview(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		MemberDTO mem = (MemberDTO)session.getAttribute("member");
-		//³ªÁß¿¡ ÇÊÅÍ¸µ ÇÏ°ÚÁö¸¸ ¿ì¼±Àº ÀÓ½Ã¹æÆíÀ¸·Î ºĞ±âÁ¡ ¸¸µé¾î³õÀ½
+		//ë¡œê·¸ì¸í…ŒìŠ¤íŠ¸ìš©, í˜„ì¬ëŠ” í•„í„°ë§ìœ¼ë¡œ ê±°ë¦„.
 		if(mem == null) {
 			return "redirect:/member_test/login.do";
 		}
@@ -108,34 +124,29 @@ public class ReviewsController {
 	}
 
 	@PostMapping("/write.do")
-	public String postReview(ReviewsDTO review, HttpServletRequest request,
-			@RequestParam("reviewImg") MultipartFile review_img,
-			RedirectAttributes redirectAttributes) throws Exception {
-		
+	public String postReview(ReviewsDTO review, HttpServletRequest request, @RequestParam("reviewImg") MultipartFile review_img, RedirectAttributes redirectAttributes) throws Exception {
 	    if (!review_img.isEmpty()) {
-	     // =========ÆÄÀÏ¸í ¹Ş¾Æ¿È=====================//
+	      // =========íŒŒì¼ëª… ë°›ì•„ì˜´=====================/
 	        String originalFileName = review_img.getOriginalFilename();
-	     // ========= ÆÄÀÏ¸í Áßº¹ ¹æÁö Ã³¸® ========= //
+	     // ========= íŒŒì¼ëª… ì¤‘ë³µ ë°©ì§€ ì²˜ë¦¬ ========= //
 	        String uuidFileName = getUuidFileName(originalFileName);
 
-	        // ÆÄÀÏ ¾÷·Îµå ¹× URL ¹Ş±â
+	       // íŒŒì¼ ì—…ë¡œë“œ ë° URL ë°›ê¸°
 	        String fileUrl = s3Service.uploadObject(review_img, uuidFileName);
-	        review.setReview_img(fileUrl);  // ReviewsDTO¿¡ URL ¼³Á¤
+	        review.setReview_img(fileUrl);  // ReviewsDTOì— URL ì„¤ì •
 	    }
 	    HttpSession session = request.getSession();
 	    MemberDTO mem = (MemberDTO)session.getAttribute("member");
-		//³ªÁß¿¡ ÇÊÅÍ¸µ ÇÏ°ÚÁö¸¸ ¿ì¼±Àº ÀÓ½Ã¹æÆíÀ¸·Î ºĞ±âÁ¡ ¸¸µé¾î³õÀ½
+		//ì§€ê¸ˆì€ ë¡œê·¸ì¸ í•„í„°ë§ í•´ë†“ì•˜ì§€ë§Œ ì¼ë‹¨ ë‘ 
 		if(mem == null) {
 			return "redirect:/member_test/login.do";
 		}
 		String id = mem.getMember_id();
-		System.out.println(mem);//·Î±×ÀÎ ÇÑ ¼¼¼ÇÀÌ ºÒ·¯¿ÍÁö´ÂÁö Å×½ºÆ®¿ë
+		System.out.println(mem);
 		review.setMember_id(id);
-		
-	    // ¸®ºä µ¥ÀÌÅÍ ÀúÀå
-	    reviewsService.reviewsInsert(review);
-		
-	    return "redirect:/customer/myPage.do";
+	  // ë¦¬ë·° ë°ì´í„° ì €ì¥
+	  reviewsService.reviewsInsert(review);
+	  return "redirect:/customer/myPage.do"; //ì„ì‹œ ìœ„ì¹˜, ì¶”í›„ì— ì œí’ˆ ìƒì„¸í˜ì´ì§€ë¡œ ë‹¤ì‹œ ì´ë™í•˜ê²Œ ë°”ê¾¸ì.
 	}
 	
 	
@@ -144,7 +155,7 @@ public class ReviewsController {
         String uploadedImageUrl = (String) session.getAttribute("uploadedImageUrl");
         if (uploadedImageUrl == null) {
             model.addAttribute("message", "No image uploaded yet!");
-            return "errorPage";  // ¿¡·¯ ÆäÀÌÁö ¶Ç´Â ÀûÀıÇÑ ¸Ş½ÃÁö¸¦ º¸¿©ÁÙ ÆäÀÌÁö
+            return "errorPage";  // ì—ëŸ¬ í˜ì´ì§€ ë˜ëŠ” ì ì ˆí•œ ë©”ì‹œì§€ë¥¼ ë³´ì—¬ì¤„ í˜ì´ì§€
         }
         model.addAttribute("uploadedImageUrl", uploadedImageUrl);
         System.out.println(uploadedImageUrl);

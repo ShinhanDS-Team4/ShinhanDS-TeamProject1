@@ -1,7 +1,7 @@
 package com.team4.shoppingmall.prod_optionTest;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,11 +14,11 @@ public class Prod_OptionTestService {
 	@Autowired
 	Prod_OptionTestDAOInterface prod_optionDAO;
 	
-	//¿É¼Ç¸í°ú ¿É¼Ç°ªÀ» ÇÔ²² Á¶È¸
-	public List<Object> selectAllOptionsByProdId(String prod_id){
+	//ì˜µì…˜ëª…ê³¼ ì˜µì…˜ê°’ì„ í•¨ê»˜ ì¡°íšŒ
+	public  List<Object> selectAllOptionsByProdId(String prod_id){
 		return prod_optionDAO.selectAllOptionsByProdId(prod_id);
 	};
-	//»óÇ°ÀÇ ¿É¼ÇÁ¶È¸
+	//ìƒí’ˆì˜ ì˜µì…˜ì¡°íšŒ
 	public List<Prod_OptionDTO> productAllOptionsByProdId(String prod_id){
 		return prod_optionDAO.productAllOptionsByProdId(prod_id);
 	};

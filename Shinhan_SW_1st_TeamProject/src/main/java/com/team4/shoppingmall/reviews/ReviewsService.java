@@ -20,6 +20,7 @@ public class ReviewsService {
 	public ReviewsDTO reviewAvgByProdId(String prod_id) {
 		return reviewsDAO.reviewAvgByProdId(prod_id);
 	};
+	
 	public ReviewsDTO selectById(Integer review_id) {
 		return reviewsDAO.selectById(review_id);
 	}
@@ -40,7 +41,7 @@ public class ReviewsService {
 		return reviewsDAO.reviewsDelete(review_id);
 	}
 	
-	//³» ¸®ºä ºÒ·¯¿À±â¸¦ À§ÇÑ memberId·Î selectÇÏ±â
+	//ë‚´ ë¦¬ë·° ë¶ˆëŸ¬ì˜¤ê¸°ë¥¼ ìœ„í•œ memberIdë¡œ selectí•˜ê¸°
 	public List<ReviewsDTO> selectBymemId(String member_id){
 		return reviewsDAO.selectBymemId(member_id);
 	}

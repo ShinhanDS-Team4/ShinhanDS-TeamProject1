@@ -5,7 +5,7 @@ import java.util.Map;
 
 public interface ProdDAOTestInterface {
 	
-	
+
 	public Map<String,Object> selectProdDetailInfoByProdId(String prod_id);
 	
 	public ProdTestDTO selectByProdId(String prod_id);

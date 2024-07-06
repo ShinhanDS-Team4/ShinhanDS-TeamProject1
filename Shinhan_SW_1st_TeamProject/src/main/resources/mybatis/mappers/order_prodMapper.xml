@@ -4,6 +4,67 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.orderprod">
 
+	<!-- 결제 완료된 주문 상품 목록 (join수정-0705) -->
+	<select id="orderProductById" parameterType="string"
+		resultType="map">
+		SELECT
+			 op. order_id,
+             p.prod_name, 
+             op.total_price, 
+             od.order_num,
+             od.order_product_price,
+             od.order_id,
+             op.order_date,
+             pi.img_id,
+             od.order_state
+		FROM 
+		    order_prod op
+		JOIN 
+		    order_detail od ON op.order_id = od.order_id
+		JOIN 
+		    SELL_PROD_STOCK sps ON od.s_stock_id = sps.s_stock_id
+        JOIN 
+           PROD p ON p.prod_id = sps.prod_id 
+        RIGHT JOIN 
+          PROD_IMAGE pi ON p.prod_id = pi.prod_id AND pi.img_id = (
+	        SELECT MIN(img_id)
+	        FROM PROD_IMAGE
+	        WHERE prod_id = p.prod_id
+	    )
+		WHERE 
+		    op.member_id = #{member_id}            
+	    AND od.order_state = '결제완료'
+	</select>
+	<!--  
+	<select id="selectById2" parameterType="int" 
+		resultType="com.team4.shoppingmall.order_prod.OrderProdDetailDTO"> 
+		SELECT
+			P.prod_name,
+		   	M.brand, 
+			S.opt_id1,
+			S.opt_id2,
+			S.opt_id3,
+			S.opt_id4,
+			S.opt_id5,
+			OD.order_product_price,
+			OD.order_state,
+			PI.img_id
+		FROM
+			ORDER_DETAIL OD
+		JOIN
+			ORDER_PROD OP ON OD.order_id = OP.order_id
+		JOIN
+			SELL_PROD_STOCK S ON OD.s_stock_id = S.s_stock_id
+		JOIN
+			PROD P ON S.prod_id = P.prod_id
+		JOIN
+			MEMBER M ON P.member_id = M.member_id
+		JOIN
+			PROD_IMAGE PI ON P.prod_id = PI.prod_id
+		where 
+			OD.ORDER_ID = #{aa}
+	</select>
+	-->
 	<!-- 주문상세 -->
 	<select id="selectById" parameterType="int" resultType="order_prodVO"> 
 		SELECT *
@@ -59,7 +120,8 @@
 	    SELECT *
 	    FROM PROD_OPTION 
     </select>
- 
+
+
 	<!-- orderlist.jsp에 출력할 상품명, 브랜드, 옵션, 상품가격, 이미지URL -->
 	<select id="selectById2" parameterType="int" resultType="order_prod_detailVO"> 
 		SELECT
@@ -71,7 +133,8 @@
 			S.opt_id4,
 			S.opt_id5,
 			OD.order_product_price,
-			PI.img_id
+			PI.img_id,
+			OD.order_state
 		FROM
 			ORDER_DETAIL OD
 		JOIN
@@ -87,7 +150,7 @@
 		where 
 			OD.ORDER_ID = #{aa}
 	</select>
-	
+
 	<!-- orderlist.jsp에서, 주문취소 -->
 	<update id="orderCancel" parameterType="int">
 		UPDATE 

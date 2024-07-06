@@ -16,6 +16,16 @@ public class MemberDAOMybatis implements MemberDAOInterface {
 	
 	String namespace = "com.saren.member.";
 	
+	//구매자 회원 정보 수정
+	public int myInfoUpdate(MemberDTO member) {
+		return sqlSession.update(namespace+"myInfoUpdate", member);
+	}
+	
+	//로그인 회원 정보 수정용 비밀번호 체크
+	public MemberDTO memberCheckByPw(MemberDTO member) {
+		return sqlSession.selectOne(namespace+"memberCheckByPw", member);
+	}
+	
 	@Override
 	public MemberDTO selectById(String member_id) {
 		return sqlSession.selectOne(namespace+"selectById", member_id);

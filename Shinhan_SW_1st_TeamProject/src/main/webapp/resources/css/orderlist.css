@@ -97,17 +97,25 @@ footer {
 
 .product-detail {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    justify-content: space-between; /* Align items the same way as rentlist */
+    align-items: flex-start; /* Align items to the top */
     margin-bottom: 20px;
     width: 100%;
     position: relative;
 }
 
+.product-detail-box {
+    display: flex;
+    align-items: center;
+}
+
 .product-info {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     margin-left: 20px;
+    width: 100%;
+    position: relative;
 }
 
 .product-info img {
@@ -115,13 +123,19 @@ footer {
     max-height: 100px;
 }
 
+.product-detail-box img {
+    width: 100px; /* Set your desired width */
+    height: 100px; /* Set your desired height */
+    object-fit: cover; /* Ensures the image covers the container while maintaining aspect ratio */
+}
+
 .product-info p {
     margin: 5px 0;
 }
 
 span.order-status {
-    margin-left: auto;
     font-weight: bold;
+    margin-left: 20px;
 }
 
 .order-text {
@@ -256,21 +270,6 @@ span.order-status {
     text-align: center;
     max-width: 300px;
     width: 100%;
-}
-
-.product-detail {
-    display: flex;1111
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.product-info {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    margin-left: 20px;
-    width: 100%;
-    position: relative;
 }
 
 span.order-status {

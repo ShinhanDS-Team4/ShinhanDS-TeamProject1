@@ -11,8 +11,17 @@
 		FROM MEMBER
 		WHERE member_pw = #{member_pw} and
 		member_id = #{member_id}
-	</select>
 
+	<!-- 로그인 회원 정보 수정용 비밀번호 체크  -->
+	<select id="memberCheckByPw" parameterType="memberVO"
+		resultType="memberVO">
+		SELECT *
+		FROM MEMBER
+		WHERE member_pw = #{member_pw}
+		and member_id = #{member_id}
+
+	</select>
+	<!-- 회원 정보 검색 -->
 	<select id="selectById" parameterType="string"
 		resultType="memberVO">
 		SELECT *
@@ -68,6 +77,16 @@
 		#{create_date})
 	</insert>
 
+	<!-- 구매자 회원 정보 수정 -->
+	<update id="myInfoUpdate" parameterType="memberVO">
+		UPDATE MEMBER
+		SET 
+		member_id = #{member_id}, 
+		member_pw = #{member_pw},
+		email = #{email},
+		phone = #{phone}
+		WHERE member_id = #{member_id}
+	</update>
 
 	<update id="memberUpdate" parameterType="memberVO">
 		UPDATE MEMBER
@@ -78,6 +97,14 @@
 		#{birth_date},
 		last_access = #{last_access}, member_type =
 		#{member_type},
+		member_pw = #{member_pw},
+		member_name = #{member_name}, 
+		email = #{email},
+		phone = #{phone}, 
+		brand = #{brand}, 
+		birth_date = #{birth_date},
+		last_access = #{last_access}, 
+		member_type = #{member_type}, 
 		gender = #{gender}
 		WHERE member_id = #{member_id}
 	</update>

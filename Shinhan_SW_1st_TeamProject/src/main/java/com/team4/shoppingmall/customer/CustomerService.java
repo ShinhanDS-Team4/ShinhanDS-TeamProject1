@@ -21,7 +21,6 @@ public class CustomerService {
 		return customerDAO.selectAll();
 	}
 	
-
 	// 고객등록
 	public int customerInsert(CustomerDTO customer) {
 		return customerDAO.customerInsert(customer);

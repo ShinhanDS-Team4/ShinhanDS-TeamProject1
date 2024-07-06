@@ -27,22 +27,16 @@ public interface RentProdStockDAOInterface {
 	
 	public List<RentProdStockListDTO> findRentStockList(String member_id);
 	
-	// �뿩��ǰ���
+	// 대여상품목록
 	public List<RentProdStockDTO> selectAll();
 
-	// �뿩��ǰ���
+	// 대여상품등록
 	public int rentProdInsert(RentProdStockDTO rentprod);
 
-	// �뿩��ǰ����
-	public int rentProdUpdate(RentProdStockDTO rentprod);
-
-	// �뿩��ǰ����
+	// 대여상품삭제
 	public int rentProdDelete(String r_stock_id);
 
 	public int rentStockUpdate(RentProdStockDTO rentprod);
 
-	
-
-	
 
 }
