@@ -15,4 +15,6 @@ public interface NoticeDAOInterface {
 	public int noticeUpdate(NoticeDTO notice);
 	
 	public int noticeDelete(Integer not_id);
+
+	public List<NoticeDTO> noticeBysearch(String search_title);
 }

@@ -52,7 +52,7 @@
 		var selectedStatus='일괄삭제';
 		var selectedRentStocks=[];
 		$('.rentStock-checkbox:checked').each(function(){
-			selectedSellStocks.push($(this).data('id'));
+			selectedRentStocks.push($(this).data('id'));
 		});
 		
 		if(selectedSellStocks.length>0){
@@ -127,10 +127,13 @@
 						<!-- 여기는 예시 -->
 					</tbody>
 				</table>
-				<div class="actions">
-					<button id="delete_selected_sStock" onclick="deleteCheckedSellStock()">선택 상품 삭제</button>
-				</div>
+				
 			</div>
+			<div class="actions">
+				<button id="delete_selected_sStock" onclick="deleteCheckedSellStock()">선택 상품 삭제</button>
+			</div>
+			
+			<!-- 대여 상품 리스트 -->
 			<div class="product-list">
 				<h3>대여 상품 목록</h3>
 				<table class="sellPrdList">
@@ -157,11 +160,12 @@
 						</c:forEach>
 					</tbody>
 				</table>
-				<div class="actions">
-					<button id="delete_selected_rStock" onclick="deleteCheckedRentStock()">선택 상품 삭제</button>
-					
-				</div>
 			</div>
+			<div class="actions">
+					<button id="delete_selected_rStock" onclick="deleteCheckedRentStock()">선택 상품 삭제</button>
+	
+			</div>
+			
 			<button onclick="location.href='${path}/seller/AddProduct.do'">상품 등록</button>
 		</section>
 		<%-- <aside class="notifications">

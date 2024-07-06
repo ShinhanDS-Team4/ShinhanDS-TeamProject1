@@ -15,7 +15,8 @@
              rd.RENT_PRODUCT_PRICE,         
              r.RENT_START_DATE,
              r.RENT_END_DATE,
-             pi.img_id
+             pi.img_id,
+             rd.rent_state
 		FROM 
 		    RENT r
 		JOIN 
@@ -24,8 +25,12 @@
 		    RENT_PROD_STOCK rps ON rps.r_stock_id = rd.r_stock_id
         JOIN 
            PROD p ON p.prod_id = rps.prod_id 
-        LEFT JOIN 
-           PROD_IMAGE pi ON p.prod_id = pi.prod_id 
+        RIGHT JOIN 
+            PROD_IMAGE pi ON p.prod_id = pi.prod_id AND pi.img_id = (
+            SELECT MIN(img_id)
+            FROM PROD_IMAGE
+            WHERE prod_id = p.prod_id
+        )
 		WHERE 
 		    r.member_id = #{member_id}          
 	    AND rd.rent_state = '대여신청완료'

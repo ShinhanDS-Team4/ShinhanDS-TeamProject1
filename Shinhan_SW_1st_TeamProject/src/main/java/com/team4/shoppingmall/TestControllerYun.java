@@ -41,7 +41,7 @@ public class TestControllerYun {
 	public String test1(Model model, HttpServletRequest request) {
 		System.out.println("/customer/productlist.jsp"); // ��� ��ǰ���
 		List<Map<String, Object>> prodAllOrders = prodService.selectAll2();
-		System.out.println("��ü��ǰ���" + prodAllOrders);
+		System.out.println(prodAllOrders);
 		model.addAttribute("prodAllOrders", prodAllOrders);
 
 		return "customer/productlist";

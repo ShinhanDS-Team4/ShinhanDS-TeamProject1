@@ -139,7 +139,7 @@
 	//메인사진 미리보기 삭제 및 데이터 초기화
 	function resetMainProdImg() {
 		var prodid = '$ProductInfo.prod_id';
-		
+		if(confirm('상품의 메인 사진 목록을 초기화할까요?')){
 		$.ajax({
 			type : "POST",
 			url : "/shoppingmall/seller/resetMainProdImg",
@@ -167,11 +167,13 @@
 				// 실패 시 처리
 			}
 		});
+		}
 	}
 
 	//설명사진 미리보기 삭제 및 데이터 초기화
 	function resetDescProdImg() {
 		var prodid = '$ProductInfo.prod_id';
+		if(confirm('상품의 메인 사진 목록을 초기화할까요?')){
 		$.ajax({
 			type : "POST",
 			url : "/shoppingmall/seller/resetDescProdImg",
@@ -199,6 +201,166 @@
 				// 실패 시 처리
 			}
 		});
+		}
+	}
+	
+	//Depth = 1인 항목들에서 선택
+	function firstDepth() {
+		var selectedValue = document.getElementById("depth1").value;
+
+		$.ajax({
+			type : 'POST',
+			url : '${path}/seller/find2ndCategoryList.do',
+			contentType : 'application/json',
+			data : JSON.stringify(selectedValue),
+			success : function(response) {
+				console.log(response);
+				//location.reload();
+
+				// depth2 요소가 이미 존재하는 경우 제거
+				var existingSelect = document.getElementById('depth2');
+				if (existingSelect) {
+					existingSelect.remove();
+				}
+
+
+				// 새로운 <select> 요소 depth2 생성
+				var newSelect = document.createElement('select');
+				newSelect.className = 'prdCategory';
+				newSelect.id = 'depth2'; // ID가 중복되지 않도록 확인 필요
+				newSelect.setAttribute('onchange', 'secondDepth()');
+
+				
+				// Add default option
+                var defaultOption = document.createElement('option');
+                defaultOption.value = 0;
+                defaultOption.textContent = '카테고리 선택';
+                newSelect.appendChild(defaultOption);
+
+				// Add options based on response
+				response.forEach(function(category) {
+					var option = document.createElement('option');
+					option.value = category.category_id;
+					option.textContent = category.category_name;
+					newSelect.appendChild(option);
+				});
+
+				// categoryContainer에 새로운 <select> 추가
+				var categoryContainer = document
+						.querySelector('.categoryContainer');
+				categoryContainer.appendChild(newSelect);
+			},
+			error : function(xhr, status, error) {
+				console.error('AJAX 오류:', status, error);
+			}
+		})
+	}
+
+	function secondDepth() {
+		var selectedValue = document.getElementById("depth2").value;
+
+		$.ajax({
+			type : 'POST',
+			url : '${path}/seller/find3rdCategoryList.do',
+			contentType : 'application/json',
+			data : JSON.stringify(selectedValue),
+			success : function(response) {
+				console.log(response);
+				//location.reload();
+				
+				// depth3 요소가 이미 존재하는 경우 제거
+				var existingSelect = document.getElementById('depth3');
+				if (existingSelect) {
+					existingSelect.remove();
+				}
+
+				// 새로운 <select> 요소 depth3 생성
+				var newSelect = document.createElement('select');
+				newSelect.className = 'prdCategory';
+				newSelect.id = 'depth3'; // ID가 중복되지 않도록 확인 필요
+				newSelect.setAttribute('onchange', 'ThirdDepth()');
+
+				// Add default option
+                var defaultOption = document.createElement('option');
+                defaultOption.value = 0;
+                defaultOption.textContent = '카테고리 선택';
+                newSelect.appendChild(defaultOption);
+				
+				// Add options based on response
+				response.forEach(function(category) {
+					var option = document.createElement('option');
+					option.value = category.category_id;
+					option.textContent = category.category_name;
+					newSelect.appendChild(option);
+				});
+
+				// categoryContainer에 새로운 <select> 추가
+				var categoryContainer = document
+						.querySelector('.categoryContainer');
+				categoryContainer.appendChild(newSelect);
+			},
+			error : function(xhr, status, error) {
+				console.error('AJAX 오류:', status, error);
+			}
+		})
+	}
+	
+	function ThirdDepth() {
+		var selectedValue = document.getElementById("depth3").value;
+		
+		$.ajax({
+			type : 'POST',
+			url : '${path}/seller/find4thCategoryList.do',
+			contentType : 'application/json',
+			data : JSON.stringify(selectedValue),
+			success : function(response) {
+				console.log(response);
+				//location.reload();
+				
+				// depth4 요소가 이미 존재하는 경우 제거
+				var existingSelect = document.getElementById('depth4');
+				if (existingSelect) {
+					existingSelect.remove();
+				}
+				
+				//case 1. response가 비어있는 경우 >> 3단계가 마지막 선택항목임
+				if(response.length===0){
+					document.getElementById('depth3').setAttribute('name', 'finalCategory');
+				}else{//case 2. response가 비어있지 않은 경우 >> 해당 항목은 4단계 선택지가 있음
+					
+					// 새로운 <select> 요소 depth4 생성
+					var newSelect = document.createElement('select');
+					newSelect.className = 'prdCategory';
+					newSelect.id = 'depth4'; // ID가 중복되지 않도록 확인 필요
+					//newSelect.setAttribute('onchange', 'FourthDepth()');
+					newSelect.setAttribute('name', 'finalCategory');
+					
+					// Add default option
+	                var defaultOption = document.createElement('option');
+	                defaultOption.value = 0;
+	                defaultOption.textContent = '카테고리 선택';
+	                newSelect.appendChild(defaultOption);
+
+					// Add options based on response
+					response.forEach(function(category) {
+						var option = document.createElement('option');
+						option.value = category.category_id;
+						option.textContent = category.category_name;
+						newSelect.appendChild(option);
+					});
+
+					// categoryContainer에 새로운 <select> 추가
+					var categoryContainer = document
+							.querySelector('.categoryContainer');
+					categoryContainer.appendChild(newSelect);
+				
+				}
+				
+			},
+			error : function(xhr, status, error) {
+				console.error('AJAX 오류:', status, error);
+			}
+		})
 	}
 </script>
 
@@ -226,36 +388,45 @@
 
 			<div class="container">
 
-				<h1>상품 정보 수정</h1>
+				<h1>상품 정보 조회 / 수정</h1>
 				<form method="post" action="/shoppingmall/seller/modifyPrdouct"
 					enctype="multipart/form-data" accept-charset="UTF-8">
 					<div class="form-group">
-						<label>상품ID</label>
-						<input type="text" name="prdId"
+						<label style="display: inline-block; width: 100px;">상품ID</label>
+						<input class="unchangedInput" readonly="readonly" type="text" name="prdId"
 							value="${ProductInfo.prod_id}">
 					</div>
 					
 					<div class="form-group">
-						<label>상품명</label> <input type="text" name="prdName"
+						<label style="display: inline-block; width: 100px;">상품명</label>
+						<input class="unchangedInput" readonly="readonly" type="text" name="prdName"
 							value="${ProductInfo.prod_name}">
 					</div>
 					<div class="form-group">
-						<label>가격</label> <input type="number" name="prdPrice"
-							value="${ProductInfo.prod_price}">
+						<label style="display: inline-block; width: 100px;">가격</label>
+						<input type="number" name="prdPrice" id="prdPrice" value="${ProductInfo.prod_price}">
+						<label style="display: inline-block; width: 100px;">원</label>
 					</div>
+					
+					<!-- 카테고리 -->
 					<div class="form-group">
-						<label>카테고리</label> <select>
-							<option value=0>선택</option>
-							<option value=1>카테고리 1</option>
-							<option value=2>카테고리 2</option>
-						</select>
+						<label style="display: inline-block; width: 100px;">카테고리</label>
+						<p class="category" style="display: inline-block; margin: 0;">${CategoryInfo.category_name}</p>
+						<div class="categoryContainer">
+							<select class="prdCategory" id="depth1" onchange="firstDepth()">
+								<option value=0>선택 안함</option>
+								<c:forEach var="category1" items="${depth1categoryList}">
+									<option value="${category1.category_id}">${category1.category_name}</option>
+								</c:forEach>
+							</select>
+						</div>
 					</div>
 
 					<!-- 메인 사진 미리보기 구역 : DB 및 서버 저장소에 등록되어 있는 사진 파일들을 미리보기로 보여준다 -->
 					<div id="prdMainImgPreview">
 						<div class="form-group">
 							<label>메인 사진목록</label>
-							<button type="button" onclick="resetMainProdImg()">사진 항목 초기화</button>
+							<button type="button" id="addImageBtn" onclick="resetMainProdImg()">사진 항목 초기화</button>
 						</div>
 						<div id="prdMainImgFileContainer">
 							<c:forEach var="mainImgName" items="${ProdMainImgList}">
@@ -270,7 +441,7 @@
 					<div id="mainImgSection" class="hidden">
 						<div class="form-group">
 							<label>메인사진</label>
-							<button type="button" onclick="addMainImgFile()">사진 추가</button>
+							<button type="button" id="addImageBtn" onclick="addMainImgFile()">사진 추가</button>
 						</div>
 						<div id="prdMainImgFileContainer"></div>
 					</div>
@@ -279,7 +450,7 @@
 					<div id="prdDescImgPreview">
 						<div class="form-group">
 							<label>설명 사진목록</label>
-							<button type="button" onclick="resetDescProdImg()">사진 항목 초기화</button>
+							<button type="button" id="addImageBtn" onclick="resetDescProdImg()">사진 항목 초기화</button>
 						</div>
 						<div id="prdDescImgFileContainer">
 							<c:forEach var="imgName" items="${ProdDescImgList}">
@@ -294,7 +465,7 @@
 					<div id="descImgSection" class="hidden">
 						<div class="form-group">
 							<label>상품 설명 사진 등록</label>
-							<button type="button" onclick="addDescImgFile()">사진 추가</button>
+							<button type="button" id="addImageBtn" onclick="addDescImgFile()">사진 추가</button>
 						</div>
 						<div id="prdDescImgFileContainer"></div>
 					</div>
@@ -311,8 +482,8 @@
 					
 					<h1>대여용 재고 정보 조회 / 재고 수정</h1>
 					<div class="form-group">
-						<label>재고명</label> <input type="text" name="stockid"
-							value="${StockInfo.r_stock_id}">
+						<label style="display: inline-block; width: 100px;">재고명</label>
+						<input class="unchangedInput" readonly="readonly" type="text" name="stockid" value="${StockInfo.r_stock_id}">
 					</div>
 
 					<div class="optionList" id="optionList">
@@ -336,8 +507,9 @@
 					</div>
 
 					<div class="form-group">
-						<label>재고량</label>
-						<input type="number" name="prdStock" value = "${StockInfo.stock}">
+						<label style="display: inline-block; width: 100px;">재고량</label>
+						<input id="prdPrice" type="number" name="prdStock" value = "${StockInfo.stock}">
+						<label style="display: inline-block; width: 100px;">개</label>
 					</div>
 					<div class="buttons">
 						<button type="submit">수정하기</button>

@@ -198,7 +198,9 @@
 						</c:forEach>
 					</tbody>
 				</table>
-				<div class="actions">
+				
+			</div>
+			<div class="actions">
 					<select id="order_status_select" class="orderStatus">
 						<option>결제대기</option>
 						<option>결제완료</option>
@@ -213,7 +215,8 @@
 					<button id="batch_process_button" onclick="updateOrderStatus()">일괄처리</button>
 					<button id="delete_selected_button" onclick="deleteCheckedOrder()">선택 내역 삭제</button>
 				</div>
-			</div>
+			
+			
 
 			<!-- 대여 -->
 			<div class="product-list">
@@ -243,7 +246,10 @@
 						</c:forEach>
 					</tbody>
 				</table>
-				<div class="actions">
+				
+			</div>
+			
+		<div class="actions">
 					<select id="rent_status_select" class="orderStatus">
 						<option>대여신청완료</option>
 						<option>결제완료</option>
@@ -255,7 +261,6 @@
 					<button class="button" id="batch_process_button" onclick="updateRentStatus()">일괄처리</button>
 					<button class="button" id="delete_selected_button" onclick="deleteCheckedRent()">선택 내역 삭제</button>
 				</div>
-			</div>
 		</section>
 		<%-- <aside class="notifications">
 			<div class="notify_icon">

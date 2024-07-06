@@ -38,4 +38,12 @@ public class CategoryService {
 	public int categoryDelete(Integer category_id) {
 		return categoryDAO.categoryDelete(category_id);
 	}
+	
+	public List<CategoryDTO> firstDepthCategoryList() {
+		return categoryDAO.firstDepthCategoryList();
+	}
+	
+	public List<CategoryDTO> categoryListBydepth(CategoryDTO category){
+		return categoryDAO.categoryListBydepth(category);
+	}
 }

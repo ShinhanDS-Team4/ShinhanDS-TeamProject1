@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.team4.shoppingmall.customer.CustomerDAOInterface;
 import com.team4.shoppingmall.customer.CustomerDTO;
+import com.team4.shoppingmall.prod.SellerProdDTO;
 
 @Service
 public class MemberService {
@@ -21,7 +22,7 @@ public class MemberService {
 		return memberDAO.myInfoUpdate(member);
 	};
 	//로그인 회원 정보 수정용 비밀번호 체크
-	public int memberCheckByPw(MemberDTO member) {
+	public MemberDTO memberCheckByPw(MemberDTO member) {
 		return memberDAO.memberCheckByPw(member);
 	}
 	public MemberDTO selectById(String member_id) {
@@ -107,9 +108,25 @@ public class MemberService {
 	
 	public int memberUpdateAccess(MemberDTO member) {
 		return memberDAO.memberUpdateAccess(member);
-	}
+	} 
+  
 	public MemberDTO memberCheckByPw2(MemberDTO member) {
 		return memberDAO.memberCheckByPw2(member); 
+	}  
+	
+	public int seller_authority_access_deny(String member_id, String seller_authority) {
+		return memberDAO.seller_authority_access_deny(member_id, seller_authority);
 	} 
 
+	public List<MemberCustomerDTO> selectByAllCustomer() {
+		return memberDAO.selectByAllCustomer();
+	}
+	
+	public List<MemberCustomerDTO> searchByCustomer(String searchCustomer) {
+		return memberDAO.searchByCustomer(searchCustomer);
+	}
+	
+	public MemberCustomerDTO customerByInfo(String member_id) {
+		return memberDAO.customerByInfo(member_id);
+	}
 }

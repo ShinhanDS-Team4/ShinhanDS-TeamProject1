@@ -2,12 +2,14 @@ package com.team4.shoppingmall.member;
 
 import java.util.List;
 
+import org.springframework.ui.Model;
+
 public interface MemberDAOInterface {
 
 	//구매자 회원 정보 수정
 	public int myInfoUpdate(MemberDTO member);
 	//로그인 회원 정보 수정용 비밀번호 체크
-	public int memberCheckByPw(MemberDTO member);
+	public MemberDTO memberCheckByPw(MemberDTO member);
 	
 	public MemberDTO selectById(String member_id);
 	
@@ -46,9 +48,16 @@ public interface MemberDAOInterface {
 	public int updatePassword(MemberDTO member);
 	
 	public int memberUpdateAccess(MemberDTO member);
-	
-	public MemberDTO memberCheckByPw2(MemberDTO member);
 	 
+	public MemberDTO memberCheckByPw2(MemberDTO member); 
+  
+	public int seller_authority_access_deny(String member_id, String seller_authority);
+	
+	public List<MemberCustomerDTO> selectByAllCustomer();
+	
+	public List<MemberCustomerDTO> searchByCustomer(String searchCustomer);
+	
+	public MemberCustomerDTO customerByInfo(String member_id); 
 
 }
 

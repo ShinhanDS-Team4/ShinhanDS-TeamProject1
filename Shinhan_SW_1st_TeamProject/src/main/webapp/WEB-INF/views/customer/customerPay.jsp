@@ -33,7 +33,7 @@
 			var order_id = $('#orderId').val();
 			alert(addr_num);
 			$.ajax({
-				url : "/shoppingmall/customer/applyAddress",
+				url : "/shoppingmall/customer/applyAddress.do",
 				type : 'POST',
 				contentType : 'application/json',
 				data : JSON.stringify({
@@ -66,7 +66,7 @@
 		alert(orderid);
 
 		$.ajax({
-			url : "/shoppingmall/customer/applyCoupon",
+			url : "/shoppingmall/customer/applyCoupon.do",
 			type : 'POST',
 			contentType : 'application/json',
 			data : JSON.stringify({
@@ -95,7 +95,7 @@
 		alert(orderid);
 
 		$.ajax({
-			url : "/shoppingmall/customer/applyPoint",
+			url : "/shoppingmall/customer/applyPoint.do",
 			type : 'POST',
 			contentType : 'application/json',
 			data : JSON.stringify({
@@ -141,99 +141,43 @@
 		});
 	});
 
-	$()
-			.ready(
-					function() {
-						var IMP = window.IMP;
-						IMP.init('imp31438144'); // 가맹점 식별코드 입력
+	$().ready(function() {
+		var IMP = window.IMP;
+		IMP.init('imp31438144'); // 가맹점 식별코드 입력
 
-						$("#orderBtn")
-								.on(
-										"click",
-										function() {
-											alert("구매버튼");
-											var order_id = '${orderInfo.order_id}';
-											var userid = '${memberInfo.member_id}';
-											var username = '${memberInfo.member_name}';
-											var phone = '${memberInfo.phone}';
-											var merchant_uid = 'order_'
-													+ order_id//DB에 주문ID로 저장될, 고유한 주문 ID
-											var amount = '${orderInfo.total_price}';//결제 금액
-
-											$
-													.ajax({
-														type : "POST",
-														url : "/shoppingmall/customer/preparePayment",
-														data : {
-															"merchantUid" : merchant_uid,
-															"amount" : amount
-														},
-														success : function(
-																response) {
-															if (response === "Payment amount registered successfully") {
-																alert("결제금액 사전 등록 완료");
-																//여기에서 이니시스 결제
-																IMP
-																		.request_pay(
-																				{
-																					pg : "html5_inicis", // 등록된 pg사 (적용된 pg사는 KG이니시스)
-																					pay_method : "card",
-																					merchant_uid : merchant_uid, // 주문 고유 번호
-																					name : "상품 주문",
-																					amount : '${orderInfo.total_price}',
-																					buyer_email : '${memberInfo.email}',
-																					buyer_name : username,
-																					buyer_tel : phone,
-																					buyer_addr : "서울특별시 강남구 신사동",
-																					buyer_postcode : "01181",
-																				},
-																				function(
-																						response) {
-																					if (response.success) {
-																						$
-																								.ajax({
-																									type : "POST",
-																									url : "/shoppingmall/customer/verifyPayment",
-																									data : {
-																										"imp_uid" : response.imp_uid,
-																										"merchant_uid" : response.merchant_uid
-																									},
-																									success : function(
-																											verificationResult) {
-																										if (verificationResult === "success") {
-																											alert("검증에서 이상 없음. 결제 완료");
-																											window.location.href = "/shoppingmall/customer/sellPaySuccess?order_id="
-																													+ +encodeURIComponent(order_id);
-																										} else {
-																											alert("검증에서 이상 발생. 결제 취소");
-																										}
-																									},
-																									error : function(
-																											jqXHR,
-																											textStatus,
-																											errorThrown) {
-																										alert("결제 검증 요청 실패: "
-																												+ errorThrown);
-																									}
-																								});
-																					} else {
-																						alert("결제에 실패하였습니다. 에러: "
-																								+ response.error_msg);
-																					}
-																				});
-															} else {
-																alert("사전결제 등록 실패")
-															}
-														},
-														error : function(jqXHR,
-																textStatus,
-																errorThrown) {
-															alert("결제 금액 사전 등록 요청 실패: "
-																	+ errorThrown);
-														}
-													});
-										});
-					});
+		$("#orderBtn").on("click", function(){
+			alert("구매버튼");
+			var order_id = '${orderInfo.order_id}';
+			var userid = '${memberInfo.member_id}';
+			var username = '${memberInfo.member_name}';
+			var phone = '${memberInfo.phone}';
+			var merchant_uid = 'orderPay_'+ order_id//DB에 주문ID로 저장될, 고유한 주문 ID
+			var amount = '${orderInfo.total_price}';//결제 금액
+					
+			IMP.request_pay({
+				pg : "html5_inicis", // 등록된 pg사 (적용된 pg사는 KG이니시스)
+				pay_method : "card",
+				merchant_uid : merchant_uid, // 주문 고유 번호
+				name : "상품 주문",
+				amount : '${orderInfo.total_price}',
+				buyer_email : '${memberInfo.email}',
+				buyer_name : username,
+				buyer_tel : phone,
+				buyer_addr : "서울특별시 강남구 신사동",
+				buyer_postcode : "01181",
+			},function(rsp){
+				if(rsp.success){
+					alert("결제 완료");
+					window.location.href = "/shoppingmall/customer/sellPaySuccess?order_id="+encodeURIComponent(order_id);
+				} else {
+					var msg = '결제에 실패하였습니다.';
+					msg += '에러내용 : ' + rsp.error_msg;
+				}
+				alert(msg);
+			});
+		});
+	});
+		
 </script>
 </head>
 <body>
@@ -368,8 +312,6 @@
 						onclick="applyPoint()">사용</button>
 				</div>
 			</div>
-
-
 		</div>
 
 		<div class="form-group">
@@ -382,5 +324,6 @@
 		</div>
 
 	</main>
+	<%@ include file="../common/footer.jsp"%>
 </body>
 </html>

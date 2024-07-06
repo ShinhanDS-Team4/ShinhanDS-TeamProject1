@@ -66,6 +66,8 @@ public class CategoryController {
 		CategoryDTO category;
 		
 		Long tmp;
+		
+		
 		int stock;
 		for(Object prod_id :prod_list.keySet()) {
 			prod = new ProdDTO();
@@ -83,7 +85,7 @@ public class CategoryController {
 			
 			for(String size :sizes) {
 				prod_option = new Prod_OptionDTO();
-				prod_option.setOpt_name("������");
+				prod_option.setOpt_name("占쏙옙占쏙옙占쏙옙");
 				prod_option.setOpt_value(size);
 				prod_option.setProd_id((String) prod_id);
 				prod_optionService.optionInsert(prod_option);
@@ -133,6 +135,7 @@ public class CategoryController {
 			category.setCategory_id(tmp.intValue());
 			category.setCategory_depth(ce.name().split("_").length);
 			category.setCategory_name(ce.getNameKor().split("_")[0]);
+			category.setIs_lowest(ce.getChildren() == null ? 1:0);
 			
 			parent = ce.getParent();
 			

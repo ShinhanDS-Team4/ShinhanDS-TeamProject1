@@ -68,12 +68,13 @@
 		SELECT *
 		FROM REVIEWS
 	</select>
-
+	
+	<!-- 시퀀스 사용 -->
 	<insert id="reviewsInsert" parameterType="reviewsVO">
 		INSERT
 		INTO REVIEWS(review_id, review_title, rate, review_date, 
 					 review_img, review_content, orderdetail_id, member_id)
-		VALUES(#{review_id}, #{review_title}, #{rate}, #{review_date}, 
+		VALUES(SEQ_REVIEWS.NEXTVAL, #{review_title}, #{rate}, #{review_date}, 
 			   #{review_img}, #{review_content}, #{orderdetail_id}, #{member_id})
 	</insert>
 

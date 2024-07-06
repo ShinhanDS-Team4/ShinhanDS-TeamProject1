@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,10 +35,14 @@ import com.team4.shoppingmall.admin_inq.Admin_InqService;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqDAOInterface;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqDTO;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqService;
+import com.team4.shoppingmall.category.CategoryDTO;
+import com.team4.shoppingmall.category.CategoryService;
+import com.team4.shoppingmall.member.MemberDTO;
 import com.team4.shoppingmall.member.MemberService;
 import com.team4.shoppingmall.order_detail.OrderUpdateReqDTO;
 import com.team4.shoppingmall.order_detail.Order_DetailDTO;
 import com.team4.shoppingmall.order_detail.Order_DetailService;
+import com.team4.shoppingmall.prod.ProdDTO;
 import com.team4.shoppingmall.prod.ProdService;
 import com.team4.shoppingmall.prod_image.Prod_ImageDTO;
 import com.team4.shoppingmall.prod_image.Prod_ImageService;
@@ -73,6 +78,9 @@ public class SellerPageController {
 
 	@Autowired
 	ProdService prodService;
+	
+	@Autowired
+	CategoryService categoryService;
 
 	@Autowired
 	Prod_ImageService imageService;
@@ -92,22 +100,25 @@ public class SellerPageController {
 	@Autowired
 	Prod_OptionService prod_OptionService;
 
-	String member_id = "573-50-00882";// 임시로 사용할 판매자ID(사업자등록번호)
+	//String member_id = "573-50-00882";// 임시로 사용할 판매자ID(사업자등록번호)
 
 	// 상품 이미지 파일 업로드 디렉토리
 	// 1.메인 이미지 파일
 	@Value("${file.main-img-upload-dir}")
 	private String mainIMG_uploadDir;
 
-	// 2.�꽕紐� �씠誘몄� �뙆�씪
+	// 2.설명 이미지 파일
 	@Value("${file.desc-img-upload-dir}")
 	private String descIMG_uploadDir;
 
-	// 硫붿씤 �솕硫� 蹂댁뿬二쇨린
+	// 메인페이지
 	@GetMapping("/MainPage.do")
-	public String mainpage(Model model) {
-		model.addAttribute("sellerInfo", memberService.selectById(member_id));
-
+	public String mainpage(Model model, HttpSession session) {
+		MemberDTO mem = (MemberDTO)session.getAttribute("member");
+		String sellerID = mem.getMember_id();
+		 
+		model.addAttribute("sellerInfo", memberService.selectById(sellerID));
+		
 		// 여기서 SQL문을 사용해 model로 데이터를 끌어옴
 		// 여기에는 판매자가 판매하는 상품들의 판매량 데이터를 끌어오고, 데이터를 그래프화하여 표현
 		// model.addAttribute(result, flashMap);
@@ -116,15 +127,18 @@ public class SellerPageController {
 
 	// 판매&대여 상품 페이지 보여주기
 	@GetMapping("/PrdList.do")
-	public String prdList(Model model, Model model1, Model model2) {
-		model.addAttribute("sellerInfo", memberService.selectById(member_id));
-
+	public String prdList(Model model, Model model1, Model model2, HttpSession session) {
+		MemberDTO mem = (MemberDTO)session.getAttribute("member");
+		String sellerID = mem.getMember_id();
+		
+		model.addAttribute("sellerInfo", memberService.selectById(sellerID));
+		
 		// 판매 상품 리스트
-		model1.addAttribute("stockSList", seller_Prod_StockService.findSellStockList(member_id));
+		model1.addAttribute("stockSList", seller_Prod_StockService.findSellStockList(sellerID));
 
 		System.out.println("�뙋留ㅼ긽�뭹 由ъ뒪�듃 遺덈윭�샂");
 		// ���뿬 �긽�뭹 由ъ뒪�듃
-		model2.addAttribute("stockRList", rentProdStockService.findRentStockList(member_id));
+		model2.addAttribute("stockRList", rentProdStockService.findRentStockList(sellerID));
 
 		System.out.println("���뿬�긽�뭹 由ъ뒪�듃 遺덈윭�샂");
 
@@ -133,17 +147,19 @@ public class SellerPageController {
 
 	// 판매&배송 페이지 보여주기
 	@GetMapping("/DeliveryList.do")
-	public String deliveryList(Model model, Model model1, Model model2) {
-
-		model.addAttribute("sellerInfo", memberService.selectById(member_id));
+	public String deliveryList(Model model, Model model1, Model model2, HttpSession session) {
+		MemberDTO mem = (MemberDTO)session.getAttribute("member");
+		String sellerID = mem.getMember_id();
+		
+		model.addAttribute("sellerInfo", memberService.selectById(sellerID));
 
 		// 판매&배송 리스트
 		// 1.판매 상품 대상 주문상세리스트
-		System.out.println(order_DetailService.selectBySellerID(member_id));
-		System.out.println(rentDetailService.selectBySellerID(member_id));
+		System.out.println(order_DetailService.selectBySellerID(sellerID));
+		System.out.println(rentDetailService.selectBySellerID(sellerID));
 
-		model1.addAttribute("orderDetailList", order_DetailService.selectBySellerID(member_id));
-		model2.addAttribute("rentDetailList", rentDetailService.selectBySellerID(member_id));
+		model1.addAttribute("orderDetailList", order_DetailService.selectBySellerID(sellerID));
+		model2.addAttribute("rentDetailList", rentDetailService.selectBySellerID(sellerID));
 		return "/seller/sellerDelivery";
 	}
 
@@ -236,32 +252,54 @@ public class SellerPageController {
 
 	// 문의 목록 페이지 보여주기
 	@GetMapping("/Q&AList.do")
-	public String qaList(Model model, Model model3, Model model4, HttpServletRequest request) {
-
-		model.addAttribute("sellerInfo", memberService.selectById(member_id));
+	public String qaList(Model model, Model model3, Model model4, HttpServletRequest request, HttpSession session) {
+		MemberDTO mem = (MemberDTO)session.getAttribute("member");
+		String sellerID = mem.getMember_id();
+		
+		model.addAttribute("sellerInfo", memberService.selectById(sellerID));
 
 		// 구매자의 문의 목록
-		System.out.println(buyer_inqService.selectInqList(member_id));
-		model3.addAttribute("buyerQAList", buyer_inqService.selectInqList(member_id));
+		System.out.println(buyer_inqService.selectInqList(sellerID));
+		model3.addAttribute("buyerQAList", buyer_inqService.selectInqList(sellerID));
 		// System.out.println(model1);
-		model4.addAttribute("adminQAList", admin_inqService.selectByMemberId(member_id));
+		model4.addAttribute("adminQAList", admin_inqService.selectByMemberId(sellerID));
 
 		return "/seller/sellerQ&dAList";
 	}
 
 	// 상품 등록 페이지
 	@GetMapping("/AddProduct.do")
-	public String addProduct(Model model) {
+	public String addProduct(Model model, HttpSession session) {
+		MemberDTO mem = (MemberDTO)session.getAttribute("member");
+		String sellerID = mem.getMember_id();
 
-		model.addAttribute("sellerInfo", memberService.selectById(member_id));
+		//Depth 값이 1이고, 부모 카테고리 ID가 Null인 카테고리들을 가져오기
+		CategoryDTO categoryDTO = new CategoryDTO();
+		categoryDTO.setCategory_depth(1);
+		categoryDTO.setParent_category_id(null);
+		
+		List<CategoryDTO> firstCategoryList = categoryService.firstDepthCategoryList();
+
+		
+		model.addAttribute("sellerInfo", memberService.selectById(sellerID));
+		model.addAttribute("depth1categoryList", firstCategoryList);
 		return "/seller/seller_addPrd";
 	}
 
 	// 상품 수정 페이지
 	@GetMapping("/ModifyProduct.do")
-	public String modifyProduct(Model model, Model model1, Model model2, Model model3, Model model4, Model model5,
-			@RequestParam("stock_id") String stockID) throws UnsupportedEncodingException {
+	public String modifyProduct(Model model, @RequestParam("stock_id") String stockID, HttpSession session) throws UnsupportedEncodingException {
 
+		MemberDTO mem = (MemberDTO)session.getAttribute("member");
+		String sellerID = mem.getMember_id();
+		
+		//Depth 값이 1이고, 부모 카테고리 ID가 Null인 카테고리들을 가져오기
+		CategoryDTO categoryList = new CategoryDTO();
+		categoryList.setCategory_depth(1);
+		categoryList.setParent_category_id(null);
+		
+		List<CategoryDTO> firstCategoryList = categoryService.firstDepthCategoryList();
+		
 		String stock_id = URLDecoder.decode(stockID, "UTF-8");// 한글로 변환
 		System.out.println("가져온 stock_id:" + stock_id);
 
@@ -271,8 +309,15 @@ public class SellerPageController {
 		if (Objects.isNull(seller_Prod_StockDTO)) {// 대여상품 재고일 경우
 			RentProdStockDTO rentProdStockDTO = rentProdStockService.selectById(stock_id);// 재고의 기본 정보 끌어오기
 			System.out.println("�옱怨쟅D:" + rentProdStockDTO);
-
+			
 			String ProdID = rentProdStockDTO.getProd_id();
+			
+			//해당 재고와 연동되어 있는 상품의 정보 가져오기
+			ProdDTO prodDTO = prodService.selectByProdId(ProdID);
+			
+			//해당 재고와 연결되어 있는 상품ID와 연동되어 있는 카테고리 정보 가져오기
+			int category_id = prodDTO.getCategory_id();
+			CategoryDTO categoryDTO =categoryService.selectById(category_id);
 
 			Prod_ImageDTO mainImageDTO = new Prod_ImageDTO();
 			mainImageDTO.setProd_id(ProdID);
@@ -307,14 +352,26 @@ public class SellerPageController {
 				}
 			}
 
-			model1.addAttribute("StockInfo", rentProdStockDTO);
-			model2.addAttribute("ProductInfo", prodService.selectByProdId(ProdID));
-			model3.addAttribute("ProdMainImgList", prodMainImgList);
-			model4.addAttribute("ProdDescImgList", prodDescImgList);
+			model.addAttribute("sellerInfo", memberService.selectById(sellerID));
+			model.addAttribute("StockInfo", rentProdStockDTO);
+			model.addAttribute("ProductInfo", prodDTO);
+			model.addAttribute("CategoryInfo", categoryDTO);
+			model.addAttribute("ProdMainImgList", prodMainImgList);
+			model.addAttribute("ProdDescImgList", prodDescImgList);
+			model.addAttribute("optionList", optionDTOList);
+			model.addAttribute("depth1categoryList", firstCategoryList);
 
 			return "/seller/seller_RentStock_modifyPrd";
 		} else {// 판매상품 재고일 경우
 			String ProdID = seller_Prod_StockDTO.getProd_id();
+			
+			//해당 재고와 연동되어 있는 상품의 정보 가져오기
+			ProdDTO prodDTO = prodService.selectByProdId(ProdID);
+			
+			//해당 재고와 연결되어 있는 상품ID와 연동되어 있는 카테고리 정보 가져오기
+			int category_id = prodDTO.getCategory_id();
+			CategoryDTO categoryDTO =categoryService.selectById(category_id);
+			
 			Prod_ImageDTO mainImageDTO = new Prod_ImageDTO();
 			mainImageDTO.setProd_id(ProdID);
 			mainImageDTO.setImg_type(0);
@@ -346,12 +403,14 @@ public class SellerPageController {
 			}
 
 			// System.out.println(uploadDir);
-			model.addAttribute("sellerInfo", memberService.selectById(member_id));
-			model1.addAttribute("StockInfo", seller_Prod_StockDTO);
-			model2.addAttribute("ProductInfo", prodService.selectByProdId(ProdID));
-			model3.addAttribute("ProdMainImgList", prodMainImgList);
-			model4.addAttribute("ProdDescImgList", prodDescImgList);
-			model5.addAttribute("optionList", optionDTOList);
+			model.addAttribute("sellerInfo", memberService.selectById(sellerID));
+			model.addAttribute("StockInfo", seller_Prod_StockDTO);
+			model.addAttribute("ProductInfo", prodDTO);
+			model.addAttribute("CategoryInfo", categoryDTO);
+			model.addAttribute("ProdMainImgList", prodMainImgList);
+			model.addAttribute("ProdDescImgList", prodDescImgList);
+			model.addAttribute("optionList", optionDTOList);
+			model.addAttribute("depth1categoryList", firstCategoryList);
 
 			return "/seller/seller_SellStock_modifyPrd";
 		}
@@ -375,13 +434,6 @@ public class SellerPageController {
 	@PostMapping("/answerCustomer.do")
 	@ResponseBody
 	public String answerCquestion(@RequestParam("buyer_inq_id") Integer buyerInqId,
-			/*
-			 * @RequestParam("member_id") String memberId,
-			 * 
-			 * @RequestParam("buyer_inq_title") String questionTitle,
-			 * 
-			 * @RequestParam("buyer_inq_content") String buyerInqContent,
-			 */
 			@RequestParam("buyer_reply") String buyerReply) throws UnsupportedEncodingException {
 
 		String buyer_reply = URLDecoder.decode(buyerReply, "UTF-8");
@@ -416,10 +468,12 @@ public class SellerPageController {
 
 	// 관리자문의 등록 팝업
 	@GetMapping("/addAdminQA.do")
-	public String addAdminQA(Model model) {
-		String member_id = "573-50-00882";// �엫�떆濡� �궗�슜�븷 �뙋留ㅼ옄ID(�궗�뾽�옄�벑濡앸쾲�샇)
-		System.out.println("議고쉶 : " + memberService.selectById(member_id));
-		model.addAttribute("aqa", memberService.selectById(member_id));
+	public String addAdminQA(Model model, HttpSession session) {
+		MemberDTO mem = (MemberDTO)session.getAttribute("member");
+		String sellerID = mem.getMember_id();
+		
+		System.out.println("판매자ID : " + memberService.selectById(sellerID));
+		model.addAttribute("aqa", memberService.selectById(sellerID));
 		return "/seller/seller_AdminQPopUp";
 	}
 
@@ -441,13 +495,16 @@ public class SellerPageController {
 		// LocalDate를 java.sql.Date로 변환
 		Date sqlDate = Date.valueOf(localDate);
 
-		// 문의ID 생성
-		Integer qid = 12305;
+		Integer maxAdminInqID = admin_inqService.findMaxAdminInqId();
+		
+		if (Objects.isNull(maxAdminInqID))
+			maxAdminInqID = 0;
+		maxAdminInqID++;
 
 		// 이후에 SQL문으로 DB에 등록
 
 		Admin_InqDTO admin_InqDTO = new Admin_InqDTO();
-		admin_InqDTO.setAdmin_inq_id(qid);
+		admin_InqDTO.setAdmin_inq_id(maxAdminInqID);
 		admin_InqDTO.setAdmin_inq_title(admin_inq_title);
 		admin_InqDTO.setAdmin_inq_content(admin_inq_content);
 		admin_InqDTO.setAdmin_inq_date(sqlDate);

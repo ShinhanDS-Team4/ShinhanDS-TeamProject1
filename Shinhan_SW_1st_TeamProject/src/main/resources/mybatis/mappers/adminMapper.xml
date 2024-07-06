@@ -32,4 +32,9 @@
 		set admin_pw = #{new_admin_pw} 
 		where admin_id = #{admin_id}
 	</update>
+	<update id="adminmypageedit" parameterType="adminVO" >
+		update admin_info set admin_name = #{admin_name}, admin_email = #{admin_email},
+		admin_phone = #{admin_phone}, admin_pw = #{admin_pw}
+		where admin_id = #{admin_id}
+	</update>
 </mapper>

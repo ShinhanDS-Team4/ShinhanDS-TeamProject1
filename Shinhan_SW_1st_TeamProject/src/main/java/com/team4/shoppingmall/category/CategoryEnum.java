@@ -4,1007 +4,1052 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum CategoryEnum {
-	highest("highest", null,
-	Arrays.asList("woman", "man", "kids", "luxury", "sports", "bagAndShoes")),
-	
-	woman("woman", "ì—¬ì„±",
-	Arrays.asList("woman_outer", "woman_jacketAndVest", "woman_neat", "woman_shirtAndBlouse", "woman_tshirt", "woman_onepiece", "woman_pants", "woman_skirt", "woman_jewelryAndWatch")),
-		
-		woman_outer("woman_outer", "ì•„ìš°í„°",
-		Arrays.asList("woman_outer_coat", "woman_outer_jumper", "woman_outer_padding", "woman_outer_fur")),
-		
-			woman_outer_coat("woman_outer_coat", "ì½”íŠ¸",
+	highest("highest", null, Arrays.asList("woman", "man", "kids", "luxury", "sports", "bagAndShoes")),
+
+	woman("woman", "¿©¼º",
+			Arrays.asList("woman_outer", "woman_jacketAndVest", "woman_neat", "woman_shirtAndBlouse", "woman_tshirt",
+					"woman_onepiece", "woman_pants", "woman_skirt", "woman_jewelryAndWatch")),
+
+	woman_outer("woman_outer", "¾Æ¿ìÅÍ",
+			Arrays.asList("woman_outer_coat", "woman_outer_jumper", "woman_outer_padding", "woman_outer_fur")),
+
+	woman_outer_coat("woman_outer_coat", "ÄÚÆ®",
 			Arrays.asList("woman_outer_coat_coat", "woman_outer_coat_trench", "woman_outer_coat_fur")),
-			
-				woman_outer_coat_coat("woman_outer_coat_coat", "ì½”íŠ¸_9", null),
-				
-				woman_outer_coat_trench("woman_outer_coat_trench", "íŠ¸ë Œì¹˜_9", null),
-				
-				woman_outer_coat_fur("woman_outer_coat_fur", "í¼_9", null),
-			
-			woman_outer_jumper("woman_outer_jumper", "ì í¼",
+
+	woman_outer_coat_coat("woman_outer_coat_coat", "ÄÚÆ®_9", null),
+
+	woman_outer_coat_trench("woman_outer_coat_trench", "Æ®·»Ä¡_9", null),
+
+	woman_outer_coat_fur("woman_outer_coat_fur", "ÆÛ_9", null),
+
+	woman_outer_jumper("woman_outer_jumper", "Á¡ÆÛ",
 			Arrays.asList("woman_outer_jumper_jumper", "woman_outer_jumper_safari", "woman_outer_jumper_windbreak")),
-			
-				woman_outer_jumper_jumper("woman_outer_jumper_jumper", "ì í¼_4", null),
-				
-				woman_outer_jumper_safari("woman_outer_jumper_safari", "ì•¼ìƒ/ì‚¬íŒŒë¦¬_4", null),
-				
-				woman_outer_jumper_windbreak("woman_outer_jumper_windbreak", "ë°”ëŒë§‰ì´_4", null),
-			
-			woman_outer_padding("woman_outer_padding", "ë‹¤ìš´/íŒ¨ë”©_4", null),
-			
-			woman_outer_fur("woman_outer_fur", "í¼_4", null),
-		
-		woman_jacketAndVest("woman_jacketAndVest", "ì¬í‚·/ë² ìŠ¤íŠ¸",
-		Arrays.asList("woman_jacketAndVest_jacket", "woman_jacketAndVest_blazer", "woman_jacketAndVest_leatherJacket", "woman_jacketAndVest_vest")),
-		
-			woman_jacketAndVest_jacket("woman_jacketAndVest_jacket", "ì¬í‚·_4", null),
-			
-			woman_jacketAndVest_blazer("woman_jacketAndVest_blazer", "ë¸”ë ˆì´ì €_4", null),
-			
-			woman_jacketAndVest_leatherJacket("woman_jacketAndVest_leatherJacket", "ë ˆë” ì¬í‚·_4", null),
-			
-			woman_jacketAndVest_vest("woman_jacketAndVest_vest", "ë² ìŠ¤íŠ¸_5", null),
-		
-		woman_neat("woman_neat", "ë‹ˆíŠ¸",
-		Arrays.asList("woman_neat_pullover", "woman_neat_cardigan", "woman_neat_vest")),
-		
-			woman_neat_pullover("woman_neat_pullover", "í’€ì˜¤ë²„_2", null),
-		
-			woman_neat_cardigan("woman_neat_cardigan", "ì¹´ë””ê±´_3", null),
-			
-			woman_neat_vest("woman_neat_vest", "ë² ìŠ¤íŠ¸_5", null),
-		
-		woman_shirtAndBlouse("woman_shirtAndBlouse", "ì…”ì¸ /ë¸”ë¼ìš°ìŠ¤",
-		Arrays.asList("woman_shirtAndBlouse_shirt", "woman_shirtAndBlouse_blouse")),
-			
-			woman_shirtAndBlouse_shirt("woman_shirtAndBlouse_shirt", "ì…”ì¸ ",
+
+	woman_outer_jumper_jumper("woman_outer_jumper_jumper", "Á¡ÆÛ_4", null),
+
+	woman_outer_jumper_safari("woman_outer_jumper_safari", "¾ß»ó/»çÆÄ¸®_4", null),
+
+	woman_outer_jumper_windbreak("woman_outer_jumper_windbreak", "¹Ù¶÷¸·ÀÌ_4", null),
+
+	woman_outer_padding("woman_outer_padding", "´Ù¿î/ÆĞµù_4", null),
+
+	woman_outer_fur("woman_outer_fur", "ÆÛ_4", null),
+
+	woman_jacketAndVest("woman_jacketAndVest", "ÀçÅ¶/º£½ºÆ®",
+			Arrays.asList("woman_jacketAndVest_jacket", "woman_jacketAndVest_blazer",
+					"woman_jacketAndVest_leatherJacket", "woman_jacketAndVest_vest")),
+
+	woman_jacketAndVest_jacket("woman_jacketAndVest_jacket", "ÀçÅ¶_4", null),
+
+	woman_jacketAndVest_blazer("woman_jacketAndVest_blazer", "ºí·¹ÀÌÀú_4", null),
+
+	woman_jacketAndVest_leatherJacket("woman_jacketAndVest_leatherJacket", "·¹´õ ÀçÅ¶_4", null),
+
+	woman_jacketAndVest_vest("woman_jacketAndVest_vest", "º£½ºÆ®_5", null),
+
+	woman_neat("woman_neat", "´ÏÆ®", Arrays.asList("woman_neat_pullover", "woman_neat_cardigan", "woman_neat_vest")),
+
+	woman_neat_pullover("woman_neat_pullover", "Ç®¿À¹ö_2", null),
+
+	woman_neat_cardigan("woman_neat_cardigan", "Ä«µğ°Ç_3", null),
+
+	woman_neat_vest("woman_neat_vest", "º£½ºÆ®_5", null),
+
+	woman_shirtAndBlouse("woman_shirtAndBlouse", "¼ÅÃ÷/ºí¶ó¿ì½º",
+			Arrays.asList("woman_shirtAndBlouse_shirt", "woman_shirtAndBlouse_blouse")),
+
+	woman_shirtAndBlouse_shirt("woman_shirtAndBlouse_shirt", "¼ÅÃ÷",
 			Arrays.asList("woman_shirtAndBlouse_shirt_sleevelong", "woman_shirtAndBlouse_shirt_sleeveshort")),
-			
-				woman_shirtAndBlouse_shirt_sleevelong("woman_shirtAndBlouse_shirt_sleevelong", "ê¸´íŒ”_0", null),
-				
-				woman_shirtAndBlouse_shirt_sleeveshort("woman_shirtAndBlouse_shirt_sleeveshort", "ë°˜íŒ”_0", null),
-			
-			woman_shirtAndBlouse_blouse("woman_shirtAndBlouse_blouse", "ë¸”ë¼ìš°ìŠ¤",
-			Arrays.asList("woman_shirtAndBlouse_blouse_sleevelong", "woman_shirtAndBlouse_blouse_sleeveshort", "woman_shirtAndBlouse_blouse_sleeveless")),
-		
-				woman_shirtAndBlouse_blouse_sleevelong("woman_shirtAndBlouse_blouse_sleevelong", "ê¸´íŒ”_0", null),
-				
-				woman_shirtAndBlouse_blouse_sleeveshort("woman_shirtAndBlouse_blouse_sleeveshort", "ë°˜íŒ”_0", null),
-				
-				woman_shirtAndBlouse_blouse_sleeveless("woman_shirtAndBlouse_blouse_sleeveless", "ë¯¼ì†Œë§¤_0", null),
-			
-		woman_tshirt("woman_tshirt", "í‹°ì…”ì¸ ",
-		Arrays.asList("woman_tshirt_sleevelong", "woman_tshirt_sleeveshort", "woman_tshirt_sleeveless")),
-			
-			woman_tshirt_sleevelong("woman_tshirt_sleevelong", "ê¸´íŒ”_1", null),
-			
-			woman_tshirt_sleeveshort("woman_tshirt_sleeveshort", "ë°˜íŒ”_1", null),
-			
-			woman_tshirt_sleeveless("woman_tshirt_sleeveless", "ë¯¼ì†Œë§¤_1", null),
-		
-		woman_onepiece("woman_onepiece", "ì›í”¼ìŠ¤",
-		Arrays.asList("woman_onepiece_sleevelong", "woman_onepiece_sleeveshort")),
-		
-			woman_onepiece_sleevelong("woman_onepiece_sleevelong", "ê¸´íŒ”_10", null),
-			
-			woman_onepiece_sleeveshort("woman_onepiece_sleeveshort", "ë°˜íŒ”/ë¯¼ì†Œë§¤_10", null),
-		
-		woman_pants("woman_pants", "íŒ¬ì¸ ",
-		Arrays.asList("woman_pants_wide", "woman_pants_straight", "woman_pants_slim", "woman_pants_jogger", "woman_pants_denim", "woman_pants_short", "woman_pants_jumpsuit", "woman_pants_sport")),
-		
-			woman_pants_wide("woman_pants_wide", "ì™€ì´ë“œ_6", null),
-			
-			woman_pants_straight("woman_pants_straight", "ìŠ¤íŠ¸ë ˆì´íŠ¸_6", null),
-			
-			woman_pants_slim("woman_pants_slim", "ìŠ¬ë¦¼_6", null),
-			
-			woman_pants_jogger("woman_pants_jogger", "ì¡°ê±°_6", null),
-			
-			woman_pants_denim("woman_pants_denim", "ë°ë‹˜",
-			Arrays.asList("woman_pants_denim_long", "woman_pants_denim_short")),
-			
-				woman_pants_denim_long("woman_pants_denim_long", "ë¡±/ë¯¸ë””_6", null),
-				
-				woman_pants_denim_short("woman_pants_denim_short", "ì‡¼íŠ¸_7", null),
-		
-			woman_pants_short("woman_pants_short", "ì‡¼ì¸ /í•˜í”„_7", null),
-			
-			woman_pants_jumpsuit("woman_pants_jumpsuit", "ì í”„ìˆ˜íŠ¸_11", null),
-				
-			woman_pants_sport("woman_pants_sport", "ìŠ¤í¬ì¸ ",
-			Arrays.asList("woman_pants_sport_long", "woman_pants_sport_short")),
-			
-				woman_pants_sport_long("woman_pants_sport_long", "ë¡±/ë¯¸ë”” íŒ¬ì¸ _6", null),
-				
-				woman_pants_sport_short("woman_pants_sport_short", "ì‡¼íŠ¸ íŒ¬ì¸ _7",null),
-			
-		woman_skirt("woman_skirt", "ìŠ¤ì»¤íŠ¸",
-		Arrays.asList("woman_skirt_long", "woman_skirt_short")),
-		
-			woman_skirt_long("woman_skirt_long", "ë¡±/ë¯¸ë””_8", null),
-			
-			woman_skirt_short("woman_skirt_short", "ë¯¸ë‹ˆ_8", null),
-		
-		woman_jewelryAndWatch("woman_jewelryAndWatch", "ì¥¬ì–¼ë¦¬/ì‹œê³„",
-		Arrays.asList("woman_jewelryAndWatch_jewerly", "woman_jewelryAndWatch_earing", "woman_jewelryAndWatch_necklace", "woman_jewelryAndWatch_bracelet", "woman_jewelryAndWatch_ring", "woman_jewelryAndWatch_hairAccessory", "woman_jewelryAndWatch_brooch", "woman_jewelryAndWatch_watch")),
 
-			woman_jewelryAndWatch_jewerly("woman_jewelryAndWatch_jewerly", "ì¥¬ì–¼ë¦¬", null),
-			
-			woman_jewelryAndWatch_earing("woman_jewelryAndWatch_earing", "ê·€ê±¸ì´", null),
-			
-			woman_jewelryAndWatch_necklace("woman_jewelryAndWatch_necklace", "ëª©ê±¸ì´", null),
-			
-			woman_jewelryAndWatch_bracelet("woman_jewelryAndWatch_bracelet", "íŒ”ì°Œ", null),
-			
-			woman_jewelryAndWatch_ring("woman_jewelryAndWatch_ring", "ë°˜ì§€", null),
-			
-			woman_jewelryAndWatch_hairAccessory("woman_jewelryAndWatch_hairAccessory", "í—¤ì–´ì•…ì„¸ì„œë¦¬", null),
-			
-			woman_jewelryAndWatch_brooch("woman_jewelryAndWatch_brooch", "ë¸Œë¡œì¸ /íœë˜íŠ¸", null),
-			
-			woman_jewelryAndWatch_watch("woman_jewelryAndWatch_watch", "ì‹œê³„", null),
-	
-	man("man", "ë‚¨ì„±",
-	Arrays.asList("man_outer", "man_suit", "man_pants", "man_jacket", "man_shirt", "man_neat", "man_tshirt")),
-	
-		man_outer("man_outer", "ì•„ìš°í„°",
-		Arrays.asList("man_outer_jumper", "man_outer_coat", "man_outer_padding", "man_outer_leatherJacket")),
-		
-			man_outer_jumper("man_outer_jumper", "ì í¼",
+	woman_shirtAndBlouse_shirt_sleevelong("woman_shirtAndBlouse_shirt_sleevelong", "±äÆÈ_0", null),
+
+	woman_shirtAndBlouse_shirt_sleeveshort("woman_shirtAndBlouse_shirt_sleeveshort", "¹İÆÈ_0", null),
+
+	woman_shirtAndBlouse_blouse("woman_shirtAndBlouse_blouse", "ºí¶ó¿ì½º",
+			Arrays.asList("woman_shirtAndBlouse_blouse_sleevelong", "woman_shirtAndBlouse_blouse_sleeveshort",
+					"woman_shirtAndBlouse_blouse_sleeveless")),
+
+	woman_shirtAndBlouse_blouse_sleevelong("woman_shirtAndBlouse_blouse_sleevelong", "±äÆÈ_0", null),
+
+	woman_shirtAndBlouse_blouse_sleeveshort("woman_shirtAndBlouse_blouse_sleeveshort", "¹İÆÈ_0", null),
+
+	woman_shirtAndBlouse_blouse_sleeveless("woman_shirtAndBlouse_blouse_sleeveless", "¹Î¼Ò¸Å_0", null),
+
+	woman_tshirt("woman_tshirt", "Æ¼¼ÅÃ÷",
+			Arrays.asList("woman_tshirt_sleevelong", "woman_tshirt_sleeveshort", "woman_tshirt_sleeveless")),
+
+	woman_tshirt_sleevelong("woman_tshirt_sleevelong", "±äÆÈ_1", null),
+
+	woman_tshirt_sleeveshort("woman_tshirt_sleeveshort", "¹İÆÈ_1", null),
+
+	woman_tshirt_sleeveless("woman_tshirt_sleeveless", "¹Î¼Ò¸Å_1", null),
+
+	woman_onepiece("woman_onepiece", "¿øÇÇ½º", Arrays.asList("woman_onepiece_sleevelong", "woman_onepiece_sleeveshort")),
+
+	woman_onepiece_sleevelong("woman_onepiece_sleevelong", "±äÆÈ_10", null),
+
+	woman_onepiece_sleeveshort("woman_onepiece_sleeveshort", "¹İÆÈ/¹Î¼Ò¸Å_10", null),
+
+	woman_pants("woman_pants", "ÆÒÃ÷",
+			Arrays.asList("woman_pants_wide", "woman_pants_straight", "woman_pants_slim", "woman_pants_jogger",
+					"woman_pants_denim", "woman_pants_short", "woman_pants_jumpsuit", "woman_pants_sport")),
+
+	woman_pants_wide("woman_pants_wide", "¿ÍÀÌµå_6", null),
+
+	woman_pants_straight("woman_pants_straight", "½ºÆ®·¹ÀÌÆ®_6", null),
+
+	woman_pants_slim("woman_pants_slim", "½½¸²_6", null),
+
+	woman_pants_jogger("woman_pants_jogger", "Á¶°Å_6", null),
+
+	woman_pants_denim("woman_pants_denim", "µ¥´Ô", Arrays.asList("woman_pants_denim_long", "woman_pants_denim_short")),
+
+	woman_pants_denim_long("woman_pants_denim_long", "·Õ/¹Ìµğ_6", null),
+
+	woman_pants_denim_short("woman_pants_denim_short", "¼îÆ®_7", null),
+
+	woman_pants_short("woman_pants_short", "¼îÃ÷/ÇÏÇÁ_7", null),
+
+	woman_pants_jumpsuit("woman_pants_jumpsuit", "Á¡ÇÁ¼öÆ®_11", null),
+
+	woman_pants_sport("woman_pants_sport", "½ºÆ÷Ã÷", Arrays.asList("woman_pants_sport_long", "woman_pants_sport_short")),
+
+	woman_pants_sport_long("woman_pants_sport_long", "·Õ/¹Ìµğ ÆÒÃ÷_6", null),
+
+	woman_pants_sport_short("woman_pants_sport_short", "¼îÆ® ÆÒÃ÷_7", null),
+
+	woman_skirt("woman_skirt", "½ºÄ¿Æ®", Arrays.asList("woman_skirt_long", "woman_skirt_short")),
+
+	woman_skirt_long("woman_skirt_long", "·Õ/¹Ìµğ_8", null),
+
+	woman_skirt_short("woman_skirt_short", "¹Ì´Ï_8", null),
+
+	woman_jewelryAndWatch("woman_jewelryAndWatch", "Áê¾ó¸®/½Ã°è",
+			Arrays.asList("woman_jewelryAndWatch_jewerly", "woman_jewelryAndWatch_earing",
+					"woman_jewelryAndWatch_necklace", "woman_jewelryAndWatch_bracelet", "woman_jewelryAndWatch_ring",
+					"woman_jewelryAndWatch_hairAccessory", "woman_jewelryAndWatch_brooch",
+					"woman_jewelryAndWatch_watch")),
+
+	woman_jewelryAndWatch_jewerly("woman_jewelryAndWatch_jewerly", "Áê¾ó¸®", null),
+
+	woman_jewelryAndWatch_earing("woman_jewelryAndWatch_earing", "±Í°ÉÀÌ", null),
+
+	woman_jewelryAndWatch_necklace("woman_jewelryAndWatch_necklace", "¸ñ°ÉÀÌ", null),
+
+	woman_jewelryAndWatch_bracelet("woman_jewelryAndWatch_bracelet", "ÆÈÂî", null),
+
+	woman_jewelryAndWatch_ring("woman_jewelryAndWatch_ring", "¹İÁö", null),
+
+	woman_jewelryAndWatch_hairAccessory("woman_jewelryAndWatch_hairAccessory", "Çì¾î¾Ç¼¼¼­¸®", null),
+
+	woman_jewelryAndWatch_brooch("woman_jewelryAndWatch_brooch", "ºê·ÎÃ÷/Ææ´øÆ®", null),
+
+	woman_jewelryAndWatch_watch("woman_jewelryAndWatch_watch", "½Ã°è", null),
+
+	man("man", "³²¼º",
+			Arrays.asList("man_outer", "man_suit", "man_pants", "man_jacket", "man_shirt", "man_neat", "man_tshirt")),
+
+	man_outer("man_outer", "¾Æ¿ìÅÍ",
+			Arrays.asList("man_outer_jumper", "man_outer_coat", "man_outer_padding", "man_outer_leatherJacket")),
+
+	man_outer_jumper("man_outer_jumper", "Á¡ÆÛ",
 			Arrays.asList("man_outer_jumper_jumper", "man_outer_jumper_safari", "man_outer_jumper_windbreak")),
-			
-				man_outer_jumper_jumper("man_outer_jumper_jumper", "ì í¼_4", null),
-				
-				man_outer_jumper_safari("man_outer_jumper_safari", "ì•¼ìƒ/ì‚¬íŒŒë¦¬_4", null),
-				
-				man_outer_jumper_windbreak("man_outer_jumper_windbreak", "ë°”ëŒë§‰ì´_4", null),
-				
-			man_outer_coat("man_outer_coat", "ì½”íŠ¸",
-			Arrays.asList("man_outer_coat_coat", "man_outer_coat_trench")),
-				
-				man_outer_coat_coat("man_outer_coat_coat", "ì½”íŠ¸_9", null),
-				
-				man_outer_coat_trench("man_outer_coat_trench", "íŠ¸ë Œì¹˜_9", null),
-				
-			man_outer_padding("man_outer_padding", "ë‹¤ìš´/íŒ¨ë”©_4", null),
-			
-			man_outer_leatherJacket("man_outer_leatherJacket", "ë ˆë”ì¬í‚·_4", null),
-			
-		man_suit("man_suit", "ì •ì¥",
-		Arrays.asList("man_suit_suitSet", "man_suit_suitJacket", "man_suit_suitPants", "man_suit_dressShirt", "man_suit_suitVest", "man_suit_setupSet")),
-		
-			man_suit_suitSet("man_suit_suitSet", "ì •ì¥ ì„¸íŠ¸", null),
-			
-			man_suit_suitJacket("man_suit_suitJacket", "ì •ì¥ ì¬í‚·_4", null),
-			
-			man_suit_suitPants("man_suit_suitPants", "ì •ì¥ íŒ¬ì¸ _6", null),
-			
-			man_suit_dressShirt("man_suit_dressShirt", "ë“œë ˆìŠ¤ ì…”ì¸ _0", null),
-			
-			man_suit_suitVest("man_suit_suitVest", "ì •ì¥ ë² ìŠ¤íŠ¸_5", null),
-			
-			man_suit_setupSet("man_suit_setupSet", "ì…‹ì—… ì„¸íŠ¸", null),
-		
-		man_pants("man_pants", "íŒ¬ì¸ ",
-		Arrays.asList("man_pants_chinos", "man_pants_slacks", "man_pants_suitPants", "man_pants_jogger", "man_pants_denim", "man_pants_shorts")),
-		
-			man_pants_chinos("man_pants_chinos", "ì¹˜ë…¸_6", null),
-			
-			man_pants_slacks("man_pants_slacks", "ìŠ¬ë™ìŠ¤_6", null),
-			
-			man_pants_suitPants("man_pants_suitPants", "ìˆ˜íŠ¸íŒ¬ì¸ _6", null),
-			
-			man_pants_jogger("man_pants_jogger", "ì¡°ê±°/ìŠ¤ì›»_6", null),
-			
-			man_pants_denim("man_pants_denim", "ë°ë‹˜_6", null),
-			
-			man_pants_shorts("man_pants_shorts", "ì‡¼ì¸ _7", null),
-		
-		man_jacket("man_jacket", "ì¬í‚·/ë² ìŠ¤íŠ¸",
-		Arrays.asList("man_jacket_jacket", "man_jacket_blazer", "man_jacket_leatherJacket", "man_jacket_vest")),
-		
-			man_jacket_jacket("man_jacket_jacket", "ì¬í‚·_4", null),
-			
-			man_jacket_blazer("man_jacket_blazer", "ë¸”ë ˆì´ì €_4", null),
-			
-			man_jacket_leatherJacket("man_jacket_leatherJacket", "ë ˆë” ì¬í‚·_4", null),
-			
-			man_jacket_vest("man_jacket_vest", "ë² ìŠ¤íŠ¸_5", null),
-		
-		man_shirt("man_shirt", "ì…”ì¸ ",
-		Arrays.asList("man_shirt_sleevelong", "man_shirt_sleeveshort")),
-		
-			man_shirt_sleevelong("man_shirt_sleevelong", "ê¸´íŒ”ì…”ì¸ _0", null),
-			
-			man_shirt_sleeveshort("man_shirt_sleeveshort", "ë°˜íŒ”ì…”ì¸ _0", null),
-		
-		man_neat("man_neat", "ë‹ˆíŠ¸",
-		Arrays.asList("man_neat_cardigan", "man_neat_pullover", "man_neat_vest")),
-		
-			man_neat_cardigan("man_neat_cardigan", "ì¹´ë””ê±´_3", null),
-			
-			man_neat_pullover("man_neat_pullover", "í’€ì˜¤ë²„_2", null),
-			
-			man_neat_vest("man_neat_vest", "ë² ìŠ¤íŠ¸_5", null),
-		
-		man_tshirt("man_tshirt", "í‹°ì…”ì¸ ",
-		Arrays.asList("man_tshirt_sleeveshort", "man_tshirt_sleevelong", "man_tshirt_sleeveless")),
-		
-			man_tshirt_sleeveshort("man_tshirt_sleeveshort", "ë°˜íŒ”í‹°ì…”ì¸ _1", null),
-			
-			man_tshirt_sleevelong("man_tshirt_sleevelong", "ê¸´íŒ”í‹°ì…”ì¸ _1", null),
-			
-			man_tshirt_sleeveless("man_tshirt_sleeveless", "ë¯¼ì†Œë§¤_1", null),
-			
-	kids("kids", "í‚¤ì¦ˆ",
-	Arrays.asList("kids_boy", "kids_girl")),
-	
-		kids_boy("kids_boy", "ë‚¨ì•„", 
-		Arrays.asList("kids_boy_outer", "kids_boy_tshirt", "kids_boy_shirt", "kids_boy_neat", "kids_boy_pants")),
-		
-			kids_boy_outer("kids_boy_outer", "ì•„ìš°í„°",
-			Arrays.asList("kids_boy_outer_padding", "kids_boy_outer_jumper", "kids_boy_outer_coat", "kids_boy_outer_jacket")),
-			
-				kids_boy_outer_padding("kids_boy_outer_padding", "ë‹¤ìš´/íŒ¨ë”©_4", null),
-				
-				kids_boy_outer_jumper("kids_boy_outer_jumper", "ì í¼_4", null),
-				
-				kids_boy_outer_coat("kids_boy_outer_coat", "ì½”íŠ¸_9", null),
-				
-				kids_boy_outer_jacket("kids_boy_outer_jacket", "ì¬í‚·/ë² ìŠ¤íŠ¸_5", null),
-				
-			kids_boy_tshirt("kids_boy_tshirt", "í‹°ì…”ì¸ ",
-			Arrays.asList("kids_boy_tshirt_sleevelong", "kids_boy_tshirt_sleeveshort")),
-			
-				kids_boy_tshirt_sleevelong("kids_boy_tshirt_sleevelong", "ê¸´íŒ”_1", null),
-				
-				kids_boy_tshirt_sleeveshort("kids_boy_tshirt_sleeveshort", "ë°˜íŒ”/ë¯¼ì†Œë§¤_1", null),
-				
-			kids_boy_shirt("kids_boy_shirt", "ì…”ì¸ ",
-			Arrays.asList("kids_boy_shirt_sleevelong", "kids_boy_shirt_sleeveshort")),
-			
-				kids_boy_shirt_sleevelong("kids_boy_shirt_sleevelong", "ê¸´íŒ”_0", null),
-				
-				kids_boy_shirt_sleeveshort("kids_boy_shirt_sleeveshort", "ë°˜íŒ”_0", null),
-				
-			kids_boy_neat("kids_boy_neat", "ë‹ˆíŠ¸",
-			Arrays.asList("kids_boy_neat_pullover", "kids_boy_neat_cardigan")),
-			
-				kids_boy_neat_pullover("kids_boy_neat_pullover", "í’€ì˜¤ë²„_2", null),
-				
-				kids_boy_neat_cardigan("kids_boy_neat_cardigan", "ì¹´ë””ê±´/ë² ìŠ¤íŠ¸_3", null),
-				
-			kids_boy_pants("kids_boy_pants", "íŒ¬ì¸ ",
-			Arrays.asList("kids_boy_pants_long", "kids_boy_pants_short")),
-			
-				kids_boy_pants_long("kids_boy_pants_long", "ë¡± íŒ¬ì¸ _6", null),
-				
-				kids_boy_pants_short("kids_boy_pants_short", "ì‡¼íŠ¸ íŒ¬ì¸ _7", null),
-				
-		kids_girl("kids_girl", "ì—¬ì•„",
-		Arrays.asList("kids_girl_outer", "kids_girl_tshirt", "kids_girl_shirtAndBlouse", "kids_girl_onepiece", "kids_girl_neat", "kids_girl_pantsAndSkirt")),
-		
-			kids_girl_outer("kids_girl_outer", "ì•„ìš°í„°",
-			Arrays.asList("kids_girl_outer_padding", "kids_girl_outer_jumper", "kids_girl_outer_coat", "kids_girl_outer_jacket")),
-			
-				kids_girl_outer_padding("kids_girl_outer_padding", "ë‹¤ìš´/íŒ¨ë”©_4", null),
-				
-				kids_girl_outer_jumper("kids_girl_outer_jumper", "ì í¼_4", null),
-				
-				kids_girl_outer_coat("kids_girl_outer_coat", "ì½”íŠ¸_9", null),
-				
-				kids_girl_outer_jacket("kids_girl_outer_jacket", "ì¬í‚·/ë² ìŠ¤íŠ¸_4", null),
-				
-			kids_girl_tshirt("kids_girl_tshirt", "í‹°ì…”ì¸ ",
-			Arrays.asList("kids_girl_tshirt_sleevelong", "kids_girl_tshirt_sleeveshort")),
-			
-				kids_girl_tshirt_sleevelong("kids_girl_tshirt_sleevelong", "ê¸´íŒ”_1", null),
-				
-				kids_girl_tshirt_sleeveshort("kids_girl_tshirt_sleeveshort", "ë°˜íŒ”/ë¯¼ì†Œë§¤_1", null),
-				
-			kids_girl_shirtAndBlouse("kids_girl_shirtAndBlouse", "ì…”ì¸ /ë¸”ë¼ìš°ìŠ¤",
-			Arrays.asList("kids_girl_shirtAndBlouse_sleevelong", "kids_girl_shirtAndBlouse_sleeveshort")),
-			
-				kids_girl_shirtAndBlouse_sleevelong("kids_girl_shirtAndBlouse_sleevelong", "ê¸´íŒ”_0", null),
-				
-				kids_girl_shirtAndBlouse_sleeveshort("kids_girl_shirtAndBlouse_sleeveshort", "ë°˜íŒ”_0", null),
-				
-			kids_girl_onepiece("kids_girl_onepiece", "ì›í”¼ìŠ¤_10", null),
-			
-			kids_girl_neat("kids_girl_neat", "ë‹ˆíŠ¸",
-			Arrays.asList("kids_girl_neat_pullover", "kids_girl_neat_cardigan")),
-			
-				kids_girl_neat_pullover("kids_girl_neat_pullover", "í’€ì˜¤ë²„_2", null),
-				
-				kids_girl_neat_cardigan("kids_girl_neat_cardigan", "ì¹´ë””ê±´/ë² ìŠ¤íŠ¸_3", null),
-				
-			kids_girl_pantsAndSkirt("kids_girl_pantsAndSkirt", "íŒ¬ì¸ /ìŠ¤ì»¤íŠ¸",
-			Arrays.asList("kids_girl_pantsAndSkirt_long", "kids_girl_pantsAndSkirt_skirt", "kids_girl_pantsAndSkirt_short")),
-			
-				kids_girl_pantsAndSkirt_long("kids_girl_pantsAndSkirt_long", "ë¡± íŒ¬ì¸ _6", null),
-				
-				kids_girl_pantsAndSkirt_skirt("kids_girl_pantsAndSkirt_skirt", "ìŠ¤ì»¤íŠ¸_8", null),
-				
-				kids_girl_pantsAndSkirt_short("kids_girl_pantsAndSkirt_short", "ì‡¼íŠ¸ íŒ¬ì¸ _7", null),
-				
-	luxury("luxury", "ëŸ­ì…”ë¦¬",
-	Arrays.asList("luxury_woman", "luxury_womanBag", "luxury_womanShoes", "luxury_womanWatch", "luxury_man", "luxury_manBag", "luxury_manShoes", "luxury_manWatch")),
-	
-		luxury_woman("luxury_woman", "ì—¬ì„±ì˜ë¥˜",
-		Arrays.asList("luxury_woman_outer", "luxury_woman_jacketAndVest", "luxury_woman_tshirt", "luxury_woman_shirtAndBlouse", "luxury_woman_neat", "luxury_woman_onepiece", "luxury_woman_pants", "luxury_woman_skirt", "luxury_woman_beachwear")),
-		
-			luxury_woman_outer("luxury_woman_outer", "ì•„ìš°í„°",
-			Arrays.asList("luxury_woman_outer_coat", "luxury_woman_outer_jumper", "luxury_woman_outer_padding", "luxury_woman_outer_fur", "luxury_woman_outer_trench")),
-			
-				luxury_woman_outer_coat("luxury_woman_outer_coat", "ì½”íŠ¸_9", null),
-				
-				luxury_woman_outer_jumper("luxury_woman_outer_jumper", "ì í¼_4", null),
-				
-				luxury_woman_outer_padding("luxury_woman_outer_padding", "ë‹¤ìš´/íŒ¨ë”©_4", null),
-				
-				luxury_woman_outer_fur("luxury_woman_outer_fur", "í¼_4", null),
-				
-				luxury_woman_outer_trench("luxury_woman_outer_trench", "íŠ¸ë Œì¹˜_9", null),
-				
-			luxury_woman_jacketAndVest("luxury_woman_jacketAndVest", "ì¬í‚·/ë² ìŠ¤íŠ¸",
-			Arrays.asList("luxury_woman_jacketAndVest_jacket", "luxury_woman_jacketAndVest_blazer", "luxury_woman_jacketAndVest_leatherJacket", "luxury_woman_jacketAndVest_vest")),
-			
-				luxury_woman_jacketAndVest_jacket("luxury_woman_jacketAndVest_jacket", "ì¬í‚·_4", null),
-				
-				luxury_woman_jacketAndVest_blazer("luxury_woman_jacketAndVest_blazer", "ë¸”ë ˆì´ì €_4", null),
-				
-				luxury_woman_jacketAndVest_leatherJacket("luxury_woman_jacketAndVest_leatherJacket", "ë ˆë” ì¬í‚·_4", null),
-				
-				luxury_woman_jacketAndVest_vest("luxury_woman_jacketAndVest_vest", "ë² ìŠ¤íŠ¸_5", null),
-				
-			luxury_woman_tshirt("luxury_woman_tshirt", "í‹°ì…”ì¸ ",
-			Arrays.asList("luxury_woman_tshirt_sleevelong", "luxury_woman_tshirt_sleeveshort", "luxury_woman_tshirt_sleeveless")),
-			
-				luxury_woman_tshirt_sleevelong("luxury_woman_tshirt_sleevelong", "ê¸´íŒ”_1", null),
-				
-				luxury_woman_tshirt_sleeveshort("luxury_woman_tshirt_sleeveshort", "ë°˜íŒ”_1", null),
-				
-				luxury_woman_tshirt_sleeveless("luxury_woman_tshirt_sleeveless", "ë¯¼ì†Œë§¤_1", null),
-				
-			luxury_woman_shirtAndBlouse("luxury_woman_shirtAndBlouse", "ì…”ì¸ /ë¸”ë¼ìš°ìŠ¤",
-			Arrays.asList("luxury_woman_shirtAndBlouse_shirtSleeveshort", "luxury_woman_shirtAndBlouse_blouseSleeveshort", "luxury_woman_shirtAndBlouse_shirtSleevelong", "luxury_woman_shirtAndBlouse_blouseSleevelong", "luxury_woman_shirtAndBlouse_blouseSleeveless")),
-			
-				luxury_woman_shirtAndBlouse_shirtSleeveshort("luxury_woman_shirtAndBlouse_shirtSleeveshort", "ë°˜íŒ” ì…”ì¸ _0", null),
-				
-				luxury_woman_shirtAndBlouse_blouseSleeveshort("luxury_woman_shirtAndBlouse_blouseSleeveshort", "ë°˜íŒ” ë¸”ë¼ìš°ìŠ¤_0", null),
-				
-				luxury_woman_shirtAndBlouse_shirtSleevelong("luxury_woman_shirtAndBlouse_shirtSleevelong", "ê¸´íŒ” ì…”ì¸ _0", null),
-				
-				luxury_woman_shirtAndBlouse_blouseSleevelong("luxury_woman_shirtAndBlouse_blouseSleevelong", "ê¸´íŒ” ë¸”ë¼ìš°ìŠ¤_0", null),
-				
-				luxury_woman_shirtAndBlouse_blouseSleeveless("luxury_woman_shirtAndBlouse_blouseSleeveless", "ë¯¼ì†Œë§¤ ë¸”ë¼ìš°ìŠ¤_0", null),
-				
-			luxury_woman_neat("luxury_woman_neat", "ë‹ˆíŠ¸",
-			Arrays.asList("luxury_woman_neat_pullover", "luxury_woman_neat_cardigan", "luxury_woman_neat_vest")),
-			
-				luxury_woman_neat_pullover("luxury_woman_neat_pullover", "í’€ì˜¤ë²„_2", null),
-				
-				luxury_woman_neat_cardigan("luxury_woman_neat_cardigan", "ì¹´ë””ê±´_3", null),
-				
-				luxury_woman_neat_vest("luxury_woman_neat_vest", "ë² ìŠ¤íŠ¸_5", null),
-				
-			luxury_woman_onepiece("luxury_woman_onepiece", "ì›í”¼ìŠ¤",
-			Arrays.asList("luxury_woman_onepiece_sleevelong", "luxury_woman_onepiece_sleeveshort")),
-			
-				luxury_woman_onepiece_sleevelong("luxury_woman_onepiece_sleevelong", "ê¸´íŒ”_10", null),
-				
-				luxury_woman_onepiece_sleeveshort("luxury_woman_onepiece_sleeveshort", "ë°˜íŒ”/ë¯¼ì†Œë§¤_10", null),
-				
-			luxury_woman_pants("luxury_woman_pants", "íŒ¬ì¸ ",
-			Arrays.asList("luxury_woman_pants_long", "luxury_woman_pants_short")),
-			
-				luxury_woman_pants_long("luxury_woman_pants_long", "ë¡±/ë¯¸ë”” íŒ¬ì¸ _6", null),
-				
-				luxury_woman_pants_short("luxury_woman_pants_short", "ì‡¼íŠ¸ íŒ¬ì¸ _7", null),
-				
-			luxury_woman_skirt("luxury_woman_skirt", "ìŠ¤ì»¤íŠ¸",
-			Arrays.asList("luxury_woman_skirt_long", "luxury_woman_skirt_short")),
-			
-				luxury_woman_skirt_long("luxury_woman_skirt_long", "ë¡±/ë¯¸ë””_8", null),
-				
-				luxury_woman_skirt_short("luxury_woman_skirt_short", "ë¯¸ë‹ˆ_8", null),
-				
-			luxury_woman_beachwear("luxury_woman_beachwear", "ë¹„ì¹˜ì›¨ì–´",
-			Arrays.asList("luxury_woman_beachwear_swimsuit", "luxury_woman_beachwear_bikini", "luxury_woman_beachwear_coverup", "luxury_woman_beachwear_etc")),
-			
-				luxury_woman_beachwear_swimsuit("luxury_woman_beachwear_swimsuit", "ìŠ¤ìœ”ìˆ˜íŠ¸", null),
-				
-				luxury_woman_beachwear_bikini("luxury_woman_beachwear_bikini", "ë¹„í‚¤ë‹ˆ", null),
-				
-				luxury_woman_beachwear_coverup("luxury_woman_beachwear_coverup", "ì»¤ë²„ì—…/ë¡œë¸Œ", null),
-				
-				luxury_woman_beachwear_etc("luxury_woman_beachwear_etc", "ê¸°íƒ€", null),
-				
-		luxury_womanBag("luxury_womanBag", "ì—¬ì„±ê°€ë°©/ì§€ê°‘",
-		Arrays.asList("luxury_womanBag_bag", "luxury_womanBag_purse")),
-		
-			luxury_womanBag_bag("luxury_womanBag_bag", "ê°€ë°©", 
-			Arrays.asList("luxury_womanBag_bag_clutch", "luxury_womanBag_bag_backpack", "luxury_womanBag_bag_shopper", "luxury_womanBag_bag_carrier", "luxury_womanBag_bag_tote", "luxury_womanBag_bag_cross")),
-			
-				luxury_womanBag_bag_clutch("luxury_womanBag_bag_clutch", "í´ëŸ¬ì¹˜", null),
-				
-				luxury_womanBag_bag_backpack("luxury_womanBag_bag_backpack", "ë°±íŒ©", null),
-				
-				luxury_womanBag_bag_shopper("luxury_womanBag_bag_shopper", "ì‡¼í¼", null),
-				
-				luxury_womanBag_bag_carrier("luxury_womanBag_bag_carrier", "ìºë¦¬ì–´", null),
-				
-				luxury_womanBag_bag_tote("luxury_womanBag_bag_tote", "í† íŠ¸", null),
-				
-				luxury_womanBag_bag_cross("luxury_womanBag_bag_cross", "ìˆ„ë”/í¬ë¡œìŠ¤", null),
-				
-			luxury_womanBag_purse("luxury_womanBag_purse", "ì§€ê°‘",
-			Arrays.asList("luxury_womanBag_purse_card", "luxury_womanBag_purse_long", "luxury_womanBag_purse_etc", "luxury_womanBag_purse_mini")),
-			
-				luxury_womanBag_purse_card("luxury_womanBag_purse_card", "ëª…í•¨/ì¹´ë“œì§€ê°‘", null),
-				
-				luxury_womanBag_purse_long("luxury_womanBag_purse_long", "ì¥ì§€ê°‘", null),
-				
-				luxury_womanBag_purse_etc("luxury_womanBag_purse_etc", "ë™ì „ì§€ê°‘/íŒŒìš°ì¹˜/ê¸°íƒ€", null),
-				
-				luxury_womanBag_purse_mini("luxury_womanBag_purse_mini", "ë¯¸ë‹ˆ/ë°˜ì§€ê°‘", null),
-				
-		luxury_womanShoes("luxury_womanShoes", "ì—¬ì„±ìŠˆì¦ˆ",
-		Arrays.asList("luxury_womanShoes_sandal", "luxury_womanShoes_slipper", "luxury_womanShoes_slipon", "luxury_womanShoes_flat", "luxury_womanShoes_walker", "luxury_womanShoes_sneakers", "luxury_womanShoes_heel")),
-		
-			luxury_womanShoes_sandal("luxury_womanShoes_sandal", "ìƒŒë“¤", null),
-			
-			luxury_womanShoes_slipper("luxury_womanShoes_slipper", "ìŠ¬ë¦¬í¼/ë®¬", null),
-			
-			luxury_womanShoes_slipon("luxury_womanShoes_slipon", "ìŠ¬ë¦½ì˜¨", null),
-			
-			luxury_womanShoes_flat("luxury_womanShoes_flat", "í”Œë«/ë¡œí¼", null),
-			
-			luxury_womanShoes_walker("luxury_womanShoes_walker", "ì›Œì»¤/ë¶€ì¸ ", null),
-			
-			luxury_womanShoes_sneakers("luxury_womanShoes_sneakers", "ìš´ë™í™”/ìŠ¤ë‹ˆì»¤ì¦ˆ", null),
-			
-			luxury_womanShoes_heel("luxury_womanShoes_heel", "íŒí”„ìŠ¤/í", null),
-			
-		luxury_womanWatch("luxury_womanWatch", "ì—¬ì„± ì¥¬ì–¼ë¦¬/ì‹œê³„",
-		Arrays.asList("luxury_womanWatch_earing", "luxury_womanWatch_necklace", "luxury_womanWatch_bracelet", "luxury_womanWatch_ring", "luxury_womanWatch_hairAccessory", "luxury_womanWatch_brooch", "luxury_womanWatch_watch")),
-		
-			luxury_womanWatch_earing("luxury_womanWatch_earing", "ê·€ê±¸ì´", null),
-			
-			luxury_womanWatch_necklace("luxury_womanWatch_necklace", "ëª©ê±¸ì´", null),
-			
-			luxury_womanWatch_bracelet("luxury_womanWatch_bracelet", "íŒ”ì°Œ", null),
-			
-			luxury_womanWatch_ring("luxury_womanWatch_ring", "ë°˜ì§€", null),
-			
-			luxury_womanWatch_hairAccessory("luxury_womanWatch_hairAccessory", "í—¤ì–´ì•…ì„¸ì„œë¦¬", null),
-			
-			luxury_womanWatch_brooch("luxury_womanWatch_brooch", "ë¸Œë¡œì¹˜/íœë˜íŠ¸", null),
-			
-			luxury_womanWatch_watch("luxury_womanWatch_watch", "ì‹œê³„", null),
-	
-		luxury_man("luxury_man", "ë‚¨ì„±ì˜ë¥˜",
-		Arrays.asList("luxury_man_outer", "luxury_man_jacket", "luxury_man_tshirt", "luxury_man_shirt", "luxury_man_neat", "luxury_man_pants", "luxury_man_beachwear")),
-		
-			luxury_man_outer("luxury_man_outer", "ì•„ìš°í„°",
-			Arrays.asList("luxury_man_outer_jumper", "luxury_man_outer_coat", "luxury_man_outer_padding", "luxury_man_outer_trench")),
-			
-				luxury_man_outer_jumper("luxury_man_outer_jumper", "ì í¼_4", null),
-				
-				luxury_man_outer_coat("luxury_man_outer_coat", "ì½”íŠ¸_9", null),
-				
-				luxury_man_outer_padding("luxury_man_outer_padding", "ë‹¤ìš´/íŒ¨ë”©_4", null),
-				
-				luxury_man_outer_trench("luxury_man_outer_trench", "íŠ¸ë Œì¹˜_9", null),
-				
-			luxury_man_jacket("luxury_man_jacket", "ì¬í‚·/ë² ìŠ¤íŠ¸",
-			Arrays.asList("luxury_man_jacket_jacket", "luxury_man_jacket_blazer", "luxury_man_jacket_leatherJacket", "luxury_man_jacket_vest")),
-			
-				luxury_man_jacket_jacket("luxury_man_jacket_jacket", "ì¬í‚·_4", null),
-				
-				luxury_man_jacket_blazer("luxury_man_jacket_blazer", "ë¸”ë ˆì´ì €_4", null),
-				
-				luxury_man_jacket_leatherJacket("luxury_man_jacket_leatherJacket", "ë ˆë” ì¬í‚·_4", null),
-				
-				luxury_man_jacket_vest("luxury_man_jacket_vest", "ë² ìŠ¤íŠ¸_5", null),
-				
-			luxury_man_tshirt("luxury_man_tshirt", "í‹°ì…”ì¸ ",
-			Arrays.asList("luxury_man_tshirt_sleeveshort", "luxury_man_tshirt_sleevelong", "luxury_man_tshirt_sleeveless")),
-			
-				luxury_man_tshirt_sleeveshort("luxury_man_tshirt_sleeveshort", "ë°˜íŒ”_1", null),
-				
-				luxury_man_tshirt_sleevelong("luxury_man_tshirt_sleevelong", "ê¸´íŒ”_1", null),
-				
-				luxury_man_tshirt_sleeveless("luxury_man_tshirt_sleeveless", "ë¯¼ì†Œë§¤_1", null),
-				
-			luxury_man_shirt("luxury_man_shirt", "ì…”ì¸ ",
-			Arrays.asList("luxury_man_shirt_sleevelong", "luxury_man_shirt_sleeveshort")),
-				
-				luxury_man_shirt_sleevelong("luxury_man_shirt_sleevelong", "ê¸´íŒ”_0", null),
-				
-				luxury_man_shirt_sleeveshort("luxury_man_shirt_sleeveshort", "ë°˜íŒ”_0", null),
-				
-			luxury_man_neat("luxury_man_neat", "ë‹ˆíŠ¸",
-			Arrays.asList("luxury_man_neat_cardigan", "luxury_man_neat_pullover", "luxury_man_neat_vest")),
-			
-				luxury_man_neat_cardigan("luxury_man_neat_cardigan", "ì¹´ë””ê±´_3", null),
-				
-				luxury_man_neat_pullover("luxury_man_neat_pullover", "í’€ì˜¤ë²„_2", null),
-				
-				luxury_man_neat_vest("luxury_man_neat_vest", "ë² ìŠ¤íŠ¸_5", null),
-				
-			luxury_man_pants("luxury_man_pants", "íŒ¬ì¸ ",
-			Arrays.asList("luxury_man_pants_casualLong", "luxury_man_pants_denim", "luxury_man_pants_formal", "luxury_man_pants_suitPants", "luxury_man_pants_casualShort")),
-			
-				luxury_man_pants_casualLong("luxury_man_pants_casualLong", "ìºì£¼ì–¼ ë¡± íŒ¬ì¸ _6", null),
-				
-				luxury_man_pants_denim("luxury_man_pants_denim", "ë°ë‹˜_6", null),
-				
-				luxury_man_pants_formal("luxury_man_pants_formal", "í¬ë©€_6", null),
-				
-				luxury_man_pants_suitPants("luxury_man_pants_suitPants", "ì •ì¥_6", null),
-				
-				luxury_man_pants_casualShort("luxury_man_pants_casualShort", "ìºì£¼ì–¼ ì‡¼íŠ¸ íŒ¬ì¸ _7", null),
-			
-			luxury_man_beachwear("luxury_man_beachwear", "ë¹„ì¹˜ì›¨ì–´",
-			Arrays.asList("luxury_man_beachwear_swim", "luxury_man_beachwear_pants", "luxury_man_beachwear_etc")),
-			
-				luxury_man_beachwear_swim("luxury_man_beachwear_swim", "ìˆ˜ì˜ë³µ", null),
-				
-				luxury_man_beachwear_pants("luxury_man_beachwear_pants", "ë¹„ì¹˜íŒ¬ì¸ ", null),
-				
-				luxury_man_beachwear_etc("luxury_man_beachwear_etc", "ê¸°íƒ€", null),
-				
-		luxury_manBag("luxury_manBag", "ë‚¨ì„±ê°€ë°©/ì§€ê°‘",
-		Arrays.asList("luxury_manBag_bag", "luxury_manBag_purse")),
-			
-			luxury_manBag_bag("luxury_manBag_bag", "ê°€ë°©",
-			Arrays.asList("luxury_manBag_bag_clutch", "luxury_manBag_bag_tote", "luxury_manBag_bag_sling", "luxury_manBag_bag_briefcase", "luxury_manBag_bag_carrier", "luxury_manBag_bag_shoulder", "luxury_manBag_bag_backpack")),
-			
-				luxury_manBag_bag_clutch("luxury_manBag_bag_clutch", "í´ëŸ¬ì¹˜", null),
-				
-				luxury_manBag_bag_tote("luxury_manBag_bag_tote", "í† íŠ¸", null),
-				
-				luxury_manBag_bag_sling("luxury_manBag_bag_sling", "ìŠ¬ë§ë°±/í™ìƒ‰", null),
-				
-				luxury_manBag_bag_briefcase("luxury_manBag_bag_briefcase", "ë¸Œë¦¬í”„ì¼€ì´ìŠ¤", null),
-				
-				luxury_manBag_bag_carrier("luxury_manBag_bag_carrier", "ìºë¦¬ì–´", null),
-				
-				luxury_manBag_bag_shoulder("luxury_manBag_bag_shoulder", "ìˆ„ë”/ë©”ì‹ ì €", null),
-				
-				luxury_manBag_bag_backpack("luxury_manBag_bag_backpack", "ë°±íŒ©", null),
-				
-			luxury_manBag_purse("luxury_manBag_purse", "ì§€ê°‘",
-			Arrays.asList("luxury_manBag_purse_moneyclip", "luxury_manBag_purse_card", "luxury_manBag_purse_long", "luxury_manBag_purse_keyholder", "luxury_manBag_purse_half", "luxury_manBag_purse_medium")),
-			
-				luxury_manBag_purse_moneyclip("luxury_manBag_purse_moneyclip", "ë¨¸ë‹ˆí´ë¦½", null),
-				
-				luxury_manBag_purse_card("luxury_manBag_purse_card", "ëª…í•¨/ì¹´ë“œì§€ê°‘", null),
-				
-				luxury_manBag_purse_long("luxury_manBag_purse_long", "ì¥ì§€ê°‘", null),
-				
-				luxury_manBag_purse_keyholder("luxury_manBag_purse_keyholder", "í‚¤í™€ë”/ì—¬ê¶Œì§€ê°‘", null),
-				
-				luxury_manBag_purse_half("luxury_manBag_purse_half", "ë°˜ì§€ê°‘", null),
-				
-				luxury_manBag_purse_medium("luxury_manBag_purse_medium", "ì¤‘ì§€ê°‘", null),
-				
-		luxury_manShoes("luxury_manShoes", "ë‚¨ì„±ìŠˆì¦ˆ",
-		Arrays.asList("luxury_manShoes_slipon", "luxury_manShoes_shoes", "luxury_manShoes_slipper", "luxury_manShoes_sandal", "luxury_manShoes_sneakers", "luxury_manShoes_walker")),
-		
-			luxury_manShoes_slipon("luxury_manShoes_slipon", "ìŠ¬ë¦½ì˜¨", null),
-			
-			luxury_manShoes_shoes("luxury_manShoes_shoes", "êµ¬ë‘", null),
-			
-			luxury_manShoes_slipper("luxury_manShoes_slipper", "ìŠ¬ë¦¬í¼/ë®¬", null),
-			
-			luxury_manShoes_sandal("luxury_manShoes_sandal", "ìƒŒë“¤", null),
-			
-			luxury_manShoes_sneakers("luxury_manShoes_sneakers", "ìš´ë™í™”/ìŠ¤ë‹ˆì»¤ì¦ˆ", null),
-			
-			luxury_manShoes_walker("luxury_manShoes_walker", "ì›Œì»¤/ë¶€ì¸ ", null),
-			
-		luxury_manWatch("luxury_manWatch", "ë‚¨ì„± ì¥¬ì–¼ë¦¬/ì‹œê³„",
-		Arrays.asList("luxury_manWatch_jewerly", "luxury_manWatch_watch", "luxury_manWatch_etc")),
-		
-			luxury_manWatch_jewerly("luxury_manWatch_jewerly", "ì¥¬ì–¼ë¦¬", null),
-			
-			luxury_manWatch_watch("luxury_manWatch_watch", "ì‹œê³„", null),
-			
-			luxury_manWatch_etc("luxury_manWatch_etc", "ê¸°íƒ€", null),
-			
-	sports("sports", "ìŠ¤í¬ì¸ ",
-	Arrays.asList("sports_outdoor", "sports_running", "sports_yoga", "sports_fitness", "sports_athleisure", "sports_tennis", "sports_swim", "sports_soccer")),
-	
-		sports_outdoor("sports_outdoor", "ì•„ì›ƒë„ì–´/ìº í•‘",
-		Arrays.asList("sports_outdoor_man", "sports_outdoor_woman", "sports_outdoor_shoes", "sports_outdoor_headgear", "sports_outdoor_bag")),
-		
-			sports_outdoor_man("sports_outdoor_man", "ë‚¨ì„± ì˜ë¥˜",
-			Arrays.asList("sports_outdoor_man_outer", "sports_outdoor_man_jacket", "sports_outdoor_man_hoodie", "sports_outdoor_man_tshirt", "sports_outdoor_man_pants")),
-			
-				sports_outdoor_man_outer("sports_outdoor_man_outer", "ì•„ìš°í„°_4", null),
-				
-				sports_outdoor_man_jacket("sports_outdoor_man_jacket", "ì¬í‚·/ë² ìŠ¤íŠ¸_4", null),
-				
-				sports_outdoor_man_hoodie("sports_outdoor_man_hoodie", "ë§¨íˆ¬ë§¨/í›„ë””_1", null),
-				
-				sports_outdoor_man_tshirt("sports_outdoor_man_tshirt", "í‹°ì…”ì¸ /ìŠ¬ë¦¬ë¸Œë¦¬ìŠ¤_1", null),
-				
-				sports_outdoor_man_pants("sports_outdoor_man_pants", "íŒ¬ì¸ /íƒ€ì´ì¦ˆ_6", null),
-				
-			sports_outdoor_woman("sports_outdoor_woman", "ì—¬ì„± ì˜ë¥˜",
-			Arrays.asList("sports_outdoor_woman_outer", "sports_outdoor_woman_jacket", "sports_outdoor_woman_hoodie", "sports_outdoor_woman_tshirt", "sports_outdoor_woman_pants")),
-			
-				sports_outdoor_woman_outer("sports_outdoor_woman_outer", "ì•„ìš°í„°_4", null),
-				
-				sports_outdoor_woman_jacket("sports_outdoor_woman_jacket", "ì¬í‚·/ë² ìŠ¤íŠ¸_4", null),
-				
-				sports_outdoor_woman_hoodie("sports_outdoor_woman_hoodie", "ë§¨íˆ¬ë§¨/í›„ë””_1", null),
-				
-				sports_outdoor_woman_tshirt("sports_outdoor_woman_tshirt", "í‹°ì…”ì¸ /ìŠ¬ë¦¬ë¸Œë¦¬ìŠ¤_1", null),
-				
-				sports_outdoor_woman_pants("sports_outdoor_woman_pants", "íŒ¬ì¸ /íƒ€ì´ì¦ˆ_6", null),
-				
-			sports_outdoor_shoes("sports_outdoor_shoes", "ìŠˆì¦ˆ",
-			Arrays.asList("sports_outdoor_shoes_tracking", "sports_outdoor_shoes_hicking", "sports_outdoor_shoes_walking")),
-			
-				sports_outdoor_shoes_tracking("sports_outdoor_shoes_tracking", "íŠ¸ë ˆí‚¹", null),
-				
-				sports_outdoor_shoes_hicking("sports_outdoor_shoes_hicking", "í•˜ì´í‚¹", null),
-				
-				sports_outdoor_shoes_walking("sports_outdoor_shoes_walking", "ì›Œí‚¹", null),
-				
-			sports_outdoor_headgear("sports_outdoor_headgear", "í—¤ë“œê¸°ì–´", null),
-			
-			sports_outdoor_bag("sports_outdoor_bag", "ë°°ë‚­",
-			Arrays.asList("sports_outdoor_bag_hicking", "sports_outdoor_bag_lifestyle")),
-			
-				sports_outdoor_bag_hicking("sports_outdoor_bag_hicking", "í•˜ì´í‚¹", null),
-				
-				sports_outdoor_bag_lifestyle("sports_outdoor_bag_lifestyle", "ë¼ì´í”„ìŠ¤íƒ€ì¼", null),
-				
-		sports_running("sports_running", "ëŸ¬ë‹/ì‚¬ì´í´",
-		Arrays.asList("sports_running_man", "sports_running_woman", "sports_running_running", "sports_running_cycle")),
-		
-			sports_running_man("sports_running_man", "ë‚¨ì„± ì˜ë¥˜",
-			Arrays.asList("sports_running_man_outer", "sports_running_man_jacket", "sports_running_man_hoodie", "sports_running_man_tshirt", "sports_running_man_pants")),
-			
-				sports_running_man_outer("sports_running_man_outer", "ì•„ìš°í„°_4", null),
-				
-				sports_running_man_jacket("sports_running_man_jacket", "ì¬í‚·/ë² ìŠ¤íŠ¸_4", null),
-				
-				sports_running_man_hoodie("sports_running_man_hoodie", "ë§¨íˆ¬ë§¨/í›„ë””_1", null),
-				
-				sports_running_man_tshirt("sports_running_man_tshirt", "í‹°ì…”ì¸ /ìŠ¬ë¦¬ë¸Œë¦¬ìŠ¤_1", null),
-				
-				sports_running_man_pants("sports_running_man_pants", "íŒ¬ì¸ /íƒ€ì´ì¦ˆ_6", null),
-				
-			sports_running_woman("sports_running_woman", "ì—¬ì„± ì˜ë¥˜",
-			Arrays.asList("sports_running_woman_outer", "sports_running_woman_jacket", "sports_running_woman_hoodie", "sports_running_woman_tshirt", "sports_running_woman_pants")),
-			
-				sports_running_woman_outer("sports_running_woman_outer", "ì•„ìš°í„°_4", null),
-				
-				sports_running_woman_jacket("sports_running_woman_jacket", "ì¬í‚·/ë² ìŠ¤íŠ¸_4", null),
-				
-				sports_running_woman_hoodie("sports_running_woman_hoodie", "ë§¨íˆ¬ë§¨/í›„ë””_1", null),
-				
-				sports_running_woman_tshirt("sports_running_woman_tshirt", "í‹°ì…”ì¸ /ìŠ¬ë¦¬ë¸Œë¦¬ìŠ¤_1", null),
-				
-				sports_running_woman_pants("sports_running_woman_pants", "íŒ¬ì¸ /íƒ€ì´ì¦ˆ_6", null),
-				
-			sports_running_running("sports_running_running", "ëŸ¬ë‹ ìš©í’ˆ",
-			Arrays.asList("sports_running_running_shoes", "sports_running_running_accessory")),
-				
-				sports_running_running_shoes("sports_running_running_shoes", "ëŸ¬ë‹í™”", null), 
-				
-				sports_running_running_accessory("sports_running_running_accessory", "ì•¡ì„¸ì„œë¦¬", null),
-				
-			sports_running_cycle("sports_running_cycle", "ì‚¬ì´í´ ìš©í’ˆ",
-			Arrays.asList("sports_running_cycle_shoes", "sports_running_cycle_accessory")),
-			
-				sports_running_cycle_shoes("sports_running_cycle_shoes", "ì‚¬ì´í´í™”", null),
-				
-				sports_running_cycle_accessory("sports_running_cycle_accessory", "ì•¡ì„¸ì„œë¦¬", null),
-			
-		sports_yoga("sports_yoga", "ìš”ê°€/í•„ë¼í…ŒìŠ¤",
-		Arrays.asList("sports_yoga_woman", "sports_yoga_supplies")),
-		
-			sports_yoga_woman("sports_yoga_woman", "ì—¬ì„± ì˜ë¥˜",
-			Arrays.asList("sports_yoga_woman_outer", "sports_yoga_woman_top", "sports_yoga_woman_pants")),
-			
-				sports_yoga_woman_outer("sports_yoga_woman_outer", "ì•„ìš°í„°_4", null),
-				
-				sports_yoga_woman_top("sports_yoga_woman_top", "íƒ‘_1", null),
-				
-				sports_yoga_woman_pants("sports_yoga_woman_pants", "íŒ¬ì¸ _6", null),
-			
-			
-			sports_yoga_supplies("sports_yoga_supplies", "ìš©í’ˆ",
-			Arrays.asList("sports_yoga_supplies_mat", "sports_yoga_supplies_hat", "sports_yoga_supplies_etc")),
-			
-				sports_yoga_supplies_mat("sports_yoga_supplies_mat", "ë§¤íŠ¸", null),
-				
-				sports_yoga_supplies_hat("sports_yoga_supplies_hat", "ëª¨ì/í—¤ì–´ë°´ë“œ", null),
-				
-				sports_yoga_supplies_etc("sports_yoga_supplies_etc", "ê¸°íƒ€ìš©í’ˆ", null),
-				
-		sports_fitness("sports_fitness", "í”¼íŠ¸ë‹ˆìŠ¤",
-		Arrays.asList("sports_fitness_man", "sports_fitness_woman", "sports_fitness_supplies")),
-		
-			sports_fitness_man("sports_fitness_man", "ë‚¨ì„±ì˜ë¥˜",
-			Arrays.asList("sports_fitness_man_outer", "sports_fitness_man_jacket", "sports_fitness_man_hoodie", "sports_fitness_man_tshirt", "sports_fitness_man_pants")),
-			
-				sports_fitness_man_outer("sports_fitness_man_outer", "ì•„ìš°í„°_4", null),
-				
-				sports_fitness_man_jacket("sports_fitness_man_jacket", "ì¬í‚·/ë² ìŠ¤íŠ¸_4", null),
-				
-				sports_fitness_man_hoodie("sports_fitness_man_hoodie", "ë§¨íˆ¬ë§¨/í›„ë””_1", null),
-				
-				sports_fitness_man_tshirt("sports_fitness_man_tshirt", "í‹°ì…”ì¸ /ìŠ¬ë¦¬ë¸Œë¦¬ìŠ¤_1", null),
-				
-				sports_fitness_man_pants("sports_fitness_man_pants", "íŒ¬ì¸ /íƒ€ì´ì¦ˆ_6", null),
-				
-			sports_fitness_woman("sports_fitness_woman", "ì—¬ì„±ì˜ë¥˜",
-			Arrays.asList("sports_fitness_woman_outer", "sports_fitness_woman_jacket", "sports_fitness_woman_hoodie", "sports_fitness_woman_tshirt", "sports_fitness_woman_pants")),
-				
-				sports_fitness_woman_outer("sports_fitness_woman_outer", "ì•„ìš°í„°_4", null),
-				
-				sports_fitness_woman_jacket("sports_fitness_woman_jacket", "ì¬í‚·/ë² ìŠ¤íŠ¸_4", null),
-				
-				sports_fitness_woman_hoodie("sports_fitness_woman_hoodie", "ë§¨íˆ¬ë§¨/í›„ë””_1", null),
-				
-				sports_fitness_woman_tshirt("sports_fitness_woman_tshirt", "í‹°ì…”ì¸ /ìŠ¬ë¦¬ë¸Œë¦¬ìŠ¤_1", null),
-				
-				sports_fitness_woman_pants("sports_fitness_woman_pants", "íŒ¬ì¸ /íƒ€ì´ì¦ˆ_6", null),
-				
-			sports_fitness_supplies("sports_fitness_supplies", "ìš©í’ˆ",
-			Arrays.asList("sports_fitness_supplies_shoes", "sports_fitness_supplies_accessory")),
-			
-				sports_fitness_supplies_accessory("sports_fitness_supplies_accessory", "ì•¡ì„¸ì„œë¦¬", null),
-				
-				sports_fitness_supplies_shoes("sports_fitness_supplies_shoes", "ìŠˆì¦ˆ", null),
-			
-		sports_athleisure("sports_athleisure", "ì• ìŠ¬ë ˆì €",
-		Arrays.asList("sports_athleisure_man", "sports_athleisure_woman", "sports_athleisure_supplies")),
-		
-			sports_athleisure_man("sports_athleisure_man", "ë‚¨ì„± ì˜ë¥˜",
-			Arrays.asList("sports_athleisure_man_outer", "sports_athleisure_man_top", "sports_athleisure_man_pants")),
-		
-				sports_athleisure_man_outer("sports_athleisure_man_outer", "ì•„ìš°í„°_4", null),
-				
-				sports_athleisure_man_top("sports_athleisure_man_top", "íƒ‘_1", null),
-				
-				sports_athleisure_man_pants("sports_athleisure_man_pants", "íŒ¬ì¸ _6", null),
-				
-			sports_athleisure_woman("sports_athleisure_woman", "ì—¬ì„± ì˜ë¥˜",
-			Arrays.asList("sports_athleisure_woman_outer", "sports_athleisure_woman_top", "sports_athleisure_woman_pants")),
-			
-				sports_athleisure_woman_outer("sports_athleisure_woman_outer", "ì•„ìš°í„°_4", null),
-				
-				sports_athleisure_woman_top("sports_athleisure_woman_top", "íƒ‘_1", null),
-				
-				sports_athleisure_woman_pants("sports_athleisure_woman_pants", "íŒ¬ì¸ _6", null),
-			
-			sports_athleisure_supplies("sports_athleisure_supplies", "ìš©í’ˆ",
-			Arrays.asList("sports_athleisure_supplies_shoes", "sports_athleisure_supplies_accessory", "sports_athleisure_supplies_etc")),
-			
-				sports_athleisure_supplies_shoes("sports_athleisure_supplies_shoes", "ìŠˆì¦ˆ", null),
-				
-				sports_athleisure_supplies_accessory("sports_athleisure_supplies_accessory", "ì•¡ì„¸ì„œë¦¬", null),
-				
-				sports_athleisure_supplies_etc("sports_athleisure_supplies_etc", "ê¸°íƒ€ìš©í’ˆ", null),
-				
-		sports_tennis("sports_tennis", "í…Œë‹ˆìŠ¤",
-		Arrays.asList("sports_tennis_man", "sports_tennis_woman", "sports_tennis_supplies")),
-		
-			sports_tennis_man("sports_tennis_man", "ë‚¨ì„±ì˜ë¥˜",
-			Arrays.asList("sports_tennis_man_outer", "sports_tennis_man_top", "sports_tennis_man_pants")),
-			
-				sports_tennis_man_outer("sports_tennis_man_outer", "ì•„ìš°í„°_4", null),
-				
-				sports_tennis_man_top("sports_tennis_man_top", "íƒ‘_1", null),
-				
-				sports_tennis_man_pants("sports_tennis_man_pants", "íŒ¬ì¸ _6", null),
-				
-			sports_tennis_woman("sports_tennis_woman", "ì—¬ì„±ì˜ë¥˜",
-			Arrays.asList("sports_tennis_woman_outer", "sports_tennis_woman_top", "sports_tennis_woman_pants")),
-			
-				sports_tennis_woman_outer("sports_tennis_woman_outer", "ì•„ìš°í„°_4", null),
-				
-				sports_tennis_woman_top("sports_tennis_woman_top", "íƒ‘_1", null),
-				
-				sports_tennis_woman_pants("sports_tennis_woman_pants", "íŒ¬ì¸ /ìŠ¤ì»¤íŠ¸_6", null),
-			
-			sports_tennis_supplies("sports_tennis_supplies", "ìš©í’ˆ",
-			Arrays.asList("sports_tennis_supplies_bag", "sports_tennis_supplies_shoes", "sports_tennis_supplies_accessory", "sports_tennis_supplies_etc")),
-			
-				sports_tennis_supplies_bag("sports_tennis_supplies_bag", "í…Œë‹ˆìŠ¤ ê°€ë°©", null),
-				
-				sports_tennis_supplies_shoes("sports_tennis_supplies_shoes", "ìŠˆì¦ˆ", null),
-				
-				sports_tennis_supplies_accessory("sports_tennis_supplies_accessory", "ì•¡ì„¸ì„œë¦¬", null),
-				
-				sports_tennis_supplies_etc("sports_tennis_supplies_etc", "ê¸°íƒ€ìš©í’ˆ", null),
-				
-		sports_swim("sports_swim", "ìˆ˜ì˜",
-		Arrays.asList("sports_swim_man", "sports_swim_woman", "sports_swim_supplies")),
-		
-			sports_swim_man("sports_swim_man", "ë‚¨ì„± ì˜ë¥˜",
-			Arrays.asList("sports_swim_man_indoors", "sports_swim_man_beachwearTop", "sports_swim_man_beachwearBottom")),
-				
-				sports_swim_man_indoors("sports_swim_man_indoors", "ì‹¤ë‚´ ìˆ˜ì˜ë³µ", null),
-				
-				sports_swim_man_beachwearTop("sports_swim_man_beachwearTop", "ë¹„ì¹˜ì›¨ì–´ ìƒì˜", null),
-				
-				sports_swim_man_beachwearBottom("sports_swim_man_beachwearBottom", "ë¹„ì¹˜ì›¨ì–´ í•˜ì˜", null),
-				
-			sports_swim_woman("sports_swim_woman", "ì—¬ì„± ì˜ë¥˜",
-			Arrays.asList("sports_swim_woman_general", "sports_swim_woman_bikini", "sports_swim_woman_beachwearTop", "sports_swim_woman_beachwearBottom")),
-				
-				sports_swim_woman_general("sports_swim_woman_general", "ì „ì‹  ìˆ˜ì˜ë³µ", null),
-				
-				sports_swim_woman_bikini("sports_swim_woman_bikini", "ë¹„í‚¤ë‹ˆ", null),
-				
-				sports_swim_woman_beachwearTop("sports_swim_woman_beachwearTop", "ë¹„ì¹˜ì›¨ì–´ ìƒì˜", null),
-				
-				sports_swim_woman_beachwearBottom("sports_swim_woman_beachwearBottom", "ë¹„ì¹˜ì›¨ì–´ í•˜ì˜", null),
-				
-			sports_swim_supplies("sports_swim_supplies", "ìš©í’ˆ",
-			Arrays.asList("sports_swim_supplies_swim", "sports_swim_supplies_shoes", "sports_swim_supplies_accessory")),
-			
-				sports_swim_supplies_swim("sports_swim_supplies_swim", "ìˆ˜ì˜ìš©í’ˆ", null),
-				
-				sports_swim_supplies_shoes("sports_swim_supplies_shoes", "ìŠˆì¦ˆ", null),
-				
-				sports_swim_supplies_accessory("sports_swim_supplies_accessory", "ì•¡ì„¸ì„œë¦¬", null),
-			
-		sports_soccer("sports_soccer", "ì¶•êµ¬",
-		Arrays.asList("sports_soccer_uniform", "sports_soccer_shoes", "sports_soccer_supplies")),
-		
-			sports_soccer_uniform("sports_soccer_uniform", "ìœ ë‹ˆí¼", null),
-			
-			sports_soccer_shoes("sports_soccer_shoes", "ì¶•êµ¬í™”", null),
-			
-			sports_soccer_supplies("sports_soccer_supplies", "ì¶•êµ¬ìš©í’ˆ", null),
-			
-	bagAndShoes("bagAndShoes", "ë°±ï¼†ìŠˆì¦ˆ",
-	Arrays.asList("bagAndShoes_womanBag", "bagAndShoes_womanPurse", "bagAndShoes_womanShoes", "bagAndShoes_manBag", "bagAndShoes_manPurse", "bagAndShoes_manShoes")),
-	
-		bagAndShoes_womanBag("bagAndShoes_womanBag", "ì—¬ì„± ê°€ë°©",
-		Arrays.asList("bagAndShoes_womanBag_tote", "bagAndShoes_womanBag_cross", "bagAndShoes_womanBag_shopper", "bagAndShoes_womanBag_clutch", "bagAndShoes_womanBag_backpack", "bagAndShoes_womanBag_echo", "bagAndShoes_womanBag_mini", "bagAndShoes_womanBag_carrier")),
 
-			bagAndShoes_womanBag_tote("bagAndShoes_womanBag_tote", "í† íŠ¸", null),
-			
-			bagAndShoes_womanBag_cross("bagAndShoes_womanBag_cross", "ìˆ„ë”/í¬ë¡œìŠ¤", null),
-			
-			bagAndShoes_womanBag_shopper("bagAndShoes_womanBag_shopper", "ì‡¼í¼", null),
-			
-			bagAndShoes_womanBag_clutch("bagAndShoes_womanBag_clutch", "í´ëŸ¬ì¹˜", null),
-			
-			bagAndShoes_womanBag_backpack("bagAndShoes_womanBag_backpack", "ë°±íŒ©", null),
-			
-			bagAndShoes_womanBag_echo("bagAndShoes_womanBag_echo", "ì—ì½”ë°±", null),
-			
-			bagAndShoes_womanBag_mini("bagAndShoes_womanBag_mini", "ë¯¸ë‹ˆë°±", null),
-			
-			bagAndShoes_womanBag_carrier("bagAndShoes_womanBag_carrier", "ìºë¦¬ì–´", null),
-			
-		bagAndShoes_womanPurse("bagAndShoes_womanPurse", "ì—¬ì„± ì§€ê°‘",
-		Arrays.asList("bagAndShoes_womanPurse_mini", "bagAndShoes_womanPurse_medium", "bagAndShoes_womanPurse_long", "bagAndShoes_womanPurse_card", "bagAndShoes_womanPurse_etc")),
-		
-			bagAndShoes_womanPurse_mini("bagAndShoes_womanPurse_mini", "ë¯¸ë‹ˆ/ë°˜ì§€ê°‘", null),
-			
-			bagAndShoes_womanPurse_medium("bagAndShoes_womanPurse_medium", "ì¤‘ì§€ê°‘", null),
-			
-			bagAndShoes_womanPurse_long("bagAndShoes_womanPurse_long", "ì¥ì§€ê°‘", null),
-			
-			bagAndShoes_womanPurse_card("bagAndShoes_womanPurse_card", "ëª…í•¨/ì¹´ë“œì§€ê°‘", null),
-			
-			bagAndShoes_womanPurse_etc("bagAndShoes_womanPurse_etc", "ë™ì „ì§€ê°‘/íŒŒìš°ì¹˜/ê¸°íƒ€", null),
-			
-		bagAndShoes_womanShoes("bagAndShoes_womanShoes", "ì—¬ì„± ìŠˆì¦ˆ",
-		Arrays.asList("bagAndShoes_womanShoes_heel", "bagAndShoes_womanShoes_flat", "bagAndShoes_womanShoes_sandal", "bagAndShoes_womanShoes_slipper", "bagAndShoes_womanShoes_sneakers", "bagAndShoes_womanShoes_slipon", "bagAndShoes_womanShoes_walker", "bagAndShoes_womanShoes_mountain")),
-			
-			bagAndShoes_womanShoes_heel("bagAndShoes_womanShoes_heel", "íŒí”„ìŠ¤/í", null),
-			
-			bagAndShoes_womanShoes_flat("bagAndShoes_womanShoes_flat", "í”Œë«/ë¡œí¼", null),
-			
-			bagAndShoes_womanShoes_sandal("bagAndShoes_womanShoes_sandal", "ìƒŒë“¤", null),
-			
-			bagAndShoes_womanShoes_slipper("bagAndShoes_womanShoes_slipper", "ìŠ¬ë¦¬í¼/ë®¬", null),
-			
-			bagAndShoes_womanShoes_sneakers("bagAndShoes_womanShoes_sneakers", "ìš´ë™í™”/ìŠ¤ë‹ˆì»¤ì¦ˆ", null),
-			
-			bagAndShoes_womanShoes_slipon("bagAndShoes_womanShoes_slipon", "ìŠ¬ë¦½ì˜¨", null),
-			
-			bagAndShoes_womanShoes_walker("bagAndShoes_womanShoes_walker", "ì›Œì»¤/ë¶€ì¸ ", null),
-			
-			bagAndShoes_womanShoes_mountain("bagAndShoes_womanShoes_mountain", "ë“±ì‚°í™”/ê³¨í”„í™”", null),
-			
-		bagAndShoes_manBag("bagAndShoes_manBag", "ë‚¨ì„± ê°€ë°©",
-		Arrays.asList("bagAndShoes_manBag_shoulder", "bagAndShoes_manBag_backpack", "bagAndShoes_manBag_briefcase", "bagAndShoes_manBag_clutch", "bagAndShoes_manBag_tote", "bagAndShoes_manBag_sling", "bagAndShoes_manBag_echo", "bagAndShoes_manBag_carrier")),
-		
-			bagAndShoes_manBag_shoulder("bagAndShoes_manBag_shoulder", "ìˆ„ë”/ë©”ì‹ ì €", null),
-			
-			bagAndShoes_manBag_backpack("bagAndShoes_manBag_backpack", "ë°±íŒ©", null),
-			
-			bagAndShoes_manBag_briefcase("bagAndShoes_manBag_briefcase", "ë¸Œë¦¬í”„ì¼€ì´ìŠ¤", null),
-			
-			bagAndShoes_manBag_clutch("bagAndShoes_manBag_clutch", "í´ëŸ¬ì¹˜", null),
-			
-			bagAndShoes_manBag_tote("bagAndShoes_manBag_tote", "í† íŠ¸", null),
-			
-			bagAndShoes_manBag_sling("bagAndShoes_manBag_sling", "ìŠ¬ë§ë°±/í™ìƒ‰", null),
-		
-			bagAndShoes_manBag_echo("bagAndShoes_manBag_echo", "ì—ì½”ë°±", null),
-			
-			bagAndShoes_manBag_carrier("bagAndShoes_manBag_carrier", "ìºë¦¬ì–´", null),
-			
-		bagAndShoes_manPurse("bagAndShoes_manPurse", "ë‚¨ì„± ì§€ê°‘",
-		Arrays.asList("bagAndShoes_manPurse_half", "bagAndShoes_manPurse_medium", "bagAndShoes_manPurse_long", "bagAndShoes_manPurse_moneyclip", "bagAndShoes_manPurse_card", "bagAndShoes_manPurse_keyholder")),
-		
-			bagAndShoes_manPurse_half("bagAndShoes_manPurse_half", "ë°˜ì§€ê°‘", null),
-			
-			bagAndShoes_manPurse_medium("bagAndShoes_manPurse_medium", "ì¤‘ì§€ê°‘", null),
-			
-			bagAndShoes_manPurse_long("bagAndShoes_manPurse_long", "ì¥ì§€ê°‘", null),
-			
-			bagAndShoes_manPurse_moneyclip("bagAndShoes_manPurse_moneyclip", "ë¨¸ë‹ˆí´ë¦½", null),
-			
-			bagAndShoes_manPurse_card("bagAndShoes_manPurse_card", "ëª…í•¨/ì¹´ë“œì§€ê°‘", null),
-			
-			bagAndShoes_manPurse_keyholder("bagAndShoes_manPurse_keyholder", "í‚¤í™€ë”/ì—¬ê¶Œì§€ê°‘", null),
-			
-		bagAndShoes_manShoes("bagAndShoes_manShoes", "ë‚¨ì„± ìŠˆì¦ˆ",
-		Arrays.asList("bagAndShoes_manShoes_sneakers", "bagAndShoes_manShoes_walker", "bagAndShoes_manShoes_slipper", "bagAndShoes_manShoes_slipon", "bagAndShoes_manShoes_shoes", "bagAndShoes_manShoes_sandal", "bagAndShoes_manShoes_mountain")),
-			
-			bagAndShoes_manShoes_sneakers("bagAndShoes_manShoes_sneakers", "ìš´ë™í™”/ìŠ¤ë‹ˆì»¤ì¦ˆ", null),
-			
-			bagAndShoes_manShoes_walker("bagAndShoes_manShoes_walker", "ì›Œì»¤/ë¶€ì¸ ", null),
-			
-			bagAndShoes_manShoes_slipper("bagAndShoes_manShoes_slipper", "ìŠ¬ë¦¬í¼/ë®¬", null),
-			
-			bagAndShoes_manShoes_slipon("bagAndShoes_manShoes_slipon", "ìŠ¬ë¦½ì˜¨", null),
-			
-			bagAndShoes_manShoes_shoes("bagAndShoes_manShoes_shoes", "êµ¬ë‘", null),
-			
-			bagAndShoes_manShoes_sandal("bagAndShoes_manShoes_sandal", "ìƒŒë“¤", null),
-			
-			bagAndShoes_manShoes_mountain("bagAndShoes_manShoes_mountain", "ë“±ì‚°í™”/ê³¨í”„í™”", null);
-		
+	man_outer_jumper_jumper("man_outer_jumper_jumper", "Á¡ÆÛ_4", null),
+
+	man_outer_jumper_safari("man_outer_jumper_safari", "¾ß»ó/»çÆÄ¸®_4", null),
+
+	man_outer_jumper_windbreak("man_outer_jumper_windbreak", "¹Ù¶÷¸·ÀÌ_4", null),
+
+	man_outer_coat("man_outer_coat", "ÄÚÆ®", Arrays.asList("man_outer_coat_coat", "man_outer_coat_trench")),
+
+	man_outer_coat_coat("man_outer_coat_coat", "ÄÚÆ®_9", null),
+
+	man_outer_coat_trench("man_outer_coat_trench", "Æ®·»Ä¡_9", null),
+
+	man_outer_padding("man_outer_padding", "´Ù¿î/ÆĞµù_4", null),
+
+	man_outer_leatherJacket("man_outer_leatherJacket", "·¹´õÀçÅ¶_4", null),
+
+	man_suit("man_suit", "Á¤Àå",
+			Arrays.asList("man_suit_suitSet", "man_suit_suitJacket", "man_suit_suitPants", "man_suit_dressShirt",
+					"man_suit_suitVest", "man_suit_setupSet")),
+
+	man_suit_suitSet("man_suit_suitSet", "Á¤Àå ¼¼Æ®", null),
+
+	man_suit_suitJacket("man_suit_suitJacket", "Á¤Àå ÀçÅ¶_4", null),
+
+	man_suit_suitPants("man_suit_suitPants", "Á¤Àå ÆÒÃ÷_6", null),
+
+	man_suit_dressShirt("man_suit_dressShirt", "µå·¹½º ¼ÅÃ÷_0", null),
+
+	man_suit_suitVest("man_suit_suitVest", "Á¤Àå º£½ºÆ®_5", null),
+
+	man_suit_setupSet("man_suit_setupSet", "¼Â¾÷ ¼¼Æ®", null),
+
+	man_pants("man_pants", "ÆÒÃ÷",
+			Arrays.asList("man_pants_chinos", "man_pants_slacks", "man_pants_suitPants", "man_pants_jogger",
+					"man_pants_denim", "man_pants_shorts")),
+
+	man_pants_chinos("man_pants_chinos", "Ä¡³ë_6", null),
+
+	man_pants_slacks("man_pants_slacks", "½½·¢½º_6", null),
+
+	man_pants_suitPants("man_pants_suitPants", "¼öÆ®ÆÒÃ÷_6", null),
+
+	man_pants_jogger("man_pants_jogger", "Á¶°Å/½ºŸ‡_6", null),
+
+	man_pants_denim("man_pants_denim", "µ¥´Ô_6", null),
+
+	man_pants_shorts("man_pants_shorts", "¼îÃ÷_7", null),
+
+	man_jacket("man_jacket", "ÀçÅ¶/º£½ºÆ®",
+			Arrays.asList("man_jacket_jacket", "man_jacket_blazer", "man_jacket_leatherJacket", "man_jacket_vest")),
+
+	man_jacket_jacket("man_jacket_jacket", "ÀçÅ¶_4", null),
+
+	man_jacket_blazer("man_jacket_blazer", "ºí·¹ÀÌÀú_4", null),
+
+	man_jacket_leatherJacket("man_jacket_leatherJacket", "·¹´õ ÀçÅ¶_4", null),
+
+	man_jacket_vest("man_jacket_vest", "º£½ºÆ®_5", null),
+
+	man_shirt("man_shirt", "¼ÅÃ÷", Arrays.asList("man_shirt_sleevelong", "man_shirt_sleeveshort")),
+
+	man_shirt_sleevelong("man_shirt_sleevelong", "±äÆÈ¼ÅÃ÷_0", null),
+
+	man_shirt_sleeveshort("man_shirt_sleeveshort", "¹İÆÈ¼ÅÃ÷_0", null),
+
+	man_neat("man_neat", "´ÏÆ®", Arrays.asList("man_neat_cardigan", "man_neat_pullover", "man_neat_vest")),
+
+	man_neat_cardigan("man_neat_cardigan", "Ä«µğ°Ç_3", null),
+
+	man_neat_pullover("man_neat_pullover", "Ç®¿À¹ö_2", null),
+
+	man_neat_vest("man_neat_vest", "º£½ºÆ®_5", null),
+
+	man_tshirt("man_tshirt", "Æ¼¼ÅÃ÷",
+			Arrays.asList("man_tshirt_sleeveshort", "man_tshirt_sleevelong", "man_tshirt_sleeveless")),
+
+	man_tshirt_sleeveshort("man_tshirt_sleeveshort", "¹İÆÈÆ¼¼ÅÃ÷_1", null),
+
+	man_tshirt_sleevelong("man_tshirt_sleevelong", "±äÆÈÆ¼¼ÅÃ÷_1", null),
+
+	man_tshirt_sleeveless("man_tshirt_sleeveless", "¹Î¼Ò¸Å_1", null),
+
+	kids("kids", "Å°Áî", Arrays.asList("kids_boy", "kids_girl")),
+
+	kids_boy("kids_boy", "³²¾Æ",
+			Arrays.asList("kids_boy_outer", "kids_boy_tshirt", "kids_boy_shirt", "kids_boy_neat", "kids_boy_pants")),
+
+	kids_boy_outer("kids_boy_outer", "¾Æ¿ìÅÍ",
+			Arrays.asList("kids_boy_outer_padding", "kids_boy_outer_jumper", "kids_boy_outer_coat",
+					"kids_boy_outer_jacket")),
+
+	kids_boy_outer_padding("kids_boy_outer_padding", "´Ù¿î/ÆĞµù_4", null),
+
+	kids_boy_outer_jumper("kids_boy_outer_jumper", "Á¡ÆÛ_4", null),
+
+	kids_boy_outer_coat("kids_boy_outer_coat", "ÄÚÆ®_9", null),
+
+	kids_boy_outer_jacket("kids_boy_outer_jacket", "ÀçÅ¶/º£½ºÆ®_5", null),
+
+	kids_boy_tshirt("kids_boy_tshirt", "Æ¼¼ÅÃ÷",
+			Arrays.asList("kids_boy_tshirt_sleevelong", "kids_boy_tshirt_sleeveshort")),
+
+	kids_boy_tshirt_sleevelong("kids_boy_tshirt_sleevelong", "±äÆÈ_1", null),
+
+	kids_boy_tshirt_sleeveshort("kids_boy_tshirt_sleeveshort", "¹İÆÈ/¹Î¼Ò¸Å_1", null),
+
+	kids_boy_shirt("kids_boy_shirt", "¼ÅÃ÷", Arrays.asList("kids_boy_shirt_sleevelong", "kids_boy_shirt_sleeveshort")),
+
+	kids_boy_shirt_sleevelong("kids_boy_shirt_sleevelong", "±äÆÈ_0", null),
+
+	kids_boy_shirt_sleeveshort("kids_boy_shirt_sleeveshort", "¹İÆÈ_0", null),
+
+	kids_boy_neat("kids_boy_neat", "´ÏÆ®", Arrays.asList("kids_boy_neat_pullover", "kids_boy_neat_cardigan")),
+
+	kids_boy_neat_pullover("kids_boy_neat_pullover", "Ç®¿À¹ö_2", null),
+
+	kids_boy_neat_cardigan("kids_boy_neat_cardigan", "Ä«µğ°Ç/º£½ºÆ®_3", null),
+
+	kids_boy_pants("kids_boy_pants", "ÆÒÃ÷", Arrays.asList("kids_boy_pants_long", "kids_boy_pants_short")),
+
+	kids_boy_pants_long("kids_boy_pants_long", "·Õ ÆÒÃ÷_6", null),
+
+	kids_boy_pants_short("kids_boy_pants_short", "¼îÆ® ÆÒÃ÷_7", null),
+
+	kids_girl("kids_girl", "¿©¾Æ",
+			Arrays.asList("kids_girl_outer", "kids_girl_tshirt", "kids_girl_shirtAndBlouse", "kids_girl_onepiece",
+					"kids_girl_neat", "kids_girl_pantsAndSkirt")),
+
+	kids_girl_outer("kids_girl_outer", "¾Æ¿ìÅÍ",
+			Arrays.asList("kids_girl_outer_padding", "kids_girl_outer_jumper", "kids_girl_outer_coat",
+					"kids_girl_outer_jacket")),
+
+	kids_girl_outer_padding("kids_girl_outer_padding", "´Ù¿î/ÆĞµù_4", null),
+
+	kids_girl_outer_jumper("kids_girl_outer_jumper", "Á¡ÆÛ_4", null),
+
+	kids_girl_outer_coat("kids_girl_outer_coat", "ÄÚÆ®_9", null),
+
+	kids_girl_outer_jacket("kids_girl_outer_jacket", "ÀçÅ¶/º£½ºÆ®_4", null),
+
+	kids_girl_tshirt("kids_girl_tshirt", "Æ¼¼ÅÃ÷",
+			Arrays.asList("kids_girl_tshirt_sleevelong", "kids_girl_tshirt_sleeveshort")),
+
+	kids_girl_tshirt_sleevelong("kids_girl_tshirt_sleevelong", "±äÆÈ_1", null),
+
+	kids_girl_tshirt_sleeveshort("kids_girl_tshirt_sleeveshort", "¹İÆÈ/¹Î¼Ò¸Å_1", null),
+
+	kids_girl_shirtAndBlouse("kids_girl_shirtAndBlouse", "¼ÅÃ÷/ºí¶ó¿ì½º",
+			Arrays.asList("kids_girl_shirtAndBlouse_sleevelong", "kids_girl_shirtAndBlouse_sleeveshort")),
+
+	kids_girl_shirtAndBlouse_sleevelong("kids_girl_shirtAndBlouse_sleevelong", "±äÆÈ_0", null),
+
+	kids_girl_shirtAndBlouse_sleeveshort("kids_girl_shirtAndBlouse_sleeveshort", "¹İÆÈ_0", null),
+
+	kids_girl_onepiece("kids_girl_onepiece", "¿øÇÇ½º_10", null),
+
+	kids_girl_neat("kids_girl_neat", "´ÏÆ®", Arrays.asList("kids_girl_neat_pullover", "kids_girl_neat_cardigan")),
+
+	kids_girl_neat_pullover("kids_girl_neat_pullover", "Ç®¿À¹ö_2", null),
+
+	kids_girl_neat_cardigan("kids_girl_neat_cardigan", "Ä«µğ°Ç/º£½ºÆ®_3", null),
+
+	kids_girl_pantsAndSkirt("kids_girl_pantsAndSkirt", "ÆÒÃ÷/½ºÄ¿Æ®",
+			Arrays.asList("kids_girl_pantsAndSkirt_long", "kids_girl_pantsAndSkirt_skirt",
+					"kids_girl_pantsAndSkirt_short")),
+
+	kids_girl_pantsAndSkirt_long("kids_girl_pantsAndSkirt_long", "·Õ ÆÒÃ÷_6", null),
+
+	kids_girl_pantsAndSkirt_skirt("kids_girl_pantsAndSkirt_skirt", "½ºÄ¿Æ®_8", null),
+
+	kids_girl_pantsAndSkirt_short("kids_girl_pantsAndSkirt_short", "¼îÆ® ÆÒÃ÷_7", null),
+
+	luxury("luxury", "·°¼Å¸®",
+			Arrays.asList("luxury_woman", "luxury_womanBag", "luxury_womanShoes", "luxury_womanWatch", "luxury_man",
+					"luxury_manBag", "luxury_manShoes", "luxury_manWatch")),
+
+	luxury_woman("luxury_woman", "¿©¼ºÀÇ·ù",
+			Arrays.asList("luxury_woman_outer", "luxury_woman_jacketAndVest", "luxury_woman_tshirt",
+					"luxury_woman_shirtAndBlouse", "luxury_woman_neat", "luxury_woman_onepiece", "luxury_woman_pants",
+					"luxury_woman_skirt", "luxury_woman_beachwear")),
+
+	luxury_woman_outer("luxury_woman_outer", "¾Æ¿ìÅÍ",
+			Arrays.asList("luxury_woman_outer_coat", "luxury_woman_outer_jumper", "luxury_woman_outer_padding",
+					"luxury_woman_outer_fur", "luxury_woman_outer_trench")),
+
+	luxury_woman_outer_coat("luxury_woman_outer_coat", "ÄÚÆ®_9", null),
+
+	luxury_woman_outer_jumper("luxury_woman_outer_jumper", "Á¡ÆÛ_4", null),
+
+	luxury_woman_outer_padding("luxury_woman_outer_padding", "´Ù¿î/ÆĞµù_4", null),
+
+	luxury_woman_outer_fur("luxury_woman_outer_fur", "ÆÛ_4", null),
+
+	luxury_woman_outer_trench("luxury_woman_outer_trench", "Æ®·»Ä¡_9", null),
+
+	luxury_woman_jacketAndVest("luxury_woman_jacketAndVest", "ÀçÅ¶/º£½ºÆ®",
+			Arrays.asList("luxury_woman_jacketAndVest_jacket", "luxury_woman_jacketAndVest_blazer",
+					"luxury_woman_jacketAndVest_leatherJacket", "luxury_woman_jacketAndVest_vest")),
+
+	luxury_woman_jacketAndVest_jacket("luxury_woman_jacketAndVest_jacket", "ÀçÅ¶_4", null),
+
+	luxury_woman_jacketAndVest_blazer("luxury_woman_jacketAndVest_blazer", "ºí·¹ÀÌÀú_4", null),
+
+	luxury_woman_jacketAndVest_leatherJacket("luxury_woman_jacketAndVest_leatherJacket", "·¹´õ ÀçÅ¶_4", null),
+
+	luxury_woman_jacketAndVest_vest("luxury_woman_jacketAndVest_vest", "º£½ºÆ®_5", null),
+
+	luxury_woman_tshirt("luxury_woman_tshirt", "Æ¼¼ÅÃ÷",
+			Arrays.asList("luxury_woman_tshirt_sleevelong", "luxury_woman_tshirt_sleeveshort",
+					"luxury_woman_tshirt_sleeveless")),
+
+	luxury_woman_tshirt_sleevelong("luxury_woman_tshirt_sleevelong", "±äÆÈ_1", null),
+
+	luxury_woman_tshirt_sleeveshort("luxury_woman_tshirt_sleeveshort", "¹İÆÈ_1", null),
+
+	luxury_woman_tshirt_sleeveless("luxury_woman_tshirt_sleeveless", "¹Î¼Ò¸Å_1", null),
+
+	luxury_woman_shirtAndBlouse("luxury_woman_shirtAndBlouse", "¼ÅÃ÷/ºí¶ó¿ì½º",
+			Arrays.asList("luxury_woman_shirtAndBlouse_shirtSleeveshort",
+					"luxury_woman_shirtAndBlouse_blouseSleeveshort", "luxury_woman_shirtAndBlouse_shirtSleevelong",
+					"luxury_woman_shirtAndBlouse_blouseSleevelong", "luxury_woman_shirtAndBlouse_blouseSleeveless")),
+
+	luxury_woman_shirtAndBlouse_shirtSleeveshort("luxury_woman_shirtAndBlouse_shirtSleeveshort", "¹İÆÈ ¼ÅÃ÷_0", null),
+
+	luxury_woman_shirtAndBlouse_blouseSleeveshort("luxury_woman_shirtAndBlouse_blouseSleeveshort", "¹İÆÈ ºí¶ó¿ì½º_0", null),
+
+	luxury_woman_shirtAndBlouse_shirtSleevelong("luxury_woman_shirtAndBlouse_shirtSleevelong", "±äÆÈ ¼ÅÃ÷_0", null),
+
+	luxury_woman_shirtAndBlouse_blouseSleevelong("luxury_woman_shirtAndBlouse_blouseSleevelong", "±äÆÈ ºí¶ó¿ì½º_0", null),
+
+	luxury_woman_shirtAndBlouse_blouseSleeveless("luxury_woman_shirtAndBlouse_blouseSleeveless", "¹Î¼Ò¸Å ºí¶ó¿ì½º_0", null),
+
+	luxury_woman_neat("luxury_woman_neat", "´ÏÆ®",
+			Arrays.asList("luxury_woman_neat_pullover", "luxury_woman_neat_cardigan", "luxury_woman_neat_vest")),
+
+	luxury_woman_neat_pullover("luxury_woman_neat_pullover", "Ç®¿À¹ö_2", null),
+
+	luxury_woman_neat_cardigan("luxury_woman_neat_cardigan", "Ä«µğ°Ç_3", null),
+
+	luxury_woman_neat_vest("luxury_woman_neat_vest", "º£½ºÆ®_5", null),
+
+	luxury_woman_onepiece("luxury_woman_onepiece", "¿øÇÇ½º",
+			Arrays.asList("luxury_woman_onepiece_sleevelong", "luxury_woman_onepiece_sleeveshort")),
+
+	luxury_woman_onepiece_sleevelong("luxury_woman_onepiece_sleevelong", "±äÆÈ_10", null),
+
+	luxury_woman_onepiece_sleeveshort("luxury_woman_onepiece_sleeveshort", "¹İÆÈ/¹Î¼Ò¸Å_10", null),
+
+	luxury_woman_pants("luxury_woman_pants", "ÆÒÃ÷",
+			Arrays.asList("luxury_woman_pants_long", "luxury_woman_pants_short")),
+
+	luxury_woman_pants_long("luxury_woman_pants_long", "·Õ/¹Ìµğ ÆÒÃ÷_6", null),
+
+	luxury_woman_pants_short("luxury_woman_pants_short", "¼îÆ® ÆÒÃ÷_7", null),
+
+	luxury_woman_skirt("luxury_woman_skirt", "½ºÄ¿Æ®",
+			Arrays.asList("luxury_woman_skirt_long", "luxury_woman_skirt_short")),
+
+	luxury_woman_skirt_long("luxury_woman_skirt_long", "·Õ/¹Ìµğ_8", null),
+
+	luxury_woman_skirt_short("luxury_woman_skirt_short", "¹Ì´Ï_8", null),
+
+	luxury_woman_beachwear("luxury_woman_beachwear", "ºñÄ¡¿ş¾î",
+			Arrays.asList("luxury_woman_beachwear_swimsuit", "luxury_woman_beachwear_bikini",
+					"luxury_woman_beachwear_coverup", "luxury_woman_beachwear_etc")),
+
+	luxury_woman_beachwear_swimsuit("luxury_woman_beachwear_swimsuit", "½ºÀ«¼öÆ®", null),
+
+	luxury_woman_beachwear_bikini("luxury_woman_beachwear_bikini", "ºñÅ°´Ï", null),
+
+	luxury_woman_beachwear_coverup("luxury_woman_beachwear_coverup", "Ä¿¹ö¾÷/·Îºê", null),
+
+	luxury_woman_beachwear_etc("luxury_woman_beachwear_etc", "±âÅ¸", null),
+
+	luxury_womanBag("luxury_womanBag", "¿©¼º°¡¹æ/Áö°©", Arrays.asList("luxury_womanBag_bag", "luxury_womanBag_purse")),
+
+	luxury_womanBag_bag("luxury_womanBag_bag", "°¡¹æ",
+			Arrays.asList("luxury_womanBag_bag_clutch", "luxury_womanBag_bag_backpack", "luxury_womanBag_bag_shopper",
+					"luxury_womanBag_bag_carrier", "luxury_womanBag_bag_tote", "luxury_womanBag_bag_cross")),
+
+	luxury_womanBag_bag_clutch("luxury_womanBag_bag_clutch", "Å¬·¯Ä¡", null),
+
+	luxury_womanBag_bag_backpack("luxury_womanBag_bag_backpack", "¹éÆÑ", null),
+
+	luxury_womanBag_bag_shopper("luxury_womanBag_bag_shopper", "¼îÆÛ", null),
+
+	luxury_womanBag_bag_carrier("luxury_womanBag_bag_carrier", "Ä³¸®¾î", null),
+
+	luxury_womanBag_bag_tote("luxury_womanBag_bag_tote", "ÅäÆ®", null),
+
+	luxury_womanBag_bag_cross("luxury_womanBag_bag_cross", "¼ñ´õ/Å©·Î½º", null),
+
+	luxury_womanBag_purse("luxury_womanBag_purse", "Áö°©",
+			Arrays.asList("luxury_womanBag_purse_card", "luxury_womanBag_purse_long", "luxury_womanBag_purse_etc",
+					"luxury_womanBag_purse_mini")),
+
+	luxury_womanBag_purse_card("luxury_womanBag_purse_card", "¸íÇÔ/Ä«µåÁö°©", null),
+
+	luxury_womanBag_purse_long("luxury_womanBag_purse_long", "ÀåÁö°©", null),
+
+	luxury_womanBag_purse_etc("luxury_womanBag_purse_etc", "µ¿ÀüÁö°©/ÆÄ¿ìÄ¡/±âÅ¸", null),
+
+	luxury_womanBag_purse_mini("luxury_womanBag_purse_mini", "¹Ì´Ï/¹İÁö°©", null),
+
+	luxury_womanShoes("luxury_womanShoes", "¿©¼º½´Áî",
+			Arrays.asList("luxury_womanShoes_sandal", "luxury_womanShoes_slipper", "luxury_womanShoes_slipon",
+					"luxury_womanShoes_flat", "luxury_womanShoes_walker", "luxury_womanShoes_sneakers",
+					"luxury_womanShoes_heel")),
+
+	luxury_womanShoes_sandal("luxury_womanShoes_sandal", "»÷µé", null),
+
+	luxury_womanShoes_slipper("luxury_womanShoes_slipper", "½½¸®ÆÛ/¹Ä", null),
+
+	luxury_womanShoes_slipon("luxury_womanShoes_slipon", "½½¸³¿Â", null),
+
+	luxury_womanShoes_flat("luxury_womanShoes_flat", "ÇÃ·§/·ÎÆÛ", null),
+
+	luxury_womanShoes_walker("luxury_womanShoes_walker", "¿öÄ¿/ºÎÃ÷", null),
+
+	luxury_womanShoes_sneakers("luxury_womanShoes_sneakers", "¿îµ¿È­/½º´ÏÄ¿Áî", null),
+
+	luxury_womanShoes_heel("luxury_womanShoes_heel", "ÆßÇÁ½º/Èú", null),
+
+	luxury_womanWatch("luxury_womanWatch", "¿©¼º Áê¾ó¸®/½Ã°è",
+			Arrays.asList("luxury_womanWatch_earing", "luxury_womanWatch_necklace", "luxury_womanWatch_bracelet",
+					"luxury_womanWatch_ring", "luxury_womanWatch_hairAccessory", "luxury_womanWatch_brooch",
+					"luxury_womanWatch_watch")),
+
+	luxury_womanWatch_earing("luxury_womanWatch_earing", "±Í°ÉÀÌ", null),
+
+	luxury_womanWatch_necklace("luxury_womanWatch_necklace", "¸ñ°ÉÀÌ", null),
+
+	luxury_womanWatch_bracelet("luxury_womanWatch_bracelet", "ÆÈÂî", null),
+
+	luxury_womanWatch_ring("luxury_womanWatch_ring", "¹İÁö", null),
+
+	luxury_womanWatch_hairAccessory("luxury_womanWatch_hairAccessory", "Çì¾î¾Ç¼¼¼­¸®", null),
+
+	luxury_womanWatch_brooch("luxury_womanWatch_brooch", "ºê·ÎÄ¡/Ææ´øÆ®", null),
+
+	luxury_womanWatch_watch("luxury_womanWatch_watch", "½Ã°è", null),
+
+	luxury_man("luxury_man", "³²¼ºÀÇ·ù",
+			Arrays.asList("luxury_man_outer", "luxury_man_jacket", "luxury_man_tshirt", "luxury_man_shirt",
+					"luxury_man_neat", "luxury_man_pants", "luxury_man_beachwear")),
+
+	luxury_man_outer("luxury_man_outer", "¾Æ¿ìÅÍ",
+			Arrays.asList("luxury_man_outer_jumper", "luxury_man_outer_coat", "luxury_man_outer_padding",
+					"luxury_man_outer_trench")),
+
+	luxury_man_outer_jumper("luxury_man_outer_jumper", "Á¡ÆÛ_4", null),
+
+	luxury_man_outer_coat("luxury_man_outer_coat", "ÄÚÆ®_9", null),
+
+	luxury_man_outer_padding("luxury_man_outer_padding", "´Ù¿î/ÆĞµù_4", null),
+
+	luxury_man_outer_trench("luxury_man_outer_trench", "Æ®·»Ä¡_9", null),
+
+	luxury_man_jacket("luxury_man_jacket", "ÀçÅ¶/º£½ºÆ®",
+			Arrays.asList("luxury_man_jacket_jacket", "luxury_man_jacket_blazer", "luxury_man_jacket_leatherJacket",
+					"luxury_man_jacket_vest")),
+
+	luxury_man_jacket_jacket("luxury_man_jacket_jacket", "ÀçÅ¶_4", null),
+
+	luxury_man_jacket_blazer("luxury_man_jacket_blazer", "ºí·¹ÀÌÀú_4", null),
+
+	luxury_man_jacket_leatherJacket("luxury_man_jacket_leatherJacket", "·¹´õ ÀçÅ¶_4", null),
+
+	luxury_man_jacket_vest("luxury_man_jacket_vest", "º£½ºÆ®_5", null),
+
+	luxury_man_tshirt("luxury_man_tshirt", "Æ¼¼ÅÃ÷",
+			Arrays.asList("luxury_man_tshirt_sleeveshort", "luxury_man_tshirt_sleevelong",
+					"luxury_man_tshirt_sleeveless")),
+
+	luxury_man_tshirt_sleeveshort("luxury_man_tshirt_sleeveshort", "¹İÆÈ_1", null),
+
+	luxury_man_tshirt_sleevelong("luxury_man_tshirt_sleevelong", "±äÆÈ_1", null),
+
+	luxury_man_tshirt_sleeveless("luxury_man_tshirt_sleeveless", "¹Î¼Ò¸Å_1", null),
+
+	luxury_man_shirt("luxury_man_shirt", "¼ÅÃ÷",
+			Arrays.asList("luxury_man_shirt_sleevelong", "luxury_man_shirt_sleeveshort")),
+
+	luxury_man_shirt_sleevelong("luxury_man_shirt_sleevelong", "±äÆÈ_0", null),
+
+	luxury_man_shirt_sleeveshort("luxury_man_shirt_sleeveshort", "¹İÆÈ_0", null),
+
+	luxury_man_neat("luxury_man_neat", "´ÏÆ®",
+			Arrays.asList("luxury_man_neat_cardigan", "luxury_man_neat_pullover", "luxury_man_neat_vest")),
+
+	luxury_man_neat_cardigan("luxury_man_neat_cardigan", "Ä«µğ°Ç_3", null),
+
+	luxury_man_neat_pullover("luxury_man_neat_pullover", "Ç®¿À¹ö_2", null),
+
+	luxury_man_neat_vest("luxury_man_neat_vest", "º£½ºÆ®_5", null),
+
+	luxury_man_pants("luxury_man_pants", "ÆÒÃ÷",
+			Arrays.asList("luxury_man_pants_casualLong", "luxury_man_pants_denim", "luxury_man_pants_formal",
+					"luxury_man_pants_suitPants", "luxury_man_pants_casualShort")),
+
+	luxury_man_pants_casualLong("luxury_man_pants_casualLong", "Ä³ÁÖ¾ó ·Õ ÆÒÃ÷_6", null),
+
+	luxury_man_pants_denim("luxury_man_pants_denim", "µ¥´Ô_6", null),
+
+	luxury_man_pants_formal("luxury_man_pants_formal", "Æ÷¸Ö_6", null),
+
+	luxury_man_pants_suitPants("luxury_man_pants_suitPants", "Á¤Àå_6", null),
+
+	luxury_man_pants_casualShort("luxury_man_pants_casualShort", "Ä³ÁÖ¾ó ¼îÆ® ÆÒÃ÷_7", null),
+
+	luxury_man_beachwear("luxury_man_beachwear", "ºñÄ¡¿ş¾î",
+			Arrays.asList("luxury_man_beachwear_swim", "luxury_man_beachwear_pants", "luxury_man_beachwear_etc")),
+
+	luxury_man_beachwear_swim("luxury_man_beachwear_swim", "¼ö¿µº¹", null),
+
+	luxury_man_beachwear_pants("luxury_man_beachwear_pants", "ºñÄ¡ÆÒÃ÷", null),
+
+	luxury_man_beachwear_etc("luxury_man_beachwear_etc", "±âÅ¸", null),
+
+	luxury_manBag("luxury_manBag", "³²¼º°¡¹æ/Áö°©", Arrays.asList("luxury_manBag_bag", "luxury_manBag_purse")),
+
+	luxury_manBag_bag("luxury_manBag_bag", "°¡¹æ",
+			Arrays.asList("luxury_manBag_bag_clutch", "luxury_manBag_bag_tote", "luxury_manBag_bag_sling",
+					"luxury_manBag_bag_briefcase", "luxury_manBag_bag_carrier", "luxury_manBag_bag_shoulder",
+					"luxury_manBag_bag_backpack")),
+
+	luxury_manBag_bag_clutch("luxury_manBag_bag_clutch", "Å¬·¯Ä¡", null),
+
+	luxury_manBag_bag_tote("luxury_manBag_bag_tote", "ÅäÆ®", null),
+
+	luxury_manBag_bag_sling("luxury_manBag_bag_sling", "½½¸µ¹é/Èü»ö", null),
+
+	luxury_manBag_bag_briefcase("luxury_manBag_bag_briefcase", "ºê¸®ÇÁÄÉÀÌ½º", null),
+
+	luxury_manBag_bag_carrier("luxury_manBag_bag_carrier", "Ä³¸®¾î", null),
+
+	luxury_manBag_bag_shoulder("luxury_manBag_bag_shoulder", "¼ñ´õ/¸Ş½ÅÀú", null),
+
+	luxury_manBag_bag_backpack("luxury_manBag_bag_backpack", "¹éÆÑ", null),
+
+	luxury_manBag_purse("luxury_manBag_purse", "Áö°©",
+			Arrays.asList("luxury_manBag_purse_moneyclip", "luxury_manBag_purse_card", "luxury_manBag_purse_long",
+					"luxury_manBag_purse_keyholder", "luxury_manBag_purse_half", "luxury_manBag_purse_medium")),
+
+	luxury_manBag_purse_moneyclip("luxury_manBag_purse_moneyclip", "¸Ó´ÏÅ¬¸³", null),
+
+	luxury_manBag_purse_card("luxury_manBag_purse_card", "¸íÇÔ/Ä«µåÁö°©", null),
+
+	luxury_manBag_purse_long("luxury_manBag_purse_long", "ÀåÁö°©", null),
+
+	luxury_manBag_purse_keyholder("luxury_manBag_purse_keyholder", "Å°È¦´õ/¿©±ÇÁö°©", null),
+
+	luxury_manBag_purse_half("luxury_manBag_purse_half", "¹İÁö°©", null),
+
+	luxury_manBag_purse_medium("luxury_manBag_purse_medium", "ÁßÁö°©", null),
+
+	luxury_manShoes("luxury_manShoes", "³²¼º½´Áî",
+			Arrays.asList("luxury_manShoes_slipon", "luxury_manShoes_shoes", "luxury_manShoes_slipper",
+					"luxury_manShoes_sandal", "luxury_manShoes_sneakers", "luxury_manShoes_walker")),
+
+	luxury_manShoes_slipon("luxury_manShoes_slipon", "½½¸³¿Â", null),
+
+	luxury_manShoes_shoes("luxury_manShoes_shoes", "±¸µÎ", null),
+
+	luxury_manShoes_slipper("luxury_manShoes_slipper", "½½¸®ÆÛ/¹Ä", null),
+
+	luxury_manShoes_sandal("luxury_manShoes_sandal", "»÷µé", null),
+
+	luxury_manShoes_sneakers("luxury_manShoes_sneakers", "¿îµ¿È­/½º´ÏÄ¿Áî", null),
+
+	luxury_manShoes_walker("luxury_manShoes_walker", "¿öÄ¿/ºÎÃ÷", null),
+
+	luxury_manWatch("luxury_manWatch", "³²¼º Áê¾ó¸®/½Ã°è",
+			Arrays.asList("luxury_manWatch_jewerly", "luxury_manWatch_watch", "luxury_manWatch_etc")),
+
+	luxury_manWatch_jewerly("luxury_manWatch_jewerly", "Áê¾ó¸®", null),
+
+	luxury_manWatch_watch("luxury_manWatch_watch", "½Ã°è", null),
+
+	luxury_manWatch_etc("luxury_manWatch_etc", "±âÅ¸", null),
+
+	sports("sports", "½ºÆ÷Ã÷",
+			Arrays.asList("sports_outdoor", "sports_running", "sports_yoga", "sports_fitness", "sports_athleisure",
+					"sports_tennis", "sports_swim", "sports_soccer")),
+
+	sports_outdoor("sports_outdoor", "¾Æ¿ôµµ¾î/Ä·ÇÎ",
+			Arrays.asList("sports_outdoor_man", "sports_outdoor_woman", "sports_outdoor_shoes",
+					"sports_outdoor_headgear", "sports_outdoor_bag")),
+
+	sports_outdoor_man("sports_outdoor_man", "³²¼º ÀÇ·ù",
+			Arrays.asList("sports_outdoor_man_outer", "sports_outdoor_man_jacket", "sports_outdoor_man_hoodie",
+					"sports_outdoor_man_tshirt", "sports_outdoor_man_pants")),
+
+	sports_outdoor_man_outer("sports_outdoor_man_outer", "¾Æ¿ìÅÍ_4", null),
+
+	sports_outdoor_man_jacket("sports_outdoor_man_jacket", "ÀçÅ¶/º£½ºÆ®_4", null),
+
+	sports_outdoor_man_hoodie("sports_outdoor_man_hoodie", "¸ÇÅõ¸Ç/ÈÄµğ_1", null),
+
+	sports_outdoor_man_tshirt("sports_outdoor_man_tshirt", "Æ¼¼ÅÃ÷/½½¸®ºê¸®½º_1", null),
+
+	sports_outdoor_man_pants("sports_outdoor_man_pants", "ÆÒÃ÷/Å¸ÀÌÁî_6", null),
+
+	sports_outdoor_woman("sports_outdoor_woman", "¿©¼º ÀÇ·ù",
+			Arrays.asList("sports_outdoor_woman_outer", "sports_outdoor_woman_jacket", "sports_outdoor_woman_hoodie",
+					"sports_outdoor_woman_tshirt", "sports_outdoor_woman_pants")),
+
+	sports_outdoor_woman_outer("sports_outdoor_woman_outer", "¾Æ¿ìÅÍ_4", null),
+
+	sports_outdoor_woman_jacket("sports_outdoor_woman_jacket", "ÀçÅ¶/º£½ºÆ®_4", null),
+
+	sports_outdoor_woman_hoodie("sports_outdoor_woman_hoodie", "¸ÇÅõ¸Ç/ÈÄµğ_1", null),
+
+	sports_outdoor_woman_tshirt("sports_outdoor_woman_tshirt", "Æ¼¼ÅÃ÷/½½¸®ºê¸®½º_1", null),
+
+	sports_outdoor_woman_pants("sports_outdoor_woman_pants", "ÆÒÃ÷/Å¸ÀÌÁî_6", null),
+
+	sports_outdoor_shoes("sports_outdoor_shoes", "½´Áî",
+			Arrays.asList("sports_outdoor_shoes_tracking", "sports_outdoor_shoes_hicking",
+					"sports_outdoor_shoes_walking")),
+
+	sports_outdoor_shoes_tracking("sports_outdoor_shoes_tracking", "Æ®·¹Å·", null),
+
+	sports_outdoor_shoes_hicking("sports_outdoor_shoes_hicking", "ÇÏÀÌÅ·", null),
+
+	sports_outdoor_shoes_walking("sports_outdoor_shoes_walking", "¿öÅ·", null),
+
+	sports_outdoor_headgear("sports_outdoor_headgear", "Çìµå±â¾î", null),
+
+	sports_outdoor_bag("sports_outdoor_bag", "¹è³¶",
+			Arrays.asList("sports_outdoor_bag_hicking", "sports_outdoor_bag_lifestyle")),
+
+	sports_outdoor_bag_hicking("sports_outdoor_bag_hicking", "ÇÏÀÌÅ·", null),
+
+	sports_outdoor_bag_lifestyle("sports_outdoor_bag_lifestyle", "¶óÀÌÇÁ½ºÅ¸ÀÏ", null),
+
+	sports_running("sports_running", "·¯´×/»çÀÌÅ¬",
+			Arrays.asList("sports_running_man", "sports_running_woman", "sports_running_running",
+					"sports_running_cycle")),
+
+	sports_running_man("sports_running_man", "³²¼º ÀÇ·ù",
+			Arrays.asList("sports_running_man_outer", "sports_running_man_jacket", "sports_running_man_hoodie",
+					"sports_running_man_tshirt", "sports_running_man_pants")),
+
+	sports_running_man_outer("sports_running_man_outer", "¾Æ¿ìÅÍ_4", null),
+
+	sports_running_man_jacket("sports_running_man_jacket", "ÀçÅ¶/º£½ºÆ®_4", null),
+
+	sports_running_man_hoodie("sports_running_man_hoodie", "¸ÇÅõ¸Ç/ÈÄµğ_1", null),
+
+	sports_running_man_tshirt("sports_running_man_tshirt", "Æ¼¼ÅÃ÷/½½¸®ºê¸®½º_1", null),
+
+	sports_running_man_pants("sports_running_man_pants", "ÆÒÃ÷/Å¸ÀÌÁî_6", null),
+
+	sports_running_woman("sports_running_woman", "¿©¼º ÀÇ·ù",
+			Arrays.asList("sports_running_woman_outer", "sports_running_woman_jacket", "sports_running_woman_hoodie",
+					"sports_running_woman_tshirt", "sports_running_woman_pants")),
+
+	sports_running_woman_outer("sports_running_woman_outer", "¾Æ¿ìÅÍ_4", null),
+
+	sports_running_woman_jacket("sports_running_woman_jacket", "ÀçÅ¶/º£½ºÆ®_4", null),
+
+	sports_running_woman_hoodie("sports_running_woman_hoodie", "¸ÇÅõ¸Ç/ÈÄµğ_1", null),
+
+	sports_running_woman_tshirt("sports_running_woman_tshirt", "Æ¼¼ÅÃ÷/½½¸®ºê¸®½º_1", null),
+
+	sports_running_woman_pants("sports_running_woman_pants", "ÆÒÃ÷/Å¸ÀÌÁî_6", null),
+
+	sports_running_running("sports_running_running", "·¯´× ¿ëÇ°",
+			Arrays.asList("sports_running_running_shoes", "sports_running_running_accessory")),
+
+	sports_running_running_shoes("sports_running_running_shoes", "·¯´×È­", null),
+
+	sports_running_running_accessory("sports_running_running_accessory", "¾×¼¼¼­¸®", null),
+
+	sports_running_cycle("sports_running_cycle", "»çÀÌÅ¬ ¿ëÇ°",
+			Arrays.asList("sports_running_cycle_shoes", "sports_running_cycle_accessory")),
+
+	sports_running_cycle_shoes("sports_running_cycle_shoes", "»çÀÌÅ¬È­", null),
+
+	sports_running_cycle_accessory("sports_running_cycle_accessory", "¾×¼¼¼­¸®", null),
+
+	sports_yoga("sports_yoga", "¿ä°¡/ÇÊ¶óÅ×½º", Arrays.asList("sports_yoga_woman", "sports_yoga_supplies")),
+
+	sports_yoga_woman("sports_yoga_woman", "¿©¼º ÀÇ·ù",
+			Arrays.asList("sports_yoga_woman_outer", "sports_yoga_woman_top", "sports_yoga_woman_pants")),
+
+	sports_yoga_woman_outer("sports_yoga_woman_outer", "¾Æ¿ìÅÍ_4", null),
+
+	sports_yoga_woman_top("sports_yoga_woman_top", "Å¾_1", null),
+
+	sports_yoga_woman_pants("sports_yoga_woman_pants", "ÆÒÃ÷_6", null),
+
+	sports_yoga_supplies("sports_yoga_supplies", "¿ëÇ°",
+			Arrays.asList("sports_yoga_supplies_mat", "sports_yoga_supplies_hat", "sports_yoga_supplies_etc")),
+
+	sports_yoga_supplies_mat("sports_yoga_supplies_mat", "¸ÅÆ®", null),
+
+	sports_yoga_supplies_hat("sports_yoga_supplies_hat", "¸ğÀÚ/Çì¾î¹êµå", null),
+
+	sports_yoga_supplies_etc("sports_yoga_supplies_etc", "±âÅ¸¿ëÇ°", null),
+
+	sports_fitness("sports_fitness", "ÇÇÆ®´Ï½º",
+			Arrays.asList("sports_fitness_man", "sports_fitness_woman", "sports_fitness_supplies")),
+
+	sports_fitness_man("sports_fitness_man", "³²¼ºÀÇ·ù",
+			Arrays.asList("sports_fitness_man_outer", "sports_fitness_man_jacket", "sports_fitness_man_hoodie",
+					"sports_fitness_man_tshirt", "sports_fitness_man_pants")),
+
+	sports_fitness_man_outer("sports_fitness_man_outer", "¾Æ¿ìÅÍ_4", null),
+
+	sports_fitness_man_jacket("sports_fitness_man_jacket", "ÀçÅ¶/º£½ºÆ®_4", null),
+
+	sports_fitness_man_hoodie("sports_fitness_man_hoodie", "¸ÇÅõ¸Ç/ÈÄµğ_1", null),
+
+	sports_fitness_man_tshirt("sports_fitness_man_tshirt", "Æ¼¼ÅÃ÷/½½¸®ºê¸®½º_1", null),
+
+	sports_fitness_man_pants("sports_fitness_man_pants", "ÆÒÃ÷/Å¸ÀÌÁî_6", null),
+
+	sports_fitness_woman("sports_fitness_woman", "¿©¼ºÀÇ·ù",
+			Arrays.asList("sports_fitness_woman_outer", "sports_fitness_woman_jacket", "sports_fitness_woman_hoodie",
+					"sports_fitness_woman_tshirt", "sports_fitness_woman_pants")),
+
+	sports_fitness_woman_outer("sports_fitness_woman_outer", "¾Æ¿ìÅÍ_4", null),
+
+	sports_fitness_woman_jacket("sports_fitness_woman_jacket", "ÀçÅ¶/º£½ºÆ®_4", null),
+
+	sports_fitness_woman_hoodie("sports_fitness_woman_hoodie", "¸ÇÅõ¸Ç/ÈÄµğ_1", null),
+
+	sports_fitness_woman_tshirt("sports_fitness_woman_tshirt", "Æ¼¼ÅÃ÷/½½¸®ºê¸®½º_1", null),
+
+	sports_fitness_woman_pants("sports_fitness_woman_pants", "ÆÒÃ÷/Å¸ÀÌÁî_6", null),
+
+	sports_fitness_supplies("sports_fitness_supplies", "¿ëÇ°",
+			Arrays.asList("sports_fitness_supplies_shoes", "sports_fitness_supplies_accessory")),
+
+	sports_fitness_supplies_accessory("sports_fitness_supplies_accessory", "¾×¼¼¼­¸®", null),
+
+	sports_fitness_supplies_shoes("sports_fitness_supplies_shoes", "½´Áî", null),
+
+	sports_athleisure("sports_athleisure", "¾Ö½½·¹Àú",
+			Arrays.asList("sports_athleisure_man", "sports_athleisure_woman", "sports_athleisure_supplies")),
+
+	sports_athleisure_man("sports_athleisure_man", "³²¼º ÀÇ·ù",
+			Arrays.asList("sports_athleisure_man_outer", "sports_athleisure_man_top", "sports_athleisure_man_pants")),
+
+	sports_athleisure_man_outer("sports_athleisure_man_outer", "¾Æ¿ìÅÍ_4", null),
+
+	sports_athleisure_man_top("sports_athleisure_man_top", "Å¾_1", null),
+
+	sports_athleisure_man_pants("sports_athleisure_man_pants", "ÆÒÃ÷_6", null),
+
+	sports_athleisure_woman("sports_athleisure_woman", "¿©¼º ÀÇ·ù",
+			Arrays.asList("sports_athleisure_woman_outer", "sports_athleisure_woman_top",
+					"sports_athleisure_woman_pants")),
+
+	sports_athleisure_woman_outer("sports_athleisure_woman_outer", "¾Æ¿ìÅÍ_4", null),
+
+	sports_athleisure_woman_top("sports_athleisure_woman_top", "Å¾_1", null),
+
+	sports_athleisure_woman_pants("sports_athleisure_woman_pants", "ÆÒÃ÷_6", null),
+
+	sports_athleisure_supplies("sports_athleisure_supplies", "¿ëÇ°",
+			Arrays.asList("sports_athleisure_supplies_shoes", "sports_athleisure_supplies_accessory",
+					"sports_athleisure_supplies_etc")),
+
+	sports_athleisure_supplies_shoes("sports_athleisure_supplies_shoes", "½´Áî", null),
+
+	sports_athleisure_supplies_accessory("sports_athleisure_supplies_accessory", "¾×¼¼¼­¸®", null),
+
+	sports_athleisure_supplies_etc("sports_athleisure_supplies_etc", "±âÅ¸¿ëÇ°", null),
+
+	sports_tennis("sports_tennis", "Å×´Ï½º",
+			Arrays.asList("sports_tennis_man", "sports_tennis_woman", "sports_tennis_supplies")),
+
+	sports_tennis_man("sports_tennis_man", "³²¼ºÀÇ·ù",
+			Arrays.asList("sports_tennis_man_outer", "sports_tennis_man_top", "sports_tennis_man_pants")),
+
+	sports_tennis_man_outer("sports_tennis_man_outer", "¾Æ¿ìÅÍ_4", null),
+
+	sports_tennis_man_top("sports_tennis_man_top", "Å¾_1", null),
+
+	sports_tennis_man_pants("sports_tennis_man_pants", "ÆÒÃ÷_6", null),
+
+	sports_tennis_woman("sports_tennis_woman", "¿©¼ºÀÇ·ù",
+			Arrays.asList("sports_tennis_woman_outer", "sports_tennis_woman_top", "sports_tennis_woman_pants")),
+
+	sports_tennis_woman_outer("sports_tennis_woman_outer", "¾Æ¿ìÅÍ_4", null),
+
+	sports_tennis_woman_top("sports_tennis_woman_top", "Å¾_1", null),
+
+	sports_tennis_woman_pants("sports_tennis_woman_pants", "ÆÒÃ÷/½ºÄ¿Æ®_6", null),
+
+	sports_tennis_supplies("sports_tennis_supplies", "¿ëÇ°",
+			Arrays.asList("sports_tennis_supplies_bag", "sports_tennis_supplies_shoes",
+					"sports_tennis_supplies_accessory", "sports_tennis_supplies_etc")),
+
+	sports_tennis_supplies_bag("sports_tennis_supplies_bag", "Å×´Ï½º °¡¹æ", null),
+
+	sports_tennis_supplies_shoes("sports_tennis_supplies_shoes", "½´Áî", null),
+
+	sports_tennis_supplies_accessory("sports_tennis_supplies_accessory", "¾×¼¼¼­¸®", null),
+
+	sports_tennis_supplies_etc("sports_tennis_supplies_etc", "±âÅ¸¿ëÇ°", null),
+
+	sports_swim("sports_swim", "¼ö¿µ", Arrays.asList("sports_swim_man", "sports_swim_woman", "sports_swim_supplies")),
+
+	sports_swim_man("sports_swim_man", "³²¼º ÀÇ·ù",
+			Arrays.asList("sports_swim_man_indoors", "sports_swim_man_beachwearTop",
+					"sports_swim_man_beachwearBottom")),
+
+	sports_swim_man_indoors("sports_swim_man_indoors", "½Ç³» ¼ö¿µº¹", null),
+
+	sports_swim_man_beachwearTop("sports_swim_man_beachwearTop", "ºñÄ¡¿ş¾î »óÀÇ", null),
+
+	sports_swim_man_beachwearBottom("sports_swim_man_beachwearBottom", "ºñÄ¡¿ş¾î ÇÏÀÇ", null),
+
+	sports_swim_woman("sports_swim_woman", "¿©¼º ÀÇ·ù",
+			Arrays.asList("sports_swim_woman_general", "sports_swim_woman_bikini", "sports_swim_woman_beachwearTop",
+					"sports_swim_woman_beachwearBottom")),
+
+	sports_swim_woman_general("sports_swim_woman_general", "Àü½Å ¼ö¿µº¹", null),
+
+	sports_swim_woman_bikini("sports_swim_woman_bikini", "ºñÅ°´Ï", null),
+
+	sports_swim_woman_beachwearTop("sports_swim_woman_beachwearTop", "ºñÄ¡¿ş¾î »óÀÇ", null),
+
+	sports_swim_woman_beachwearBottom("sports_swim_woman_beachwearBottom", "ºñÄ¡¿ş¾î ÇÏÀÇ", null),
+
+	sports_swim_supplies("sports_swim_supplies", "¿ëÇ°",
+			Arrays.asList("sports_swim_supplies_swim", "sports_swim_supplies_shoes", "sports_swim_supplies_accessory")),
+
+	sports_swim_supplies_swim("sports_swim_supplies_swim", "¼ö¿µ¿ëÇ°", null),
+
+	sports_swim_supplies_shoes("sports_swim_supplies_shoes", "½´Áî", null),
+
+	sports_swim_supplies_accessory("sports_swim_supplies_accessory", "¾×¼¼¼­¸®", null),
+
+	sports_soccer("sports_soccer", "Ãà±¸",
+			Arrays.asList("sports_soccer_uniform", "sports_soccer_shoes", "sports_soccer_supplies")),
+
+	sports_soccer_uniform("sports_soccer_uniform", "À¯´ÏÆû", null),
+
+	sports_soccer_shoes("sports_soccer_shoes", "Ãà±¸È­", null),
+
+	sports_soccer_supplies("sports_soccer_supplies", "Ãà±¸¿ëÇ°", null),
+
+	bagAndShoes("bagAndShoes", "¹é£¦½´Áî",
+			Arrays.asList("bagAndShoes_womanBag", "bagAndShoes_womanPurse", "bagAndShoes_womanShoes",
+					"bagAndShoes_manBag", "bagAndShoes_manPurse", "bagAndShoes_manShoes")),
+
+	bagAndShoes_womanBag("bagAndShoes_womanBag", "¿©¼º °¡¹æ",
+			Arrays.asList("bagAndShoes_womanBag_tote", "bagAndShoes_womanBag_cross", "bagAndShoes_womanBag_shopper",
+					"bagAndShoes_womanBag_clutch", "bagAndShoes_womanBag_backpack", "bagAndShoes_womanBag_echo",
+					"bagAndShoes_womanBag_mini", "bagAndShoes_womanBag_carrier")),
+
+	bagAndShoes_womanBag_tote("bagAndShoes_womanBag_tote", "ÅäÆ®", null),
+
+	bagAndShoes_womanBag_cross("bagAndShoes_womanBag_cross", "¼ñ´õ/Å©·Î½º", null),
+
+	bagAndShoes_womanBag_shopper("bagAndShoes_womanBag_shopper", "¼îÆÛ", null),
+
+	bagAndShoes_womanBag_clutch("bagAndShoes_womanBag_clutch", "Å¬·¯Ä¡", null),
+
+	bagAndShoes_womanBag_backpack("bagAndShoes_womanBag_backpack", "¹éÆÑ", null),
+
+	bagAndShoes_womanBag_echo("bagAndShoes_womanBag_echo", "¿¡ÄÚ¹é", null),
+
+	bagAndShoes_womanBag_mini("bagAndShoes_womanBag_mini", "¹Ì´Ï¹é", null),
+
+	bagAndShoes_womanBag_carrier("bagAndShoes_womanBag_carrier", "Ä³¸®¾î", null),
+
+	bagAndShoes_womanPurse("bagAndShoes_womanPurse", "¿©¼º Áö°©",
+			Arrays.asList("bagAndShoes_womanPurse_mini", "bagAndShoes_womanPurse_medium", "bagAndShoes_womanPurse_long",
+					"bagAndShoes_womanPurse_card", "bagAndShoes_womanPurse_etc")),
+
+	bagAndShoes_womanPurse_mini("bagAndShoes_womanPurse_mini", "¹Ì´Ï/¹İÁö°©", null),
+
+	bagAndShoes_womanPurse_medium("bagAndShoes_womanPurse_medium", "ÁßÁö°©", null),
+
+	bagAndShoes_womanPurse_long("bagAndShoes_womanPurse_long", "ÀåÁö°©", null),
+
+	bagAndShoes_womanPurse_card("bagAndShoes_womanPurse_card", "¸íÇÔ/Ä«µåÁö°©", null),
+
+	bagAndShoes_womanPurse_etc("bagAndShoes_womanPurse_etc", "µ¿ÀüÁö°©/ÆÄ¿ìÄ¡/±âÅ¸", null),
+
+	bagAndShoes_womanShoes("bagAndShoes_womanShoes", "¿©¼º ½´Áî",
+			Arrays.asList("bagAndShoes_womanShoes_heel", "bagAndShoes_womanShoes_flat", "bagAndShoes_womanShoes_sandal",
+					"bagAndShoes_womanShoes_slipper", "bagAndShoes_womanShoes_sneakers",
+					"bagAndShoes_womanShoes_slipon", "bagAndShoes_womanShoes_walker",
+					"bagAndShoes_womanShoes_mountain")),
+
+	bagAndShoes_womanShoes_heel("bagAndShoes_womanShoes_heel", "ÆßÇÁ½º/Èú", null),
+
+	bagAndShoes_womanShoes_flat("bagAndShoes_womanShoes_flat", "ÇÃ·§/·ÎÆÛ", null),
+
+	bagAndShoes_womanShoes_sandal("bagAndShoes_womanShoes_sandal", "»÷µé", null),
+
+	bagAndShoes_womanShoes_slipper("bagAndShoes_womanShoes_slipper", "½½¸®ÆÛ/¹Ä", null),
+
+	bagAndShoes_womanShoes_sneakers("bagAndShoes_womanShoes_sneakers", "¿îµ¿È­/½º´ÏÄ¿Áî", null),
+
+	bagAndShoes_womanShoes_slipon("bagAndShoes_womanShoes_slipon", "½½¸³¿Â", null),
+
+	bagAndShoes_womanShoes_walker("bagAndShoes_womanShoes_walker", "¿öÄ¿/ºÎÃ÷", null),
+
+	bagAndShoes_womanShoes_mountain("bagAndShoes_womanShoes_mountain", "µî»êÈ­/°ñÇÁÈ­", null),
+
+	bagAndShoes_manBag("bagAndShoes_manBag", "³²¼º °¡¹æ",
+			Arrays.asList("bagAndShoes_manBag_shoulder", "bagAndShoes_manBag_backpack", "bagAndShoes_manBag_briefcase",
+					"bagAndShoes_manBag_clutch", "bagAndShoes_manBag_tote", "bagAndShoes_manBag_sling",
+					"bagAndShoes_manBag_echo", "bagAndShoes_manBag_carrier")),
+
+	bagAndShoes_manBag_shoulder("bagAndShoes_manBag_shoulder", "¼ñ´õ/¸Ş½ÅÀú", null),
+
+	bagAndShoes_manBag_backpack("bagAndShoes_manBag_backpack", "¹éÆÑ", null),
+
+	bagAndShoes_manBag_briefcase("bagAndShoes_manBag_briefcase", "ºê¸®ÇÁÄÉÀÌ½º", null),
+
+	bagAndShoes_manBag_clutch("bagAndShoes_manBag_clutch", "Å¬·¯Ä¡", null),
+
+	bagAndShoes_manBag_tote("bagAndShoes_manBag_tote", "ÅäÆ®", null),
+
+	bagAndShoes_manBag_sling("bagAndShoes_manBag_sling", "½½¸µ¹é/Èü»ö", null),
+
+	bagAndShoes_manBag_echo("bagAndShoes_manBag_echo", "¿¡ÄÚ¹é", null),
+
+	bagAndShoes_manBag_carrier("bagAndShoes_manBag_carrier", "Ä³¸®¾î", null),
+
+	bagAndShoes_manPurse("bagAndShoes_manPurse", "³²¼º Áö°©",
+			Arrays.asList("bagAndShoes_manPurse_half", "bagAndShoes_manPurse_medium", "bagAndShoes_manPurse_long",
+					"bagAndShoes_manPurse_moneyclip", "bagAndShoes_manPurse_card", "bagAndShoes_manPurse_keyholder")),
+
+	bagAndShoes_manPurse_half("bagAndShoes_manPurse_half", "¹İÁö°©", null),
+
+	bagAndShoes_manPurse_medium("bagAndShoes_manPurse_medium", "ÁßÁö°©", null),
+
+	bagAndShoes_manPurse_long("bagAndShoes_manPurse_long", "ÀåÁö°©", null),
+
+	bagAndShoes_manPurse_moneyclip("bagAndShoes_manPurse_moneyclip", "¸Ó´ÏÅ¬¸³", null),
+
+	bagAndShoes_manPurse_card("bagAndShoes_manPurse_card", "¸íÇÔ/Ä«µåÁö°©", null),
+
+	bagAndShoes_manPurse_keyholder("bagAndShoes_manPurse_keyholder", "Å°È¦´õ/¿©±ÇÁö°©", null),
+
+	bagAndShoes_manShoes("bagAndShoes_manShoes", "³²¼º ½´Áî",
+			Arrays.asList("bagAndShoes_manShoes_sneakers", "bagAndShoes_manShoes_walker",
+					"bagAndShoes_manShoes_slipper", "bagAndShoes_manShoes_slipon", "bagAndShoes_manShoes_shoes",
+					"bagAndShoes_manShoes_sandal", "bagAndShoes_manShoes_mountain")),
+
+	bagAndShoes_manShoes_sneakers("bagAndShoes_manShoes_sneakers", "¿îµ¿È­/½º´ÏÄ¿Áî", null),
+
+	bagAndShoes_manShoes_walker("bagAndShoes_manShoes_walker", "¿öÄ¿/ºÎÃ÷", null),
+
+	bagAndShoes_manShoes_slipper("bagAndShoes_manShoes_slipper", "½½¸®ÆÛ/¹Ä", null),
+
+	bagAndShoes_manShoes_slipon("bagAndShoes_manShoes_slipon", "½½¸³¿Â", null),
+
+	bagAndShoes_manShoes_shoes("bagAndShoes_manShoes_shoes", "±¸µÎ", null),
+
+	bagAndShoes_manShoes_sandal("bagAndShoes_manShoes_sandal", "»÷µé", null),
+
+	bagAndShoes_manShoes_mountain("bagAndShoes_manShoes_mountain", "µî»êÈ­/°ñÇÁÈ­", null);
+
 	private final String name;
 	private final String name_kor;
 	private final List<String> children;
-	
+
 	public String getSelf() {
-        String[] nameArr = name.split("_");
-        return nameArr[nameArr.length-1];
-    }
-	
+		String[] nameArr = name.split("_");
+		return nameArr[nameArr.length - 1];
+	}
+
 	public String getParent() {
 		String[] nameArr = name.split("_");
-		
-		if(nameArr.length == 1) {
+
+		if (nameArr.length == 1) {
 			return null;
 		} else {
-			return String.join("_", Arrays.copyOfRange(nameArr, 0, nameArr.length-1));
+			return String.join("_", Arrays.copyOfRange(nameArr, 0, nameArr.length - 1));
 		}
 	}
-	
+
 	public String getNameKor() {
 		return name_kor;
 	}
-	
+
 	public List<String> getChildren() {
 		return children;
 	}
-	
+
 	CategoryEnum(String name, String name_kor, List<String> children) {
 		this.name = name;
 		this.name_kor = name_kor;
 		this.children = children;
 	}
-	
+
 }

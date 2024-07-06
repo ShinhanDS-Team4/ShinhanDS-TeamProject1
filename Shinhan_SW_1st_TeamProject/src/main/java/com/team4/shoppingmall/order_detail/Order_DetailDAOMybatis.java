@@ -1,6 +1,7 @@
 package com.team4.shoppingmall.order_detail;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,14 +60,12 @@ public class Order_DetailDAOMybatis implements Order_DetailDAOInterface{
 	}
 
 	@Override
+	public List<Map<String, Object>> searchCustomerOrderList(String searchOrderList) {
+		return sqlSession.selectList(namespace+"searchCustomerOrderList", searchOrderList);
+	}	
+
 	public int orderDetailDelByOrderID(int order_id) {
 		return sqlSession.delete(namespace+"orderDetailDelByOrderID", order_id);
 	}
-
-	
-
-	
-
-	
 	
 }
