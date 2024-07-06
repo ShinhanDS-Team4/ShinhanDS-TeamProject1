@@ -33,7 +33,7 @@
 			var order_id = $('#orderId').val();
 			alert(addr_num);
 			$.ajax({
-				url : "/shoppingmall/customer/applyAddress",
+				url : "/shoppingmall/customer/applyAddress.do",
 				type : 'POST',
 				contentType : 'application/json',
 				data : JSON.stringify({
@@ -66,7 +66,7 @@
 		alert(orderid);
 
 		$.ajax({
-			url : "/shoppingmall/customer/applyCoupon",
+			url : "/shoppingmall/customer/applyCoupon.do",
 			type : 'POST',
 			contentType : 'application/json',
 			data : JSON.stringify({
@@ -95,7 +95,7 @@
 		alert(orderid);
 
 		$.ajax({
-			url : "/shoppingmall/customer/applyPoint",
+			url : "/shoppingmall/customer/applyPoint.do",
 			type : 'POST',
 			contentType : 'application/json',
 			data : JSON.stringify({

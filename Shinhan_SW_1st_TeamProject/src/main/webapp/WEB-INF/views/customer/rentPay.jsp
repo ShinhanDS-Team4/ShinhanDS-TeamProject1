@@ -30,7 +30,7 @@
 		alert(orderid);
 
 		$.ajax({
-			url : "/shoppingmall/customer/applyRentCoupon",
+			url : "/shoppingmall/customer/applyRentCoupon.do",
 			type : 'POST',
 			contentType : 'application/json',
 			data : JSON.stringify({
@@ -58,9 +58,8 @@
 		alert(usePoint);
 		alert(orderid);
 		
-		
 		$.ajax({
-			url : "/shoppingmall/customer/applyRentPoint",
+			url : "/shoppingmall/customer/applyRentPoint.do",
 			type : 'POST',
 			contentType : 'application/json',
 			data : JSON.stringify({
@@ -110,10 +109,11 @@
 		
 		$("#orderBtn").on("click", function(){
 			alert("구매버튼");
-			var rental_code = '${rentInfo.rental_code}';				var userid= '${memberInfo.member_id}';
+			var rental_code = '${rentInfo.rental_code}';
+			var userid= '${memberInfo.member_id}';
 			var username = '${memberInfo.member_name}';
 			var phone='${memberInfo.phone}';
-			var merchant_uid = 'rent_'+rental_code;//DB에 주문ID로 저장될, 고유한 주문 ID
+			var merchant_uid = 'rentPay_'+rental_code;//DB에 주문ID로 저장될, 고유한 주문 ID
 			var amount = '${rentInfo.total_rent_price}';//결제 금액
 				
 			IMP.request_pay({
@@ -130,7 +130,7 @@
            	}, function(response){
            		if (response.success){
            			alert("결제 완료");
-       				window.location.href = "/shoppingmall/customer/rentPaySuccess?&rental_code=" + encodeURIComponent(rental_code);
+       				window.location.href = "/shoppingmall/customer/rentPaySuccess?&rental_code="+encodeURIComponent(rental_code);
            		} else {
     				var msg = '결제에 실패하였습니다.';
     				msg += '에러내용 : ' + rsp.error_msg;
