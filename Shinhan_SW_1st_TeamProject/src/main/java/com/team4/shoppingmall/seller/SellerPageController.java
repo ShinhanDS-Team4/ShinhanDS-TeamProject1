@@ -495,13 +495,16 @@ public class SellerPageController {
 		// LocalDate를 java.sql.Date로 변환
 		Date sqlDate = Date.valueOf(localDate);
 
-		// 문의ID 생성
-		Integer qid = 12305;
+		Integer maxAdminInqID = admin_inqService.findMaxAdminInqId();
+		
+		if (Objects.isNull(maxAdminInqID))
+			maxAdminInqID = 0;
+		maxAdminInqID++;
 
 		// 이후에 SQL문으로 DB에 등록
 
 		Admin_InqDTO admin_InqDTO = new Admin_InqDTO();
-		admin_InqDTO.setAdmin_inq_id(qid);
+		admin_InqDTO.setAdmin_inq_id(maxAdminInqID);
 		admin_InqDTO.setAdmin_inq_title(admin_inq_title);
 		admin_InqDTO.setAdmin_inq_content(admin_inq_content);
 		admin_InqDTO.setAdmin_inq_date(sqlDate);

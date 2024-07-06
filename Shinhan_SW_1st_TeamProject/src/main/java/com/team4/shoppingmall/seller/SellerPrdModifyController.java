@@ -136,8 +136,10 @@ public class SellerPrdModifyController {
 	}
 
 	@PostMapping("/modifyPrdouct")
-	public String updateStockInfo(@RequestParam("prdId") String prdID, @RequestParam("prdPrice") int prdPrice,
-			@RequestParam(value = "prdCategory", required = false) Integer prdCategory,
+	public String updateStockInfo(
+			@RequestParam("prdId") String prdID,
+			@RequestParam("prdPrice") int prdPrice,
+			@RequestParam(value = "finalCategory", required = false) Integer prdCategory,
 			@RequestParam(value = "mainImgFile", required = false) List<MultipartFile> mainFiles,
 			@RequestParam(value = "descImgFile", required = false) List<MultipartFile> descFiles,
 			@RequestParam("prdDescription") String prdDescription, @RequestParam("stockid") String stockid,
@@ -157,6 +159,7 @@ public class SellerPrdModifyController {
 		if(!Objects.isNull(prdCategory)) {
 			prodDTO.setCategory_id(prdCategory);
 		}
+		
 		
 		prodDTO.setProd_price(prdPrice);
 
