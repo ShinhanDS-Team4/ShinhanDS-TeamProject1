@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.ui.Model;
 
 @Repository
 public class AdminDAOMybatis {
@@ -46,5 +47,9 @@ public class AdminDAOMybatis {
         updatePwMap.put("new_admin_pw", new_admin_pw);
         int is_updatePw = sqlSession.update(namespace + "updateByPw", updatePwMap);
         return is_updatePw > 0;
+    }
+    
+    public int adminmypageedit(AdminDTO aDto) {
+    	return sqlSession.update(namespace+"adminmypageedit", aDto);
     }
 }

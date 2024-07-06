@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.team4.shoppingmall.customer.CustomerDAOInterface;
 import com.team4.shoppingmall.customer.CustomerDTO;
+import com.team4.shoppingmall.prod.SellerProdDTO;
 
 @Service
 public class MemberService {
@@ -108,5 +109,20 @@ public class MemberService {
 	public int memberUpdateAccess(MemberDTO member) {
 		return memberDAO.memberUpdateAccess(member);
 	}
+	
+	public int seller_authority_access_deny(String member_id, String seller_authority) {
+		return memberDAO.seller_authority_access_deny(member_id, seller_authority);
+	}
 
+	public List<MemberCustomerDTO> selectByAllCustomer() {
+		return memberDAO.selectByAllCustomer();
+	}
+	
+	public List<MemberCustomerDTO> searchByCustomer(String searchCustomer) {
+		return memberDAO.searchByCustomer(searchCustomer);
+	}
+	
+	public MemberCustomerDTO customerByInfo(String member_id) {
+		return memberDAO.customerByInfo(member_id);
+	}
 }

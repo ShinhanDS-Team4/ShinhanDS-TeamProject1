@@ -263,33 +263,26 @@ function f_search() {
     <div class="dropdown-container">
         <a href="admin_seller_list">판매자 목록</a> 
         <a href="admin_seller_register">판매자 등록</a> 
-        <a href="admin_seller_detail">판매자 상품 상세</a>
+        <a href="admin_seller_prod">판매자 상품</a>
     </div>
     
     <button class="dropdown-btn">고객</button>
     <div class="dropdown-container">
         <a href="admin_customer_list">고객 목록</a> 
-        <a href="admin_customer_register">고객 등록</a> 
-        <a href="admin_customer_detail">고객 상세</a>
+        <a href="admin_customer_orderlist">고객 주문 목록</a> 
     </div>
     
-    <button class="dropdown-btn">공지사항</button>
+    <button class="dropdown-btn">공지 / 이벤트 / 문의사항</button>
     <div class="dropdown-container">
-        <a href="admin_notice_list">공지사항 목록</a> 
-        <a href="admin_notice_register">공지사항 등록</a> 
-        <a href="admin_notice_detail">공지사항 상세</a>
-    </div>
-    
-    <a href="admin_faq.jsp">F.A.Q</a>
-    <div class="dropdown-container">
-        <a href="admin_seller_list">판매자 문의 목록</a> 
-        <a href="admin_customer_list">고객 문의 목록</a>            
-    </div>
+        <a href="admin_notice_list">공지사항 목록</a>         
+       	<a href="admin_event_list">이벤트 목록</a> 
+       	<a href="admin_faq_list">문의 목록</a>        
+    </div>    
 </div>
 
 <div class="header">
 
-    <div class="search-container">        
+    <!-- <div class="search-container">        
         <div class="input-group">
             <select class="form-control" name="searchType" id="searchType" style="max-width: 150px;">
                 <option value="member_id">아이디 검색</option>
@@ -301,11 +294,11 @@ function f_search() {
                 <input class="btn btn-primary" type="button" onclick="f_search()" value="검색">
             </div>
         </div>        
-    </div>
+    </div> -->
     
     <div id="searchResults" class="search-results"></div>
     <div class="account">
-        <button class="account-name">${admin_name}</button>
+        <button class="account-name">${aDto.admin_name}</button>
         <div class="dropdown-account">
             <a href="admin_mypage">내 정보</a> 
             <a href="admin_logout">로그아웃</a>

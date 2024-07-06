@@ -96,11 +96,11 @@ public class CustomerController {
 
 	// 상품 구매 결제
 	@GetMapping("/orderPay.do")
-	public String orderPayPage(Model model1, Model model2, Model model3, Model model4, Model model5, Model model6, HttpSession session) {
+	public String orderPayPage(Model model1, Model model2, Model model3, Model model4, Model model5, Model model6, @RequestParam(value = "order_id", required = false) Integer orderID, HttpSession session) {
 		MemberDTO mem = (MemberDTO)session.getAttribute("member");
 		String customerID = mem.getMember_id();
 		
-		Integer orderID = 1;// 주문ID. 실제로는 주문하기 버튼을 누르면 주문 ID를 받아와서 끌어옴
+		//Integer orderID = 1;// 주문ID. 실제로는 주문하기 버튼을 누르면 주문 ID를 받아와서 끌어옴
 
 		// 주문 데이터 가져오기
 		OrderProdDTO orderProdDTO = orderProdService.selectById(orderID);
@@ -132,17 +132,19 @@ public class CustomerController {
 
 	// 상품 대여 결제
 	@GetMapping("/rentPay.do")
-	public String rentPayPage(Model model1, Model model2, Model model3, Model model4, Model model5, Model model6, HttpSession session) {
+	public String rentPayPage(Model model1, Model model2, Model model3, Model model4, Model model5, Model model6, 
+			@RequestParam(value = "rental_code", required = false) Integer rentalCode,
+			HttpSession session) {
 		MemberDTO mem = (MemberDTO)session.getAttribute("member");
 		String customerID = mem.getMember_id();
 		
-		Integer rental_code = 2;// 대여ID. 대여하기 버튼을 누르면 끌어옴
+		//Integer rental_code = 2;// 대여ID. 대여하기 버튼을 누르면 끌어옴
 
 		// 대여 정보 가져오기
-		RentDTO rentDTO = rentService.selectById(rental_code);
+		RentDTO rentDTO = rentService.selectById(rentalCode);
 
 		// 대여가 가지고 있는 상세 대여 정보 목록 가져오기
-		List<RentDetailDTO> rentDetailList = rentDetailService.selectByRental_code(rental_code);
+		List<RentDetailDTO> rentDetailList = rentDetailService.selectByRental_code(rentalCode);
 
 		// 대여를 한 고객의 정보 가져오기
 		MemberDTO memberDTO = memberService.selectById(customerID);

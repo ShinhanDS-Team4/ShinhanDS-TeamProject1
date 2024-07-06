@@ -29,6 +29,7 @@
 			JOIN member m ON (a.member_id = m.member_id)
 			WHERE m.member_id = #{member_id}
 	</select>
+
 	<!-- 시퀀스 추가 -->
 <!-- 	<insert id="addressInsert" parameterType="com.team4.shoppingmall.addr_list.Addr_ListDTO"> -->
 <!-- 		   INSERT INTO ADDR_LIST (addr_num, member_id, zipcode, main_address, detail_address, is_master_addr, sub_address) -->
