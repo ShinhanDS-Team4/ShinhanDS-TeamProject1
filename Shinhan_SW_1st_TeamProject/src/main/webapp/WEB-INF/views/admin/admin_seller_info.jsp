@@ -6,8 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>판매자 정보</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <%-- <link href="${pageContext.servletContext.contextPath}/resources/css/admin/admin_page.css" rel="stylesheet"> --%>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">   
 </head>
 <body>
 <jsp:include page="common.jsp" />
@@ -51,7 +50,7 @@
                     <label for="sellerCreateDate">판매자 등록 신청일</label>
                     <input type="text" class="form-control" id="sellerCreateDate" value="${member_info.create_date}" readonly>
                 </div>	                  
-	                  <button class="btn btn-sm btn-danger" onclick="location.href='admin_seller_delete?member_id=${seller.member_id}'">삭제</button>
+	                  <button class="btn btn-sm btn-danger" onclick="location.href='admin_seller_delete?returnUrl=sellerInfo&member_id=${seller.member_id}'">삭제</button>
             </form>
         </div>
     </div>

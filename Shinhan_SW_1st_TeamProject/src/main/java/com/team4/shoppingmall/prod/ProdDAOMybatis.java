@@ -59,4 +59,24 @@ public class ProdDAOMybatis implements ProdDAOInterface {
 	public List<Map<String, Object>> selectByCategory(int categoryId) {
 		return sqlSession.selectList(namespace+"selectByCategory", categoryId); 
 	}
+
+	@Override
+	public List<SellerProdDTO> sellerByProd(String member_id) {
+		return sqlSession.selectList(namespace+"sellerByProd", member_id); 
+	}
+	
+	@Override
+	public List<Map<String, Object>> sellerProdRank() {
+		return sqlSession.selectList(namespace+"sellerProdRank");
+	}
+	
+	@Override
+	public List<SellerProdDTO> allProd() {
+		return sqlSession.selectList(namespace+"allProd");
+	}
+	
+	@Override
+	public List<SellerProdDTO> searchSellerByProd(String searchType) {
+		return sqlSession.selectList(namespace+"searchSellerByProd", searchType);
+	}
 }

@@ -21,4 +21,12 @@ public interface ProdDAOInterface {
 	public List<Map<String, Object>> selectAll2();
 
 	public List<Map<String, Object>> selectByCategory(int categoryId);
+	
+	public List<SellerProdDTO> sellerByProd(String member_id);
+	
+	public List<Map<String, Object>> sellerProdRank();
+	
+	public List<SellerProdDTO> allProd();
+	
+	public List<SellerProdDTO> searchSellerByProd(String searchType);
 }

@@ -30,4 +30,8 @@ public class NoticeService {
 	public int noticeDelete(Integer not_id) {
 		return noticeDAO.noticeDelete(not_id);
 	}
+	
+	public List<NoticeDTO> noticeBysearch(String search_title) {
+		return noticeDAO.noticeBysearch(search_title);
+	}
 }
