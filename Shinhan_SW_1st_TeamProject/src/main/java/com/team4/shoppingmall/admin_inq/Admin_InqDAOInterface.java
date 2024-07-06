@@ -17,4 +17,6 @@ public interface Admin_InqDAOInterface {
 	public int admin_inqUpdate(Admin_InqDTO admin_inq);
 	
 	public int admin_inqDelete(Integer admin_inq_id);
+
+	public Integer findMaxAdminInqId();
 }

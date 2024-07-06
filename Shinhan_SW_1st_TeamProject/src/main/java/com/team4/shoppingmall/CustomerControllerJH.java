@@ -60,7 +60,9 @@ public class CustomerControllerJH {
 		
 		//1.회원정보 조회
 		MemberDTO member =  (MemberDTO) session.getAttribute("member");
+
 		String member_id = member.getMember_id();
+
 		
 		//2.나의 주문 내역 (결제 완료된 주문)
 	    //List<OrderProdDTO> myAllOrders = orderProdService.orderProductById(member_id);
