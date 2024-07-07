@@ -74,7 +74,7 @@ public class CartController {
 	@Autowired
 	RentDetailService rentDetailService;
   
-  @GetMapping("/cart.do")
+	@GetMapping("/cart.do")
 	public String cartPage(HttpSession session, Model model) {
 		
 		MemberDTO member = (MemberDTO)session.getAttribute("member");
@@ -228,7 +228,7 @@ public class CartController {
 		return rentDTO;
 			
 	}
-	
+  
 	@PostMapping("/deleteCart.do")
 	@ResponseBody
 	public String deleteCart(@RequestBody Integer request) {

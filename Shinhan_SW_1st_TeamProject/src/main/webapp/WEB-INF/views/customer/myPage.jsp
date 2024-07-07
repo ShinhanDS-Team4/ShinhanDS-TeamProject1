@@ -123,7 +123,7 @@
 						                        	<td>${order.ORDER_ID}</td>
 						                            <td style="background-color:powderblue;"><img src="${order.IMG_ID}" alt="${order.IMG_ID}" width="100"></td>
 						                            <td class="product-info">
-						                                <strong>${order.ORDER_STATE}</strong><br>
+						                                <strong>[${order.ORDER_STATE}]</strong><br>
 						                                <p>${order.PROD_NAME} (${order.ORDER_NUM}개)</p>
 						                            </td>
 						                            <td>${order.ORDER_PRODUCT_PRICE}원<br></td>
@@ -168,7 +168,7 @@
 						                        <tr>
 						                        	<td>${rent.RENTAL_CODE}</td>
 						                            <td class="product-info">
-						                                <strong>${rent.RENT_STATE}</strong><br>
+						                                <strong>[${rent.RENT_STATE}]</strong><br>
 						                               <span> ${rent.PROD_NAME}</span><span>(${rent.RENT_NUM}개)</span>
 						                            </td>
 						                            <td>${rent.RENT_PRODUCT_PRICE}원<br></td>
