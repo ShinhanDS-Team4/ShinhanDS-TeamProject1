@@ -6,6 +6,11 @@
 .orderPay-info-box>div{
 	
 }
+.orderPay-info-totalPrice>p:nth-child(2){
+    font-size: 20px;
+    color: #513ae4;
+    font-weight: bold;
+}
 .orderPay-info-text{
     display: flex;
     padding: 30px 0 0;
