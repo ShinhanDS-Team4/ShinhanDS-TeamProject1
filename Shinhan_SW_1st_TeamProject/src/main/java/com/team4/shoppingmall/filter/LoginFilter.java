@@ -26,12 +26,12 @@ public class LoginFilter implements Filter {
         String requestURI = req.getRequestURI();
 
         // ".do" 패턴이 포함된 요청에 대해서만 필터링
-        if (requestURI.endsWith(".do") && !requestURI.endsWith("login.do")) {
+        if (requestURI.endsWith(".do") && !requestURI.endsWith("login.do") && !requestURI.endsWith("logout.do")) {
 			System.out.println("쿼리 스트링!!!" + req.getQueryString());
 			session.setAttribute("lastRequest", requestURI);
 			//get방식이 적용된 원래 페이지로 돌아가게 할 수 있는 역할(getQueryString)	
 			session.setAttribute("queryString", req.getQueryString());
-        	
+        	System.out.println(requestURI);
             // 로그인 상태 확인 (예: 세션에 사용자 정보가 있는지 확인)
             Object user = req.getSession().getAttribute("member");
             

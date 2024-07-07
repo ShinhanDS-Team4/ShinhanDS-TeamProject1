@@ -122,6 +122,7 @@ function submitRent() {
         }
     });
 }
+
 </script>
 
 <style type="text/css">
@@ -134,107 +135,108 @@ function submitRent() {
 <body>
 	<%@ include file="../common/header.jsp" %>	
 	
-	<div class="container">
+	<div class="container inner">
         <h1>장바구니</h1>
-          <div class="cart-header">
+         <div class="cart-header">
             <div>구매(개수)</div>
         </div>  
         <div>
-            <div class="checkbox-container">
-                <input type="checkbox" checked>
-                <span>전체선택</span>
-            </div>
-            <%-- 구매 상품 장바구니 리스트 --%>
-            <div class="sellCartList">
-                <c:forEach  var="cartProduct" items="${cartProdInfo}">
-                    <div class="order-cart-item" data-cart-id="${cartProduct.CART_ID}">
-                        <div class="cart-item-details">
-                            <div><strong>상품명:</strong>${cartProduct.PROD_NAME}</div>
-                            <c:if test="${not empty cartProduct.OPT_NAME1}">
-                                <div><strong>옵션:</strong> ${cartProduct.OPT_NAME1} : ${cartProduct.OPT_VALUE1}</div>
-                            </c:if>
-                            <c:if test="${not empty cartProduct.OPT_NAME2}">
-                                <div><strong>옵션:</strong> ${cartProduct.OPT_NAME2} : ${cartProduct.OPT_VALUE2}</div>
-                            </c:if>
-                            <c:if test="${not empty cartProduct.OPT_NAME3}">
-                                <div><strong>옵션:</strong> ${cartProduct.OPT_NAME3} : ${cartProduct.OPT_VALUE3}</div>
-                            </c:if>
-                            <c:if test="${not empty cartProduct.OPT_NAME4}">
-                                <div><strong>옵션:</strong> ${cartProduct.OPT_NAME4} : ${cartProduct.OPT_VALUE4}</div>
-                            </c:if>
-                            <c:if test="${not empty cartProduct.OPT_NAME5}">
-                                <div><strong>옵션:</strong> ${cartProduct.OPT_NAME5} : ${cartProduct.OPT_VALUE5}</div>
-                            </c:if>
-                        </div>
-                        주문 수량: <input type="number" id="cart_amount_${cartProduct.CART_ID}" value="${cartProduct.CART_AMOUNT}">
-                       <div class="cart-item-price">
-                          <span>총 가격</span> 
-                          <c:set var="totalPrice" value="${cartProduct.CART_AMOUNT * cartProduct.PROD_PRICE}"/>
-                          <span class="total-price-this">${totalPrice}<span>(원)
-                        </div>
-                        <div class="item-options">
-                            <button class="btn-option" onclick="changeAmountPopUp(${cartProduct.CART_ID})">수량 변경</button>
-                            <!-- <button class="btn-option" onclick="">바로구매</button> -->
-                        </div>
-                        <div class="cart-item-remove" onclick="removeCartItem(${cartProduct.CART_ID})">X</div>
-                    </div>
-                </c:forEach>
-            </div>
-            
-            <div class="cart-summary">
-                <div class="cart-summary-details">
-                    <div class="summary-item">
-                        <div>결제 예정 금액</div>
-                        <div>총 ${countSellproduct}건</div>
-                    </div>
+	        <%-- 구매 상품 장바구니 리스트 --%>
+	        <div class="sellCartList">
+		        <c:forEach  var="cartProduct" items="${cartProdInfo}">
+			        <div class="order-cart-item" data-cart-id="${cartProduct.CART_ID}">
+			            <div class="cart-item-details">
+			                <div><strong>상품명:</strong>${cartProduct.PROD_NAME}</div>
+			                <c:if test="${not empty cartProduct.OPT_NAME1}">
+				                <div><strong>옵션:</strong> ${cartProduct.OPT_NAME1} : ${cartProduct.OPT_VALUE1}</div>
+				            </c:if>
+				            <c:if test="${not empty cartProduct.OPT_NAME2}">
+				                <div><strong>옵션:</strong> ${cartProduct.OPT_NAME2} : ${cartProduct.OPT_VALUE2}</div>
+				            </c:if>
+				            <c:if test="${not empty cartProduct.OPT_NAME3}">
+				                <div><strong>옵션:</strong> ${cartProduct.OPT_NAME3} : ${cartProduct.OPT_VALUE3}</div>
+				            </c:if>
+				            <c:if test="${not empty cartProduct.OPT_NAME4}">
+				                <div><strong>옵션:</strong> ${cartProduct.OPT_NAME4} : ${cartProduct.OPT_VALUE4}</div>
+				            </c:if>
+				            <c:if test="${not empty cartProduct.OPT_NAME5}">
+				                <div><strong>옵션:</strong> ${cartProduct.OPT_NAME5} : ${cartProduct.OPT_VALUE5}</div>
+				            </c:if>
+			            </div>
+			            주문 수량: <input type="number" id="cart_amount_${cartProduct.CART_ID}" value="${cartProduct.CART_AMOUNT}">
+			            <div class="item-options">
+			                <button class="btn-option" onclick="changeAmountPopUp(${cartProduct.CART_ID})">수량 변경</button>
+			                <!-- <button class="btn-option" onclick="">바로구매</button> -->
+			            </div>
+		               <div class="cart-item-price">
+			              <span>총 가격</span> 
+			              <c:set var="totalPrice" value="${cartProduct.CART_AMOUNT * cartProduct.PROD_PRICE}"/>
+               			  <span class="total-price-this">${totalPrice}<span>(원)
+			            </div>
+			            <div class="cart-item-remove" onclick="removeCartItem(${cartProduct.CART_ID})">X</div>
+			            <c:set var="totalSumSell" value="${totalSumSell + totalPrice}" />
+			        </div>
+		        </c:forEach>
+	        </div>
+	        
+	        <div class="cart-summary">
+            	<div class="cart-summary-details">
+                	<div class="summary-item">
+                    	<div>결제 예정 금액</div>
+                    	<div>총 ${countSellproduct}건</div>
+                	</div>
                 <div class="summary-item">
                     <div class="summary-total">${totalSumSell}원</div>
                 </div>
             </div>
             <button class="btn-purchase" onclick="submitOrder()">주문하기</button>
-          </div>
-            
-            
-            <%-- 대여 상품 장바구니 리스트 --%>
-            <div class="sellCartList">
-                <c:forEach items="${cartRentProdInfo}" var="rentCartProduct">
-                    <div class="rent-cart-item" data-cart-id="${cartProduct.CART_ID}">
-                        <div class="checkbox-container">
-                            <input type="checkbox">
-                        </div>
-                        <div class="cart-item-details">
-                            <div><strong>상품명:</strong>${rentCartProduct.PROD_NAME}</div>
-                            <c:if test="${not empty rentCartProduct.opt_name1}">
-                                <div><strong>옵션:</strong> ${rentCartProduct.OPT_NAME1} : ${rentCartProduct.OPT_VALUE1}</div>
-                            </c:if>
-                            <c:if test="${not empty cartProduct.OPT_NAME2}">
-                                <div><strong>옵션:</strong> ${rentCartProduct.OPT_NAME2} : ${rentCartProduct.OPT_VALUE2}</div>
-                            </c:if>
-                            <c:if test="${not empty cartProduct.OPT_NAME3}">
-                                <div><strong>옵션:</strong> ${rentCartProduct.OPT_NAME3} : ${rentCartProduct.OPT_VALUE3}</div>
-                            </c:if>
-                            <c:if test="${not empty cartProduct.OPT_NAME4}">
-                                <div><strong>옵션:</strong> ${rentCartProduct.OPT_NAME4} : ${rentCartProduct.OPT_VALUE4}</div>
-                            </c:if>
-                            <c:if test="${not empty cartProduct.OPT_NAME5}">
-                                <div><strong>옵션:</strong> ${rentCartProduct.OPT_NAME5} : ${rentCartProduct.OPT_VALUE5}</div>
-                            </c:if>
-                        </div>
-                        주문 수량 : <input type="number" id="cart_amount_${rentCartProduct.CART_ID}" value="${rentCartProduct.CART_AMOUNT}">
-                        <div class="cart-item-price">
-                          <span>총 가격</span> 
-                          <c:set var="totalPrice" value="${rentCartProduct.CART_AMOUNT * 30000}"/>
-                            <span class="total-price-this">${totalPrice}<span>(원)
-                        </div>
-                        <div class="item-options">
-                            <button class="btn-option" onclick="changeAmount(${rentCartProduct.CART_ID})">수량 변경</button>
-                            <!-- <button class="btn-option" onclick="">바로구매</button> -->
-                        </div>
-                        <div class="cart-item-remove" onclick="removeCartItem(${rentCartProduct.CART_ID})">X</div>
-                        <c:set var="totalSum" value="${totalSum + totalPrice}" />
-                    </div>
-                </c:forEach>
-            </div>
+      	  </div>
+	        
+	        <h1>장바구니(대여 상품)</h1>
+	         <div class="cart-header">
+	            <div>대여(개수)</div>
+	        </div>
+	        <%-- 대여 상품 장바구니 리스트 --%>
+	        <div class="sellCartList">
+	        	<form></form>
+		        <c:forEach items="${cartRentProdInfo}" var="rentCartProduct">
+			        <div class="rent-cart-item">
+			            <div class="checkbox-container">
+			                <input type="checkbox">
+			            </div>
+			            <div class="cart-item-details">
+			                <div><strong>상품명:</strong>${rentCartProduct.PROD_NAME}</div>
+			                <c:if test="${not empty rentCartProduct.opt_name1}">
+				                <div><strong>옵션:</strong> ${rentCartProduct.OPT_NAME1} : ${rentCartProduct.OPT_VALUE1}</div>
+				            </c:if>
+				            <c:if test="${not empty cartProduct.OPT_NAME2}">
+				                <div><strong>옵션:</strong> ${rentCartProduct.OPT_NAME2} : ${rentCartProduct.OPT_VALUE2}</div>
+				            </c:if>
+				            <c:if test="${not empty cartProduct.OPT_NAME3}">
+				                <div><strong>옵션:</strong> ${rentCartProduct.OPT_NAME3} : ${rentCartProduct.OPT_VALUE3}</div>
+				            </c:if>
+				            <c:if test="${not empty cartProduct.OPT_NAME4}">
+				                <div><strong>옵션:</strong> ${rentCartProduct.OPT_NAME4} : ${rentCartProduct.OPT_VALUE4}</div>
+				            </c:if>
+				            <c:if test="${not empty cartProduct.OPT_NAME5}">
+				                <div><strong>옵션:</strong> ${rentCartProduct.OPT_NAME5} : ${rentCartProduct.OPT_VALUE5}</div>
+				            </c:if>
+			            </div>
+			            주문 수량 : <input type="number" id="cart_amount_${rentCartProduct.CART_ID}" value="${rentCartProduct.CART_AMOUNT}">
+			            <div class="item-options">
+			                <button class="btn-option" onclick="changeAmountPopUp(${rentCartProduct.CART_ID})">수량 변경</button>
+			                <!-- <button class="btn-option" onclick="">바로구매</button> -->
+			            </div>
+		              	<div class="cart-item-price">
+			              <span>총 가격</span> 
+			              <c:set var="totalPriceRent" value="${rentCartProduct.CART_AMOUNT * 30000}"/>
+               				<span class="total-price-this">${totalPriceRent}<span>(원)
+			            </div>
+			            <div class="cart-item-remove" onclick="removeCartItem(${rentCartProduct.CART_ID})">X</div>
+			            <c:set var="totalSum" value="${totalSum + totalPriceRent}" />
+			        </div>
+		        </c:forEach>
+	        </div>
         </div>
         <div class="cart-summary">
             <div class="cart-summary-details">

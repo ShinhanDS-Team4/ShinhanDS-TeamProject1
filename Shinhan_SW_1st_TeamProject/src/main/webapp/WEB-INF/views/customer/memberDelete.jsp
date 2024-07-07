@@ -19,30 +19,30 @@
 	<%@ include file="../common/header.jsp" %>
 	<div class="mypage_wrap">
 		<div class="myinfo inner">
-		<nav>
+			<nav>
 				<ul>
 					<li>
 						<h3>
-							<a href="${path}/customer/orderlist">나의주문</a>
+							<a href="${path}/customer/orderlist.do">나의주문</a>
 						</h3>
 					</li>
 					<li>
 						<h3>
-							<a href="${path}/customer/rentlist">나의대여</a>
+							<a href="${path}/customer/rentlist.do">나의대여</a>
 						</h3>
 					</li>
 					<li>
 						<h3>
-							<a href="${path}/cart/cart">장바구니</a>
+							<a href="${path}/cart/cart.do">장바구니</a>
 						</h3>
 					</li>
 					<li>
 						<h3>
-							<a href="${path}/board/reviewjsp">나의글</a>
+							<a href="${path}/review/myreview.do">나의글</a>
 						</h3>
 						<ul class="myinfo_submenu">
-							<li><a href="javascript:#void">문의글</a></li>
-							<li><a href="${path}/board/reviewjsp">리뷰</a></li>
+							<li><a href="${path}/adminqna/myqna.do">문의글</a></li>
+							<li><a href="${path}/review/myreview.do">리뷰</a></li>
 						</ul>
 					</li>
 					<li>

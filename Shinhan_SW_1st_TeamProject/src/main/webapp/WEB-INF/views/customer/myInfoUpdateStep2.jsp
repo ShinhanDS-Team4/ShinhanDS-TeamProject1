@@ -152,26 +152,26 @@
 				<ul>
 					<li>
 						<h3>
-							<a href="${path}/customer/orderlist">나의주문</a>
+							<a href="${path}/customer/orderlist.do">나의주문</a>
 						</h3>
 					</li>
 					<li>
 						<h3>
-							<a href="${path}/customer/rentlist">나의대여</a>
+							<a href="${path}/customer/rentlist.do">나의대여</a>
 						</h3>
 					</li>
 					<li>
 						<h3>
-							<a href="${path}/cart/cart">장바구니</a>
+							<a href="${path}/cart/cart.do">장바구니</a>
 						</h3>
 					</li>
 					<li>
 						<h3>
-							<a href="${path}/board/reviewjsp">나의글</a>
+							<a href="${path}/review/myreview.do">나의글</a>
 						</h3>
 						<ul class="myinfo_submenu">
-							<li><a href="javascript:#void">문의글</a></li>
-							<li><a href="${path}/board/reviewjsp">리뷰</a></li>
+							<li><a href="${path}/adminqna/myqna.do">문의글</a></li>
+							<li><a href="${path}/review/myreview.do">리뷰</a></li>
 						</ul>
 					</li>
 					<li>
@@ -185,30 +185,30 @@
 					</li>
 				</ul>
 			</nav>
-				<div class="mypage_here">
-					<div class="section_wrap">
-						<h1 class="myinfo_title">회원 정보 수정</h1>
-						<form id="pwCheckForm">
-							<div class="section myinfo_update">
-								<div class="pw-check">
-									<p>
-										회원님은 <strong style="color:#513AE4; font-weight: bold;">${member.member_id}</strong> 아이디로 로그인하셨습니다.
-									</p>
-									<p>회원님의 개인정보보호를 위한 본인 확인절차를 위해 <span style="color:#513AE4;">${member.member_id}</span>  비밀번호를 입력해 주세요.</p>
-									<input type="password" placeholder="비밀번호를 입력 해주세요."
-										id="pw-check_input" name="pw-check_input" class="pw-check_input" value="">
-									<p class="text_here" style="color:red;"></p>
-									<div>
-										<button class="cancel" type="button">취소</button>
-										<button id="confirmButton" type="button" class="confirm button">확인</button>
-									</div>
-								</div>	
-							</div>
-						</form>
-					</div>
+			<div class="mypage_here">
+				<div class="section_wrap">
+					<h1 class="myinfo_title">회원 정보 수정</h1>
+					<form id="pwCheckForm">
+						<div class="section myinfo_update">
+							<div class="pw-check">
+								<p>
+									회원님은 <strong style="color:#513AE4; font-weight: bold;">${member.member_id}</strong> 아이디로 로그인하셨습니다.
+								</p>
+								<p>회원님의 개인정보보호를 위한 본인 확인절차를 위해 <span style="color:#513AE4;">${member.member_id}</span>  비밀번호를 입력해 주세요.</p>
+								<input type="password" placeholder="비밀번호를 입력 해주세요."
+									id="pw-check_input" name="pw-check_input" class="pw-check_input" value="">
+								<p class="text_here" style="color:red;"></p>
+								<div>
+									<button class="cancel" type="button">취소</button>
+									<button id="confirmButton" type="button" class="confirm button">확인</button>
+								</div>
+							</div>	
+						</div>
+					</form>
 				</div>
-			</div>	
-		</div>
+			</div>
+		</div>	
+	</div>
 	<%@ include file="../common/footer.jsp" %>
 	<script>
 	 $(document).ready(function(){   

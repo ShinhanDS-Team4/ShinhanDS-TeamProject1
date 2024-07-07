@@ -151,7 +151,7 @@
 		resultType="cartVO">
 		SELECT * 
 		FROM CART 
-		WHERE "cart_id" = #{cart_id}
+		WHERE cart_id = #{cart_id}
 	</select>
 
 	<select id="selectAll" resultType="cartVO">

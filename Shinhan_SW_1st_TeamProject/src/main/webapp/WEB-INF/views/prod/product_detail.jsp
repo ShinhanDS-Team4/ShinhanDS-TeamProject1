@@ -325,9 +325,9 @@
 		                             callback(); // 로그인 상태일 경우 콜백 함수 실행
 		                        	 console.log("로그인 확인 성공");
 		                        } else {
-		                            alert('로그인이 필요합니다.');
-		                        	// 로그인 페이지로 리다이렉트
-		                            window.location.href = '${path}/member_test/login.do'; 
+                                alert('로그인 후 처음부터 다시 시도해주세요.');
+                                // 로그인 페이지로 리다이렉트
+                                window.location.href = '${path}/member_test/login.do';
 		                        }
 		                    },
 		                    error: function(error) {
@@ -1195,7 +1195,9 @@
 	                   alert("대여상품 장바구니 저장 완료(현재 남은 재고" + currentStock.stock + "개)");
 	                   location.href = "${path}/cart/cart.do?cart_id=" + response.rentCartId;
                    }else{
-                	   alert("현재 대여 재고가 없습니다.");
+                     alert('로그인 후 처음부터 다시 시도해주세요.');
+                     // 로그인 페이지로 리다이렉트
+                     window.location.href = '${path}/member_test/login.do';
                    }
                },
                error: function(error) {
