@@ -20,7 +20,7 @@
 	
 <script>
 function changeAmountPopUp(cart_id){
-	var cart_amout= document.getElementById("cart_amount_" + cart_id).value;
+	var cart_amount= document.getElementById("cart_amount_" + cart_id).value;
 	
 	$.ajax({
 		type:'post',
@@ -135,16 +135,12 @@ function submitRent() {
 <body>
 	<%@ include file="../common/header.jsp" %>	
 	
-	<div class="container">
+	<div class="container inner">
         <h1>장바구니</h1>
-          <div class="cart-header">
+         <div class="cart-header">
             <div>구매(개수)</div>
         </div>  
         <div>
-        	<div class="checkbox-container">
-	            <input type="checkbox" checked>
-	            <span>전체선택</span>
-	        </div>
 	        <%-- 구매 상품 장바구니 리스트 --%>
 	        <div class="sellCartList">
 		        <c:forEach  var="cartProduct" items="${cartProdInfo}">
@@ -168,16 +164,17 @@ function submitRent() {
 				            </c:if>
 			            </div>
 			            주문 수량: <input type="number" id="cart_amount_${cartProduct.CART_ID}" value="${cartProduct.CART_AMOUNT}">
+			            <div class="item-options">
+			                <button class="btn-option" onclick="changeAmountPopUp(${cartProduct.CART_ID})">수량 변경</button>
+			                <!-- <button class="btn-option" onclick="">바로구매</button> -->
+			            </div>
 		               <div class="cart-item-price">
 			              <span>총 가격</span> 
 			              <c:set var="totalPrice" value="${cartProduct.CART_AMOUNT * cartProduct.PROD_PRICE}"/>
                			  <span class="total-price-this">${totalPrice}<span>(원)
 			            </div>
-			            <div class="item-options">
-			                <button class="btn-option" onclick="changeAmountPopUp(${cartProduct.CART_ID})">수량 변경</button>
-			                <!-- <button class="btn-option" onclick="">바로구매</button> -->
-			            </div>
 			            <div class="cart-item-remove" onclick="removeCartItem(${cartProduct.CART_ID})">X</div>
+			            <c:set var="totalSumSell" value="${totalSumSell + totalPrice}" />
 			        </div>
 		        </c:forEach>
 	        </div>
@@ -195,7 +192,10 @@ function submitRent() {
             <button class="btn-purchase" onclick="submitOrder()">주문하기</button>
       	  </div>
 	        
-	        
+	        <h1>장바구니(대여 상품)</h1>
+	         <div class="cart-header">
+	            <div>대여(개수)</div>
+	        </div>
 	        <%-- 대여 상품 장바구니 리스트 --%>
 	        <div class="sellCartList">
 	        	<form></form>
@@ -223,17 +223,17 @@ function submitRent() {
 				            </c:if>
 			            </div>
 			            주문 수량 : <input type="number" id="cart_amount_${rentCartProduct.CART_ID}" value="${rentCartProduct.CART_AMOUNT}">
-		              	<div class="cart-item-price">
-			              <span>총 가격</span> 
-			              <c:set var="totalPrice" value="${rentCartProduct.CART_AMOUNT * 30000}"/>
-               				<span class="total-price-this">${totalPrice}<span>(원)
-			            </div>
 			            <div class="item-options">
 			                <button class="btn-option" onclick="changeAmountPopUp(${rentCartProduct.CART_ID})">수량 변경</button>
 			                <!-- <button class="btn-option" onclick="">바로구매</button> -->
 			            </div>
+		              	<div class="cart-item-price">
+			              <span>총 가격</span> 
+			              <c:set var="totalPriceRent" value="${rentCartProduct.CART_AMOUNT * 30000}"/>
+               				<span class="total-price-this">${totalPriceRent}<span>(원)
+			            </div>
 			            <div class="cart-item-remove" onclick="removeCartItem(${rentCartProduct.CART_ID})">X</div>
-			            <c:set var="totalSum" value="${totalSum + totalPrice}" />
+			            <c:set var="totalSum" value="${totalSum + totalPriceRent}" />
 			        </div>
 		        </c:forEach>
 	        </div>
