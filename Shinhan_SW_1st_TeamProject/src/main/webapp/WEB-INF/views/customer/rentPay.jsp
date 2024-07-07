@@ -26,24 +26,30 @@
 	function applyCoupon() {
 		var selectedCouponId = $('#selectedCoupon').val();
 		var orderid = $('#orderId').val();
+		var orderPrice = $('#orderPrice').val();
 		alert(selectedCouponId);
-		alert(orderid);
+		alert(orderPrice);
 
 		$.ajax({
-			url : "/shoppingmall/customer/applyRentCoupon.do",
+			url : "/shoppingmall/customer/applyCoupon.do",
 			type : 'POST',
 			contentType : 'application/json',
 			data : JSON.stringify({
 				couponid : selectedCouponId,
-				orderid : orderid
+				orderPrice : orderPrice
 			}),
 			success : function(response) {
-				if (response === "Coupon applied") {
-					alert('선택하신 쿠폰이 적용되었습니다');
-					location.reload();
-				} else {
-					alert('선택하신 쿠폰 적용에 실패하였습니다');
-				}
+				console.log(response);  // 응답 데이터를 로그로 출력하여 확인
+				
+				var discountedPrice = response.discountedPrice;
+				var discount = response.discount;
+				
+				console.log(discountedPrice);
+				console.log(discount);
+				
+				$('#discountAmount').val(discount);
+				$('#finalPrice').val(discountedPrice);
+				$('#couponselectedPrice').val(discountedPrice);
 			},
 			error : function() {
 				alert('서버 요청 중 오류가 발생했습니다.');
@@ -53,26 +59,28 @@
 	
 	function applyPoint(){
 		var usePoint = $('#usePoint').val();
-		var orderid = $('#orderId').val();
+		var couponAppliedPrice = $('#couponselectedPrice').val();
 		
 		alert(usePoint);
-		alert(orderid);
+		alert(couponAppliedPrice);
 		
 		$.ajax({
-			url : "/shoppingmall/customer/applyRentPoint.do",
+			url : "/shoppingmall/customer/applyPoint.do",
 			type : 'POST',
 			contentType : 'application/json',
 			data : JSON.stringify({
-				point : usePoint,
-				orderid : orderid
+				usePoint : usePoint,
+				couponAppliedPrice : couponAppliedPrice
 			}),
 			success : function(response) {
-				if (response === "Point Used") {
-					alert('포인트를 사용하였습니다');
-					location.reload();
-				} else {
-					alert('포인트 사용에 실패하였습니다');
-				}
+				console.log(response);
+				
+				var usedPoint = response.usePoint;
+				var pointAppliedPrice = response.pointAppliedPrice;
+				
+				$('#pointUseDiscount').val(usedPoint);
+				$('#pointUsedPrice').val(pointAppliedPrice);
+				$('#finalPrice').val(pointAppliedPrice);
 			},
 			error : function() {
 				alert('서버 요청 중 오류가 발생했습니다.');
@@ -234,10 +242,26 @@
 				</div>
 			</div>
 		</div>
+		
+		<div class="form-group">
+			<label>대여 금액</label>
+			<input id="orderPrice" type="number" value="${rentInfo.total_rent_price}" readonly="readonly">
+		</div>
+		<div class="form-group">
+			<label>쿠폰 할인 금액</label>
+			<input id="discountAmount" type="number" value="0" readonly="readonly">
+		</div>
+		
+		<!-- hidden 처리되어 있는 쿠폰 적용 가격 -->
+		<input id="couponselectDiscount" type="hidden" value="${couponselectDiscount}" readonly="readonly">
+		<input id="pointUseDiscount" type="hidden" value="0" readonly="readonly">
+		
+		<input id="couponselectedPrice" type="hidden" value="${couponSelectedPrice}" readonly="readonly">
+		<input id="pointUsedPrice" type="hidden" value="0" readonly="readonly">
 
 		<div class="form-group">
-			<label>최종 결제 금액</label> <input type="number" readonly="readonly"
-				value="${rentInfo.total_rent_price}">
+			<label>최종 결제 금액</label>
+			<input id="finalPrice" type="number" readonly="readonly" value="${rentInfo.total_rent_price}">
 		</div>
 		<div class="payment-group">
 			<button class="payment-button" id="orderBtn">결제하기</button>

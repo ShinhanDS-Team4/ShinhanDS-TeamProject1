@@ -11,22 +11,22 @@ public class CouponService {
 	@Autowired
 	CouponDAOInterface couponDAO;
 	
-	// 쿠폰상세
-	public CouponDTO selectById(String coupon_id) {
+	// 荑좏룿�긽�꽭
+	public CouponDTO selectById(int coupon_id) {
 		return couponDAO.selectById(coupon_id);
 	}
 	
-	// 쿠폰목록
+	// 荑좏룿紐⑸줉
 	public List<CouponDTO> selectAll() {
 		return couponDAO.selectAll();
 	}
 	
-	//회원별 보유 쿠폰 목록
+	//�쉶�썝蹂� 蹂댁쑀 荑좏룿 紐⑸줉
 	public List<CouponDTO> selectCustomerCouponList(String member_id){
 		return couponDAO.selectCustomerCouponList(member_id);
 	}
 	
-	// 쿠폰사용
+	// 荑좏룿�궗�슜
 	public int couponUse(CouponDTO couponDTO) {
 		return couponDAO.couponUse(couponDTO);
 	}
