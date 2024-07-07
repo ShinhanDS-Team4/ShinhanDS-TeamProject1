@@ -76,7 +76,7 @@
 		WHERE addr_num = #{addr_num}
 	</delete>
 	
-	<select id="findMasterAddr" parameterType="string" resultType="Addr_ListDTO">
+	<select id="findMasterAddr" parameterType="string" resultType="com.team4.shoppingmall.addr_list.Addr_ListDTO">
 		SELECT * 
 		FROM ADDR_LIST 
 		WHERE member_id = #{member_id} 
