@@ -26,8 +26,8 @@
 	
 	function applyCoupon() {
 		var selectedCouponId = $('#selectedCoupon').val();
-		var orderid = $('#orderId').val();
-		var orderPrice = $('#orderPrice').val();
+		var orderPrice = $('#orderPrice').text();
+		
 		alert(selectedCouponId);
 		alert(orderPrice);
 
@@ -48,9 +48,11 @@
 				console.log(discountedPrice);
 				console.log(discount);
 				
-				$('#discountAmount').val(discount);
-				$('#finalPrice').val(discountedPrice);
+				$('#discountAmount').text(discount);
+				$('#finalPrice').text(discountedPrice);
 				$('#couponselectedPrice').val(discountedPrice);
+				$('#usePoint').val(0);
+				$('#pointWillUse').text(0);
 			},
 			error : function() {
 				alert('서버 요청 중 오류가 발생했습니다.');
@@ -81,7 +83,8 @@
 				
 				$('#pointUseDiscount').val(usedPoint);
 				$('#pointUsedPrice').val(pointAppliedPrice);
-				$('#finalPrice').val(pointAppliedPrice);
+				$('#finalPrice').text(pointAppliedPrice);
+				$('#pointWillUse').text(usedPoint);
 			},
 			error : function() {
 				alert('서버 요청 중 오류가 발생했습니다.');
@@ -211,7 +214,7 @@
 					<div class="form-group">
 						<label for="coupon">쿠폰 선택</label> <select name="selectedCoupon"
 							id="selectedCoupon">
-							<option value="선택안함">선택 안함</option>
+							<option value=0>선택 안함</option>
 							<c:forEach var="coupon" items="${couponList}">
 								<option value="${coupon.coupon_id}">${coupon.coupon_name}</option>
 							</c:forEach>
@@ -232,10 +235,24 @@
 					</div>
 					<div class="form-group">
 						<label for="pointLeft">사용할 포인트</label> <input type="number"
-							id="usePoint" name="usePoint">
+							id="usePoint" name="usePoint" value="0">
 						<div class="buttons">
 							<button type="button" id="apply_point" class="select-button" onclick="applyPoint()">사용</button>
 						</div>
+					</div>
+					
+					<!-- hidden 처리되어 있는 쿠폰 적용 가격 -->
+					<input id="couponselectDiscount" type="hidden"
+						value="${couponselectDiscount}" readonly="readonly"> <input
+						id="pointUseDiscount" type="hidden" value="0" readonly="readonly">
+
+					<input id="couponselectedPrice" type="hidden"
+						value="${couponSelectedPrice}" readonly="readonly"> <input
+						id="pointUsedPrice" type="hidden" value="0" readonly="readonly">
+
+					<div class="form-group">
+						<input type="hidden" value="${orderInfo.total_price}"
+							readonly="readonly">
 					</div>
 				</div>
 		
@@ -245,11 +262,7 @@
 						<div>
 							<div class="orderPay-info-text">
 								<p>가격: </p>
-								<c:forEach var="rentDetail" items="${rentDetailList}">
-									<p>
-									  <fmt:formatNumber value="${rentDetail.rent_product_price * rentDetail.rent_num}" type="number" groupingUsed="true" />원
-							  		</p>
-								</c:forEach>
+								<p id="orderPrice">${rentInfo.total_rent_price}</p>
 							</div>
 							<div class="orderPay-info-text">
 								<p>배송비: </p>
@@ -257,57 +270,26 @@
 							</div>
 							<div class="orderPay-info-text">
 								<p>쿠폰 할인 금액</p>
-								<p>0</p>
+								<p id="discountAmount">0</p>
 							</div>
 							<div class="orderPay-info-text">
 								<p>사용할 포인트</p>
-								<p>0</p>
+								<p id="pointWillUse">0</p>
 							</div>
 						</div>
 						<div class="orderPay-info-totalPrice">
 							<p>최종 결제 금액 </p>
-							<c:set var="totalRentPrice" value="${rentDetail.rent_product_price * rentDetail.rent_num}" />
-							<p>
-							   <fmt:formatNumber value="${totalRentPrice}" type="number" groupingUsed="true" />원
+							<p id="finalPrice">
+							   <fmt:formatNumber value="${rentInfo.total_rent_price}" type="number" groupingUsed="true" />원
 							</p>
 						</div>
 					</div>
 				</div>
-			</div>	
-			<div class="form-group">
-				<%-- 최종 결제 금액 --%>
-				<input type="hidden" value="${rentInfo.total_rent_price}" readonly="readonly">
 			</div>
 			<div class="payment-group">
 				<button class="payment-button" id="orderBtn">결제하기</button>
 				<%-- <button class="payment-button" id="cancelBtn">뒤로가기</button> --%>
 			</div>
-
-		</div>
-		
-		<div class="form-group">
-			<label>대여 금액</label>
-			<input id="orderPrice" type="number" value="${rentInfo.total_rent_price}" readonly="readonly">
-		</div>
-		<div class="form-group">
-			<label>쿠폰 할인 금액</label>
-			<input id="discountAmount" type="number" value="0" readonly="readonly">
-		</div>
-		
-		<!-- hidden 처리되어 있는 쿠폰 적용 가격 -->
-		<input id="couponselectDiscount" type="hidden" value="${couponselectDiscount}" readonly="readonly">
-		<input id="pointUseDiscount" type="hidden" value="0" readonly="readonly">
-		
-		<input id="couponselectedPrice" type="hidden" value="${couponSelectedPrice}" readonly="readonly">
-		<input id="pointUsedPrice" type="hidden" value="0" readonly="readonly">
-
-		<div class="form-group">
-			<label>최종 결제 금액</label>
-			<input id="finalPrice" type="number" readonly="readonly" value="${rentInfo.total_rent_price}">
-		</div>
-		<div class="payment-group">
-			<button class="payment-button" id="orderBtn">결제하기</button>
-			<button class="payment-button" id="cancelBtn">뒤로가기</button>
 		</div>
 	</main>
 	<%@ include file="../common/footer.jsp"%>

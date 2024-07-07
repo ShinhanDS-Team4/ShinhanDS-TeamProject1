@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <c:set var="path" value="${pageContext.servletContext.contextPath}" />
 <!DOCTYPE html>
 <html>
@@ -26,7 +26,8 @@
 
 <script>
 	function selectAddr() {
-		var selectedRadio = document.querySelector('input[name="address"]:checked');
+		var selectedRadio = document
+				.querySelector('input[name="address"]:checked');
 		if (selectedRadio) {
 			// 선택된 라디오 버튼의 값 (address ID)을 가져옵니다.
 			var addr_num = selectedRadio.value;
@@ -61,8 +62,8 @@
 
 	function applyCoupon() {
 		var selectedCouponId = $('#selectedCoupon').val();
-		var orderPrice = $('#orderPrice').val();
-		
+		var orderPrice = $('#orderPrice').text();
+
 		alert(selectedCouponId);
 		alert(orderPrice);
 
@@ -75,17 +76,19 @@
 				orderPrice : orderPrice
 			}),
 			success : function(response) {
-				console.log(response);  // 응답 데이터를 로그로 출력하여 확인
-				
+				console.log(response); // 응답 데이터를 로그로 출력하여 확인
+
 				var discountedPrice = response.discountedPrice;
 				var discount = response.discount;
-				
+
 				console.log(discountedPrice);
 				console.log(discount);
-				
-				$('#discountAmount').val(discount);
-				$('#finalPrice').val(discountedPrice);
+
+				$('#discountAmount').text(discount);
+				$('#finalPrice').text(discountedPrice);
 				$('#couponselectedPrice').val(discountedPrice);
+				$('#usePoint').val(0);
+				$('#pointWillUse').text(0);
 			},
 			error : function() {
 				alert('서버 요청 중 오류가 발생했습니다.');
@@ -95,7 +98,7 @@
 
 	function applyPoint() {
 		var usePoint = $('#usePoint').val();
-		var couponAppliedPrice =$('#couponselectedPrice').val();
+		var couponAppliedPrice = $('#couponselectedPrice').val();
 
 		alert(usePoint);
 		alert(couponAppliedPrice);
@@ -110,13 +113,14 @@
 			}),
 			success : function(response) {
 				console.log(response);
-				
+
 				var usedPoint = response.usePoint;
 				var pointAppliedPrice = response.pointAppliedPrice;
-				
+
 				$('#pointUseDiscount').val(usedPoint);
 				$('#pointUsedPrice').val(pointAppliedPrice);
-				$('#finalPrice').val(pointAppliedPrice);
+				$('#finalPrice').text(pointAppliedPrice);
+				$('#pointWillUse').text(usedPoint);
 			},
 			error : function() {
 				alert('서버 요청 중 오류가 발생했습니다.');
@@ -149,48 +153,60 @@
 		});
 	});
 
-	$().ready(function() {
-		var IMP = window.IMP;
-		IMP.init('imp31438144'); // 가맹점 식별코드 입력
+	$()
+			.ready(
+					function() {
+						var IMP = window.IMP;
+						IMP.init('imp31438144'); // 가맹점 식별코드 입력
 
-		$("#orderBtn").on("click", function(){
-			alert("구매버튼");
-			var order_id = '${orderInfo.order_id}';
-			var userid = '${memberInfo.member_id}';
-			var username = '${memberInfo.member_name}';
-			var phone = '${memberInfo.phone}';
-			var merchant_uid = 'orderPay_'+ order_id//DB에 주문ID로 저장될, 고유한 주문 ID
-			var amount = $('#finalPrice').val();//결제 금액
-					
-			IMP.request_pay({
-				pg : "html5_inicis", // 등록된 pg사 (적용된 pg사는 KG이니시스)
-				pay_method : "card",
-				merchant_uid : merchant_uid, // 주문 고유 번호
-				name : "상품 주문",
-				amount : $('#finalPrice').val(),
-				buyer_email : '${memberInfo.email}',
-				buyer_name : username,
-				buyer_tel : phone,
-				buyer_addr : "서울특별시 강남구 신사동",
-				buyer_postcode : "01181",
-			},function(rsp){
-				if(rsp.success){
-					alert("결제 완료");
-					window.location.href = "/shoppingmall/customer/sellPaySuccess?order_id="+encodeURIComponent(order_id);
-				} else {
-					var msg = '결제에 실패하였습니다.';
-					msg += '에러내용 : ' + rsp.error_msg;
-				}
-				alert(msg);
-			});
-		});
-	});
-		
+						$("#orderBtn")
+								.on(
+										"click",
+										function() {
+											alert("구매버튼");
+											var order_id = '${orderInfo.order_id}';
+											var userid = '${memberInfo.member_id}';
+											var username = '${memberInfo.member_name}';
+											var phone = '${memberInfo.phone}';
+											var merchant_uid = 'orderPay_'
+													+ order_id//DB에 주문ID로 저장될, 고유한 주문 ID
+											var amount = $('#finalPrice').val();//결제 금액
+
+											IMP
+													.request_pay(
+															{
+																pg : "html5_inicis", // 등록된 pg사 (적용된 pg사는 KG이니시스)
+																pay_method : "card",
+																merchant_uid : merchant_uid, // 주문 고유 번호
+																name : "상품 주문",
+																amount : $(
+																		'#finalPrice')
+																		.val(),
+																buyer_email : '${memberInfo.email}',
+																buyer_name : username,
+																buyer_tel : phone,
+																buyer_addr : "서울특별시 강남구 신사동",
+																buyer_postcode : "01181",
+															},
+															function(rsp) {
+																if (rsp.success) {
+																	alert("결제 완료");
+																	window.location.href = "/shoppingmall/customer/sellPaySuccess?order_id="
+																			+ encodeURIComponent(order_id);
+																} else {
+																	var msg = '결제에 실패하였습니다.';
+																	msg += '에러내용 : '
+																			+ rsp.error_msg;
+																}
+																alert(msg);
+															});
+										});
+					});
 </script>
 </head>
 <body>
 	<%@ include file="../common/header.jsp"%>
-	
+
 	<main>
 		<h1>주문/결제</h1>
 		<div id="orderList" class="orderList-table">
@@ -206,25 +222,32 @@
 				</thead>
 				<tbody>
 					<c:set var="prodName" value="${brandandProdName['PROD_NAME']}" />
-					<c:set var="brand" value="${brandandProdName['BRAND']}" /> 
+					<c:set var="brand" value="${brandandProdName['BRAND']}" />
 					<c:forEach var="orderDetail" items="${orderDetailList}">
 						<tr>
 							<td>
 								<p>${orderDetail.order_id}</p>
 							</td>
 							<td>
-								<p>(${brand}) ${prodName}</p> 
+								<p>(${brand}) ${prodName}</p>
 							</td>
 							<td>
 								<p>
-									<fmt:formatNumber value="${orderDetail.order_product_price}" type="number" groupingUsed="true" />(원)
+									<fmt:formatNumber value="${orderDetail.order_product_price}"
+										type="number" groupingUsed="true" />
+									(원)
 								</p>
 							</td>
 							<td>
 								<p>${orderDetail.order_num}(개)</p>
 							</td>
 							<td>
-								<p><fmt:formatNumber value="${orderDetail.order_product_price * orderDetail.order_num}" type="number" groupingUsed="true" />(원)</p>
+								<p>
+									<fmt:formatNumber
+										value="${orderDetail.order_product_price * orderDetail.order_num}"
+										type="number" groupingUsed="true" />
+									(원)
+								</p>
 							</td>
 						</tr>
 					</c:forEach>
@@ -234,7 +257,7 @@
 
 		<div class="delivery-info">
 			<h2>배송 정보</h2>
-      
+
 			<div class="form-group-wrap">
 				<div>
 					<div class="form-group">
@@ -261,7 +284,8 @@
 											value="${address.addr_num}" id="address_${address.addr_num}"
 											<c:if test="${address.addr_num == orderInfo.addr_num}">checked</c:if>>
 										</td>
-										<td>${address.main_address}  ${address.sub_address} ${address.detail_address} </td>
+										<td>${address.main_address}${address.sub_address}
+											${address.detail_address}</td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -280,7 +304,7 @@
 							</c:forEach>
 						</select>
 						<!-- Hidden input to store selected coupon ID -->
-		
+
 						<input type="hidden" id="totalPrice" name="totalPrice"
 							value="${orderInfo.total_price}" /> <input type="hidden"
 							id="orderId" name="orderId" value="${orderInfo.order_id}" />
@@ -289,30 +313,33 @@
 								onclick="applyCoupon()">선택하기</button>
 						</div>
 					</div>
-		
-		
+
+
 					<div class="form-group">
 						<label for="pointLeft">보유 포인트</label> <input type="number"
 							value="${customerInfo.point}" readonly="readonly">
 					</div>
 					<div class="form-group">
 						<label for="pointLeft">사용할 포인트</label> <input type="number"
-							id="usePoint" name="usePoint">
+							id="usePoint" name="usePoint" value="0">
 						<div class="buttons">
 							<button type="button" class="select-button" id="apply_point"
 								onclick="applyPoint()">사용</button>
 						</div>
 					</div>
-    
-          <!-- hidden 처리되어 있는 쿠폰 적용 가격 -->
-          <input id="couponselectDiscount" type="hidden" value="${couponselectDiscount}" readonly="readonly">
-          <input id="pointUseDiscount" type="hidden" value="0" readonly="readonly">
 
-          <input id="couponselectedPrice" type="hidden" value="${couponSelectedPrice}" readonly="readonly">
-          <input id="pointUsedPrice" type="hidden" value="0" readonly="readonly">
-			
+					<!-- hidden 처리되어 있는 쿠폰 적용 가격 -->
+					<input id="couponselectDiscount" type="hidden"
+						value="${couponselectDiscount}" readonly="readonly"> <input
+						id="pointUseDiscount" type="hidden" value="0" readonly="readonly">
+
+					<input id="couponselectedPrice" type="hidden"
+						value="${couponSelectedPrice}" readonly="readonly"> <input
+						id="pointUsedPrice" type="hidden" value="0" readonly="readonly">
+
 					<div class="form-group">
-						<input type="hidden" value="${orderInfo.total_price}" readonly="readonly">
+						<input type="hidden" value="${orderInfo.total_price}"
+							readonly="readonly">
 					</div>
 				</div>
 				<div class="orderPay-info-box">
@@ -320,11 +347,11 @@
 					<div>
 						<div>
 							<div class="orderPay-info-text">
-								<p>가격: </p>
-							    <p><fmt:formatNumber value="${orderInfo.total_price}" type="number" groupingUsed="true" /> 원</p>
+								<p>가격:</p>
+								<p id="orderPrice">${orderInfo.total_price}</p>
 							</div>
 							<div class="orderPay-info-text">
-								<p>배송비: </p>
+								<p>배송비:</p>
 								<p>0원</p>
 							</div>
 							<div class="orderPay-info-text">
@@ -332,14 +359,16 @@
 								<p id="discountAmount">0</p>
 							</div>
 							<div class="orderPay-info-text">
-								<p>사용할 포인트</p>
-								<p>0</p>
+								<p>사용 포인트</p>
+								<p id="pointWillUse">0</p>
 							</div>
 						</div>
 						<div class="orderPay-info-totalPrice">
-							<p>최종 결제 금액 </p>
+							<p>최종 결제 금액</p>
 							<p id="finalPrice">
-								<fmt:formatNumber value="${orderInfo.total_price}" type="number" groupingUsed="true" /> 원
+								<fmt:formatNumber value="${orderInfo.total_price}" type="number"
+									groupingUsed="true" />
+								원
 							</p>
 						</div>
 					</div>
@@ -349,7 +378,8 @@
 				<button class="payment-button" id="orderBtn">결제하기</button>
 				<%-- <button class="payment-button" id="cancelBtn">뒤로가기</button> --%>
 			</div>
-		</main>
-		<%@ include file="../common/footer.jsp"%>
+		</div>
+	</main>
+	<%@ include file="../common/footer.jsp"%>
 </body>
 </html>
