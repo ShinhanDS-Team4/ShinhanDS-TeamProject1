@@ -29,10 +29,10 @@ public class Addr_ListService {
 	@Transactional
 	public int addressInsert(Addr_ListDTO addr_list) {
 		
-		// 기존 is_master_addr 값을 N으로 업데이트
+		// 湲곗〈 is_master_addr 媛믪쓣 N�쑝濡� �뾽�뜲�씠�듃
 		int updateToNresult = addr_ListDAOMybatis.updateMasterAddrToN();
 		
-        // 새로운 주소 삽입
+        // �깉濡쒖슫 二쇱냼 �궫�엯
         int result = addr_ListDAOMybatis.addressInsert(addr_list);
 
         return result;
@@ -46,22 +46,26 @@ public class Addr_ListService {
 		return addr_ListDAOMybatis.addressDelete(addr_num);
 	}
 
-	//나의 주소 개수 
+	//�굹�쓽 二쇱냼 媛쒖닔 
 	public int countAddresses(String member_id) {
 		return addr_ListDAOMybatis.countAddresses(member_id);
 	}
 	
-	//주소id에 해당하는 주소를 대표'Y'로 설정
+	//二쇱냼id�뿉 �빐�떦�븯�뒗 二쇱냼瑜� ���몴'Y'濡� �꽕�젙
 	@Transactional
 	public int updateMasterAddrToY(int addr_num) {
 		
-		// 기존 is_master_addr 값을 N으로 업데이트
+		// 湲곗〈 is_master_addr 媛믪쓣 N�쑝濡� �뾽�뜲�씠�듃
 		int updateToNresult = addr_ListDAOMybatis.updateMasterAddrToN();
 				
-		//대표 주소'Y'로 업데이트
+		//���몴 二쇱냼'Y'濡� �뾽�뜲�씠�듃
 		int result = addr_ListDAOMybatis.updateMasterAddrToY(addr_num);
 	
 			
 		return result;
+	}
+	
+	public Addr_ListDTO findMasterAddr(String member_id) {
+		return addr_ListDAOMybatis.findMasterAddr(member_id);
 	}
 }

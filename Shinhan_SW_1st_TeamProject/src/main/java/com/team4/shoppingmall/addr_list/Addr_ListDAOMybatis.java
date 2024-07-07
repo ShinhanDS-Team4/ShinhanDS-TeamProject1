@@ -57,6 +57,12 @@ public class Addr_ListDAOMybatis implements Addr_ListDAOInterface{
 	//주소id에 해당하는 주소를 대표'Y'로 설정
 	public int updateMasterAddrToY(int addr_num) {
 		return sqlSession.update(namespace+"updateMasterAddrToY", addr_num);
+	}
+
+	@Override
+	public Addr_ListDTO findMasterAddr(String member_id) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace+"findMasterAddr",member_id);
 	};
 	
 }

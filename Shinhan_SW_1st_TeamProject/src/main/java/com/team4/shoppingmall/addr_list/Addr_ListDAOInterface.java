@@ -11,7 +11,7 @@ public interface Addr_ListDAOInterface {
 	
 	public List<Addr_ListDTO> selectByMember_Id(String member_id);
 	
-	//나의 배송 목록 검색
+	//�굹�쓽 諛곗넚 紐⑸줉 寃��깋
 	public List<Map<String,Object>> selectByMember_Id2(String member_id);
 	
 	
@@ -21,12 +21,14 @@ public interface Addr_ListDAOInterface {
 
 	public int addressDelete(int addr_num);
 
-	// 기존 is_master_addr 값을 N으로 업데이트
+	// 湲곗〈 is_master_addr 媛믪쓣 N�쑝濡� �뾽�뜲�씠�듃
 	public int updateMasterAddrToN();
-	//나의 주소 개수 
+	//�굹�쓽 二쇱냼 媛쒖닔 
 	public int countAddresses(String member_id);
 	
-	//주소id에 해당하는 주소를 대표'Y'로 설정
+	//二쇱냼id�뿉 �빐�떦�븯�뒗 二쇱냼瑜� ���몴'Y'濡� �꽕�젙
 	public int updateMasterAddrToY(int addr_num);
+
+	public Addr_ListDTO findMasterAddr(String member_id);
 	
 }
