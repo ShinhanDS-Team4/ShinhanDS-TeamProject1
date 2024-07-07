@@ -185,8 +185,8 @@ public class ProdTestController {
         response.put("isLoggedIn", session.getAttribute("member") != null);
         return ResponseEntity.ok(response);
     }
-	
-	
+   
+
     //장바구니 - 상품(판매)
 	@PostMapping("/productCartInsert.do")
 	@ResponseBody
@@ -258,7 +258,7 @@ public class ProdTestController {
 	    
 	/* 구매하기 */ 
 	//ProductNewVO 생성
-	@PostMapping("/productOrderInsert.do")
+	@RequestMapping("/productOrderInsert.do")
 	@ResponseBody
 	public Map<String, Object> productOrderInsert(HttpServletRequest request, 
 								  Model model,
