@@ -179,7 +179,7 @@ public class ProdTestController {
 	
 
    // 로그인 여부 확인 
-   @GetMapping("/checkLoginStatus")
+   @RequestMapping("/checkLoginStatus")
     public ResponseEntity<Map<String, Boolean>> checkLoginStatus(HttpSession session) {
         Map<String, Boolean> response = new HashMap<>();
         response.put("isLoggedIn", session.getAttribute("member") != null);
@@ -188,7 +188,7 @@ public class ProdTestController {
    
 
     //장바구니 - 상품(판매)
-	@PostMapping("/productCartInsert.do")
+	@RequestMapping("/productCartInsert.do")
 	@ResponseBody
 	public Map<String, Object> productCartInsert(String prod_id,
 								 HttpServletRequest request, 
@@ -223,7 +223,7 @@ public class ProdTestController {
 		
 	}
 	//장바구니 - 상품(대여)
-	@PostMapping("/rentProductCartInsert.do")
+	@RequestMapping("/rentProductCartInsert.do")
 	@ResponseBody
 	public Map<String, Object> rentProductCartInsert(String prod_id,
 									 HttpServletRequest request, 
@@ -298,7 +298,7 @@ public class ProdTestController {
     }
 	
 	/* 대여하기 */
-	@PostMapping("/rentProductOrderInsert.do")
+	@RequestMapping("/rentProductOrderInsert.do")
 	@ResponseBody
 	public Map<String, Object> rentProductOrderInsert(HttpServletRequest request, 
 								  Model model,

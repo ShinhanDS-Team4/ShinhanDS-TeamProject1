@@ -53,71 +53,72 @@ public class MemberController {
 	    session.setAttribute("lastRequest", lastRequest);
 	}
 	
-	//濡쒓렇�씤�럹�씠吏�
+	// 로그인 페이지
 	@GetMapping("/login.do")
 	public String loginstart() {
-		return "user/login";
+	    return "user/login";
 	}
-	
+
 	@PostMapping("/login.do")
 	public String login(@RequestParam("member_id") String member_id, @RequestParam("member_pw") String member_pw, HttpSession session, HttpServletRequest request) {
-		MemberDTO member = memberService.selectById(member_id);
-		System.out.println(member);
-		String N = "N";
-		if(member == null) {
-			session.setAttribute("loginResult", "존재하지 않는 ID");
-			return "redirect:login.do";
-		}else if(!member.getMember_pw().equals(member_pw)) {
-			session.setAttribute("loginResult", "Password 불일치");
-			return "redirect:login.do";
-		}else if(member.seller_authority.equals(N)){
-			session.setAttribute("loginResult", "관리자의 인가를 받지 않은 판매자입니다.");
-			return "redirect:login.do";
-		}else if(member.getMember_type() == 2) {
-			session.setAttribute("member", member);
-			LocalDate localDate = LocalDate.now();
-			Date sqlDate = Date.valueOf(localDate);
-			//로그인 날짜를 현재 날짜로 지정
-			member.setLast_access(sqlDate);
-			memberService.memberUpdateAccess(member);
-			return "redirect:/seller/MainPage.do";
-		}
-		else {
-			session.setAttribute("member", member);
-			String lastRequest = (String)session.getAttribute("lastRequest");
+	    MemberDTO member = memberService.selectById(member_id);
+	    System.out.println(member);
+	    String N = "N";
+	    if (member == null) {
+	        session.setAttribute("loginResult", "존재하지 않는 ID");
+	        return "redirect:login.do";
+	    } else if (!member.getMember_pw().equals(member_pw)) {
+	        session.setAttribute("loginResult", "Password 불일치");
+	        return "redirect:login.do";
+	    } else if (member.seller_authority.equals(N)) {
+	        session.setAttribute("loginResult", "관리자의 인가를 받지 않은 판매자입니다.");
+	        return "redirect:login.do";
+	    } else if (member.getMember_type() == 2) {
+	        session.setAttribute("member", member);
+	        LocalDate localDate = LocalDate.now();
+	        Date sqlDate = Date.valueOf(localDate);
+	        // 로그인 날짜를 현재 날짜로 지정
+	        member.setLast_access(sqlDate);
+	        memberService.memberUpdateAccess(member);
+	        return "redirect:/seller/MainPage.do";
+	    } else {
+	        session.setAttribute("member", member);
+	        String lastRequest = (String) session.getAttribute("lastRequest");
 	        System.out.println("Last request: " + lastRequest); // 디버깅용 로그
-			String goPage;
-			if(lastRequest==null) {
-				LocalDate localDate = LocalDate.now();
-				Date sqlDate = Date.valueOf(localDate);
-				//로그인 날짜를 현재 날짜로 지정
-				member.setLast_access(sqlDate);
-				memberService.memberUpdateAccess(member);
-				goPage = "../";
-			}else {
-				int length = request.getContextPath().length();
-				goPage = lastRequest.substring(length);
-				String queryString = (String)session.getAttribute("queryString");
-				if(queryString!=null) goPage = goPage+"?"+queryString;//�뀒�뒪�듃�슜�씤媛�?
-				System.out.println("goPage =>" + goPage);
-			}
-			LocalDate localDate = LocalDate.now();
-			Date sqlDate = Date.valueOf(localDate);
-			//理쒖쥌 �젒�냽�씪�쓣 �쁽�옱 �씪�옄濡� �닔�젙
-			member.setLast_access(sqlDate);
-			memberService.memberUpdateAccess(member);
-			
-			return "redirect:" + goPage;
-		}
+	        String goPage;
+	        if (lastRequest == null) {
+	            LocalDate localDate = LocalDate.now();
+	            Date sqlDate = Date.valueOf(localDate);
+	            // 로그인 날짜를 현재 날짜로 지정
+	            member.setLast_access(sqlDate);
+	            memberService.memberUpdateAccess(member);
+	            goPage = "../";
+	        } else {
+	            LocalDate localDate = LocalDate.now();
+	            Date sqlDate = Date.valueOf(localDate);
+	            // 로그인 날짜를 현재 날짜로 지정
+	            member.setLast_access(sqlDate);
+	            memberService.memberUpdateAccess(member);
+
+	            String queryString = (String) session.getAttribute("queryString");
+	            if (queryString != null) {
+	                goPage = lastRequest + "?" + queryString;
+	            } else {
+	                goPage = lastRequest;
+	            }
+	            System.out.println("goPage =>" + goPage);
+	        }
+	        return "redirect:" + goPage;
+	    }
 	}
-	
-    //濡쒓렇�븘�썐 湲곕뒫
-    @GetMapping("/logout.do")
-    public String logout(HttpSession session) {
-        session.removeAttribute("member"); 
-        return "redirect:/"; 
-    }
-	
+
+	// 로그아웃 기능
+	@GetMapping("/logout.do")
+	public String logout(HttpSession session) {
+	    session.removeAttribute("member");
+	    return "redirect:/";
+	}
+
 	//�쉶�썝媛��엯 湲곕뒫
 	@GetMapping("/signup")
 	public String signup() {
