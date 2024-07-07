@@ -179,8 +179,7 @@
 									</div>
 								</div>
 							</td>
-							<td><input type="number" value="${rentDetail.rent_num}">
-							</td>
+							<td><p class="class">${rentDetail.rent_num}</p></td>
 							<td>
 								<p>${rentDetail.rent_product_price * rentDetail.rent_num}</p>
 							</td>
