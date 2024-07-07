@@ -1,10 +1,14 @@
 package com.team4.shoppingmall.seller_prod_stockTest;
 
 import java.util.List;
+import java.util.Map;
 
 import com.team4.shoppingmall.prod.ProductNewVO;
 
 public interface Seller_Prod_StockTestDAOInterface {
+	
+	//높은 판매량 상품 16개 출력
+	public List<Map<String,Object>> selectBestProducts();
 	
 	//상품ID로 옵션별 판매 상품 재고 조회
 	public List<Seller_Prod_StockTestDTO> selectSpsOptionByProdId(String prod_id);

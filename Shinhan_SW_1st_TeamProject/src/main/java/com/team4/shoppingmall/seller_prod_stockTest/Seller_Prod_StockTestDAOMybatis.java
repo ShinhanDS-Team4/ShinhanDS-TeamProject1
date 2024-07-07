@@ -1,6 +1,7 @@
 package com.team4.shoppingmall.seller_prod_stockTest;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,11 @@ public class Seller_Prod_StockTestDAOMybatis implements Seller_Prod_StockTestDAO
 	SqlSession sqlSession;
 	
 	String namespace = "com.saren.seller_prod_stock.";
+	
+	//높은 판매량 상품 16개 출력
+	public List<Map<String,Object>> selectBestProducts(){
+		return sqlSession.selectList(namespace+"selectBestProducts");
+	};
 	
 	//상품ID로 옵션별 판매 상품 재고 조회
 	@Override
