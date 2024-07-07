@@ -122,14 +122,14 @@
 			var username = '${memberInfo.member_name}';
 			var phone='${memberInfo.phone}';
 			var merchant_uid = 'rentPay_'+rental_code;//DB에 주문ID로 저장될, 고유한 주문 ID
-			var amount = '${rentInfo.total_rent_price}';//결제 금액
+			var amount = $('#finalPrice').val();//결제 금액
 				
 			IMP.request_pay({
                	pg: "html5_inicis",           // 등록된 pg사 (적용된 pg사는 KG이니시스)
                	pay_method: "card",
                	merchant_uid: merchant_uid, // 주문 고유 번호
                	name: "상품 주문",
-               	amount: '${rentInfo.total_rent_price}',
+               	amount: $('#finalPrice').val(),
                	buyer_email: '${memberInfo.email}',
                	buyer_name: username,
                	buyer_tel: phone,

@@ -206,24 +206,6 @@ public class CustomerController {
 			
 			model.addAttribute("finalPrice", discountedPrice);
 
-			/*
-			 * System.out.println("쿠폰 할인액:" + discountAmount);
-			 * System.out.println("쿠폰 적용 결제액:" + discountedPrice);
-			 * 
-			 * int couponAmount = selectCouponDTO.getQuantity();
-			 * selectCouponDTO.setQuantity(couponAmount - 1);
-			 * 
-			 * int couponUpdate = couponService.couponUse(selectCouponDTO);
-			 * 
-			 * 
-			 * 
-			 * OrderProdDTO updatedPrice = new OrderProdDTO();
-			 * updatedPrice.setOrder_id(orderid);
-			 * updatedPrice.setTotal_price(discountedPrice);
-			 * 
-			 * int appliedResult = orderProdService.updateOrderPrice(updatedPrice);
-			 */
-
 			return couponResultDTO;
 		}
 
@@ -249,22 +231,6 @@ public class CustomerController {
 		pointResultDTO.setPointAppliedPrice(pointAppliedPrice);
 		
 		return pointResultDTO;
-
-		/*
-		 * OrderProdDTO updatedPrice = new OrderProdDTO();
-		 * updatedPrice.setOrder_id(orderid);
-		 * updatedPrice.setTotal_price(pointAppliedPrice);
-		 * 
-		 * CustomerDTO customerDTO = customerService.selectById(customerID); int
-		 * existPoint = customerDTO.getPoint(); customerDTO.setPoint(existPoint -
-		 * point);
-		 * 
-		 * int CustomerPointUpdate = customerService.customerUpdate(customerDTO);
-		 * 
-		 * int appliedResult = orderProdService.updateOrderPrice(updatedPrice);
-		 * 
-		 * return "Point Used";
-		 */
 	}
 
 	// 주소 선택하기
