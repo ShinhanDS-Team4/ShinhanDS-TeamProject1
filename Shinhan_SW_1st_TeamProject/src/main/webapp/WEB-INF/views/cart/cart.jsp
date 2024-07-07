@@ -16,8 +16,6 @@
 <script src="${path}/resources/js/jquery-3.7.1.min.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	
-	
 <script>
 function changeAmountPopUp(cart_id){
 	var cart_amount= document.getElementById("cart_amount_" + cart_id).value;
@@ -122,21 +120,13 @@ function submitRent() {
         }
     });
 }
-
 </script>
-
-<style type="text/css">
- .cart-container{
- 	margin: 80px auto;
- }
-</style>	
-
 </head>
 <body>
 	<%@ include file="../common/header.jsp" %>	
 	
-	<div class="container inner">
-        <h1>장바구니</h1>
+	<div class="cart-container inner">
+        <h1 class="cart-title">장바구니</h1>
          <div class="cart-header">
             <div>구매(개수)</div>
         </div>  
