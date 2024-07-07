@@ -12,7 +12,17 @@
 		WHERE r_stock_id= #{r_stock_id}
 	</select>
  	-->
-
+ 	
+	<!-- 대여주문상품 브랜드,이름 -->
+	<select id="getRentOrderProdBrand" parameterType="int" resultType="map">
+		SELECT DISTINCT M.brand, p.prod_name
+		FROM MEMBER M
+		JOIN PROD P ON M.member_id = P.member_id
+		 JOIN RENT_PROD_STOCK RPS ON P.prod_id = RPS.prod_id
+		JOIN RENT_DETAIL RD ON RPS.r_stock_id = RD.r_stock_id
+		WHERE RD.RENTAL_CODE = #{rental_code}
+	</select>
+	
 	<!-- 대여상세 상세 -->
 	<select id="selectById" parameterType="int"
 		resultType="rent_detailVO">

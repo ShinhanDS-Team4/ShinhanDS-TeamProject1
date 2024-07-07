@@ -209,21 +209,21 @@
 								<p>(${brand}) ${prodName}</p> 
 							</td>
 							<td>
-								<p>${orderDetail.order_product_price}(원)</p>
+								<p>
+									<fmt:formatNumber value="${orderDetail.order_product_price}" type="number" groupingUsed="true" />(원)
+								</p>
 							</td>
 							<td>
 								<p>${orderDetail.order_num}(개)</p>
 							</td>
 							<td>
-								<p>${orderDetail.order_product_price * orderDetail.order_num}(원)</p>
+								<p><fmt:formatNumber value="${orderDetail.order_product_price * orderDetail.order_num}" type="number" groupingUsed="true" />(원)</p>
 							</td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
 		</div>
-
-
 
 		<div class="delivery-info">
 			<h2>배송 정보</h2>
@@ -297,8 +297,7 @@
 					</div>
 			
 					<div class="form-group">
-						<input type="hidden"
-							value="${orderInfo.total_price}" readonly="readonly">
+						<input type="hidden" value="${orderInfo.total_price}" readonly="readonly">
 					</div>
 				</div>
 				<div class="orderPay-info-box">
@@ -307,22 +306,26 @@
 						<div>
 							<div class="orderPay-info-text">
 								<p>가격: </p>
-								<c:forEach var="orderDetail" items="${orderDetailList}">
-									<p>${orderDetail.order_product_price * orderDetail.order_num}원</p>
-								</c:forEach>
+							    <p><fmt:formatNumber value="${orderInfo.total_price}" type="number" groupingUsed="true" /> 원</p>
 							</div>
 							<div class="orderPay-info-text">
 								<p>배송비: </p>
 								<p>0원</p>
 							</div>
 							<div class="orderPay-info-text">
-								<p>할인 가격: </p>
-								<p>0원</p>
+								<p>쿠폰 할인 금액</p>
+								<p>0</p>
+							</div>
+							<div class="orderPay-info-text">
+								<p>사용할 포인트</p>
+								<p>0</p>
 							</div>
 						</div>
 						<div class="orderPay-info-totalPrice">
 							<p>최종 결제 금액 </p>
-							<p>${orderInfo.total_price} 원</p>
+							<p>
+								<fmt:formatNumber value="${orderInfo.total_price}" type="number" groupingUsed="true" /> 원
+							</p>
 						</div>
 					</div>
 				</div>

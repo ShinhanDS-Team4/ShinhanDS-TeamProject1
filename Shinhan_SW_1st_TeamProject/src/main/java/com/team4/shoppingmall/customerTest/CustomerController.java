@@ -125,6 +125,8 @@ public class CustomerController {
 		model.addAttribute("brandandProdName", brandandProdName);
 		System.out.println(brandandProdName);
 		
+		
+		
 		model1.addAttribute("orderInfo", orderProdDTO);
 		model2.addAttribute("orderDetailList", orderDetailList);
 		model3.addAttribute("memberInfo", memberDTO);
@@ -137,7 +139,7 @@ public class CustomerController {
 
 	// 상품 대여 결제
 	@GetMapping("/rentPay.do")
-	public String rentPayPage(Model model1, Model model2, Model model3, Model model4, Model model5, Model model6, 
+	public String rentPayPage(Model model, Model model1, Model model2, Model model3, Model model4, Model model5, Model model6, 
 			@RequestParam(value = "rental_code", required = false) Integer rentalCode,
 			HttpSession session) {
 		MemberDTO mem = (MemberDTO)session.getAttribute("member");
@@ -160,12 +162,17 @@ public class CustomerController {
 		// 고객이 가지고 있는 회원등급, 포인트를 가져오기
 		CustomerDTO customerDTO = customerService.selectById(customerID);
 
+		//대여주문 구매 상품 브랜드,이름 가져오기
+		Map<String,String> rentBrandandProdName = rentDetailService.getRentOrderProdBrand(rentalCode);
+		model.addAttribute("rentBrandandProdName", rentBrandandProdName);
+		System.out.println(rentBrandandProdName);
+		
 		model1.addAttribute("rentInfo", rentDTO);
 		model2.addAttribute("rentDetailList", rentDetailList);
 		model3.addAttribute("memberInfo", memberDTO);
 		model4.addAttribute("couponList", usableCouponList);
 		model5.addAttribute("customerInfo", customerDTO);
-
+		
 		return "customer/rentPay";
 	}
 
