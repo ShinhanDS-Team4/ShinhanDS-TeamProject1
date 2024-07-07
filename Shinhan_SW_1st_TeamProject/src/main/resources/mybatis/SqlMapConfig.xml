@@ -36,6 +36,8 @@
 		<typeAlias type="com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockDTO" alias="seller_prod_stockVO" />
 		<typeAlias type="com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockListDTO" alias="seller_prod_stocklistVO" />
 		<typeAlias type="com.team4.shoppingmall.wish_list.Wish_ListDTO" alias="wish_listVO" />
+		<typeAlias type="com.team4.shoppingmall.prod.SellerProdDTO" alias="SellerProdVO" />
+		<typeAlias type="com.team4.shoppingmall.member.MemberCustomerDTO" alias="MemberCustomerVO" />
 	</typeAliases>
 
 </configuration>

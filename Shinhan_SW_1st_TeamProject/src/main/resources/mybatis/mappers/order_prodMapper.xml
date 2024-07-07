@@ -134,7 +134,9 @@
 			S.opt_id5,
 			OD.order_product_price,
 			PI.img_id,
-			OD.order_state
+			OD.order_state,
+			S.prod_id,
+			OD.order_num
 		FROM
 			ORDER_DETAIL OD
 		JOIN
@@ -146,7 +148,9 @@
 		JOIN
 			MEMBER M ON P.member_id = M.member_id
 		JOIN
-			PROD_IMAGE PI ON P.prod_id = PI.prod_id
+    		(SELECT prod_id, img_id
+    		 FROM PROD_IMAGE
+    		 WHERE img_id = CONCAT(prod_id, '_mainimage_1')) PI ON P.prod_id = PI.prod_id
 		where 
 			OD.ORDER_ID = #{aa}
 	</select>

@@ -23,6 +23,10 @@ public class Admin_InqService {
 		return admin_inqDAO.selectAll();
 	}
 	
+	public Integer findMaxAdminInqId() {
+		return admin_inqDAO.findMaxAdminInqId();
+	}
+	
 	public int admin_inqInsert(Admin_InqDTO admin_inq) {
 		return admin_inqDAO.admin_inqInsert(admin_inq);
 	}

@@ -21,6 +21,11 @@
 		SELECT *
 		FROM ADMIN_INQ
 	</select>
+	
+	<select id="findMaxAdminInqId" resultType = "int">
+		SELECT MAX(admin_inq_id) AS max_admin_inq_id
+		FROM ADMIN_INQ
+	</select>
 
 	<insert id="admin_inqInsert" parameterType="admin_inqVO">
 		INSERT 

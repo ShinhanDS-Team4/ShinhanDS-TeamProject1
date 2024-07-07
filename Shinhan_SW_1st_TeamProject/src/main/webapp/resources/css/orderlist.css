@@ -1,3 +1,4 @@
+/* 기존 CSS 코드 */
 @charset "UTF-8";
 
 .inner {
@@ -97,8 +98,8 @@ footer {
 
 .product-detail {
     display: flex;
-    justify-content: space-between; /* Align items the same way as rentlist */
-    align-items: flex-start; /* Align items to the top */
+    justify-content: space-between;
+    align-items: flex-start;
     margin-bottom: 20px;
     width: 100%;
     position: relative;
@@ -124,8 +125,7 @@ footer {
 }
 
 .product-detail-box img {
-    width: 100px; /* Set your desired width */
-    height: 100px; /* Set your desired height */
+    width: 200px;  
     object-fit: cover; /* Ensures the image covers the container while maintaining aspect ratio */
 }
 
@@ -249,8 +249,7 @@ span.order-status {
     color: black;
     border: 1px solid #000000;
 }
-
-/* Refund Complete Popup Styles */
+ 
 #refund-complete-popup, #cancel-complete-popup {
     display: none;
     position: fixed;
@@ -277,4 +276,9 @@ span.order-status {
     right: 0;
     top: 0;
     font-weight: bold;
+}
+ 
+.order-date {
+    font-size: 18px;  
+    color: #333;  
 }

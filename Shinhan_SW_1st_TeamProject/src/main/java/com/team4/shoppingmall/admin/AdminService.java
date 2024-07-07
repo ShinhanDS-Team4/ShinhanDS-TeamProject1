@@ -2,6 +2,7 @@ package com.team4.shoppingmall.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 @Service
 public class AdminService {
@@ -23,4 +24,8 @@ public class AdminService {
 	public boolean updateByPw(String admin_id, String new_admin_pw) {
         return adminDAOMybatis.updateByPw(admin_id, new_admin_pw);
     }
+	
+	public int adminmypageedit(AdminDTO aDto) {
+		return adminDAOMybatis.adminmypageedit(aDto);
+	}
 }

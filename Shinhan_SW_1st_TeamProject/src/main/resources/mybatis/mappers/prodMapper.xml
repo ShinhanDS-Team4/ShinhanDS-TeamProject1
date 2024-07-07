@@ -7,7 +7,7 @@
 	<!-- 상품 상세 정보 조회 -->
 	<select id="selectProdDetailInfoByProdId" parameterType="string"
 		resultType="map">
-		SELECT  P.* , M.*, C.*
+		SELECT P.* , M.*, C.*
 		FROM PROD P
 		JOIN MEMBER M ON P.MEMBER_ID = M.MEMBER_ID 
 		JOIN CATEGORY C ON P.CATEGORY_ID = C.CATEGORY_ID
@@ -15,15 +15,15 @@
 	</select>
 	<select id="selectByProdId" parameterType="string"
 		resultType="prodVO">
-		SELECT * 
-		FROM PROD 
+		SELECT *
+		FROM PROD
 		WHERE prod_id = #{prod_id}
 	</select>
-	
+
 	<select id="selectByMemberId" parameterType="string"
 		resultType="prodVO">
-		SELECT * 
-		FROM PROD 
+		SELECT *
+		FROM PROD
 		WHERE member_id = #{member_id}
 	</select>
 
@@ -33,27 +33,35 @@
 	</select>
 
 	<insert id="prodInsert" parameterType="prodVO">
-		INSERT 
-		INTO PROD(prod_id, prod_name, prod_desc, prod_price, 
-				  prod_added_date, category_id, member_id) 
-		VALUES(#{prod_id}, #{prod_name}, #{prod_desc}, #{prod_price}, 
-			   #{prod_added_date}, #{category_id}, #{member_id})
+		INSERT
+		INTO PROD(prod_id,
+		prod_name, prod_desc, prod_price,
+		prod_added_date, category_id,
+		member_id)
+		VALUES(#{prod_id}, #{prod_name}, #{prod_desc},
+		#{prod_price},
+		#{prod_added_date}, #{category_id}, #{member_id})
 	</insert>
 
 	<update id="prodUpdate" parameterType="prodVO">
 		UPDATE PROD
 		SET
-		prod_name = #{prod_name}, prod_desc = #{prod_desc}, 
-		"prod_price" = #{prod_price}, "prod_added_date" = #{prod_added_date}, 
-		"category_id" = #{category_id}, "member_id" = #{member_id}
-		WHERE "prod_id" = #{prod_id}
+		prod_name =
+		#{prod_name}, prod_desc = #{prod_desc},
+		"prod_price" = #{prod_price},
+		"prod_added_date" = #{prod_added_date},
+		"category_id" = #{category_id},
+		"member_id" = #{member_id}
+		WHERE
+		"prod_id" = #{prod_id}
 	</update>
-	
+
 	<update id="prodModify" parameterType="prodVO">
 		UPDATE PROD
 		SET
-		prod_desc = #{prod_desc}, 
-		prod_price = #{prod_price},  
+		prod_desc =
+		#{prod_desc},
+		prod_price = #{prod_price},
 		category_id = #{category_id}
 		WHERE prod_id = #{prod_id}
 	</update>
@@ -61,9 +69,225 @@
 	<delete id="prodDelete" parameterType="int">
 		DELETE
 		FROM PROD
-		WHERE "prod_id" = #{prod_id}
+		WHERE
+		"prod_id" = #{prod_id}
 	</delete>
 
+	<select id="sellerByProd" parameterType="string"
+		resultType="SellerProdVO">
+		SELECT
+		p.prod_id,
+		p.prod_name,
+		p.prod_desc,
+		p.prod_price,
+		p.prod_added_date,
+		p.category_id,
+		pi.img_id,
+		po.opt_id,
+		po.opt_name,
+		po.opt_value,
+		m.member_name
+		FROM
+		prod p
+		JOIN
+		member m ON p.member_id =
+		m.member_id
+		LEFT JOIN
+		prod_image pi ON p.prod_id = pi.prod_id
+		LEFT JOIN
+		prod_option po ON p.prod_id = po.prod_id
+		WHERE
+		m.member_type = '2'
+		AND
+		m.member_id = #{member_id}
+		ORDER BY
+		p.prod_id
+	</select>
+
+	<select id="sellerProdRank" resultType="map">
+        <![CDATA[
+        SELECT * FROM (
+            SELECT
+                p.prod_id,
+                p.prod_name,
+                p.prod_desc,
+                p.prod_price,
+                p.prod_added_date,
+                p.category_id,
+                pi.img_id,
+                po.opt_id,
+                po.opt_name,
+                po.opt_value,
+                m.member_id,
+                SUM(NVL(SPS.total, 0)) AS total_sales
+            FROM
+                PROD P
+            JOIN
+                member m ON p.member_id = m.member_id
+            LEFT JOIN
+                prod_image pi ON p.prod_id = pi.prod_id
+            LEFT JOIN
+                prod_option po ON p.prod_id = po.prod_id
+            LEFT JOIN
+                SELL_PROD_STOCK SPS ON P.prod_id = SPS.prod_id
+            GROUP BY
+                p.prod_id,
+                p.prod_name,
+                p.prod_desc,
+                p.prod_price,
+                p.prod_added_date,
+                p.category_id,
+                pi.img_id,
+                po.opt_id,
+                po.opt_name,
+                po.opt_value,
+                m.member_id
+            HAVING
+                SUM(NVL(SPS.total, 0)) > 0
+            ORDER BY
+                total_sales DESC
+        ) WHERE ROWNUM <= 10
+        ]]>
+	</select>
+	
+	<select id="allProd" resultType="SellerProdVO">
+		SELECT
+		m.member_id,
+		m.member_name,
+		m.email,
+		m.phone,
+		m.brand,
+		m.birth_date,
+		m.last_access,
+		m.member_type,
+		m.gender,
+		m.seller_authority,
+		m.create_date,
+		p.prod_id,
+		p.prod_name,
+		p.prod_desc,
+		p.prod_price,
+		p.prod_added_date,
+		p.category_id,
+		pi.img_id,
+		pi.img_type,
+		s.s_stock_id AS s_stock_id,
+		s.stock,
+		s.total,
+		po1.opt_id AS opt_id1,
+		po2.opt_id AS opt_id2,
+		po3.opt_id AS opt_id3,
+		po4.opt_id AS opt_id4,
+		po5.opt_id AS opt_id5,
+		po.opt_id,
+		po.opt_name,
+		po.opt_value
+		FROM
+		prod p
+		JOIN
+		member m ON p.member_id = m.member_id
+		LEFT
+		JOIN
+		prod_image pi ON p.prod_id = pi.prod_id
+		LEFT JOIN
+		seller_prod_stock
+		s ON p.prod_id = s.prod_id
+		LEFT JOIN
+		prod_option po ON p.prod_id =
+		po.prod_id
+		LEFT JOIN
+		prod_option po1 ON p.prod_id = po1.prod_id AND
+		po1.opt_id = 1
+		LEFT JOIN
+		prod_option po2 ON p.prod_id = po2.prod_id AND
+		po2.opt_id = 2
+		LEFT JOIN
+		prod_option po3 ON p.prod_id = po3.prod_id AND
+		po3.opt_id = 3
+		LEFT JOIN
+		prod_option po4 ON p.prod_id = po4.prod_id AND
+		po4.opt_id = 4
+		LEFT JOIN
+		prod_option po5 ON p.prod_id = po5.prod_id AND
+		po5.opt_id = 5
+		ORDER BY
+		p.prod_id
+	</select>
+	
+	<select id="searchSellerByProd" resultType="SellerProdVO"
+		parameterType="string">
+		SELECT
+		m.member_id,
+		m.member_name,
+		m.email,
+		m.phone,
+		m.brand,
+		m.birth_date,
+		m.last_access,
+		m.member_type,
+		m.gender,
+		m.seller_authority,
+		m.create_date,
+		p.prod_id,
+		p.prod_name,
+		p.prod_desc,
+		p.prod_price,
+		p.prod_added_date,
+		p.category_id,
+		pi.img_id,
+		pi.img_type,
+		s.s_stock_id AS
+		s_stock_id,
+		s.stock,
+		s.total,
+		po1.opt_id AS opt_id1,
+		po2.opt_id AS
+		opt_id2,
+		po3.opt_id AS opt_id3,
+		po4.opt_id AS opt_id4,
+		po5.opt_id AS
+		opt_id5,
+		po.opt_id,
+		po.opt_name,
+		po.opt_value
+		FROM
+		prod p
+		JOIN
+		member m ON
+		p.member_id = m.member_id
+		LEFT JOIN
+		prod_image pi ON p.prod_id =
+		pi.prod_id
+		LEFT JOIN
+		seller_prod_stock s ON p.prod_id = s.prod_id
+		LEFT
+		JOIN
+		prod_option po ON p.prod_id = po.prod_id
+		LEFT JOIN
+		prod_option po1
+		ON p.prod_id = po1.prod_id AND po1.opt_id = 1
+		LEFT JOIN
+		prod_option po2
+		ON p.prod_id = po2.prod_id AND po2.opt_id = 2
+		LEFT JOIN
+		prod_option po3
+		ON p.prod_id = po3.prod_id AND po3.opt_id = 3
+		LEFT JOIN
+		prod_option po4
+		ON p.prod_id = po4.prod_id AND po4.opt_id = 4
+		LEFT JOIN
+		prod_option po5
+		ON p.prod_id = po5.prod_id AND po5.opt_id = 5
+		<where>
+			<if test="searchType != null and !searchType.isEmpty()">
+				m.member_name LIKE '%' || #{searchType} || '%' OR
+				m.brand LIKE '%' || #{searchType} || '%' OR
+				p.prod_name LIKE '%' || #{searchType} || '%'
+			</if>
+		</where>
+		ORDER BY p.prod_id
+	</select>
+	
 	<select id="selectAll2" resultType="map">
 		SELECT
 		M.brand,
