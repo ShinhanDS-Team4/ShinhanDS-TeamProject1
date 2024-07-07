@@ -46,6 +46,13 @@ public class MemberController {
 	public void defaultpage() {
 
 	}
+	
+	//이전주소 확인
+	@PostMapping("/saveLastRequest")
+	public void saveLastRequest(HttpSession session, @RequestParam("lastRequest") String lastRequest) {
+	    session.setAttribute("lastRequest", lastRequest);
+	}
+	
 	//濡쒓렇�씤�럹�씠吏�
 	@GetMapping("/login.do")
 	public String loginstart() {
@@ -58,7 +65,7 @@ public class MemberController {
 		System.out.println(member);
 		String N = "N";
 		if(member == null) {
-			session.setAttribute("loginResult", "議댁옱�븯吏� �븡�뒗 ID");
+			session.setAttribute("loginResult", "존재하지 않는 ID");
 			return "redirect:login.do";
 		}else if(!member.getMember_pw().equals(member_pw)) {
 			session.setAttribute("loginResult", "Password 불일치");
@@ -66,12 +73,26 @@ public class MemberController {
 		}else if(member.seller_authority.equals(N)){
 			session.setAttribute("loginResult", "관리자의 인가를 받지 않은 판매자입니다.");
 			return "redirect:login.do";
-		}else {
+		}else if(member.getMember_type() == 2) {
+			session.setAttribute("member", member);
+			LocalDate localDate = LocalDate.now();
+			Date sqlDate = Date.valueOf(localDate);
+			//로그인 날짜를 현재 날짜로 지정
+			member.setLast_access(sqlDate);
+			memberService.memberUpdateAccess(member);
+			return "redirect:/seller/MainPage.do";
+		}
+		else {
 			session.setAttribute("member", member);
 			String lastRequest = (String)session.getAttribute("lastRequest");
+	        System.out.println("Last request: " + lastRequest); // 디버깅용 로그
 			String goPage;
 			if(lastRequest==null) {
-				//泥⑤��꽣 濡쒓렇�씤李쎌쑝濡� �뱾�뼱媛붾떎硫� 濡쒓렇�씤 �썑 硫붿씤�럹�씠吏�濡� �씠�룞
+				LocalDate localDate = LocalDate.now();
+				Date sqlDate = Date.valueOf(localDate);
+				//로그인 날짜를 현재 날짜로 지정
+				member.setLast_access(sqlDate);
+				memberService.memberUpdateAccess(member);
 				goPage = "../";
 			}else {
 				int length = request.getContextPath().length();
