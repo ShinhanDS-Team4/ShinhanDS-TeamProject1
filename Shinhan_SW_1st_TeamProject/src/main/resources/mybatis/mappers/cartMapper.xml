@@ -223,8 +223,11 @@
 	<update id="cartUpdate" parameterType="cartVO">
 		UPDATE CART
 		SET
-		member_id = #{member_id}, sellstock_id = #{sellstock_id}, 
-		cart_amount = #{cart_amount}
+		member_id = #{member_id}, 
+		s_stock_id = #{s_stock_id}, 
+		r_stock_id = #{r_stock_id}, 
+		cart_amount = #{cart_amount},
+		product_type = #{product_type}
 		WHERE cart_id = #{cart_id}
 	</update>
 	

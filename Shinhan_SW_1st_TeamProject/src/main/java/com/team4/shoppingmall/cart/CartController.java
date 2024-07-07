@@ -239,9 +239,9 @@ public class CartController {
   
 	@PostMapping("/deleteCart.do")
 	@ResponseBody
-	public String deleteCart(@RequestBody Integer request) {
-		System.out.println(request);
-		Integer cart_id = request;
+	public String deleteCart(@RequestBody String cartId) {
+		//System.out.println("request="+ request);
+		int cart_id = Integer.parseInt(cartId);
 		int cartDeleteResult = cartService.cartDelete(cart_id);
 		
 		if(cartDeleteResult>0) {

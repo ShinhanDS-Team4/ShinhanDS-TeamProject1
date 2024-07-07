@@ -43,6 +43,8 @@ function changeAmount(cart_id){
 }
 
 function removeCartItem(cart_id){
+	console.log(cart_id);
+	
 	$.ajax({
 		type:'post',
 		url:'${path}/cart/deleteCart.do',
@@ -155,7 +157,7 @@ function submitRent() {
 			            </div>
 			            주문 수량: <input type="number" id="cart_amount_${cartProduct.CART_ID}" value="${cartProduct.CART_AMOUNT}">
 			            <div class="item-options">
-			                <button class="btn-option" onclick="changeAmountPopUp(${cartProduct.CART_ID})">수량 변경</button>
+			                <button class="btn-option" onclick="changeAmount(${cartProduct.CART_ID})">수량 변경</button>
 			                <!-- <button class="btn-option" onclick="">바로구매</button> -->
 			            </div>
 		               <div class="cart-item-price">
@@ -214,7 +216,7 @@ function submitRent() {
 			            </div>
 			            주문 수량 : <input type="number" id="cart_amount_${rentCartProduct.CART_ID}" value="${rentCartProduct.CART_AMOUNT}">
 			            <div class="item-options">
-			                <button class="btn-option" onclick="changeAmountPopUp(${rentCartProduct.CART_ID})">수량 변경</button>
+			                <button class="btn-option" onclick="changeAmount(${rentCartProduct.CART_ID})">수량 변경</button>
 			                <!-- <button class="btn-option" onclick="">바로구매</button> -->
 			            </div>
 		              	<div class="cart-item-price">
