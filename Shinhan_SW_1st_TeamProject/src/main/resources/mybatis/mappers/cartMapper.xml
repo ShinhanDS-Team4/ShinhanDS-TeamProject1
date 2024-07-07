@@ -225,7 +225,7 @@
 		SET
 		member_id = #{member_id}, sellstock_id = #{sellstock_id}, 
 		cart_amount = #{cart_amount}
-		WHERE "cart_id" = #{cart_id}
+		WHERE cart_id = #{cart_id}
 	</update>
 	
 	<delete id="cartDelete" parameterType="int">

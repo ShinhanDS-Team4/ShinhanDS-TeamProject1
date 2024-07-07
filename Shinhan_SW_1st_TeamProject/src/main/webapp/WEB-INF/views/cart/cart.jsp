@@ -19,7 +19,7 @@
 	
 	
 <script>
-function changeAmountPopUp(cart_id){
+function changeAmount(cart_id){
 	var cart_amount= document.getElementById("cart_amount_" + cart_id).value;
 	
 	$.ajax({
