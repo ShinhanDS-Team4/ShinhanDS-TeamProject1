@@ -188,7 +188,9 @@
 			<table id="orderTable">
 				<thead>
 					<tr>
-						<th>상품정보</th>
+						<th>주문번호</th>
+						<th>상품명</th>
+						<th>가격</th>
 						<th>구매 수량</th>
 						<th>최종가</th>
 					</tr>
@@ -197,37 +199,23 @@
 					<c:forEach var="orderDetail" items="${orderDetailList}">
 						<tr>
 							<td>
-								<div class="product-details">
-									<div class="info">
-										<div class="left">
-											<p>상품명</p>
-										</div>
-										<div class="right">
-											<input type="text" placeholder="덩크로우" readonly="readonly"
-												value="${orderDetail.s_stock_id}">
-										</div>
-									</div>
-									<div class="info">
-										<div class="left">
-											<p>가격</p>
-										</div>
-										<div class="right">
-											<input type="text" placeholder="10000" readonly="readonly"
-												value="${orderDetail.order_product_price}">
-										</div>
-									</div>
-								</div>
+								<p>${orderDetail.order_id}</p>
 							</td>
-							<td><p class="class">${orderDetail.order_num}</p></td>
+							<td>
+								<p>${orderDetail.s_stock_id}</p>
+							</td>
+							<td>
+								<p>${orderDetail.order_product_price}</p>
+							</td>
+							<td>
+								<p>${orderDetail.order_num}</p>
+							</td>
 							<td>
 								<p>${orderDetail.order_product_price * orderDetail.order_num}</p>
 							</td>
-
 						</tr>
 					</c:forEach>
-
 				</tbody>
-
 			</table>
 		</div>
 
@@ -235,94 +223,111 @@
 
 		<div class="delivery-info">
 			<h2>배송 정보</h2>
-
-			<div class="form-group">
-				<label for="name">이름</label> <input type="text" id="name"
-					name="name" value="${memberInfo.member_name}" readonly="readonly" />
-			</div>
-			<div class="form-group">
-				<label for="phone">휴대폰</label> <input type="text" id="phone"
-					name="phone" value="${memberInfo.phone}" readonly="readonly" />
-			</div>
-
-			<div class="form-group">
-				<label for="addrList">배송지 선택</label>
-				<table class="addrListClass">
-					<thead>
-						<tr>
-							<th></th>
-							<th></th>
-							<th></th>
-							<th></th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach var="address" items="${addrList}">
-							<tr>
-								<td><input type="radio" name="address"
-									value="${address.addr_num}" id="address_${address.addr_num}"
-									<c:if test="${address.addr_num == selectedAddress}">checked</c:if>>
-								</td>
-								<td>${address.addr_num}</td>
-								<td>${address.main_address}</td>
-								<td>${address.sub_address}</td>
-								<td>${address.detail_address}</td>
-							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
-			</div>
-			<div class="form-group">
-				<button type="button" class="select-button" onclick="selectAddr()">배송
-					주소 선택</button>
-			</div>
-
-			<div class="form-group">
-				<label for="coupon">쿠폰 선택</label> <select name="selectedCoupon"
-					id="selectedCoupon">
-					<option value="선택안함">선택 안함</option>
-					<c:forEach var="coupon" items="${couponList}">
-						<option value="${coupon.coupon_id}">${coupon.coupon_name}</option>
-					</c:forEach>
-				</select>
-				<!-- Hidden input to store selected coupon ID -->
-
-				<input type="hidden" id="totalPrice" name="totalPrice"
-					value="${orderInfo.total_price}" /> <input type="hidden"
-					id="orderId" name="orderId" value="${orderInfo.order_id}" />
-				<div class="buttons">
-					<button type="button" class="select-button" id="apply_coupon"
-						onclick="applyCoupon()">선택하기</button>
+			<div class="form-group-wrap">
+				<div>
+					<div class="form-group">
+						<label for="name">이름</label> <input type="text" id="name"
+							name="name" value="${memberInfo.member_name}" readonly="readonly" />
+					</div>
+					<div class="form-group">
+						<label for="phone">휴대폰</label> <input type="text" id="phone"
+							name="phone" value="${memberInfo.phone}" readonly="readonly" />
+					</div>
+					<div class="form-group">
+						<label for="addrList">배송지 선택</label>
+						<table class="addrListClass">
+							<thead>
+								<tr>
+									<th></th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach var="address" items="${addrList}">
+									<tr>
+										<td><input type="radio" name="address"
+											value="${address.addr_num}" id="address_${address.addr_num}"
+											<c:if test="${address.addr_num == selectedAddress}">checked</c:if>>
+										</td>
+										<td>${address.main_address}  ${address.sub_address} ${address.detail_address} </td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
+					<div class="form-group">
+						<button type="button" class="select-button" onclick="selectAddr()">배송
+							주소 선택</button>
+					</div>
+					<div class="form-group">
+						<label for="coupon">쿠폰 선택</label> <select name="selectedCoupon"
+							id="selectedCoupon">
+							<option value="선택안함">선택 안함</option>
+							<c:forEach var="coupon" items="${couponList}">
+								<option value="${coupon.coupon_id}">${coupon.coupon_name}</option>
+							</c:forEach>
+						</select>
+						<!-- Hidden input to store selected coupon ID -->
+		
+						<input type="hidden" id="totalPrice" name="totalPrice"
+							value="${orderInfo.total_price}" /> <input type="hidden"
+							id="orderId" name="orderId" value="${orderInfo.order_id}" />
+						<div class="buttons">
+							<button type="button" class="select-button" id="apply_coupon"
+								onclick="applyCoupon()">선택하기</button>
+						</div>
+					</div>
+		
+		
+					<div class="form-group">
+						<label for="pointLeft">보유 포인트</label> <input type="number"
+							value="${customerInfo.point}" readonly="readonly">
+					</div>
+					<div class="form-group">
+						<label for="pointLeft">사용할 포인트</label> <input type="number"
+							id="usePoint" name="usePoint">
+						<div class="buttons">
+							<button type="button" class="select-button" id="apply_point"
+								onclick="applyPoint()">사용</button>
+						</div>
+					</div>
+			
+					<div class="form-group">
+						<input type="hidden"
+							value="${orderInfo.total_price}" readonly="readonly">
+					</div>
 				</div>
-
-			</div>
-
-
-			<div class="form-group">
-				<label for="pointLeft">보유 포인트</label> <input type="number"
-					value="${customerInfo.point}" readonly="readonly">
-			</div>
-			<div class="form-group">
-				<label for="pointLeft">사용할 포인트</label> <input type="number"
-					id="usePoint" name="usePoint">
-				<div class="buttons">
-					<button type="button" class="select-button" id="apply_point"
-						onclick="applyPoint()">사용</button>
+				<div class="orderPay-info-box">
+					<h3>결제 내용</h3>
+					<div>
+						<div>
+							<div class="orderPay-info-text">
+								<p>가격: </p>
+								<c:forEach var="orderDetail" items="${orderDetailList}">
+									<p>${orderDetail.order_product_price * orderDetail.order_num}원</p>
+								</c:forEach>
+							</div>
+							<div class="orderPay-info-text">
+								<p>배송비: </p>
+								<p>0원</p>
+							</div>
+							<div class="orderPay-info-text">
+								<p>할인 가격: </p>
+								<p>0원</p>
+							</div>
+						</div>
+						<div class="orderPay-info-totalPrice">
+							<p>최종 결제 금액 </p>
+							<p>${orderInfo.total_price} 원</p>
+						</div>
+					</div>
 				</div>
 			</div>
-		</div>
-
-		<div class="form-group">
-			<label>최종 결제 금액</label> <input type="number"
-				value="${orderInfo.total_price}" readonly="readonly">
-		</div>
-		<div class="payment-group">
-			<button class="payment-button" id="orderBtn">결제하기</button>
-			<button class="payment-button" id="cancelBtn">뒤로가기</button>
-		</div>
-
-	</main>
-	<%@ include file="../common/footer.jsp"%>
+			<div class="payment-group">
+				<button class="payment-button" id="orderBtn">결제하기</button>
+				<%-- <button class="payment-button" id="cancelBtn">뒤로가기</button> --%>
+			</div>
+		</main>
+		<%@ include file="../common/footer.jsp"%>
 </body>
 </html>

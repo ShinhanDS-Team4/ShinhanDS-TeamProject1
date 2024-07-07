@@ -239,9 +239,14 @@ public class CartController {
   
 	@PostMapping("/deleteCart.do")
 	@ResponseBody
-	public String deleteCart(@RequestBody String cartId) {
-		//System.out.println("request="+ request);
-		int cart_id = Integer.parseInt(cartId);
+	public String deleteCart(@RequestBody  CartDTO cartDTO) {
+		
+	    Integer cart_id = cartDTO.getCart_id();
+	    
+	    if (cart_id == null) {
+	        return "delete Error";
+	    }
+
 		int cartDeleteResult = cartService.cartDelete(cart_id);
 		
 		if(cartDeleteResult>0) {
