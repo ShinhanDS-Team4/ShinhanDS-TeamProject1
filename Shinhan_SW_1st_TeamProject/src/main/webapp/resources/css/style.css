@@ -1,8 +1,8 @@
 @import url(./common.css);
 
-/* ¸ÞÀÎÆäÀÌÁö */
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
 
-/* ¸ÞÀÎ ¹è³Ê */
+/* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ */
 .banner_wrap{
     display: flex;
     overflow: hidden;
@@ -39,7 +39,7 @@ p.title{
     font-size: 18px;
 }
 
-/* º»¹® */
+/* ï¿½ï¿½ï¿½ï¿½ */
 .main_title{
     text-align: center;
     margin: 50px 0;
@@ -70,9 +70,9 @@ p.product_price{
     font-weight: bold;
 }
 
-/* ¸¶ÀÌÆäÀÌÁö */
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
 .mypage_wrap{
-    margin: 50px 0
+    margin: 50px 0 70px;
 }
 .myinfo{
     display: flex;
@@ -144,7 +144,7 @@ p.product_price{
     padding-right: 50px;
 }
 
-.detail_btn{    /* °ø¿ëÀ¸·Î »©±â */
+.detail_btn{    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
     border: none;
     border-radius: 5px;
     background-color: var(--accent-color);
