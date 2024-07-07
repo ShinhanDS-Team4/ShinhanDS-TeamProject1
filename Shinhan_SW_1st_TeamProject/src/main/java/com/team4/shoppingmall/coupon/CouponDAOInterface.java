@@ -5,7 +5,7 @@ import java.util.List;
 public interface CouponDAOInterface {
 	
 	// 쿠폰상세
-	public CouponDTO selectById(String coupon_id);
+	public CouponDTO selectById(int coupon_id);
 	
 	// 쿠폰목록
 	public List<CouponDTO> selectAll();

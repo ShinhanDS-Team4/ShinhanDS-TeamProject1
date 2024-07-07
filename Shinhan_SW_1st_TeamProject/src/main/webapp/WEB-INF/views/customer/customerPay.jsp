@@ -26,8 +26,7 @@
 
 <script>
 	function selectAddr() {
-		var selectedRadio = document
-				.querySelector('input[name="address"]:checked');
+		var selectedRadio = document.querySelector('input[name="address"]:checked');
 		if (selectedRadio) {
 			// 선택된 라디오 버튼의 값 (address ID)을 가져옵니다.
 			var addr_num = selectedRadio.value;
@@ -62,9 +61,10 @@
 
 	function applyCoupon() {
 		var selectedCouponId = $('#selectedCoupon').val();
-		var orderid = $('#orderId').val();
+		var orderPrice = $('#orderPrice').val();
+		
 		alert(selectedCouponId);
-		alert(orderid);
+		alert(orderPrice);
 
 		$.ajax({
 			url : "/shoppingmall/customer/applyCoupon.do",
@@ -72,15 +72,20 @@
 			contentType : 'application/json',
 			data : JSON.stringify({
 				couponid : selectedCouponId,
-				orderid : orderid
+				orderPrice : orderPrice
 			}),
 			success : function(response) {
-				if (response === "Coupon applied") {
-					alert('선택하신 쿠폰이 적용되었습니다');
-					location.reload();
-				} else {
-					alert('선택하신 쿠폰 적용에 실패하였습니다');
-				}
+				console.log(response);  // 응답 데이터를 로그로 출력하여 확인
+				
+				var discountedPrice = response.discountedPrice;
+				var discount = response.discount;
+				
+				console.log(discountedPrice);
+				console.log(discount);
+				
+				$('#discountAmount').val(discount);
+				$('#finalPrice').val(discountedPrice);
+				$('#couponselectedPrice').val(discountedPrice);
 			},
 			error : function() {
 				alert('서버 요청 중 오류가 발생했습니다.');
@@ -90,26 +95,28 @@
 
 	function applyPoint() {
 		var usePoint = $('#usePoint').val();
-		var orderid = $('#orderId').val();
+		var couponAppliedPrice =$('#couponselectedPrice').val();
 
 		alert(usePoint);
-		alert(orderid);
+		alert(couponAppliedPrice);
 
 		$.ajax({
 			url : "/shoppingmall/customer/applyPoint.do",
 			type : 'POST',
 			contentType : 'application/json',
 			data : JSON.stringify({
-				point : usePoint,
-				orderid : orderid
+				usePoint : usePoint,
+				couponAppliedPrice : couponAppliedPrice
 			}),
 			success : function(response) {
-				if (response === "Point Used") {
-					alert('포인트를 사용하였습니다');
-					location.reload();
-				} else {
-					alert('포인트 사용에 실패하였습니다');
-				}
+				console.log(response);
+				
+				var usedPoint = response.usePoint;
+				var pointAppliedPrice = response.pointAppliedPrice;
+				
+				$('#pointUseDiscount').val(usedPoint);
+				$('#pointUsedPrice').val(pointAppliedPrice);
+				$('#finalPrice').val(pointAppliedPrice);
 			},
 			error : function() {
 				alert('서버 요청 중 오류가 발생했습니다.');
@@ -153,14 +160,14 @@
 			var username = '${memberInfo.member_name}';
 			var phone = '${memberInfo.phone}';
 			var merchant_uid = 'orderPay_'+ order_id//DB에 주문ID로 저장될, 고유한 주문 ID
-			var amount = '${orderInfo.total_price}';//결제 금액
+			var amount = $('#finalPrice').val();//결제 금액
 					
 			IMP.request_pay({
 				pg : "html5_inicis", // 등록된 pg사 (적용된 pg사는 KG이니시스)
 				pay_method : "card",
 				merchant_uid : merchant_uid, // 주문 고유 번호
 				name : "상품 주문",
-				amount : '${orderInfo.total_price}',
+				amount : $('#finalPrice').val(),
 				buyer_email : '${memberInfo.email}',
 				buyer_name : username,
 				buyer_tel : phone,
@@ -227,6 +234,7 @@
 
 		<div class="delivery-info">
 			<h2>배송 정보</h2>
+      
 			<div class="form-group-wrap">
 				<div>
 					<div class="form-group">
@@ -251,7 +259,7 @@
 									<tr>
 										<td><input type="radio" name="address"
 											value="${address.addr_num}" id="address_${address.addr_num}"
-											<c:if test="${address.addr_num == selectedAddress}">checked</c:if>>
+											<c:if test="${address.addr_num == orderInfo.addr_num}">checked</c:if>>
 										</td>
 										<td>${address.main_address}  ${address.sub_address} ${address.detail_address} </td>
 									</tr>
@@ -266,7 +274,7 @@
 					<div class="form-group">
 						<label for="coupon">쿠폰 선택</label> <select name="selectedCoupon"
 							id="selectedCoupon">
-							<option value="선택안함">선택 안함</option>
+							<option value=0>선택 안함</option>
 							<c:forEach var="coupon" items="${couponList}">
 								<option value="${coupon.coupon_id}">${coupon.coupon_name}</option>
 							</c:forEach>
@@ -295,6 +303,13 @@
 								onclick="applyPoint()">사용</button>
 						</div>
 					</div>
+    
+          <!-- hidden 처리되어 있는 쿠폰 적용 가격 -->
+          <input id="couponselectDiscount" type="hidden" value="${couponselectDiscount}" readonly="readonly">
+          <input id="pointUseDiscount" type="hidden" value="0" readonly="readonly">
+
+          <input id="couponselectedPrice" type="hidden" value="${couponSelectedPrice}" readonly="readonly">
+          <input id="pointUsedPrice" type="hidden" value="0" readonly="readonly">
 			
 					<div class="form-group">
 						<input type="hidden" value="${orderInfo.total_price}" readonly="readonly">
@@ -314,7 +329,7 @@
 							</div>
 							<div class="orderPay-info-text">
 								<p>쿠폰 할인 금액</p>
-								<p>0</p>
+								<p id="discountAmount">0</p>
 							</div>
 							<div class="orderPay-info-text">
 								<p>사용할 포인트</p>
@@ -323,7 +338,7 @@
 						</div>
 						<div class="orderPay-info-totalPrice">
 							<p>최종 결제 금액 </p>
-							<p>
+							<p id="finalPrice">
 								<fmt:formatNumber value="${orderInfo.total_price}" type="number" groupingUsed="true" /> 원
 							</p>
 						</div>

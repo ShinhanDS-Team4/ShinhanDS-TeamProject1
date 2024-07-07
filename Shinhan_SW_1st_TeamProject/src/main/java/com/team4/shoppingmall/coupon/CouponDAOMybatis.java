@@ -16,7 +16,7 @@ public class CouponDAOMybatis implements CouponDAOInterface {
 	
 	// 쿠폰상세
 	@Override
-	public CouponDTO selectById(String coupon_id) {
+	public CouponDTO selectById(int coupon_id) {
 		return sqlSession.selectOne(namespace+"couponSelectById", coupon_id);
 	}
 

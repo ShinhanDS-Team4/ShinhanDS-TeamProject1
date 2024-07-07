@@ -5,7 +5,7 @@
 <mapper namespace="com.saren.coupon">
 
 	<!-- 쿠폰상세 -->
-	<select id="couponSelectById" parameterType="string" resultType="couponVO">
+	<select id="couponSelectById" parameterType="int" resultType="couponVO">
 		SELECT *
 		FROM COUPON
 		WHERE coupon_id = #{coupon_id}
