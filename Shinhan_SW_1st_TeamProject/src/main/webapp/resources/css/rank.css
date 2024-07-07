@@ -1,0 +1,203 @@
+@charset "UTF-8";
+
+.popup-button {
+	margin: 20px;
+	padding: 10px 20px;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+.popup-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	display: none;
+	justify-content: center;
+	align-items: center;
+	z-index: 999;
+}
+
+.popup-content {
+	background: white;
+	padding: 20px;
+	border-radius: 10px;
+	width: 80%;
+	max-width: 1000px;
+	height: 80%;
+	overflow-y: auto;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.popup-content .close-button {
+	float: right;
+	font-size: 24px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.popup-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 20px 0;
+	table-layout: fixed; /* 테이블 레이아웃 고정 */
+}
+
+.popup-table th, .popup-table td {
+	border: 1px solid #ddd;
+	padding: 8px;
+	text-align: center;
+	white-space: nowrap; /* 자동 줄바꿈 방지 */
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-size: 14px; /* 글자 크기 조정 */
+}
+
+.popup-table th {
+	background-color: #f2f2f2;
+}
+
+.popup-table .header {
+	font-size: 14px; /* 글자 크기 조정 */
+	font-weight: bold;
+	padding: 10px;
+	white-space: normal; /* 자동 줄바꿈 허용 */
+	word-wrap: break-word; /* 단어 줄바꿈 허용 */
+}
+
+.accordion {
+	background-color: #f2f2f2;
+	color: #444;
+	cursor: pointer;
+	padding: 18px;
+	width: 100%;
+	border: none;
+	text-align: left;
+	outline: none;
+	font-size: 18px;
+	transition: 0.4s;
+}
+
+.active, .accordion:hover {
+	background-color: #ddd;
+}
+
+.panel {
+	padding: 0 18px;
+	display: block;
+	background-color: white;
+	overflow: hidden;
+}
+.void{
+	display: none;
+}
+
+.family_circle {
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	background: #513AE4;
+	margin: 0px auto;
+	font-family: 'Permanent Marker';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 20px; /* 글씨 크기 키움 */
+	line-height: 60px; /* 원의 높이와 맞춤 */
+	display: flex;
+	align-items: center;
+	justify-content: center; /* 가운데 정렬 추가 */
+	text-align: center;
+	color: #FFFFFF;
+}
+
+.bronze_circle {
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	background: linear-gradient(180deg, #CD7F32 0%, #674019 65%, #9A5F26 100%);
+	margin: 0px auto;
+	font-family: 'Permanent Marker';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 20px; /* 글씨 크기 키움 */
+	line-height: 60px; /* 원의 높이와 맞춤 */
+	display: flex;
+	align-items: center;
+	justify-content: center; /* 가운데 정렬 추가 */
+	text-align: center;
+	color: #FFFFFF;
+}
+
+.silver_circle {
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	background: linear-gradient(180deg, #EBEBEB 0%, #B4AEAE 65%, #BFBBBB 100%);
+	margin: 0px auto;
+	font-family: 'Permanent Marker';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 20px; /* 글씨 크기 키움 */
+	line-height: 60px; /* 원의 높이와 맞춤 */
+	display: flex;
+	align-items: center;
+	justify-content: center; /* 가운데 정렬 추가 */
+	text-align: center;
+	color: #FFFFFF;
+}
+
+.gold_circle {
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	background: linear-gradient(180deg, #FFD700 0%, #DBA514 65%, #ECC440 100%);
+	margin: 0px auto;
+	font-family: 'Permanent Marker';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 20px; /* 글씨 크기 키움 */
+	line-height: 60px; /* 원의 높이와 맞춤 */
+	display: flex;
+	align-items: center;
+	justify-content: center; /* 가운데 정렬 추가 */
+	text-align: center;
+	color: #FFFFFF;
+}
+
+.diamond_circle {
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	background: linear-gradient(180deg, #B9F2FF 0%, #4AA5FB 65%, #6DCEFC 100%);
+	margin: 0px auto;
+	font-family: 'Permanent Marker';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 20px; /* 글씨 크기 키움 */
+	line-height: 60px; /* 원의 높이와 맞춤 */
+	display: flex;
+	align-items: center;
+	justify-content: center; /* 가운데 정렬 추가 */
+	text-align: center;
+	color: #FFFFFF;
+}
+
+.ruby_circle {
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	background: linear-gradient(180deg, #E2294F 0%, #7D1128 20%, #FF2C55 50%, #7D1128 80%, #E2294F 100%);
+	margin: 0px auto;
+	font-family: 'Permanent Marker';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 20px; /* 글씨 크기 키움 */
+	line-height: 60px; /* 원의 높이와 맞춤 */
+	display: flex;
+	align-items: center;
+	justify-content: center; /* 가운데 정렬 추가 */
+	text-align: center;
+	color: #FFFFFF;
+}
