@@ -262,7 +262,7 @@
 							<tr>
 								<td><input type="radio" name="address"
 									value="${address.addr_num}" id="address_${address.addr_num}"
-									<c:if test="${address.addr_num == selectedAddress}">checked</c:if>>
+									<c:if test="${address.addr_num == orderInfo.addr_num}">checked</c:if>>
 								</td>
 								<td>${address.addr_num}</td>
 								<td>${address.main_address}</td>
