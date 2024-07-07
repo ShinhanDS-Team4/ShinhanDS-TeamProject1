@@ -123,6 +123,7 @@ public class CustomerController {
 		//주문 구매 상품 브랜드,이름 가져오기
 		Map<String,String> brandandProdName = orderDetailService.getOrderProdBrand(orderID);
 		model.addAttribute("brandandProdName", brandandProdName);
+		System.out.println(brandandProdName);
 		
 		model1.addAttribute("orderInfo", orderProdDTO);
 		model2.addAttribute("orderDetailList", orderDetailList);

@@ -8,7 +8,7 @@
 	<!-- 주문상품 브랜드,이름 -->
 	<select id="getOrderProdBrand" parameterType="int" 
 			resultType="map">
-		SELECT M.brand, p.prod_name
+		SELECT DISTINCT M.brand, p.prod_name
 		FROM MEMBER M
 		JOIN PROD P ON M.member_id = P.member_id
 		JOIN SELL_PROD_STOCK S ON P.prod_id = S.prod_id

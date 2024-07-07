@@ -199,14 +199,14 @@
 				</thead>
 				<tbody>
 					<c:set var="prodName" value="${brandandProdName['PROD_NAME']}" />
-					<c:set var="brand" value="${brandandProdName['BRAND']}" />
+					<c:set var="brand" value="${brandandProdName['BRAND']}" /> 
 					<c:forEach var="orderDetail" items="${orderDetailList}">
 						<tr>
 							<td>
 								<p>${orderDetail.order_id}</p>
 							</td>
 							<td>
-								<p>(${brand}) ${prodName}</p>
+								<p>(${brand}) ${prodName}</p> 
 							</td>
 							<td>
 								<p>${orderDetail.order_product_price}(원)</p>
