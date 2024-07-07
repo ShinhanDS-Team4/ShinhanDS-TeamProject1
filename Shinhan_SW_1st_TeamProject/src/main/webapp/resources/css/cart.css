@@ -76,19 +76,21 @@
      margin-bottom: 10px;
  }
  .btn-purchase {
-     background-color: #6c63ff;
+     background-color: #513AE4;
      color: #fff;
-     padding: 15px 40px;
+     padding: 15px 70px;
      border: none;
      border-radius: 5px;
      cursor: pointer;
      font-size: 1.2em;
+     font-weight: bold;
      text-decoration: none;
      display: inline-block;
      margin-top: 20px;
  }
  .btn-purchase:hover {
-     background-color: #5555ff;
+    background-color: #000000;
+    transition: 0.3s;
  }
  footer {
      background-color: #fff;

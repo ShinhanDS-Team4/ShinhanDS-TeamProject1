@@ -99,6 +99,7 @@ public class ProdTestController {
 	@GetMapping("/product_detail")
 	public void productDetail(String prod_id, 
 								Model model
+								//,@RequestParam(value = "prod_id", required = false) String prod_id
 								//,@RequestBody Map<String, Object> request 
 	) throws JsonProcessingException {
 		
