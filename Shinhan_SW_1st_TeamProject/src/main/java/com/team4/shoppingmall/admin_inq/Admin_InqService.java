@@ -1,5 +1,6 @@
 package com.team4.shoppingmall.admin_inq;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,4 +39,26 @@ public class Admin_InqService {
 	public int admin_inqDelete(Integer admin_inq_id) {
 		return admin_inqDAO.admin_inqDelete(admin_inq_id);
 	}
+
+	public List<Admin_InqDTO> selectBySellerAll() {
+		return admin_inqDAO.selectBySellerAll();
+	}
+
+	public List<Admin_InqDTO> selectByCustomerAll() {
+		return admin_inqDAO.selectByCustomerAll();
+	}
+
+	public List<Admin_InqDTO> searchFaq(String searchQuery, String boardType) {
+		return admin_inqDAO.searchFaq(searchQuery, boardType);
+	}
+
+	public int admin_reply_delete(Integer admin_inq_id) {
+		return admin_inqDAO.admin_reply_delete(admin_inq_id);
+	}
+
+	public int admin_replyUpdate(Admin_InqDTO reply_update) {		
+		return admin_inqDAO.admin_replyUpdate(reply_update);
+	}
+
+
 }

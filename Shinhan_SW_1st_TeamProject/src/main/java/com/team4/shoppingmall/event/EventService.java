@@ -30,4 +30,8 @@ public class EventService {
 	public int eventDelete(Integer event_id) {
 		return eventDAO.eventDelete(event_id);
 	}
+
+	public List<EventDTO> selectBySearch(String search_Event) {		
+		return eventDAO.selectBySearch(search_Event);
+	}
 }
