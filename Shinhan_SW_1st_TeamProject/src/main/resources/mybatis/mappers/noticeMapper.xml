@@ -32,7 +32,7 @@
 	<delete id="noticeDelete" parameterType="int">
 		DELETE
 		FROM NOTICE
-		WHERE "not_id" = #{not_id}
+		WHERE not_id = #{not_id}
 	</delete>
 	
 	<select id="noticeBysearch" parameterType="string" resultType="noticeVO">

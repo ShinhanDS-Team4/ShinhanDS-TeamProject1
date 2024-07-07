@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="path" value="${pageContext.servletContext.contextPath}" />
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>주문결제페이지</title>
+<title>대여주문 결제 페이지</title>
 <!-- 본문 css -->
 <link rel="stylesheet" href="${path}/resources/css/style.css">
 <!-- 헤더,푸터 css -->
@@ -157,90 +158,131 @@
 			<table id="orderTable">
 				<thead>
 					<tr>
-						<th>상품정보</th>
+						<th>대여 번호</th>
+						<th>상품명</th>
+						<th>대여 가격</th>
 						<th>구매 수량</th>
 						<th>최종가</th>
 					</tr>
 				</thead>
 				<tbody>
+					<c:set var="prodName" value="${rentBrandandProdName['PROD_NAME']}" />
+					<c:set var="brand" value="${rentBrandandProdName['BRAND']}" /> 
 					<c:forEach var="rentDetail" items="${rentDetailList}">
 						<tr>
 							<td>
-								<div class="product-details">
-									<div class="info">
-										<div class="left">
-											<p>상품명</p>
-										</div>
-										<div class="right">
-											<input type="text" placeholder="덩크로우" readonly="readonly"
-												value="${rentDetail.r_stock_id}">
-										</div>
-									</div>
-									<div class="info">
-										<div class="left">
-											<p>가격</p>
-										</div>
-										<div class="right">
-											<input type="text" placeholder="10000" readonly="readonly"
-												value="${rentDetail.rent_product_price}">
-										</div>
-									</div>
-								</div>
+								<p>${rentDetail.rental_code}</p>
 							</td>
-							<td><p class="class">${rentDetail.rent_num}</p></td>
 							<td>
-								<p>${rentDetail.rent_product_price * rentDetail.rent_num}</p>
+								<p>(${brand}) ${prodName}</p> 
 							</td>
-
+							<td>
+								<p>
+									<fmt:formatNumber value="${rentDetail.rent_product_price}" type="number" groupingUsed="true" />(원)
+								</p>
+							</td>
+							<td>
+								<p>${rentDetail.rent_num}(개)</p>
+							</td>
+							<td>
+								<p>
+									<fmt:formatNumber value="${rentDetail.rent_product_price * rentDetail.rent_num}" type="number" groupingUsed="true" />(원)
+								</p>
+							</td>
 						</tr>
 					</c:forEach>
-
 				</tbody>
-
 			</table>
 		</div>
 
 		<div class="delivery-info">
 			<h2>배송자 정보</h2>
-
-			<div class="form-group">
-				<label for="name">이름</label> <input type="text" id="name" readonly="readonly"
-					name="name" value="${memberInfo.member_name}" />
-			</div>
-			<div class="form-group">
-				<label for="phone">휴대폰</label> <input type="text" id="phone" readonly="readonly"
-					name="phone" value="${memberInfo.phone}" />
-			</div>
-
-			<div class="form-group">
-				<label for="coupon">쿠폰 선택</label> <select name="selectedCoupon"
-					id="selectedCoupon">
-					<option value="선택안함">선택 안함</option>
-					<c:forEach var="coupon" items="${couponList}">
-						<option value="${coupon.coupon_id}">${coupon.coupon_name}</option>
-					</c:forEach>
-				</select>
-				<!-- Hidden input to store selected coupon ID -->
-
-				<input type="hidden" id="totalPrice" name="totalPrice" value="${rentInfo.total_rent_price}" />
-					<input type="hidden" id="orderId" name="orderId" value="${rentInfo.rental_code}" />
-				<div class="buttons">
-					<button type="button" class="select-button" id="apply_coupon" onclick="applyCoupon()">선택하기</button>
+			<div class="form-group-wrap">
+				<div>
+					<div class="form-group">
+						<label for="name">이름</label> <input type="text" id="name" readonly="readonly"
+							name="name" value="${memberInfo.member_name}" />
+					</div>
+					<div class="form-group">
+						<label for="phone">휴대폰</label> <input type="text" id="phone" readonly="readonly"
+							name="phone" value="${memberInfo.phone}" />
+					</div>
+		
+					<div class="form-group">
+						<label for="coupon">쿠폰 선택</label> <select name="selectedCoupon"
+							id="selectedCoupon">
+							<option value="선택안함">선택 안함</option>
+							<c:forEach var="coupon" items="${couponList}">
+								<option value="${coupon.coupon_id}">${coupon.coupon_name}</option>
+							</c:forEach>
+						</select>
+						<!-- Hidden input to store selected coupon ID -->
+		
+						<input type="hidden" id="totalPrice" name="totalPrice" value="${rentInfo.total_rent_price}" />
+							<input type="hidden" id="orderId" name="orderId" value="${rentInfo.rental_code}" />
+						<div class="buttons">
+							<button type="button" class="select-button" id="apply_coupon" onclick="applyCoupon()">선택하기</button>
+						</div>
+		
+					</div>
+		
+					<div class="form-group">
+						<label for="pointLeft">보유 포인트</label> <input type="number" readonly="readonly"
+							value="${customerInfo.point}">
+					</div>
+					<div class="form-group">
+						<label for="pointLeft">사용할 포인트</label> <input type="number"
+							id="usePoint" name="usePoint">
+						<div class="buttons">
+							<button type="button" id="apply_point" class="select-button" onclick="applyPoint()">사용</button>
+						</div>
+					</div>
 				</div>
-
-			</div>
-
-			<div class="form-group">
-				<label for="pointLeft">보유 포인트</label> <input type="number" readonly="readonly"
-					value="${customerInfo.point}">
-			</div>
-			<div class="form-group">
-				<label for="pointLeft">사용할 포인트</label> <input type="number"
-					id="usePoint" name="usePoint">
-				<div class="buttons">
-					<button type="button" id="apply_point" class="select-button" onclick="applyPoint()">사용</button>
+		
+				<div class="orderPay-info-box">
+					<h3>결제 내용</h3>
+					<div>
+						<div>
+							<div class="orderPay-info-text">
+								<p>가격: </p>
+								<c:forEach var="rentDetail" items="${rentDetailList}">
+									<p>
+									  <fmt:formatNumber value="${rentDetail.rent_product_price * rentDetail.rent_num}" type="number" groupingUsed="true" />원
+							  		</p>
+								</c:forEach>
+							</div>
+							<div class="orderPay-info-text">
+								<p>배송비: </p>
+								<p>0원</p>
+							</div>
+							<div class="orderPay-info-text">
+								<p>쿠폰 할인 금액</p>
+								<p>0</p>
+							</div>
+							<div class="orderPay-info-text">
+								<p>사용할 포인트</p>
+								<p>0</p>
+							</div>
+						</div>
+						<div class="orderPay-info-totalPrice">
+							<p>최종 결제 금액 </p>
+							<c:set var="totalRentPrice" value="${rentDetail.rent_product_price * rentDetail.rent_num}" />
+							<p>
+							   <fmt:formatNumber value="${totalRentPrice}" type="number" groupingUsed="true" />원
+							</p>
+						</div>
+					</div>
 				</div>
+			</div>	
+			<div class="form-group">
+				<%-- 최종 결제 금액 --%>
+				<input type="hidden" value="${rentInfo.total_rent_price}" readonly="readonly">
 			</div>
+			<div class="payment-group">
+				<button class="payment-button" id="orderBtn">결제하기</button>
+				<%-- <button class="payment-button" id="cancelBtn">뒤로가기</button> --%>
+			</div>
+
 		</div>
 		
 		<div class="form-group">

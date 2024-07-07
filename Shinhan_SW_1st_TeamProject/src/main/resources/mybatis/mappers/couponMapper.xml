@@ -21,7 +21,7 @@
 	<select id="selectCustomerCouponList" parameterType="string" resultType="couponVO">
 		SELECT *
 		FROM COUPON
-		WHERE member_id=#{member_id}
+		WHERE member_id = #{member_id}
 	</select>
 	
 	<!-- 쿠폰사용 -->

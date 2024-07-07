@@ -1,5 +1,6 @@
 package com.team4.shoppingmall.admin;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.team4.shoppingmall.admin_inq.Admin_InqDTO;
+import com.team4.shoppingmall.admin_inq.Admin_InqService;
 import com.team4.shoppingmall.customer.CustomerService;
 import com.team4.shoppingmall.event.EventDTO;
 import com.team4.shoppingmall.event.EventService;
@@ -47,6 +50,8 @@ public class AdminController {
 	ProdService pService;
 	@Autowired
 	EventService evService;
+	@Autowired
+	Admin_InqService aiService;
 
 	Logger logger = LoggerFactory.getLogger(AdminController.class);
 
@@ -298,39 +303,53 @@ public class AdminController {
 		model.addAttribute("customer_info", mService.customerByInfo(member_id));
 		return "admin/admin_customer_info";
 	}
-	
-	// 아직 해야할 부분
-	// 검색창
-	@GetMapping("search_results")
-	public @ResponseBody List<MemberDTO> searchResults(String searchType, String keyword) {
-		List<MemberDTO> members = mService.searchMembers(searchType, keyword);
-		return members;
-	}
-
-	// 관리자 문의 게시판
+		
+	// 관리자 문의 게시판		
 	@GetMapping("admin_faq_list")
-	public String adminfaqlist() {
+	public String adminfaqlist(Model model) {
+		List<Admin_InqDTO> allSeller = aiService.selectBySellerAll();						
+		model.addAttribute("Seller", allSeller);		
 		return "admin/admin_faq_list";
 	}
-	@GetMapping("admin_faq_insert")
-	public String adminfaqinsert() {
-		return "admin/admin_faq_insert";
-	}
-	@GetMapping("admin_faq_update")
-	public String adminfaqupdate() {
-		return "admin/admin_faq_update";
-	}
-	@GetMapping("admin_faq_delete")
-	public String adminfaqdelete() {
-		return "admin/admin_faq_update";
-	}
+	
+	// 관리자 문의 검색
 	@GetMapping("admin_faq_search")
-	public String adminfaqsearch() {
-		return "admin/admin_faq_search";
+	public String adminFaqSearch(Model model, @RequestParam String searchQuery, @RequestParam String boardType) {
+	    List<Admin_InqDTO> searchFaq = aiService.searchFaq(searchQuery, boardType);	    
+	    model.addAttribute("inquiries", searchFaq);	    
+	    return "admin/admin_faq_search_result";
 	}
-	@GetMapping("admin_faq_search_result")
-	public String adminfaqsearchresult() {
-		return "admin/admin_faq_search_result";
+
+	// 관리자 문의 상세
+	@GetMapping("admin_faq_detail")
+	@ResponseBody
+	public Admin_InqDTO adminFaqDetail(@RequestParam Integer admin_inq_id) {
+	    return aiService.selectByInqId(admin_inq_id);
+	}
+
+	// 관리자 문의 등록
+	@PostMapping("admin_faq_insert")
+	@ResponseBody
+	public String adminFaqReply(Admin_InqDTO reply_update) {
+		int result = aiService.admin_replyUpdate(reply_update);	    
+	    System.out.println(result);
+	    return "admin/admin_faq_insert";
+	}
+    
+	@PostMapping("admin_faq_reply_update")
+	@ResponseBody
+	public String adminFaqUpdate(Admin_InqDTO reply_update) {
+		int result = aiService.admin_replyUpdate(reply_update);
+		System.out.println(result);
+		return "admin/admin_faq_reply_update";
+	}
+	
+	@PostMapping("admin_faq_reply_delete")
+	@ResponseBody
+	public String adminFaqDelete(@RequestParam Integer admin_inq_id) {
+		int result = aiService.admin_reply_delete(admin_inq_id);
+		System.out.println(result);
+		return "admin/admin_faq_reply_delete";
 	}
 	
 	// 관리자 공지 게시판
@@ -340,50 +359,49 @@ public class AdminController {
 		return "admin/admin_notice_list";
 	}
 	
-	@GetMapping("admin_notice_select")
-	@ResponseBody
-	public String adminnoticeselect(Model model, int not_id) {
-		model.addAttribute("notices", nService.selectById(not_id));
-		return "admin/admin_notice_select";
+	@GetMapping("admin_notice_search")
+	public String adminnoticesearch(Model model, String search_notice) {
+		System.out.println(search_notice);
+		List<NoticeDTO> notices = nService.noticeBysearch(search_notice);
+		System.out.println(notices);
+		model.addAttribute("notices", notices);
+		return "admin/admin_notice_search_result";
 	}
 	
-	@GetMapping("admin_notice_insert")
+	@GetMapping("admin_notice_detail")
 	@ResponseBody
-	public String adminnoticeinsert0(NoticeDTO nDTO) {
-		return "admin/admin_notice_list";
+	public NoticeDTO adminnoticeselect(Model model, Integer not_id) {		
+		return nService.selectById(not_id);
+	}
+	
+	@GetMapping("admin_notice_create")
+	public String adminnoticecreate(NoticeDTO nDTO) {				
+		return "admin/admin_notice_insert";
 	}
 	
 	@PostMapping("admin_notice_insert")
 	@ResponseBody
 	public String adminnoticeinsert(NoticeDTO nDTO) {
 		int insert = nService.noticeInsert(nDTO);
-	    System.out.println(insert+"건수");
-	    return "redirect:admin_notice_list";		
+	    System.out.println(insert+"성공");
+	    return "admin/admin_event_insert";		
 	}
 	
-	@GetMapping("admin_notice_update")
+	@PostMapping("admin_notice_update")
 	@ResponseBody
-	public int adminnoticeupdate(NoticeDTO nDTO) {
-		int update = nService.noticeUpdate(nDTO);
-		return update;
+	public String adminnoticeupdate(NoticeDTO nDTO) {
+		int result = nService.noticeUpdate(nDTO);
+		System.out.println(result+"수정 완료");		
+		return "admin/admin_notice_update";
 	}
 	
 	@PostMapping("admin_notice_delete")
 	@ResponseBody
-	public int adminnoticedelete(int not_id) {
-		int delete = nService.noticeDelete(not_id);
-		return delete;
-	}
-	
-	@GetMapping("admin_notice_search")
-	@ResponseBody
-	public String adminnoticesearch(Model model, String search_title) {
-		System.out.println(search_title);
-		List<NoticeDTO> notices = nService.noticeBysearch(search_title);
-		System.out.println(notices);
-		model.addAttribute("notices", notices);
-		return "admin/admin_notice_list_searchresult";
-	}	
+	public String adminnoticedelete(Integer not_id) {
+		int result = nService.noticeDelete(not_id);
+		System.out.println(result+"삭제 완료");
+		return "admin/admin_notice_delete";
+	}		
 	
 	// 관리자 이벤트 게시판
 	@GetMapping("admin_event_list")
@@ -391,35 +409,54 @@ public class AdminController {
 		model.addAttribute("events", evService.selectAll());
 		return "admin/admin_event_list";
 	}
-	@GetMapping("admin_event_select")
-	public String admineventselect(Model model, Integer event_id) {
-		System.out.println(event_id);
-		return "admin/admin_event_select";
+	
+	@GetMapping("admin_event_search")
+	public String admineventsearch(Model model, String searchEvent) {
+		List<EventDTO> eDto = evService.selectBySearch(searchEvent);
+		System.out.println(eDto);
+		model.addAttribute("events", eDto);
+		return "admin/admin_event_search_result";
+	}
+	
+	@GetMapping("admin_event_detail")
+	@ResponseBody
+	public EventDTO admineventselect(Model model, @RequestParam Integer event_id) {
+		return evService.selectById(event_id);
 	}
 	@GetMapping("admin_event_create")
 	public String admineventcreate(EventDTO evDto) {
 		return "admin/admin_event_insert";
 	}
+	
 	@PostMapping("admin_event_insert")
 	@ResponseBody
 	public String admineventinsert(EventDTO evDto) {
+		int result = evService.eventInsert(evDto);
+		System.out.println(result+"성공");
 		return "admin/admin_event_insert";
 	}
-	@GetMapping("admin_event_update")
+	
+	@PostMapping("admin_event_update")
+	@ResponseBody
 	public String admineventupdate(EventDTO evDto) {
+		int result = evService.eventUpdate(evDto);
+		System.out.println(result+"수정 완료");
 		return "admin/admin_event_update";
 	}
-	@GetMapping("admin_event_delete")
+	
+	@PostMapping("admin_event_delete")
+	@ResponseBody
 	public String admineventdelete(Integer event_id) {
+		int result = evService.eventDelete(event_id);
+		System.out.println(result + "삭제 완료");
 		return "admin/admin_event_delete";
+	}	
+	
+	// 아직 해야할 부분
+	// 검색창
+	@GetMapping("search_results")
+	public @ResponseBody List<MemberDTO> searchResults(String searchType, String keyword) {
+		List<MemberDTO> members = mService.searchMembers(searchType, keyword);
+		return members;
 	}
-	@GetMapping("admin_event_search")
-	public String admineventsearch() {
-		return "admin/admin_event_search";
-	}
-	@GetMapping("admin_event_search_result")
-	public String admineventsearchresult() {
-		return "admin/admin_event_search_result";
-	}
-
 }

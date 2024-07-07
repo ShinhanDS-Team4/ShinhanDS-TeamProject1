@@ -19,4 +19,5 @@ public class Admin_InqDTO {
 	Date admin_inq_date;
 	String admin_reply;
 	String member_id;
+	Integer member_type;
 }
