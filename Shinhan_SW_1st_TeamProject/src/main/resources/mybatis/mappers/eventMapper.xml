@@ -8,7 +8,7 @@
 		resultType="eventVO">
 		SELECT *
 		FROM EVENT
-		WHERE "event_id" = #{event_id}
+		WHERE event_id = #{event_id}
 	</select>
 
 	<select id="selectAll" resultType="eventVO">
@@ -18,22 +18,27 @@
 
 	<insert id="eventInsert" parameterType="eventVO">
 		INSERT
-		INTO EVENT("event_id", "event_title", "event_content", "event_img_url", "event_date")
+		INTO EVENT(event_id, event_title, event_content, event_img_url, event_date)
 		VALUES(#{event_id}, #{event_title}, #{event_content}, #{event_img_url}, #{event_date})
 	</insert>
 
 	<update id="eventUpdate" parameterType="eventVO">
 		UPDATE EVENT
 		SET
-		"event_title" = #{event_title}, "event_content" = #{event_content},
-		"event_img_url" = #{event_img_url}, "event_date" = #{event_date}
-		WHERE "event_id" = #{event_id}
+		event_title = #{event_title}, event_content = #{event_content},
+		event_img_url = #{event_img_url}, event_date = #{event_date}
+		WHERE event_id = #{event_id}
 	</update>
 
 	<delete id="eventDelete" parameterType="int">
 		DELETE
 		FROM EVENT
-		WHERE "event_id" = #{event_id}
+		WHERE event_id = #{event_id}
 	</delete>
 	
+	<select id="selectBySearch" parameterType="string" resultType="eventVO">
+		SELECT *
+		FROM EVENT
+		WHERE event_title = #{search_Event}
+	</select>
 </mapper>
