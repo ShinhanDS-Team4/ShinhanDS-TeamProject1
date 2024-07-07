@@ -1,7 +1,37 @@
+.orderPay-info-box{
+	border: 1px solid #cecece;
+    width: 600px;
+    padding: 20px;
+}
+.orderPay-info-box>div{
+	
+}
+.orderPay-info-text{
+    display: flex;
+    padding: 30px 0 0;
+    justify-content: space-between;
+    color: #666;
+}
+.orderPay-info-box>h3{
+	border-bottom: 2px solid #444;
+}
+.form-group-wrap{
+	display: flex;
+	gap:20px;
+	justify-content: space-between;
+}
+.orderPay-info-totalPrice{
+	display: flex;
+    justify-content: space-between;
+    margin-top: 130px;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+}
+
 /* 湲곗〈�쓽 �뒪���씪 肄붾뱶�� 異붽��맂 �뒪���씪 肄붾뱶 */
 /* 疫꿸퀣�덌옙�벥 占쎈뮞占쏙옙占쎌뵬 �굜遺얜굡占쏙옙 �빊遺쏙옙占쎈쭆 占쎈뮞占쏙옙占쎌뵬 �굜遺얜굡 */
 main {
-	width: 80%;
+	width:1000px;
 	margin: 20px auto;
 	background-color: #fff;
 	padding: 20px;
@@ -30,7 +60,7 @@ main h1 {
 }
 
 #orderTable th {
-	background-color: black;
+	background-color: #444;
 	color:white;
 }
 
@@ -103,8 +133,7 @@ main h1 {
 }
 
 input {
-	width: 100px;
-	height: 30px;
+	
 }
 
 .delivery-info h2, .coupon-info h2, .terms-and-payment h2 {
@@ -135,6 +164,7 @@ form {
 	display: flex;
 	align-items: center;
 	padding-bottom: 10px;
+	width: 500px;
 }
 
 .form-group label {
@@ -147,7 +177,7 @@ form {
 	flex: 1;
 	padding: 10px;
 	border: 1px solid #ddd;
-	border-radius: 4px;
+	border-radius: 10px;
 }
 
 .form-group input[type="checkbox"] {

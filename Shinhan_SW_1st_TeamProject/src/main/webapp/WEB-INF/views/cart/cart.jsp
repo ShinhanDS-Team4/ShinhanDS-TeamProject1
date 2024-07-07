@@ -82,9 +82,9 @@ function submitOrder() {
         type: 'post',
         url: '${path}/cart/createOrder.do',
         contentType: 'application/json',
-        data: JSON.stringify({ cartIds: cartIds }),
+        data: JSON.stringify(cartIds),
         success: function(response) {
-            alert("주문 페이지로 이동합니다.")
+            alert("주문 페이지로 이동합니다.");
           	//주문페이지로 이동
             location.href = "${path}/customer/orderPay.do?order_id=" + response.order_id;
         },
@@ -98,12 +98,12 @@ function submitOrder() {
 function submitRent() {
     var cartIds = [];
     var cartItems = document.querySelectorAll('.rent-cart-item');
-    
+ 
     cartItems.forEach(function(cartItem) {
         var cartId = cartItem.getAttribute('data-cart-id');
         cartIds.push(cartId);
     });
-
+debugger
     console.log("Selected cart IDs: ", cartIds); // 콘솔에 cartIds 배열 출력 (디버깅 용도)
 
     // 여기에 AJAX 호출 또는 폼 제출 코드 추가
@@ -111,7 +111,7 @@ function submitRent() {
         type: 'post',
         url: '${path}/cart/createRent.do',
         contentType: 'application/json',
-        data: JSON.stringify({ cartIds: cartIds }),
+        data: JSON.stringify(cartIds),
         success: function(response) {
         	alert("주문 페이지로 이동합니다.")
         	location.href = "${path}/customer/rentPay.do?rental_code=" + response.rental_code;
@@ -190,12 +190,8 @@ function submitRent() {
 	        </div>
 	        <%-- 대여 상품 장바구니 리스트 --%>
 	        <div class="sellCartList">
-	        	<form></form>
 		        <c:forEach items="${cartRentProdInfo}" var="rentCartProduct">
-			        <div class="rent-cart-item">
-			            <div class="checkbox-container">
-			                <input type="checkbox">
-			            </div>
+		        	<div class="rent-cart-item" data-cart-id="${rentCartProduct.CART_ID}">
 			            <div class="cart-item-details">
 			                <div><strong>상품명:</strong>${rentCartProduct.PROD_NAME}</div>
 			                <c:if test="${not empty rentCartProduct.opt_name1}">
