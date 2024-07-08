@@ -1,6 +1,7 @@
 package com.team4.shoppingmall;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.team4.shoppingmall.cart.CartDTO;
 import com.team4.shoppingmall.cart.CartService;
@@ -47,6 +49,7 @@ public class CoordinationController {
 	@Autowired
 	Prod_ImageService imageService;
 
+	
 	@GetMapping("/coordination.do")
 	public String coordinationPage(HttpSession session, Model model) {
 		//session
@@ -57,11 +60,29 @@ public class CoordinationController {
 		//판매 장바구니 상품 정보 모두 조회
 		List<Map<String,Object>> cartProdInfo = cartService.selectSellCartProdInfo(member_id);
 		model.addAttribute("cartProdInfo", cartProdInfo);
-		//대여 장바구니 상품 정보 모두 조회
-		List<Map<String,Object>> cartRentProdInfo = cartService.selectRentCartProdInfo(member_id);
-		//System.out.println("cartRentProdInfo=" + cartRentProdInfo);	
 		
         
 		return "customer/coordination";
 	}
+	
+	//id 리턴 시 리턴 타입 변경하기
+	@GetMapping("/recommend.do")
+    public String coordination2Page(HttpSession session, 
+                                    Model model,
+                                    @RequestParam("cart_id") Integer cart_id) {
+
+        // session
+        MemberDTO member = (MemberDTO)session.getAttribute("member");
+        String member_id = member.getMember_id();
+
+        // cart_id 읽어오기 (테스트용)
+        // Integer cart_id = 44;
+
+        // 1. cart_id에 해당하는 상품 이름과 img_id(이미지파일이름) 조회
+        Map<String,Object> prodInfoByCartId = cartService.sellCartProdByCart_id(member_id, cart_id);
+        model.addAttribute("prodInfoByCartId", prodInfoByCartId);
+        System.out.println("prodInfoByCartId"+ prodInfoByCartId);
+
+        return "customer/recommend"; // cart_id를 리턴
+    }
 }

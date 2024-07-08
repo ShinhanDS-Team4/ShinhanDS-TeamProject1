@@ -69,11 +69,12 @@
 				                                </td>
 				                                <td>
 				                                    <p class="product-name">${cartProduct.PROD_NAME}</p>
+				                                    <input id="cartId" type="hidden" value="${cartProduct.CART_ID}" />
 				                                </td>
 				                                <td>${cartProduct.CART_AMOUNT}(개)</td>
 				                                <td>${cartProduct.PROD_PRICE}(원)</td>
 				                                <td>
-				                                    <button type="button">추천버튼</button>
+				                                    <button id="recommendBtn" type="button">추천버튼</button>
 				                                </td>
 				                            </tr>
 				                        </tbody>
@@ -86,5 +87,32 @@
 	       </div>
       </div>
  	<%@ include file="../common/footer.jsp" %>
+ 	<script type="text/javascript">
+ 	$(function () {
+ 		$('#recommendBtn').on('click', function() {
+ 	        var cart_id = $('#cartId').val(); // 카트 ID 값을 가져옴
+ 	        console.log(cart_id);
+
+ 	        $.ajax({
+ 	            url: "${path}/prod/recommend.do",
+ 	            type: 'POST',
+ 	            data: JSON.stringify({ cart_id: cart_id }), // 데이터를 JSON 형식으로 전송
+ 	            contentType: "application/json;charset=utf-8",
+ 	            success: function(response) {
+ 	                if (response.status === 'success') {
+ 	                    alert("이동");
+ 	                    // 추천 상품 페이지로 이동
+ 	                    location.href = "${path}/customer/recommend.do?cart_id=" + cart_id;
+ 	                } else {
+ 	                    alert("이동 실패");
+ 	                }
+ 	            },
+ 	            error: function(error) {
+ 	                alert("Error: " + error);
+ 	            }
+ 	        });
+ 	    });
+	});
+ 	</script>
 </body>
 </html>
