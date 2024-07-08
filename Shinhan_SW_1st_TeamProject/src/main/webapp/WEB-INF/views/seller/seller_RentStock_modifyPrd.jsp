@@ -432,7 +432,7 @@
 							<c:forEach var="mainImgName" items="${ProdMainImgList}">
 								<img
 									src="http://localhost:9090/saren/ProdImgFile/main/${mainImgName}"
-									width="200" height="200">
+									width="300" height="300">
 							</c:forEach>
 						</div>
 					</div>
@@ -456,7 +456,7 @@
 							<c:forEach var="imgName" items="${ProdDescImgList}">
 								<img
 									src="http://localhost:9090/saren/ProdImgFile/desc/${imgName}"
-									width="200" height="200">
+									width="300" height="300">
 							</c:forEach>
 						</div>
 					</div>
@@ -499,7 +499,7 @@
 								<c:forEach var="option" items="${optionList}">
 									<tr>
 										<td>${option.opt_name}</td>
-										<td>${option.opt_name}</td>
+										<td>${option.opt_value}</td>
 									</tr>
 								</c:forEach>
 							</tbody>
