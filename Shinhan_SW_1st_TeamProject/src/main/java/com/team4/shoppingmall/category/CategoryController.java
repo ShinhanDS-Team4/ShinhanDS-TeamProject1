@@ -51,12 +51,19 @@ public class CategoryController {
 		String[] phones = new String[] {"010-6349-3464", "010-9723-4740", "010-2717-9614", "010-7552-8293", "010-4590-9812", "010-7137-8144"};
 		
 		JSONParser parser = new JSONParser();
-		Reader pl_reader = new FileReader("C:/shinhan_project/ShinhanDS-TeamProject1/Shinhan_SW_1st_TeamProject/src/main/webapp/resources/dbset/products_list.json");
-		Reader bm_reader = new FileReader("C:/shinhan_project/ShinhanDS-TeamProject1/Shinhan_SW_1st_TeamProject/src/main/webapp/resources/dbset/business_mans.json");
-		Reader ctg_reader = new FileReader("C:/shinhan_project/ShinhanDS-TeamProject1/Shinhan_SW_1st_TeamProject/src/main/webapp/resources/dbset/ctg_url_matching.json");
+
+		Reader pl_reader = new FileReader("C:\\close\\shds\\ShinhanDS-TeamProject1\\Shinhan_SW_1st_TeamProject\\src\\main\\webapp\\resources\\dbset/product_list.json");
+		Reader bm_reader = new FileReader("C:\\close\\shds\\ShinhanDS-TeamProject1\\Shinhan_SW_1st_TeamProject\\src\\main\\webapp\\resources\\dbset/business_mans.json");
+		Reader ctg_reader = new FileReader("C:\\close\\shds\\ShinhanDS-TeamProject1\\Shinhan_SW_1st_TeamProject\\src\\main\\webapp\\resources\\dbset/ctg_url_matching.json");
+		Reader updatedMatching_reader = new FileReader("C:\\close\\shds\\ShinhanDS-TeamProject1\\Shinhan_SW_1st_TeamProject\\src\\main\\webapp\\resources\\dbset/updated_matching.json");
+		Reader updatedMatchingRev_reader = new FileReader("C:\\close\\shds\\ShinhanDS-TeamProject1\\Shinhan_SW_1st_TeamProject\\src\\main\\webapp\\resources\\dbset/updated_matching_rev.json");
+
 		JSONObject prod_list = (JSONObject) parser.parse(pl_reader);
 		JSONObject bm_list = (JSONObject) parser.parse(bm_reader);
 		JSONObject ctg_list = (JSONObject) parser.parse(ctg_reader);
+		JSONObject updatedMatching = (JSONObject) parser.parse(updatedMatching_reader);
+		JSONObject updatedMatchingRev = (JSONObject) parser.parse(updatedMatchingRev_reader);
+		
 		JSONObject prod_detail;
 		
 		ProdDTO prod;
@@ -72,10 +79,11 @@ public class CategoryController {
 		for(Object prod_id :prod_list.keySet()) {
 			prod = new ProdDTO();
 			prod_detail = (JSONObject) prod_list.get((String) prod_id);
+			prod_id = (String) updatedMatching.get((String) prod_id);
 			
 			prod.setProd_id((String) prod_id);
 			prod.setMember_id((String) prod_detail.get("bm_num"));
-			prod.setProd_name((String) prod_detail.get("img_name"));
+			prod.setProd_name(((String) prod_detail.get("img_name")));
 			tmp = (Long) prod_detail.get("category");
 			prod.setCategory_id(tmp.intValue());
 			prod.setProd_price(Integer.parseInt((String) prod_detail.get("price")));
@@ -143,8 +151,7 @@ public class CategoryController {
 			category.setParent_category_id(tmp!=null ? tmp.intValue() : null);
 			categoryService.categoryInsert(category);
 		}
-		
-		System.out.println("category table set end.");
+
 	}
 	
 }

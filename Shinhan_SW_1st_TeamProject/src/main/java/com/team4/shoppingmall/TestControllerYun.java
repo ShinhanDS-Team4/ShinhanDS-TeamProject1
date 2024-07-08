@@ -38,6 +38,15 @@ public class TestControllerYun {
 	RentService rentService;
 	@Autowired
 	ProdService prodService;
+	
+	@GetMapping("/yun")
+	public String test5(Model model, HttpSession session) {
+		MemberDTO member = (MemberDTO) session.getAttribute("member");
+		if(member != null) {
+			model.addAttribute(member);
+		}
+		return "/yun";
+	}
 
 	@GetMapping("/productlist.do")
 	public String test1(Model model, HttpServletRequest request) {

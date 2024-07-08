@@ -11,7 +11,9 @@
 		FROM PROD P
 		JOIN MEMBER M ON P.MEMBER_ID = M.MEMBER_ID 
 		JOIN CATEGORY C ON P.CATEGORY_ID = C.CATEGORY_ID
-		WHERE PROD_ID  =  #{prod_id} 
+
+		WHERE PROD_ID  =  #{prod_id}
+	
 	</select>
 	<select id="selectByProdId" parameterType="string"
 		resultType="prodVO">
@@ -72,7 +74,377 @@
 		WHERE
 		"prod_id" = #{prod_id}
 	</delete>
+	
+	<select id="selectAllProdByCurCtg" parameterType="map" resultType="map">
+		<![CDATA[
+		SELECT 
+			MEMBER.BRAND,
+			PRD_30.PROD_NAME,
+			PRD_30.PROD_PRICE,
+			PRD_30.PROD_ID
+		FROM
+			(SELECT *
+			FROM
+				(SELECT ROWNUM RN, PRD.*
+				FROM
+					(SELECT *
+					FROM PROD
+					JOIN
+						(SELECT CATEGORY_ID
+						FROM CATEGORY 
+						WHERE #{category_id}<CATEGORY_ID 
+						AND CATEGORY_ID< #{category_id} + POWER(10, 8-2*( SELECT CATEGORY_DEPTH
+																	FROM CATEGORY
+																	WHERE CATEGORY_ID = #{category_id}))
+						AND is_lowest=1) CTG
+					USING(CATEGORY_ID)) PRD)
+			WHERE #{start}<RN
+			AND RN<#{end}) PRD_30
+		JOIN MEMBER USING(MEMBER_ID)
+		]]>	
+	</select>
+	
+	<select id="selectAllProdNumsByCurCtg" parameterType="int" resultType="int">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			(SELECT ROWNUM RN, PRD.*
+			FROM
+				(SELECT *
+				FROM PROD
+				JOIN
+					(SELECT CATEGORY_ID
+					FROM CATEGORY 
+					WHERE #{category_id}<CATEGORY_ID 
+					AND CATEGORY_ID < #{category_id} + POWER(10, 8-2*( SELECT CATEGORY_DEPTH
+																	   FROM CATEGORY
+																	   WHERE CATEGORY_ID = #{category_id}))
+					AND is_lowest=1) CTG
+				USING(CATEGORY_ID)) PRD)
+		]]>	
+		</select>
+	
+	<select id="selectProdByLwstCtgId" parameterType="int" resultType="map">
+		<![CDATA[
+		SELECT 
+			MEMBER.BRAND,
+			PRD_30.PROD_NAME,
+			PRD_30.PROD_PRICE,
+			PRD_30.PROD_ID
+		FROM
+			(
+				SELECT *
+				FROM
+					(
+						SELECT ROWNUM RN, PRD.*
+						FROM
+							(
+								SELECT *
+								FROM PROD
+								WHERE CATEGORY_ID=#{category_id}
+							) PRD
+					) 
+				WHERE #{start}<RN
+				AND RN<#{end}
+			) PRD_30
+		JOIN MEMBER USING(MEMBER_ID)
+		]]>	
+	</select>
+	
+	<select id="selectProdNumsByLwstCtgId" parameterType="int" resultType="int">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM
+			(
+				SELECT *
+				FROM
+					(
+						SELECT ROWNUM RN, PRD.*
+						FROM
+							(
+								SELECT *
+								FROM PROD
+								WHERE CATEGORY_ID=#{category_id}
+							) PRD
+					) 
+			) PRD_30
+		]]>
+	</select>
+	
+	<select id="selectBrndsByCtgId" parameterType="map" resultType="string">
+		
+		<choose>
+			<when test="is_lowest == 0">
+			<![CDATA[ 
+			SELECT BRAND
+			FROM
+				(SELECT ROWNUM RN, BRAND
+				FROM
+					(SELECT DISTINCT MEMBER.BRAND
+					FROM PROD
+					JOIN
+						(SELECT CATEGORY_ID
+						FROM CATEGORY 
+						WHERE #{category_id}<CATEGORY_ID 
+						AND CATEGORY_ID< #{category_id} + POWER(10, 8-2*( SELECT CATEGORY_DEPTH
+																	FROM CATEGORY
+																	WHERE CATEGORY_ID = #{category_id}))
+						AND is_lowest=1) CTG
+					USING(CATEGORY_ID) 
+					JOIN MEMBER 
+					USING(MEMBER_ID)) PRD)
+			WHERE #{start}<RN AND RN<#{end}
+			]]>
+			</when>
+			
+			<otherwise>
+			<![CDATA[ 
+			SELECT BRAND
+			FROM
+				(
+					SELECT ROWNUM RN, BRAND
+					FROM
+						(	
+							SELECT DISTINCT MEMBER.BRAND
+							FROM
+								(
+									SELECT *
+									FROM PROD
+									WHERE CATEGORY_ID=#{category_id}
+								) PRD
+							JOIN MEMBER
+							USING(MEMBER_ID)
+						)
+				) PRD_30
+			WHERE #{start}<RN AND RN<#{end}
+			]]>
+			</otherwise>
+		</choose>
 
+	</select>
+	
+	<select id="selectBrndsNumsByCtgId" parameterType="map" resultType="int">
+		
+		<choose>
+			<when test="is_lowest == 0">
+			<![CDATA[ 
+			SELECT COUNT(*)
+			FROM
+				(SELECT DISTINCT MEMBER.BRAND
+				FROM PROD
+				JOIN
+					(SELECT CATEGORY_ID
+					FROM CATEGORY 
+					WHERE #{category_id}<CATEGORY_ID 
+					AND CATEGORY_ID< #{category_id} + POWER(10, 8-2*( SELECT CATEGORY_DEPTH
+																FROM CATEGORY
+																WHERE CATEGORY_ID = #{category_id}))
+					AND is_lowest=1) CTG
+				USING(CATEGORY_ID) 
+				JOIN MEMBER 
+				USING(MEMBER_ID))
+			]]>
+			</when>
+			
+			<otherwise>
+			<![CDATA[ 
+			SELECT COUNT(*)
+			FROM
+				(
+					SELECT DISTINCT MEMBER.BRAND
+					FROM
+						(
+							SELECT *
+							FROM PROD
+							WHERE CATEGORY_ID=#{category_id}
+						) PRD
+					JOIN MEMBER
+					USING(MEMBER_ID)
+				)
+			]]>
+			</otherwise>
+		</choose>
+		
+	</select>
+	
+	<select id="searchByBrndAndPrc" parameterType="map" resultType="map">
+		<choose>
+			<when test="is_lowest == 0">
+			SELECT 
+				BRAND,
+				PROD_NAME,
+				PROD_PRICE,
+				PROD_ID
+			FROM
+				(SELECT
+					ROWNUM RN,
+					BRAND,
+					PROD_NAME,
+					PROD_PRICE,
+					PROD_ID
+				FROM
+					(SELECT
+						BRAND,
+						PROD_NAME,
+						PROD_PRICE,
+						PROD_ID
+					FROM PROD
+					JOIN
+						(SELECT MEMBER_ID, BRAND
+						FROM MEMBER
+						WHERE BRAND IN 
+						<foreach collection="slctdBrnd" item="brnd" open="(" close=")" separator=",">
+							#{brnd}
+						</foreach>)
+					USING(MEMBER_ID)
+					INTERSECT
+					SELECT 
+						MEMBER.BRAND,
+						PROD_NAME,
+						PROD_PRICE,
+						PROD_ID
+					FROM
+						(SELECT *
+						FROM PROD
+						JOIN
+			<![CDATA[ 
+							(SELECT CATEGORY_ID
+							FROM CATEGORY 
+							WHERE #{category_id}<CATEGORY_ID 
+							AND CATEGORY_ID< #{category_id} + POWER(10, 8-2*( SELECT CATEGORY_DEPTH
+																		FROM CATEGORY
+																		WHERE CATEGORY_ID = #{category_id}))
+							AND is_lowest=1) CTG
+						USING(CATEGORY_ID))
+					JOIN MEMBER USING(MEMBER_ID)))
+			WHERE #{start}<RN AND RN<#{end}
+			]]>
+			
+			</when>
+			
+			<otherwise>
+			SELECT 
+				BRAND,
+				PROD_NAME,
+				PROD_PRICE,
+				PROD_ID
+			FROM
+				(SELECT
+					ROWNUM RN,
+					BRAND,
+					PROD_NAME,
+					PROD_PRICE,
+					PROD_ID
+				FROM
+					(SELECT
+						BRAND,
+						PROD_NAME,
+						PROD_PRICE,
+						PROD_ID
+					FROM PROD
+					JOIN
+						(SELECT MEMBER_ID, BRAND
+						FROM MEMBER
+						WHERE BRAND IN 
+						<foreach collection="slctdBrnd" item="brnd" open="(" close=")" separator=",">
+							#{brnd}
+						</foreach>)
+					USING(MEMBER_ID)
+					INTERSECT
+					SELECT 
+						MEMBER.BRAND,
+						PROD_NAME,
+						PROD_PRICE,
+						PROD_ID
+					FROM
+						(SELECT *
+						FROM PROD
+						WHERE CATEGORY_ID = #{category_id})
+					JOIN MEMBER USING(MEMBER_ID)))
+			<![CDATA[ 
+			WHERE #{start}<RN AND RN<#{end}
+			]]>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="searchNumsByBrndAndPrc" parameterType="map" resultType="int">
+		<choose>
+			<when test="is_lowest == 0">
+			SELECT COUNT(*)
+			FROM
+				(SELECT
+					BRAND,
+					PROD_NAME,
+					PROD_PRICE,
+					PROD_ID
+				FROM PROD
+				JOIN
+					(SELECT MEMBER_ID, BRAND
+					FROM MEMBER
+					WHERE BRAND IN 
+					<foreach collection="slctdBrnd" item="brnd" open="(" close=")" separator=",">
+						#{brnd}
+					</foreach>)
+				USING(MEMBER_ID)
+				INTERSECT
+				SELECT 
+					MEMBER.BRAND,
+					PROD_NAME,
+					PROD_PRICE,
+					PROD_ID
+				FROM
+					(SELECT *
+					FROM PROD
+					JOIN
+			<![CDATA[ 
+						(SELECT CATEGORY_ID
+						FROM CATEGORY 
+						WHERE #{category_id}<CATEGORY_ID 
+						AND CATEGORY_ID< #{category_id} + POWER(10, 8-2*( SELECT CATEGORY_DEPTH
+																	FROM CATEGORY
+																	WHERE CATEGORY_ID = #{category_id}))
+						AND is_lowest=1) CTG
+					USING(CATEGORY_ID))
+				JOIN MEMBER USING(MEMBER_ID))
+			]]>
+			
+			</when>
+			
+			<otherwise>
+			SELECT COUNT(*)
+			FROM
+				(SELECT
+					BRAND,
+					PROD_NAME,
+					PROD_PRICE,
+					PROD_ID
+				FROM PROD
+				JOIN
+					(SELECT MEMBER_ID, BRAND
+					FROM MEMBER
+					WHERE BRAND IN 
+					<foreach collection="slctdBrnd" item="brnd" open="(" close=")" separator=",">
+						#{brnd}
+					</foreach>)
+				USING(MEMBER_ID)
+				INTERSECT
+				SELECT 
+					MEMBER.BRAND,
+					PROD_NAME,
+					PROD_PRICE,
+					PROD_ID
+				FROM
+					(SELECT *
+					FROM PROD
+					WHERE CATEGORY_ID = #{category_id})
+				JOIN MEMBER USING(MEMBER_ID))
+			</otherwise>
+		</choose>
+	</select>
+	
+</mapper>
+  
 	<select id="sellerByProd" parameterType="string"
 		resultType="SellerProdVO">
 		SELECT

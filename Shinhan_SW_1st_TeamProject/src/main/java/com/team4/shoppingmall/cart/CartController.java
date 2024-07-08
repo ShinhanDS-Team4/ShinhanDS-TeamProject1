@@ -97,6 +97,7 @@ public class CartController {
 		List<Map<String,Object>> cartProdInfo = cartService.selectSellCartProdInfo(member_id);
 		model.addAttribute("cartProdInfo", cartProdInfo);
 		System.out.println("cartProdInfo=" + cartProdInfo);
+		
 		//대여 장바구니 상품 정보 모두 조회
 		List<Map<String,Object>> cartRentProdInfo = cartService.selectRentCartProdInfo(member_id);
 		model.addAttribute("cartRentProdInfo", cartRentProdInfo);
