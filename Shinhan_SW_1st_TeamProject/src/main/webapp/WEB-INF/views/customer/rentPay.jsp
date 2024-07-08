@@ -32,7 +32,7 @@
 
 		// 쿠폰 남은 개수 확인
 	    $.ajax({
-	        url: "/shoppingmall/coupon/checkCouponAvailability.do",
+	        url: "${path}/coupon/checkCouponAvailability.do",
 	        type: 'POST',
 	        data: { couponid: selectedCouponId },
 	        success: function(response) {
@@ -40,7 +40,7 @@
 	        	
 	        	if(response>0){
 	        		$.ajax({
-	        			url : "/shoppingmall/customer/applyCoupon.do",
+	        			url : "${path}/customer/applyCoupon.do",
 	        			type : 'POST',
 	        			contentType : 'application/json',
 	        			data : JSON.stringify({
@@ -66,7 +66,16 @@
 	        				alert('서버 요청 중 오류가 발생했습니다.');
 	        			}
 	        		});
-	        	}else{
+	        	}else if(response == -1){ //선택 안함
+	        		alert('쿠폰을 사용하지 않습니다.');
+	        	
+	        		$('#discountAmount').text(0);
+    				$('#finalPrice').text(orderPrice);
+    				$('#couponselectedPrice').val(orderPrice);
+    				$('#usePoint').val(0);
+    				$('#pointWillUse').text(0);
+	        	
+	        	} else{ //0
 	        		alert('선택하신 쿠폰을 모두 소진하였습니다.');
 	        	}
 	        		

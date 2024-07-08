@@ -88,7 +88,6 @@
                    	<c:forEach items="${bestItems}" var="bestItem">
                    		 <li>
                            <a href="#">
-                           	  <!-- <img src="${path}/resources/images/${bestItem.IMAGE_ID}" alt="best-product-image"> --> 	
                            	   <img src="http://localhost:9090/saren/ProdImgFile/desc/${bestItem.IMAGE_ID}" alt="${bestItem.IMAGE_ID}">	
                            </a>
                            <div class="product_text">
