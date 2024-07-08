@@ -93,9 +93,6 @@ public class ProdTestController {
 	
 	@Autowired
 	Prod_ImageService imageService;
-
-	@Autowired
-	ProdService prodService;
 	
 	
 	@GetMapping("/productlistTest")
@@ -142,7 +139,10 @@ public class ProdTestController {
 		model.addAttribute("category", category);
 		
 		//리뷰 평균과 리뷰 수
-		ReviewsDTO reviewInfo = reviewsService.reviewAvgByProdId(prod_id); 
+		ProdDTO prod = prodService.selectByProdId(prod_id);
+		String prod_name = prod.getProd_name();
+		Map<Integer, Integer> reviewInfo = reviewsService.reviewAvgByProdId(prod_name); 
+		System.out.println(reviewInfo);
 		model.addAttribute("reviewInfo", reviewInfo);
 		
 		//대여 상품 옵션별 재고량 조회
@@ -153,8 +153,6 @@ public class ProdTestController {
 		model.addAttribute( "rentStockList", jsonTextRent );
 		
 		/* 상품 전체 리뷰 목록 */		
-		ProdDTO prod = prodService.selectByProdId(prod_id);
-		String prod_name = prod.getProd_name();
 		List<Map<String,String>> productReviews = reviewsService.selectAllProductReviewByProdName(prod_name);
 		System.out.println(productReviews);
 		model.addAttribute("productReviews", productReviews);
