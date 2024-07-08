@@ -47,21 +47,25 @@ public class MemberController {
 
 	}
 	
-	//이전주소 확인
-	@PostMapping("/saveLastRequest")
-	public void saveLastRequest(HttpSession session, @RequestParam("lastRequest") String lastRequest) {
-	    session.setAttribute("lastRequest", lastRequest);
-	}
+//	// 이전주소 확인
+//	@PostMapping("/saveLastRequest")
+//	public void saveLastRequest(HttpSession session, @RequestParam("lastRequest") String lastRequest) {
+//		session.setAttribute("lastRequest", lastRequest);
+//	}
 	
 	// 로그인 페이지
 	@GetMapping("/login.do")
-	public String loginstart() {
+	public String loginstart(HttpSession session) {
+        String lastRequest = (String) session.getAttribute("lastRequest");
+        System.out.println("Last request!!!!!: " + lastRequest); // 디버깅용 로그
 	    return "user/login";
 	}
 
 	@PostMapping("/login.do")
 	public String login(@RequestParam("member_id") String member_id, @RequestParam("member_pw") String member_pw, HttpSession session, HttpServletRequest request) {
-	    MemberDTO member = memberService.selectById(member_id);
+	    
+		MemberDTO member = memberService.selectById(member_id);
+		
 	    System.out.println(member);
 	    String N = "N";
 	    if (member == null) {
@@ -108,7 +112,8 @@ public class MemberController {
 	            }
 	            System.out.println("goPage =>" + goPage);
 	        }
-	        return "redirect:" + goPage;
+	      //  return "redirect:" + goPage;
+	        return "redirect:/";
 	    }
 	}
 

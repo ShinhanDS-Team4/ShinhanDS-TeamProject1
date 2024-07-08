@@ -1,8 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-<html lang="ko">
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
 <head>
 <c:set var="path" value="${pageContext.servletContext.contextPath}" />
 <link rel="stylesheet" href="${path}/resources/css/header_footer.css">
@@ -191,7 +194,7 @@ footer .footer-links a {
 }
 </style>
 <script>
-	$(function() {
+$(function() {
 		// 로컬 스토리지에서 저장된 아이디 불러오기
 		if (localStorage.getItem('rememberMe') === 'true') {
 			$('#remember-me').prop('checked', true);
@@ -246,11 +249,11 @@ footer .footer-links a {
             $('#customer-form').removeClass('active');
         });
     });
-</script>
+</script>  
 </head>
 <body>
-	<%@ include file="../common/header.jsp"%>
-	<div class="login-container">
+	 	<%@ include file="../common/header.jsp"%>
+	 	<div class="login-container">
 		<h1>로그인</h1>
 		<div class="tab">
 			<div id="customer-tab" class="active">고객</div>
@@ -310,7 +313,6 @@ footer .footer-links a {
 		
 		
 	</div>
-
 	<footer>
 		<div class="footer-line"></div>
 		<div class="footer-text">회사소개 이용약관 개인정보처리방침 이메일무단수집거부 단체주문 제휴문의

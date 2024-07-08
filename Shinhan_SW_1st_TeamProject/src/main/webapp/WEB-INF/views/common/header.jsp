@@ -6,7 +6,7 @@
 <%-- 로그인 여부를 확인하기 위한 세션 값 확인 --%>
 <c:set var="isLoggedIn" value="${not empty sessionScope.member}"   />
 
-<%-- header --%>
+<%-- header !!!!!!!!! --%>
 <header>
 	<div class="header_top inner">
 		<div class="leftGnb">
@@ -36,7 +36,7 @@
 					</c:when>
 					<c:otherwise>
 						<li>
-							<a href="javascript:void(0);" id="loginLink"> 
+							<a href="${path}/member_test/login.do" id="loginLink"> 
 								<p>로그인</p>
 								<img src="${path}/resources/images/icon-login.gif" alt="로그인">
 							</a>
@@ -241,24 +241,6 @@
 			
 			
 		});
-		
-	    document.getElementById('loginLink').addEventListener('click', function() {
-	        // 현재 페이지 URL 저장
-	        var currentUrl = window.location.href;
-	        sessionStorage.setItem('lastRequest', currentUrl);
-
-	        // 로그인 페이지로 이동
-	        window.location.href = '${path}/member_test/login.do';
-	    });
-
-	    // 로그인 성공 후 마지막 요청 URL로 리디렉션
-	    window.onload = function() {
-	        var lastRequest = sessionStorage.getItem('lastRequest');
-	        if (lastRequest && window.location.pathname === '${path}/member_test/login.do') {
-	            sessionStorage.removeItem('lastRequest');
-	            window.location.href = lastRequest;
-	        }
-	    };
 
 
 	});
