@@ -135,21 +135,24 @@
                 </li>
             </ul>
             <section>
-                <h2 class="main_title">인기 상품</h2>
-                <div class="main_product_list">
-                    <ul>
-                        <li>
-                            <a href="#"><img src="${path}/resources/images/product1.png" alt="product"></a>
-                            <div class="product_text">
-                                <p class="brand">브랜드</p>
-                                <p class="product_name">상품이름상품이름</p>
-                                <p class="product_price">50,000원</p>
-                            </div>
-                        </li>
-                        <!-- 다른 상품들 -->
-                    </ul>
-                </div>
-            </section>
+               <h2 class="main_title">전체 인기 상품</h2>
+               <div class="main_product_list">
+                   <ul>
+                   	<c:forEach items="${bestItems}" var="bestItem">
+                   		 <li>
+                           <a href="#">
+                           	   <img src="http://localhost:9090/saren/ProdImgFile/desc/${bestItem.IMAGE_ID}" alt="${bestItem.IMAGE_ID}">	
+                           </a>
+                           <div class="product_text">
+                               <p class="brand">${bestItem.BRAND}</p>
+                               <p class="product_name">${bestItem.PROD_NAME}</p>
+                               <p class="product_price">${bestItem.PROD_PRICE}원</p>
+                           </div>
+                       </li>
+                   	</c:forEach>
+                   </ul>
+               </div>
+           </section>
             <!-- 팝업창을 띄우는 버튼 -->
             <button id="popupBtn">팝업 열기</button>
         </div>
@@ -188,7 +191,17 @@
             dots: true,
             arrows : true
         });
-
+        
+        jq('.main_product_list>ul').slick({
+            infinite: true,
+            slidesToShow: 4, // 한번에 보여줄 슬라이드 수
+            slidesToScroll: 1, // 한번에 스크롤할 슬라이드 수
+            rows: 2,
+            autoplay: true,
+            autoplaySpeed: 4500,
+            dots: true
+        });
+        
         // 팝업창 제어
         jq('#popupBtn').click(function() {
             jq('#popupOverlay').fadeIn();

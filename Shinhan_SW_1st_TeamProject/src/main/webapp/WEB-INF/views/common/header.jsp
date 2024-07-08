@@ -107,7 +107,7 @@
 		</div>
 		<%-- 서브 메뉴 부분 --%>
 		<div class="menu-backgorund"></div>
-		<div class="menu_pan">
+		<div class="menu_pan inner">
 			<div class="dropdown_nav">
 
 				<ul ctg="women">
