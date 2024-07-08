@@ -6,7 +6,7 @@
 <%-- 로그인 여부를 확인하기 위한 세션 값 확인 --%>
 <c:set var="isLoggedIn" value="${not empty sessionScope.member}"   />
 
-<%-- header --%>
+<%-- header !!!!!!!!! --%>
 <header>
 	<div class="header_top inner">
 		<div class="leftGnb">
@@ -36,7 +36,7 @@
 					</c:when>
 					<c:otherwise>
 						<li>
-							<a href="${path}/member_test/login.do"> 
+							<a href="${path}/member_test/login.do" id="loginLink"> 
 								<p>로그인</p>
 								<img src="${path}/resources/images/icon-login.gif" alt="로그인">
 							</a>
@@ -236,11 +236,12 @@
 			// 마우스가 떠났을 때 서브메뉴 높이 초기화
 			$(".dropdown_nav ul").css("height", "0");
 			$(".dropdown_nav").css("height", "0");
-	        $(".menu-backgorund").css("display","none"); // 배경 숨김
+	        $(".menu-backgorund").css("display","none"); // 배경 숨김	
 			isFirstHover = true; // 마우스를 떠났을 때 다시 애니메이션 활성화
 			
 			
 		});
+
 
 	});
 </script>

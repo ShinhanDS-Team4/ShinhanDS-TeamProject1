@@ -110,7 +110,6 @@
                //slideMargin: 10
     	});
         
-        
 	});
 </script>
 </head>
@@ -194,8 +193,8 @@
 	        <div class="popup-icon">!</div>	       
 	        <p class="saveCartText">선택한 상품이 장바구니에 저장됩니다.</p> 
 	        <p>장바구니로 이동하시겠습니까?</p>	        
-	        <button class="popup-button yes-button">네</button>
-	        <button class="popup-button no-button">아니요</button>
+	        <button id="yesCartBtn" class="popup-button yes-button">네</button>
+	        <button id="noCartBtn" class="popup-button no-button">아니요</button>
 	    </div>
 	</div>
 	<%-- 상품 문의 모달 창 --%>
@@ -327,9 +326,9 @@
 		                             callback(); // 로그인 상태일 경우 콜백 함수 실행
 		                        	 console.log("로그인 확인 성공");
 		                        } else {
-                                alert('로그인 후 처음부터 다시 시도해주세요.');
-                                // 로그인 페이지로 리다이렉트
-                                window.location.href = '${path}/member_test/login.do';
+		                            alert('로그인이 필요합니다.');
+		                        	// 로그인 페이지로 리다이렉트
+		                            window.location.href = '${path}/member_test/login.do'; 
 		                        }
 		                    },
 		                    error: function(error) {
@@ -360,9 +359,7 @@
 	        		//아니요 선택 시 현재페이지 계속 쇼핑
 	        		$('.no-button').on('click', function(e) {
 	        			e.preventDefault();
-	        			sendProdOption();
-	        			
-	        			location.reload(); 
+	        			$('.popup-background').hide();
 	        		});
 	        		
 		        });
@@ -444,7 +441,9 @@
 			                   	 location.href = "${path}/cart/cart.do?cart_id=" + response.cart_id;
 			                      
 			                    }else{
-			                    	alert("상품 재고가 없습니다.");
+		                            alert('로그인이 필요합니다.');
+		                        	// 로그인 페이지로 리다이렉트
+		                            window.location.href = '${path}/member_test/login.do'; 
 			                    }
 			                },
 			                error: function(error) {
@@ -556,7 +555,7 @@
 						<c:forEach items="${productReviews}" var="review">
 							<div class="review"> 
 								<div class="left">
-									<img src="" alt="review image">   <%-- 리뷰 사진 (db작업 후 수정할 것) --%>
+									<img src="${review.REVIEW_IMG}" width="150" height="150" alt="review image">   <%-- 리뷰 사진 (db작업 후 수정할 것) --%>
 								</div>
 								<div class="right">
 									<div class="rating">
@@ -610,17 +609,20 @@
 			<div class="review-write-btn">
 				<button class="button-write">리뷰 작성하기</button>
 			</div>
-			
 			<script type="text/javascript">
-				//리뷰작성하기 버튼 클릭 
-				$('.review-write-btn>button').on('click',function(e){
-					e.preventDefault();
-					location.href = "${path}/review/write.do";
-				});
+			    var path = "${path}";
+			    var prodName = "${prod_detail_info.PROD_NAME}";
 			</script>
-			
-			
-			<div class="qa-section inner">
+			<script type="text/javascript">
+			    //리뷰작성하기 버튼 클릭 
+			    $('.review-write-btn > button').on('click', function(e) {
+			        e.preventDefault();
+			        location.href = path + "/review/write.do?prod_name=" + encodeURIComponent(prodName);
+			    });
+			</script>
+
+
+				<div class="qa-section inner">
 				<h2>상품 Q&A</h2>
 				<div class="qa-section_txt">
 				
@@ -907,7 +909,9 @@
 	                        //주문페이지로 이동
 	                        location.href = "${path}/customer/orderPay.do?order_id=" + response.order_id;
 	                    } else {
-	                        alert("상품 재고가 없습니다.");
+                            alert('로그인이 필요합니다.');
+                        	// 로그인 페이지로 리다이렉트
+                            window.location.href = '${path}/member_test/login.do'; 
 	                    }
 	                },
 	                error: function(error) {
@@ -1148,7 +1152,9 @@
                     //대여 결제페이지로 이동
                     location.href = "${path}/customer/rentPay.do?rental_code=" + response.rental_code;
                 } else {
-                	 alert("오류가 발생했습니다. 다시 시도해주세요.");
+                    alert('로그인이 필요합니다.');
+                	// 로그인 페이지로 리다이렉트
+                    window.location.href = '${path}/member_test/login.do'; 
                 }
               	 
               	 
@@ -1201,9 +1207,9 @@
 	                   alert("대여상품 장바구니 저장 완료(현재 남은 재고" + currentStock.stock + "개)");
 	                   location.href = "${path}/cart/cart.do?cart_id=" + response.rentCartId;
                    }else{
-                     alert('로그인 후 처음부터 다시 시도해주세요.');
-                     // 로그인 페이지로 리다이렉트
-                     window.location.href = '${path}/member_test/login.do';
+                       alert('로그인이 필요합니다.');
+                   	// 로그인 페이지로 리다이렉트
+                       window.location.href = '${path}/member_test/login.do'; 
                    }
                },
                error: function(error) {

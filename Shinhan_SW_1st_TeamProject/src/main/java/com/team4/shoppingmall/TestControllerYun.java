@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.team4.shoppingmall.member.MemberDTO;
 import com.team4.shoppingmall.order_prod.OrderProdDTO;
 import com.team4.shoppingmall.order_prod.OrderProdDetailDTO;
 import com.team4.shoppingmall.order_prod.OrderProdService;
@@ -133,12 +135,17 @@ public class TestControllerYun {
 		}
 	}
 
-	@GetMapping("/orderlist")
-	public String test3(Model model) {
+	@GetMapping("/orderlist.do")
+	public String test3(Model model, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		MemberDTO mem = (MemberDTO)session.getAttribute("member");
+		String member_id = mem.getMember_id();
+		
+		
 	    System.out.println("/customer/orderlist.jsp");
 
-	    // 모든 주문 정보 가져오기
-	    List<OrderProdDTO> allorders = orderProdService.selectAll();
+	    // 회원에 대한 모든 주문 정보 가져오기
+	    List<OrderProdDTO> allorders = orderProdService.selectByMemId(member_id);
 	    System.out.println("전체 주문 목록: " + allorders);
 
 	    // 주문 상세 정보를 담을 Map

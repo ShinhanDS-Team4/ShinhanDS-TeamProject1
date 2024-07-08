@@ -87,6 +87,7 @@
 	<select id="selectAll" resultType="order_prodVO">
 		SELECT *
 		FROM ORDER_PROD
+		
 	</select>
 
 	
@@ -153,7 +154,7 @@
 		JOIN
 			ORDER_PROD OP ON OD.order_id = OP.order_id
 		JOIN
-			SELLER_PROD_STOCK S ON OD.s_stock_id = S.s_stock_id
+			SELL_PROD_STOCK S ON OD.s_stock_id = S.s_stock_id
 		JOIN
 			PROD P ON S.prod_id = P.prod_id
 		JOIN
@@ -185,5 +186,12 @@
 		WHERE 
 			order_id = #{aa} 
 	</update>
+	
+	<!-- 주문상세 -->
+	<select id="selectByMemId" parameterType="string" resultType="order_prodVO"> 
+		SELECT *
+		FROM ORDER_PROD
+		WHERE member_id = #{member_id}
+	</select>
 	
 </mapper>

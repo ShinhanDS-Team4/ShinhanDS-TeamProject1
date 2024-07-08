@@ -6,7 +6,7 @@ import java.util.Map;
 public interface ReviewsDAOInterface {
 	
 	//상품 리뷰 목록
-	public List<Map<String,String>> selectAllProductReviewByProdId(String prod_id);
+	public List<Map<String,String>> selectAllProductReviewByProdName(String prod_name);
 	
 	//리뷰 평균과 리뷰 수
 	public ReviewsDTO reviewAvgByProdId(String prod_id);

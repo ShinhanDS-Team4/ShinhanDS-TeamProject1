@@ -93,6 +93,9 @@ public class ProdTestController {
 	
 	@Autowired
 	Prod_ImageService imageService;
+
+	@Autowired
+	ProdService prodService;
 	
 	
 	@GetMapping("/productlistTest")
@@ -149,8 +152,11 @@ public class ProdTestController {
 		String jsonTextRent = rentMapper.writeValueAsString( rentStockList );
 		model.addAttribute( "rentStockList", jsonTextRent );
 		
-		/* 상품 전체 리뷰 목록 */			
-		List<Map<String,String>> productReviews = reviewsService.selectAllProductReviewByProdId(prod_id);
+		/* 상품 전체 리뷰 목록 */		
+		ProdDTO prod = prodService.selectByProdId(prod_id);
+		String prod_name = prod.getProd_name();
+		List<Map<String,String>> productReviews = reviewsService.selectAllProductReviewByProdName(prod_name);
+		System.out.println(productReviews);
 		model.addAttribute("productReviews", productReviews);
 		
 		//리뷰 목록에 불러올 상품의 옵션 목록
@@ -191,7 +197,7 @@ public class ProdTestController {
 	
 
    // 로그인 여부 확인 
-   @GetMapping("/checkLoginStatus")
+   @RequestMapping("/checkLoginStatus")
     public ResponseEntity<Map<String, Boolean>> checkLoginStatus(HttpSession session) {
         Map<String, Boolean> response = new HashMap<>();
         response.put("isLoggedIn", session.getAttribute("member") != null);
@@ -200,7 +206,7 @@ public class ProdTestController {
    
 
     //장바구니 - 상품(판매)
-	@PostMapping("/productCartInsert.do")
+	@RequestMapping("/productCartInsert.do")
 	@ResponseBody
 	public Map<String, Object> productCartInsert(String prod_id,
 								 HttpServletRequest request, 
@@ -235,7 +241,7 @@ public class ProdTestController {
 		
 	}
 	//장바구니 - 상품(대여)
-	@PostMapping("/rentProductCartInsert.do")
+	@RequestMapping("/rentProductCartInsert.do")
 	@ResponseBody
 	public Map<String, Object> rentProductCartInsert(String prod_id,
 									 HttpServletRequest request, 
@@ -310,7 +316,7 @@ public class ProdTestController {
     }
 	
 	/* 대여하기 */
-	@PostMapping("/rentProductOrderInsert.do")
+	@RequestMapping("/rentProductOrderInsert.do")
 	@ResponseBody
 	public Map<String, Object> rentProductOrderInsert(HttpServletRequest request, 
 								  Model model,
