@@ -15,6 +15,16 @@
 		SELECT *
 		FROM EVENT
 	</select>
+	
+	<select id="selectFirst" resultType="eventVO">
+		SELECT *
+		FROM (
+		    SELECT *
+		    FROM "EVENT"
+		    ORDER BY "event_id" DESC
+		)
+		WHERE ROWNUM = 1
+	</select>
 
 	<insert id="eventInsert" parameterType="eventVO">
 		INSERT

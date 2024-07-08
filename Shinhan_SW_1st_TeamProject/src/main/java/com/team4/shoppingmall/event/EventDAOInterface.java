@@ -15,4 +15,6 @@ public interface EventDAOInterface {
 	public int eventUpdate(EventDTO event);
 	
 	public int eventDelete(Integer event_id);
+
+	public EventDTO selectFirst();
 }

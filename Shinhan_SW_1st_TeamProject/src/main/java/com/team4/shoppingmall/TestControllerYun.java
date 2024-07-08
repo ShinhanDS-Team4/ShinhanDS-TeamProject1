@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.team4.shoppingmall.member.MemberDTO;
 import com.team4.shoppingmall.order_prod.OrderProdDTO;
 import com.team4.shoppingmall.order_prod.OrderProdDetailDTO;
 import com.team4.shoppingmall.order_prod.OrderProdService;
@@ -36,6 +38,15 @@ public class TestControllerYun {
 	RentService rentService;
 	@Autowired
 	ProdService prodService;
+	
+	@GetMapping("/yun")
+	public String test5(Model model, HttpSession session) {
+		MemberDTO member = (MemberDTO) session.getAttribute("member");
+		if(member != null) {
+			model.addAttribute(member);
+		}
+		return "/yun";
+	}
 
 	@GetMapping("/productlist.do")
 	public String test1(Model model, HttpServletRequest request) {

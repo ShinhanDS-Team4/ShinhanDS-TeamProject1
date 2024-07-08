@@ -19,6 +19,10 @@ public class EventService {
 		return eventDAO.selectAll();
 	}
 	
+	public EventDTO selectFirst() {
+		return eventDAO.selectFirst();
+	}
+	
 	public int eventInsert(EventDTO event) {
 		return eventDAO.eventInsert(event);
 	}

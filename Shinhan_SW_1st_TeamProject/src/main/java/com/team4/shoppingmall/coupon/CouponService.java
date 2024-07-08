@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.team4.shoppingmall.member.MemberDTO;
+
 @Service
 public class CouponService {
 	
@@ -29,5 +31,15 @@ public class CouponService {
 	// 쿠폰사용
 	public int couponUse(CouponDTO couponDTO) {
 		return couponDAO.couponUse(couponDTO);
+	} 
+
+	// home에서, 가장 최근 쿠폰 가져오기
+	public CouponDTO selectFirst() {
+		return couponDAO.selectFirst();
 	}
+
+	public int assignCouponToMember(CouponDTO coupon) { 
+		return couponDAO.assignCouponToMember(coupon); 
+	}
+
 }

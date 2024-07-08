@@ -13,10 +13,9 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CouponDTO {
-	String coupon_id;
+	Integer coupon_id;
 	String member_id;
 	String coupon_name;
 	Double discount_rate;
-	Integer quantity;
-	String coupon_state;
+	Integer quantity; 
 }
