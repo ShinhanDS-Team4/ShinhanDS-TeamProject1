@@ -92,6 +92,13 @@
 		ORDER_DETAIL
 		WHERE orderdetail_id = #{orderdetail_id}
 	</delete>
+	
+	<delete id="orderDetailDelByOrderID" parameterType = "int">
+		DELETE
+		FROM
+		ORDER_DETAIL
+		WHERE order_id = #{order_id}
+	</delete>
 
 	<select id="searchCustomerOrderList" parameterType="string"
 		resultType="map">

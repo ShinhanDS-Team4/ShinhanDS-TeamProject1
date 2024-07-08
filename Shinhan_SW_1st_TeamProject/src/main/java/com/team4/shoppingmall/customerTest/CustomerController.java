@@ -456,7 +456,7 @@ public class CustomerController {
 	@PostMapping("/cancelOrderPay.do")
 	@ResponseBody
 	public String cancelOrderPay(@RequestParam int order_id) {
-
+		System.out.println("받아온 주문ID:"+order_id);
 		// 주문 상세 삭제
 		int orderDetailDelResult = orderDetailService.orderDetailDelByOrderID(order_id);
 

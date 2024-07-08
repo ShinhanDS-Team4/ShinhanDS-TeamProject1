@@ -194,4 +194,10 @@
 		WHERE member_id = #{member_id}
 	</select>
 	
+	<delete id="orderprodDelete" parameterType="int">
+		DELETE
+		FROM ORDER_PROD
+		WHERE order_id = #{order_id}
+	</delete>
+	
 </mapper>
