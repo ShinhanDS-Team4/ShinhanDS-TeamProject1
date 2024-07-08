@@ -23,7 +23,7 @@
 					<img src="${path}/resources/images/icon_serch.png" alt="돋보기 아이콘" class="search_img" />
 				</label>
 			</form>
-		</div>
+		</div> 
 		<div class="rightGnb">  
 			<ul>
 				<c:choose>

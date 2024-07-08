@@ -61,9 +61,9 @@ public class MemberController {
 	    return "user/login";
 	}
 
-	@PostMapping("/login.do")
+	@PostMapping("/login.do") 
 	public String login(@RequestParam("member_id") String member_id, @RequestParam("member_pw") String member_pw, HttpSession session, HttpServletRequest request) {
-	    
+	     
 		MemberDTO member = memberService.selectById(member_id);
 		
 	    System.out.println(member);
