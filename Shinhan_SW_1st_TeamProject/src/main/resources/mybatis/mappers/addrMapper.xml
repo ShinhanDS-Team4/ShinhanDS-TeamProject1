@@ -31,16 +31,16 @@
 	</select>
 
 	<!-- 시퀀스 추가 -->
-<!-- 	<insert id="addressInsert" parameterType="com.team4.shoppingmall.addr_list.Addr_ListDTO"> -->
-<!-- 		   INSERT INTO ADDR_LIST (addr_num, member_id, zipcode, main_address, detail_address, is_master_addr, sub_address) -->
-<!-- 		    VALUES( ADDR_LIST_SEQUENCE.NEXTVAL ,  -->
-<!-- 				   #{member_id},  -->
-<!-- 				   #{zipcode},  -->
-<!-- 				   #{main_address},  -->
-<!-- 				   #{detail_address}, -->
-<!-- 				   #{is_master_addr},  -->
-<!-- 				   #{sub_address}) -->
-<!-- 	</insert> -->
+ 	<insert id="addressInsert" parameterType="com.team4.shoppingmall.addr_list.Addr_ListDTO"> 
+ 		   INSERT INTO ADDR_LIST (addr_num, member_id, zipcode, main_address, detail_address, is_master_addr, sub_address) 
+		    VALUES( ADDR_LIST_SEQUENCE.NEXTVAL ,  
+ 				   #{member_id},  
+				   #{zipcode},  
+ 				   #{main_address}, 
+ 				   #{detail_address},
+				   #{is_master_addr}, 
+ 				   #{sub_address})
+ 	</insert> 
 	<select id="selectByMember_Id"  parameterType="String" resultType="addr_listVO">
 			SELECT *
 			FROM ADDR_LIST
