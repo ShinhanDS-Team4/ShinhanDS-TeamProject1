@@ -215,23 +215,20 @@
 					            <c:set var="maxOrders" value="2" />
 						        <c:choose>
 						            <c:when test="${not empty myAllOrders}">
-						                <!-- JSTL로 정렬된 결과를 상위 2개만 추출하는 방법은 없으므로 컨트롤러에서 정렬하여 전달 -->
 						                <c:forEach items="${myAllOrders}" var="order" varStatus="status">
-						                    <c:if test="${status.index lt maxOrders}">
-						                        <tr>
-						                        	<td>${order.ORDER_ID}</td>
-						                            <td style="background-color:powderblue;"><img src="${order.IMG_ID}" alt="${order.IMG_ID}" width="100"></td>
-						                            <td class="product-info">
-						                                <strong>[${order.ORDER_STATE}]</strong><br>
-						                                <p>${order.PROD_NAME} (${order.ORDER_NUM}개)</p>
-						                            </td>
-						                            <td>${order.ORDER_PRODUCT_PRICE}원<br></td>
-						                            <td>
-						                            	${order.ORDER_DATE}
-						                            </td>
-						                            <td class="price">${order.TOTAL_PRICE}원</td>
-						                        </tr>
-						                    </c:if>
+					                        <tr>
+					                        	<td>${order.ORDER_ID}</td>
+					                            <td style="background-color:powderblue;"><img src="${order.IMG_ID}" alt="${order.IMG_ID}" width="100"></td>
+					                            <td class="product-info">
+					                                <strong>[${order.ORDER_STATE}]</strong><br>
+					                                <p>${order.PROD_NAME} (${order.ORDER_NUM}개)</p>
+					                            </td>
+					                            <td>${order.ORDER_PRODUCT_PRICE}원<br></td>
+					                            <td>
+					                            	${order.ORDER_DATE}
+					                            </td>
+					                            <td class="price">${order.TOTAL_PRICE}원</td>
+					                        </tr>
 						                </c:forEach>
 						            </c:when>
 						            <c:otherwise>

@@ -15,36 +15,39 @@
 		WHERE O.orderdetail_id = #{orderdetail_id};
 	</select>
 	
-	<!-- 결제 완료된 주문 상품 목록 (join수정-0705) -->
+	<!-- 결제 완료된 주문 상품 목록 (join수정-0708) -->
 	<select id="orderProductById" parameterType="string"
 		resultType="map">
 		SELECT
-			 op. order_id,
-             p.prod_name, 
-             op.total_price, 
-             od.order_num,
-             od.order_product_price,
-             od.order_id,
-             op.order_date,
-             pi.img_id,
-             od.order_state
+		    op.order_id,
+		    p.prod_name, 
+		    op.total_price, 
+		    od.order_num,
+		    od.order_product_price,
+		    od.order_id,
+		    op.order_date,
+		    pi.img_id,
+		    od.order_state
 		FROM 
 		    order_prod op
 		JOIN 
 		    order_detail od ON op.order_id = od.order_id
 		JOIN 
 		    SELL_PROD_STOCK sps ON od.s_stock_id = sps.s_stock_id
-        JOIN 
-           PROD p ON p.prod_id = sps.prod_id 
-        RIGHT JOIN 
-          PROD_IMAGE pi ON p.prod_id = pi.prod_id AND pi.img_id = (
-	        SELECT MIN(img_id)
-	        FROM PROD_IMAGE
-	        WHERE prod_id = p.prod_id
-	    )
+		JOIN 
+		    PROD p ON p.prod_id = sps.prod_id
+		JOIN (
+		    SELECT img_id, prod_id
+		    FROM (
+		        SELECT img_id, prod_id,
+		               ROW_NUMBER() OVER (PARTITION BY prod_id ORDER BY img_id) AS rn
+		        FROM PROD_IMAGE
+		    ) pi
+		    WHERE pi.rn = 1
+		) pi ON p.prod_id = pi.prod_id
 		WHERE 
-		    op.member_id = #{member_id}            
-	    AND od.order_state = '결제완료'
+		    op.member_id = #{member_id}
+		AND od.order_state = '결제완료'
 	</select>
 	<!--  
 	<select id="selectById2" parameterType="int" 
