@@ -111,19 +111,19 @@ public class SellerPageController {
 	@Value("${file.desc-img-upload-dir}")
 	private String descIMG_uploadDir;
 
-	// 메인페이지
-	@GetMapping("/MainPage.do")
-	public String mainpage(Model model, HttpSession session) {
-		MemberDTO mem = (MemberDTO)session.getAttribute("member");
-		String sellerID = mem.getMember_id();
-		 
-		model.addAttribute("sellerInfo", memberService.selectById(sellerID));
-		
-		// 여기서 SQL문을 사용해 model로 데이터를 끌어옴
-		// 여기에는 판매자가 판매하는 상품들의 판매량 데이터를 끌어오고, 데이터를 그래프화하여 표현
-		// model.addAttribute(result, flashMap);
-		return "seller/sellerMain";
-	}
+	/*
+	 * // 메인페이지
+	 * 
+	 * @GetMapping("/MainPage.do") public String mainpage(Model model, HttpSession
+	 * session) { MemberDTO mem = (MemberDTO)session.getAttribute("member"); String
+	 * sellerID = mem.getMember_id();
+	 * 
+	 * model.addAttribute("sellerInfo", memberService.selectById(sellerID));
+	 * 
+	 * // 여기서 SQL문을 사용해 model로 데이터를 끌어옴 // 여기에는 판매자가 판매하는 상품들의 판매량 데이터를 끌어오고, 데이터를
+	 * 그래프화하여 표현 // model.addAttribute(result, flashMap); return
+	 * "seller/sellerMain"; }
+	 */
 
 	// 판매&대여 상품 페이지 보여주기
 	@GetMapping("/PrdList.do")
@@ -496,7 +496,7 @@ public class SellerPageController {
 		Date sqlDate = Date.valueOf(localDate);
 
 		Integer maxAdminInqID = admin_inqService.findMaxAdminInqId();
-		
+		System.out.println("현재 adminINQ 최대값:"+maxAdminInqID);
 		if (Objects.isNull(maxAdminInqID))
 			maxAdminInqID = 0;
 		maxAdminInqID++;

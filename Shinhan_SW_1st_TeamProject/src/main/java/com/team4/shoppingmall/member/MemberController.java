@@ -84,7 +84,7 @@ public class MemberController {
 	        // 로그인 날짜를 현재 날짜로 지정
 	        member.setLast_access(sqlDate);
 	        memberService.memberUpdateAccess(member);
-	        return "redirect:/seller/MainPage.do";
+	        return "redirect:/seller/PrdList.do";
 	    } else {
 	        session.setAttribute("member", member);
 	        String lastRequest = (String) session.getAttribute("lastRequest");
