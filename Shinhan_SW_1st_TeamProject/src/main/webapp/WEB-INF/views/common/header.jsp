@@ -58,7 +58,7 @@
 					<%-- <span class="hidden">N</span> --%>
 				</li>
 				<li>
-					<a href="${path}/cart/cart">
+					<a href="${path}/cart/cart.do">
 						<p>장바구니</p>
 						<img src="${path}/resources/images/icon-cart.png" alt="장바구니">
 					</a>

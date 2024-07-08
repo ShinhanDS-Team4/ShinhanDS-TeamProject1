@@ -12,7 +12,7 @@ public class CouponService {
 	CouponDAOInterface couponDAO;
 	
 	// 쿠폰상세
-	public CouponDTO selectById(String coupon_id) {
+	public CouponDTO selectById(int coupon_id) {
 		return couponDAO.selectById(coupon_id);
 	}
 	

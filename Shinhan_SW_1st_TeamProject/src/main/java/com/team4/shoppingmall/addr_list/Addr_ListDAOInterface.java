@@ -28,5 +28,7 @@ public interface Addr_ListDAOInterface {
 	
 	//주소id에 해당하는 주소를 대표'Y'로 설정
 	public int updateMasterAddrToY(int addr_num);
+
+	public Addr_ListDTO findMasterAddr(String member_id);
 	
 }

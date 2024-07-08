@@ -32,7 +32,7 @@ public class Addr_ListService {
 		// 기존 is_master_addr 값을 N으로 업데이트
 		int updateToNresult = addr_ListDAOMybatis.updateMasterAddrToN();
 		
-        // 새로운 주소 삽입
+		// 새로운 주소 삽입
         int result = addr_ListDAOMybatis.addressInsert(addr_list);
 
         return result;
@@ -46,7 +46,7 @@ public class Addr_ListService {
 		return addr_ListDAOMybatis.addressDelete(addr_num);
 	}
 
-	//나의 주소 개수 
+	//나의 주소 개수  
 	public int countAddresses(String member_id) {
 		return addr_ListDAOMybatis.countAddresses(member_id);
 	}
@@ -63,5 +63,9 @@ public class Addr_ListService {
 	
 			
 		return result;
+	}
+	
+	public Addr_ListDTO findMasterAddr(String member_id) {
+		return addr_ListDAOMybatis.findMasterAddr(member_id);
 	}
 }

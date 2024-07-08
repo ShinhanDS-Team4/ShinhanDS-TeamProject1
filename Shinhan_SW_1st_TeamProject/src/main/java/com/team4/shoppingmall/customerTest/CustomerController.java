@@ -61,7 +61,6 @@ public class CustomerController {
 	@Autowired
 	private OrderProdService orderProdService;
 
-
 	@Autowired
 	private RentService rentService;
 
@@ -75,7 +74,7 @@ public class CustomerController {
 	private CouponService couponService;
 
 	@Autowired
-	private MemberService memberService;	
+	private MemberService memberService;
 
 	@Autowired
 	private Addr_ListService addr_ListService;
@@ -92,15 +91,16 @@ public class CustomerController {
 	@Autowired
 	private RentProdStockService rentProdStockService;
 
-	//String customerID = "bih63879";// 고객의 ID는 session에서 끌어온다.
+	// String customerID = "bih63879";// 고객의 ID는 session에서 끌어온다.
 
 	// 상품 구매 결제
 	@GetMapping("/orderPay.do")
-	public String orderPayPage(Model model1, Model model2, Model model3, Model model4, Model model5, Model model6, @RequestParam(value = "order_id", required = false) Integer orderID, HttpSession session) {
-		MemberDTO mem = (MemberDTO)session.getAttribute("member");
+	public String orderPayPage(Model model, Model model1, Model model2, Model model3, Model model4, Model model5,
+			Model model6, @RequestParam(value = "order_id", required = false) Integer orderID, HttpSession session) {
+		MemberDTO mem = (MemberDTO) session.getAttribute("member");
 		String customerID = mem.getMember_id();
-		
-		//Integer orderID = 1;// 주문ID. 실제로는 주문하기 버튼을 누르면 주문 ID를 받아와서 끌어옴
+
+		// Integer orderID = 1;// 주문ID. 실제로는 주문하기 버튼을 누르면 주문 ID를 받아와서 끌어옴
 
 		// 주문 데이터 가져오기
 		OrderProdDTO orderProdDTO = orderProdService.selectById(orderID);
@@ -120,6 +120,11 @@ public class CustomerController {
 		// 고객이 가지고 있는 회원등급, 포인트를 가져오기
 		CustomerDTO customerDTO = customerService.selectById(customerID);
 
+		// 주문 구매 상품 브랜드,이름 가져오기
+		Map<String, String> brandandProdName = orderDetailService.getOrderProdBrand(orderID);
+		model.addAttribute("brandandProdName", brandandProdName);
+		System.out.println(brandandProdName);
+
 		model1.addAttribute("orderInfo", orderProdDTO);
 		model2.addAttribute("orderDetailList", orderDetailList);
 		model3.addAttribute("memberInfo", memberDTO);
@@ -132,13 +137,13 @@ public class CustomerController {
 
 	// 상품 대여 결제
 	@GetMapping("/rentPay.do")
-	public String rentPayPage(Model model1, Model model2, Model model3, Model model4, Model model5, Model model6, 
-			@RequestParam(value = "rental_code", required = false) Integer rentalCode,
+	public String rentPayPage(Model model, Model model1, Model model2, Model model3, Model model4, Model model5,
+			Model model6, @RequestParam(value = "rental_code", required = false) Integer rentalCode,
 			HttpSession session) {
-		MemberDTO mem = (MemberDTO)session.getAttribute("member");
+		MemberDTO mem = (MemberDTO) session.getAttribute("member");
 		String customerID = mem.getMember_id();
-		
-		//Integer rental_code = 2;// 대여ID. 대여하기 버튼을 누르면 끌어옴
+
+		// Integer rental_code = 2;// 대여ID. 대여하기 버튼을 누르면 끌어옴
 
 		// 대여 정보 가져오기
 		RentDTO rentDTO = rentService.selectById(rentalCode);
@@ -155,6 +160,11 @@ public class CustomerController {
 		// 고객이 가지고 있는 회원등급, 포인트를 가져오기
 		CustomerDTO customerDTO = customerService.selectById(customerID);
 
+		// 대여주문 구매 상품 브랜드,이름 가져오기
+		Map<String, String> rentBrandandProdName = rentDetailService.getRentOrderProdBrand(rentalCode);
+		model.addAttribute("rentBrandandProdName", rentBrandandProdName);
+		System.out.println(rentBrandandProdName);
+
 		model1.addAttribute("rentInfo", rentDTO);
 		model2.addAttribute("rentDetailList", rentDetailList);
 		model3.addAttribute("memberInfo", memberDTO);
@@ -164,93 +174,22 @@ public class CustomerController {
 		return "customer/rentPay";
 	}
 
-	// 대여 주문에 쿠폰 적용하기
-	@PostMapping("/applyRentCoupon.do")
-	@ResponseBody
-	public String applyRentCoupon(@RequestBody CouponRequestDTO couponRequestDTO) {
-
-		String couponid = couponRequestDTO.getCouponid();
-		int orderid = couponRequestDTO.getOrderid();
-
-		if ("선택안함".equals(couponid)) {
-			return "Coupon applied";
-		} else {
-			// 현재 최종가 가져오기
-			RentDTO rentDTO = rentService.selectById(orderid);
-			int totalPrice = rentDTO.getTotal_rent_price();
-
-			System.out.println("쿠폰ID:" + couponid);
-			CouponDTO selectCouponDTO = couponService.selectById(couponid);
-
-			System.out.println("선택한 쿠폰 정보:" + selectCouponDTO);
-			double discountRate = selectCouponDTO.getDiscount_rate();
-
-			int discountAmount = (int) Math.round(totalPrice * (discountRate / 100.0));
-
-			int discountedPrice = totalPrice - discountAmount;
-
-			System.out.println("할인:" + discountAmount);
-			System.out.println("할인 후 가격:" + discountedPrice);
-
-			int couponAmount = selectCouponDTO.getQuantity();
-			selectCouponDTO.setQuantity(couponAmount - 1);
-
-			int couponUpdate = couponService.couponUse(selectCouponDTO);
-
-			rentDTO.setTotal_rent_price(discountedPrice);
-
-			int appliedResult = rentService.updateRent(rentDTO);
-
-			return "Coupon applied";
-		}
-
-	}
-
-	// 대여 주문에 포인트 적용하기
-	@PostMapping("/applyRentPoint.do")
-	@ResponseBody
-	public String applyRentPoint(@RequestBody PointRequestDTO pointRequestDTO, HttpSession session) {
-		MemberDTO mem = (MemberDTO)session.getAttribute("member");
-		String customerID = mem.getMember_id();
-		
-		int point = pointRequestDTO.getPoint();
-		System.out.println("보유포인트:" + point);
-		int orderid = pointRequestDTO.getOrderid();
-
-		RentDTO rentDTO = rentService.selectById(orderid);
-		int totalPrice = rentDTO.getTotal_rent_price();
-
-		int pointAppliedPrice = totalPrice - point;
-		System.out.println("포인트가 적용된 가격:" + pointAppliedPrice);
-
-		rentDTO.setTotal_rent_price(pointAppliedPrice);
-
-		int appliedResult = rentService.updateRent(rentDTO);
-
-		CustomerDTO customerDTO = customerService.selectById(customerID);
-		int existPoint = customerDTO.getPoint();
-		customerDTO.setPoint(existPoint - point);
-
-		int CustomerPointUpdate = customerService.customerUpdate(customerDTO);
-
-		return "Point Used";
-	}
-
-	// 구매 주문에 쿠폰 적용하기
+	// 주문에 쿠폰 적용하기
 	@PostMapping("/applyCoupon.do")
 	@ResponseBody
-	public String applyCoupon(@RequestBody CouponRequestDTO couponRequestDTO) {
+	public CouponResultDTO applyCoupon(@RequestBody CouponRequestDTO couponRequestDTO, Model model) {
+		CouponResultDTO couponResultDTO = new CouponResultDTO();
+		int couponid = couponRequestDTO.getCouponid();
+		int orderPrice = couponRequestDTO.getOrderPrice();
 
-		String couponid = couponRequestDTO.getCouponid();
-		int orderid = couponRequestDTO.getOrderid();
-		
 		// 쿠폰을 선택하지 않은 경우
-		if ("선택안함".equals(couponid)) {
-			return "Coupon applied";
+		if (couponid == 0) {
+			couponResultDTO.setDiscount(0);
+			couponResultDTO.setDiscountedPrice(orderPrice);
+			couponResultDTO.setCouponID(couponid);
+
+			return couponResultDTO;
 		} else {
-			// 쿠폰을 선택한 경우
-			OrderProdDTO orderProdDTO = orderProdService.selectById(orderid);
-			int totalPrice = orderProdDTO.getTotal_price();
 
 			System.out.println("쿠폰ID:" + couponid);
 			CouponDTO selectCouponDTO = couponService.selectById(couponid);
@@ -258,59 +197,48 @@ public class CustomerController {
 			System.out.println("쿠폰정보:" + selectCouponDTO);
 			double discountRate = selectCouponDTO.getDiscount_rate();
 
-			int discountAmount = (int) Math.round(totalPrice * (discountRate / 100.0));
+			int discount = (int) Math.round(orderPrice * (discountRate / 100.0));
 
-			int discountedPrice = totalPrice - discountAmount;
+			int discountedPrice = orderPrice - discount;
 
-			System.out.println("쿠폰 할인액:" + discountAmount);
-			System.out.println("쿠폰 적용 결제액:" + discountedPrice);
+			System.out.println("할인액:" + discount);
+			System.out.println("할인 결과 금액 : " + discountedPrice);
 
-			int couponAmount = selectCouponDTO.getQuantity();
-			selectCouponDTO.setQuantity(couponAmount - 1);
+			couponResultDTO.setDiscount(discount);
+			couponResultDTO.setDiscountedPrice(discountedPrice);
+			couponResultDTO.setCouponID(couponid);
 
-			int couponUpdate = couponService.couponUse(selectCouponDTO);
+			model.addAttribute("couponselectDiscount", discount);
+			model.addAttribute("couponSelectedPrice", discountedPrice);
+			model.addAttribute("couponInfo", selectCouponDTO);
 
-			OrderProdDTO updatedPrice = new OrderProdDTO();
-			updatedPrice.setOrder_id(orderid);
-			updatedPrice.setTotal_price(discountedPrice);
+			model.addAttribute("finalPrice", discountedPrice);
 
-			int appliedResult = orderProdService.updateOrderPrice(updatedPrice);
-
-			return "Coupon applied";
+			return couponResultDTO;
 		}
 
 	}
 
-	// 구매 주문 포인트 적용
+	// 주문에 포인트 적용
 	@PostMapping("/applyPoint.do")
 	@ResponseBody
-	public String applyCoupon(@RequestBody PointRequestDTO pointRequestDTO, HttpSession session) {
-		MemberDTO mem = (MemberDTO)session.getAttribute("member");
+	public PointResultDTO applyCoupon(@RequestBody PointRequestDTO pointRequestDTO, HttpSession session) {
+		MemberDTO mem = (MemberDTO) session.getAttribute("member");
 		String customerID = mem.getMember_id();
-		
-		int point = pointRequestDTO.getPoint();
-		System.out.println("포인트 보유량:" + point);
-		int orderid = pointRequestDTO.getOrderid();
 
-		OrderProdDTO orderProdDTO = orderProdService.selectById(orderid);
-		int totalPrice = orderProdDTO.getTotal_price();
+		int point = pointRequestDTO.getUsePoint();
+		System.out.println("포인트:" + point);
+		int couponAppliedPrice = pointRequestDTO.getCouponAppliedPrice();
 
-		int pointAppliedPrice = totalPrice - point;
+		int pointAppliedPrice = couponAppliedPrice - point;
 		System.out.println("포인트 적용 결제가격:" + pointAppliedPrice);
 
-		OrderProdDTO updatedPrice = new OrderProdDTO();
-		updatedPrice.setOrder_id(orderid);
-		updatedPrice.setTotal_price(pointAppliedPrice);
+		PointResultDTO pointResultDTO = new PointResultDTO();
 
-		CustomerDTO customerDTO = customerService.selectById(customerID);
-		int existPoint = customerDTO.getPoint();
-		customerDTO.setPoint(existPoint - point);
+		pointResultDTO.setUsePoint(point);
+		pointResultDTO.setPointAppliedPrice(pointAppliedPrice);
 
-		int CustomerPointUpdate = customerService.customerUpdate(customerDTO);
-
-		int appliedResult = orderProdService.updateOrderPrice(updatedPrice);
-
-		return "Point Used";
+		return pointResultDTO;
 	}
 
 	// 주소 선택하기
@@ -335,11 +263,12 @@ public class CustomerController {
 
 	// 구매 결제 완료 후 프로세스
 	@GetMapping("/sellPaySuccess.do")
-	public String sellPaySuccess(@RequestParam("order_id") Integer order_id) {
+	public String sellPaySuccess(@RequestParam("order_id") int orderId, @RequestParam("coupon_id") int couponId,
+			@RequestParam("point") int usedpoint, @RequestParam("finalPrice") int finalPrice) {
 
-		OrderProdDTO orderProdDTO = orderProdService.selectById(order_id);
+		OrderProdDTO orderProdDTO = orderProdService.selectById(orderId);
 		// 구매 주문에 해당하는 주문 상세 목록들 가져오기
-		List<Order_DetailDTO> orderDetailDTOs = orderDetailService.selectByOrder_Id(order_id);
+		List<Order_DetailDTO> orderDetailDTOs = orderDetailService.selectByOrder_Id(orderId);
 
 		// 주문 상세 목록에 대한 반복문 수행
 		for (Order_DetailDTO order_DetailDTO : orderDetailDTOs) {
@@ -365,17 +294,27 @@ public class CustomerController {
 			int updateStock = seller_Prod_StockService.seller_prod_stockUpdate(seller_Prod_StockDTO);
 		}
 
-		// 고객의 포인트와 고객등급, 누적 구매액 가져오기
+		// 고객 ID로 고객 정보 가져오기
 		String customerID = orderProdDTO.getMember_id();
 		CustomerDTO customerDTO = customerService.selectById(customerID);
-		int orderPrice = orderProdDTO.getTotal_price();
 
+		// 사용한 쿠폰의 ID로 쿠폰 개수 1 줄이기
+		CouponDTO couponDTO = couponService.selectById(couponId);
+		int couponQuantity = couponDTO.getQuantity();
+		couponDTO.setQuantity(couponQuantity - 1);
+
+		int couponUpdateResult = couponService.couponUse(couponDTO);
+
+		// 보유 포인트, 멤버등급, 누적 구매액
 		int point = customerDTO.getPoint();
 		String member_level = customerDTO.getMember_level();
 		int accum_amount = customerDTO.getAccum_amount();
 
+		// 사용한 포인트를 보유 포인트에서 감소
+		point = point - usedpoint;
+
 		// 누적 구매액 갱신
-		accum_amount = accum_amount + orderPrice;
+		accum_amount = accum_amount + finalPrice;
 		customerDTO.setAccum_amount(accum_amount);
 
 		// 등급별 포인트 계산 후 적립
@@ -393,7 +332,7 @@ public class CustomerController {
 			rate = 2.0;
 		}
 
-		int upadatedPoint = point + (int) Math.round(orderPrice * rate);
+		int upadatedPoint = point + (int) Math.round(finalPrice * rate);
 
 		customerDTO.setPoint(upadatedPoint);
 
@@ -417,7 +356,8 @@ public class CustomerController {
 
 	// 대여 결제 완료 후 프로세스
 	@GetMapping("/rentPaySuccess.do")
-	public String rentPaySuccess(@RequestParam("rental_code") Integer rental_code) {
+	public String rentPaySuccess(@RequestParam("rental_code") int rental_code, @RequestParam("coupon_id") int couponId,
+			@RequestParam("point") int usedpoint, @RequestParam("finalPrice") int finalPrice) {
 
 		RentDTO rentDTO = rentService.selectById(rental_code);
 
@@ -450,14 +390,24 @@ public class CustomerController {
 		// 고객의 포인트와 고객등급, 누적 구매액 가져오기
 		String customerID = rentDTO.getMember_id();
 		CustomerDTO customerDTO = customerService.selectById(customerID);
-		int rentPrice = rentDTO.getTotal_rent_price();
 
+		// 사용한 쿠폰의 ID로 쿠폰 개수 1 줄이기
+		CouponDTO couponDTO = couponService.selectById(couponId);
+		int couponQuantity = couponDTO.getQuantity();
+		couponDTO.setQuantity(couponQuantity - 1);
+
+		int couponUpdateResult = couponService.couponUse(couponDTO);
+
+		// 보유 포인트, 멤버등급, 누적 구매액
 		int point = customerDTO.getPoint();
 		String member_level = customerDTO.getMember_level();
 		int accum_amount = customerDTO.getAccum_amount();
 
+		// 사용한 포인트를 보유 포인트에서 감소
+		point = point - usedpoint;
+
 		// 누적 구매액 갱신
-		accum_amount = accum_amount + rentPrice;
+		accum_amount = accum_amount + finalPrice;
 		customerDTO.setAccum_amount(accum_amount);
 
 		// 등급별 포인트 계산 후 적립
@@ -475,7 +425,7 @@ public class CustomerController {
 			rate = 2.0;
 		}
 
-		int upadatedPoint = point + (int) Math.round(rentPrice * rate);
+		int upadatedPoint = point + (int) Math.round(finalPrice * rate);
 
 		customerDTO.setPoint(upadatedPoint);
 
@@ -502,7 +452,6 @@ public class CustomerController {
 	@PostMapping("/cancelOrderPay.do")
 	@ResponseBody
 	public String cancelOrderPay(@RequestParam int order_id) {
-		int orderID = order_id;
 
 		// 주문 상세 삭제
 		int orderDetailDelResult = orderDetailService.orderDetailDelByOrderID(order_id);
@@ -517,10 +466,9 @@ public class CustomerController {
 	@PostMapping("/cancelRentPay.do")
 	@ResponseBody
 	public String cancelRentPay(@RequestParam int rental_code) {
-		int rentalCode = rental_code;
 
 		// 대여 상세 삭제
-		int rentDetailDelResult = rentDetailService.rentDetailDelByRentCode(rentalCode);
+		int rentDetailDelResult = rentDetailService.rentDetailDelByRentCode(rental_code);
 
 		// 대여 삭제
 		int rentDelResult = rentService.rentprodDelete(rental_code);
@@ -544,4 +492,3 @@ public class CustomerController {
 	}
 
 }
-

@@ -16,11 +16,9 @@
 <script src="${path}/resources/js/jquery-3.7.1.min.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	
-	
 <script>
-function changeAmountPopUp(cart_id){
-	var cart_amout= document.getElementById("cart_amount_" + cart_id).value;
+function changeAmount(cart_id){
+	var cart_amount= document.getElementById("cart_amount_" + cart_id).value;
 	
 	$.ajax({
 		type:'post',
@@ -45,6 +43,8 @@ function changeAmountPopUp(cart_id){
 }
 
 function removeCartItem(cart_id){
+	console.log(cart_id);
+	
 	$.ajax({
 		type:'post',
 		url:'${path}/cart/deleteCart.do',
@@ -82,9 +82,9 @@ function submitOrder() {
         type: 'post',
         url: '${path}/cart/createOrder.do',
         contentType: 'application/json',
-        data: JSON.stringify({ cartIds: cartIds }),
+        data: JSON.stringify(cartIds),
         success: function(response) {
-            alert("주문 페이지로 이동합니다.")
+            alert("주문 페이지로 이동합니다.");
           	//주문페이지로 이동
             location.href = "${path}/customer/orderPay.do?order_id=" + response.order_id;
         },
@@ -98,12 +98,12 @@ function submitOrder() {
 function submitRent() {
     var cartIds = [];
     var cartItems = document.querySelectorAll('.rent-cart-item');
-    
+ 
     cartItems.forEach(function(cartItem) {
         var cartId = cartItem.getAttribute('data-cart-id');
         cartIds.push(cartId);
     });
-
+debugger
     console.log("Selected cart IDs: ", cartIds); // 콘솔에 cartIds 배열 출력 (디버깅 용도)
 
     // 여기에 AJAX 호출 또는 폼 제출 코드 추가
@@ -111,7 +111,7 @@ function submitRent() {
         type: 'post',
         url: '${path}/cart/createRent.do',
         contentType: 'application/json',
-        data: JSON.stringify({ cartIds: cartIds }),
+        data: JSON.stringify(cartIds),
         success: function(response) {
         	alert("주문 페이지로 이동합니다.")
         	location.href = "${path}/customer/rentPay.do?rental_code=" + response.rental_code;
@@ -122,29 +122,17 @@ function submitRent() {
         }
     });
 }
-
 </script>
-
-<style type="text/css">
- .cart-container{
- 	margin: 80px auto;
- }
-</style>	
-
 </head>
 <body>
 	<%@ include file="../common/header.jsp" %>	
 	
-	<div class="container">
-        <h1>장바구니</h1>
-          <div class="cart-header">
+	<div class="cart-container inner">
+        <h1 class="cart-title">장바구니</h1>
+         <div class="cart-header">
             <div>구매(개수)</div>
         </div>  
         <div>
-        	<div class="checkbox-container">
-	            <input type="checkbox" checked>
-	            <span>전체선택</span>
-	        </div>
 	        <%-- 구매 상품 장바구니 리스트 --%>
 	        <div class="sellCartList">
 		        <c:forEach  var="cartProduct" items="${cartProdInfo}">
@@ -168,16 +156,17 @@ function submitRent() {
 				            </c:if>
 			            </div>
 			            주문 수량: <input type="number" id="cart_amount_${cartProduct.CART_ID}" value="${cartProduct.CART_AMOUNT}">
+			            <div class="item-options">
+			                <button class="btn-option" onclick="changeAmount(${cartProduct.CART_ID})">수량 변경</button>
+			                <!-- <button class="btn-option" onclick="">바로구매</button> -->
+			            </div>
 		               <div class="cart-item-price">
 			              <span>총 가격</span> 
 			              <c:set var="totalPrice" value="${cartProduct.CART_AMOUNT * cartProduct.PROD_PRICE}"/>
                			  <span class="total-price-this">${totalPrice}<span>(원)
 			            </div>
-			            <div class="item-options">
-			                <button class="btn-option" onclick="changeAmountPopUp(${cartProduct.CART_ID})">수량 변경</button>
-			                <!-- <button class="btn-option" onclick="">바로구매</button> -->
-			            </div>
 			            <div class="cart-item-remove" onclick="removeCartItem(${cartProduct.CART_ID})">X</div>
+			            <c:set var="totalSumSell" value="${totalSumSell + totalPrice}" />
 			        </div>
 		        </c:forEach>
 	        </div>
@@ -195,15 +184,14 @@ function submitRent() {
             <button class="btn-purchase" onclick="submitOrder()">주문하기</button>
       	  </div>
 	        
-	        
+	        <h1>장바구니(대여 상품)</h1>
+	         <div class="cart-header">
+	            <div>대여(개수)</div>
+	        </div>
 	        <%-- 대여 상품 장바구니 리스트 --%>
 	        <div class="sellCartList">
-	        	<form></form>
 		        <c:forEach items="${cartRentProdInfo}" var="rentCartProduct">
-			        <div class="rent-cart-item">
-			            <div class="checkbox-container">
-			                <input type="checkbox">
-			            </div>
+		        	<div class="rent-cart-item" data-cart-id="${rentCartProduct.CART_ID}">
 			            <div class="cart-item-details">
 			                <div><strong>상품명:</strong>${rentCartProduct.PROD_NAME}</div>
 			                <c:if test="${not empty rentCartProduct.opt_name1}">
@@ -223,17 +211,17 @@ function submitRent() {
 				            </c:if>
 			            </div>
 			            주문 수량 : <input type="number" id="cart_amount_${rentCartProduct.CART_ID}" value="${rentCartProduct.CART_AMOUNT}">
-		              	<div class="cart-item-price">
-			              <span>총 가격</span> 
-			              <c:set var="totalPrice" value="${rentCartProduct.CART_AMOUNT * 30000}"/>
-               				<span class="total-price-this">${totalPrice}<span>(원)
-			            </div>
 			            <div class="item-options">
-			                <button class="btn-option" onclick="changeAmountPopUp(${rentCartProduct.CART_ID})">수량 변경</button>
+			                <button class="btn-option" onclick="changeAmount(${rentCartProduct.CART_ID})">수량 변경</button>
 			                <!-- <button class="btn-option" onclick="">바로구매</button> -->
 			            </div>
+		              	<div class="cart-item-price">
+			              <span>총 가격</span> 
+			              <c:set var="totalPriceRent" value="${rentCartProduct.CART_AMOUNT * 30000}"/>
+               				<span class="total-price-this">${totalPriceRent}<span>(원)
+			            </div>
 			            <div class="cart-item-remove" onclick="removeCartItem(${rentCartProduct.CART_ID})">X</div>
-			            <c:set var="totalSum" value="${totalSum + totalPrice}" />
+			            <c:set var="totalSum" value="${totalSum + totalPriceRent}" />
 			        </div>
 		        </c:forEach>
 	        </div>

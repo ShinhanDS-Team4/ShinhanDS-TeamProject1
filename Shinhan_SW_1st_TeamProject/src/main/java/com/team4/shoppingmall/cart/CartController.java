@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.team4.shoppingmall.addr_list.Addr_ListDTO;
+import com.team4.shoppingmall.addr_list.Addr_ListService;
 import com.team4.shoppingmall.member.MemberDTO;
 import com.team4.shoppingmall.order_detail.Order_DetailDTO;
 import com.team4.shoppingmall.order_detail.Order_DetailService;
@@ -73,6 +75,9 @@ public class CartController {
 	
 	@Autowired
 	RentDetailService rentDetailService;
+	
+	@Autowired
+	Addr_ListService addr_ListService;
   
 	@GetMapping("/cart.do")
 	public String cartPage(HttpSession session, Model model) {
@@ -114,6 +119,9 @@ public class CartController {
 		MemberDTO mem = (MemberDTO)session.getAttribute("member");
 		String customerID = mem.getMember_id();
 		
+		//계정의 대표주소 가져오기
+		Addr_ListDTO addr_ListDTO = addr_ListService.findMasterAddr(customerID);
+		
 		LocalDate localDate = LocalDate.now();
 		// LocalDate로 현재 날짜를 받아와 SQL.Date로 전환
 		Date sqlDate = Date.valueOf(localDate);
@@ -150,6 +158,8 @@ public class CartController {
 				
 				int ordDetailInsertResult = order_DetailService.orderDetailInsert(order_DetailDTO);
 			}
+			
+			int cartDeleteResult = cartService.cartDelete(cartId);//주문상세 생성 완료 후 해당 장바구니 삭제
 		}
 		
 		OrderProdDTO orderProdDTO = new OrderProdDTO();
@@ -157,7 +167,7 @@ public class CartController {
 		orderProdDTO.setOrder_date(sqlDate);
 		orderProdDTO.setMember_id(customerID);
 		orderProdDTO.setTotal_price(orderTotal_price);
-		orderProdDTO.setAddr_num(0);
+		orderProdDTO.setAddr_num(addr_ListDTO.getAddr_num());//주소를 대표주소로 설정
 		
 		int orderInsertResult = orderprodDAO.orderprodInsert(orderProdDTO);
 		
@@ -214,6 +224,8 @@ public class CartController {
 				
 				int rentDetailInsertResult = rentDetailService.rentDetailInsert(rentDetailDTO);
 			}
+			
+			int cartDeleteResult = cartService.cartDelete(cartId);//대여상세 생성 완료 후 해당 장바구니 삭제
 		}
 		
 		RentDTO rentDTO = new RentDTO();
@@ -231,11 +243,24 @@ public class CartController {
   
 	@PostMapping("/deleteCart.do")
 	@ResponseBody
-	public String deleteCart(@RequestBody Integer request) {
-		Integer cart_id = request;
+	public String deleteCart(@RequestBody  CartDTO cartDTO) {
+		
+	    Integer cart_id = cartDTO.getCart_id();
+	    
+	    if (cart_id == null) {
+	        return "delete Error";
+	    }
+
 		int cartDeleteResult = cartService.cartDelete(cart_id);
 		
-		return "cart Deleted";
+		if(cartDeleteResult>0) {
+			return "cart Deleted";
+		}
+		else {
+			return "delete Error";
+		}
+		
+		
 	}
 	
 	@PostMapping("/changeCartAmount.do")
@@ -249,7 +274,13 @@ public class CartController {
 		
 		int cartAmountUpdateResult = cartService.cartUpdate(cartDTO);
 		
-		return "CartAmount Updated";
+		
+		if(cartAmountUpdateResult>0) {
+			return "CartAmount Updated";
+		}
+		else {
+			return "Update Error";
+		}
 	}
 	
 }

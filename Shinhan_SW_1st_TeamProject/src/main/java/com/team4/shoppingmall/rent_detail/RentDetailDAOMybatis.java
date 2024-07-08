@@ -1,6 +1,7 @@
 package com.team4.shoppingmall.rent_detail;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,11 @@ public class RentDetailDAOMybatis implements RentDetailDAOInterface {
 	@Autowired
 	SqlSession sqlSession;
 	String namespace = "com.saren.rent_detail."; //수정
+	
+	//대여주문상품 브랜드,이름
+	public Map<String,String> getRentOrderProdBrand(int rental_code){
+		return sqlSession.selectOne(namespace+"getRentOrderProdBrand", rental_code);
+	};
 
 	// 대여상세 상세
 	@Override

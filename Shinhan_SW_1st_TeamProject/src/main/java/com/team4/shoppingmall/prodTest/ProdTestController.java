@@ -56,7 +56,10 @@ public class ProdTestController {
 	Seller_Prod_StockTestService seller_Prod_StockTestService; 
 	
 	@Autowired
-	ProdTestService prodTestService; 
+	ProdTestService prodTestService;  //ProdTest
+	
+	@Autowired
+	ProdService prodService; 
 	
 	@Autowired
 	Prod_OptionTestService prod_OptionTestService; 
@@ -104,12 +107,13 @@ public class ProdTestController {
 	@GetMapping("/product_detail")
 	public void productDetail(String prod_id, 
 								Model model
+								//,@RequestParam(value = "prod_id", required = false) String prod_id
 								//,@RequestBody Map<String, Object> request 
 	) throws JsonProcessingException {
 		
 		//나중에 삭제하기
+		prod_id = "여성 원피스_199-81-22245";
 		//prod_id = "논아이론 사틴 솔리드 드레스 셔츠 - 화이트_199-81-22242"; //판매에 있고 ,대여재고없는상품 test
-		prod_id = "자수 미니 원피스 - 화이트_199-81-21909"; //판매,대여 둘다 는 상품
 		//prod_id = "[대여상품]원피스 - 화이트_222-81-77709"; //대여재고만 있는 상품	
 		//prod_id = "세일러 셔츠-스카이블루_199-81-22361";
 		
@@ -117,7 +121,7 @@ public class ProdTestController {
 		//옵션명과 값 전부 조회
 		ArrayList<Object> prod_Options = (ArrayList<Object>) prod_OptionTestService.selectAllOptionsByProdId(prod_id);
 		model.addAttribute("prod_Options", prod_Options);
-		 
+		 System.out.println("prod_Options="+prod_Options);
 		//판매 상품 옵션별 재고량 조회
 		List<Seller_Prod_StockTestDTO> seller_prod_stockDTO = seller_Prod_StockTestService.selectSpsOptionByProdId(prod_id);
 		model.addAttribute("seller_prod_stockDTO", seller_prod_stockDTO);
@@ -130,6 +134,7 @@ public class ProdTestController {
 		prod_detail_info.put("prod_id", prod_id); 
 		model.addAttribute("prod_detail_info", prod_detail_info);
 		
+		System.out.println("prod_detail_info=" + prod_detail_info);
 		System.out.println("상품id=" + prod_id);
 		
 		//상품 카테고리 조회
@@ -157,6 +162,7 @@ public class ProdTestController {
 		//리뷰 목록에 불러올 상품의 옵션 목록
 		List<Prod_OptionDTO> prodOptions = prod_OptionTestService.productAllOptionsByProdId(prod_id);
 		model.addAttribute("prodOptions", prodOptions);
+		System.out.println("prodOptions="+prodOptions);
 		
 		/* 상품 전체 문의 목록 */
 		List<Buyer_InqDTO> buyer_inqList = buyer_InqService.selectByProdId(prod_id);
@@ -178,11 +184,15 @@ public class ProdTestController {
 		
 		//메인 사진들 조회
 		List<Map<String,Object>> mainImgIdList = imageService.prodMainImgInfoByProdId(prod_id); 
+		model.addAttribute("mainImgIdList", mainImgIdList);
 		//상품 정보 사진 조회
 		List<Map<String,Object>> subImgIdList = imageService.prodSubImgInfoByProdId(prod_id); 
+		model.addAttribute("subImgIdList", subImgIdList);
 		
-		System.out.println("mainImgIdList" + mainImgIdList);
-		System.out.println("subImgIdList" + subImgIdList);
+		//상품 설명
+		ProdDTO prodDesc = prodService.selectByProdId(prod_id);
+		model.addAttribute("prodDesc", prodDesc);
+		System.out.println("prodDesc=" + prodDesc);
 	}
 	
 

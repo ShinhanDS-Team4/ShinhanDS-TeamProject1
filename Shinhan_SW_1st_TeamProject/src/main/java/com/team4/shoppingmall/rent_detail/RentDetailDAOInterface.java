@@ -1,9 +1,13 @@
 package com.team4.shoppingmall.rent_detail;
 
 import java.util.List;
+import java.util.Map;
 
 public interface RentDetailDAOInterface {
 	
+	//대여주문상품 브랜드,이름
+	public Map<String,String> getRentOrderProdBrand(int rental_code);
+		
 	// 대여상세 상세
 	public RentDetailDTO selectById(Integer rentdetail_id);
 	

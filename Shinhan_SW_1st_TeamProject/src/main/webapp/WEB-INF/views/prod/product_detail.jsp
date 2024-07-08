@@ -232,9 +232,11 @@
 					<%-- 메인 상품 사진 :판매자가 등록한 이미지 중 첫번째 --%>
 					<div class="product-image">
 						<ul class="product-img-slide">
-							<li><img src="${path}/resources/images/testImg/testimg1.jpg" alt="1"></li>
-							<li><img src="${path}/resources/images/testImg/testimg2.jpg" alt="2"></li>
-							<li><img src="${path}/resources/images/testImg/testimg3.jpg" alt="3"></li>
+							<c:forEach var="imgNameMain" items="${mainImgIdList}">
+								<li>
+									<img src="http://localhost:9090/saren/ProdImgFile/main/${imgNameMain.IMG_ID}" alt="메인이미지">
+								</li>
+							</c:forEach>
 						</ul>
 					</div>
 					
@@ -466,20 +468,24 @@
 				<div class="container-detail-img-wrap">
 					<div class="container-detail-prod-img">  <%-- 스크롤처리 --%>
 						<ul class="prod-img-scroll">
-							<li><img src="${path}/resources/images/testImg/testimg1.jpg" alt="1"></li>
-							<li><img src="${path}/resources/images/testImg/testimg2.jpg" alt="2"></li>
-							<li><img src="${path}/resources/images/testImg/testimg3.jpg" alt="3"></li>
-							<li><img src="${path}/resources/images/testImg/testimg1.jpg" alt="1"></li>
-							<li><img src="${path}/resources/images/testImg/testimg2.jpg" alt="2"></li>
-							<li><img src="${path}/resources/images/testImg/testimg3.jpg" alt="3"></li>
+							<c:forEach var="imgName" items="${subImgIdList}">
+								<li>
+									<img src="http://localhost:9090/saren/ProdImgFile/desc/${imgName.IMG_ID}" alt="서브이미지">
+								</li>
+							</c:forEach>
+							
 						</ul>
 					</div>
+					<%-- 상품 설명 --%>
 					<div class="container-detail-prod-subtext">  <%-- fixed --%>
-						<h1>설명 텍스트 박스</h1>
+						<h1>상품 상세 설명</h1>
+						<h2>${prodDesc.prod_name}</h2>
+						<p><span>상품번호: <span>${prodDesc.prod_id} , ${prodDesc.member_id}</p>
+					    <c:forEach var="prod" items="${prod_Options}">
+					        <p>Option: ${prod.OPT_NAME}, ${prod.OPT_VALUE}</p> 
+					    </c:forEach> 
 						<div class="prod-subtext-scroll">
-							<h2>설명 제목</h2>
-							<p>서브 설명 설명</p>
-							<p>설명설명설명설명설명설명설명설명설명설명설명설명</p>
+							<p>${prodDesc.prod_desc}</p>
 						</div>
 					</div>				
 				</div>
