@@ -99,7 +99,7 @@
 			</ul>
 			<%-- 오른쪽 메뉴 --%>
 			<ul class="right_menu">
-				<li><a href="javascript:void(0)" class="highlight">AI추천코디</a></li>
+				<li><a href="${path}/customer/coordination.do" class="highlight">AI추천코디</a></li>
 				<li><a href="${path}/customer/productlist" class="highlight">옷대여</a></li>
 				<li><a href="${path}/adminqna/myqna.do">Q&A</a></li>
 				<li><a href="${path}/notice/notices">공지사항</a></li>

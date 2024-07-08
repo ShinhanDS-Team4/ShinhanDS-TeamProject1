@@ -101,7 +101,7 @@
          });
 		//메인 상품 사진 슬라이드
         $('.product-img-slide').bxSlider({
-        	  // auto: true,           // 자동 슬라이드		
+        	   auto: true,           // 자동 슬라이드		
                controls: true,      // 양옆 화살표 노출 여부
                pager: true,         // 슬라이드 밑 버튼 노출 여부
                minSlides: 1,

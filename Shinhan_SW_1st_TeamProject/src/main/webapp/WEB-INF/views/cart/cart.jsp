@@ -103,7 +103,7 @@ function submitRent() {
         var cartId = cartItem.getAttribute('data-cart-id');
         cartIds.push(cartId);
     });
-debugger
+
     console.log("Selected cart IDs: ", cartIds); // 콘솔에 cartIds 배열 출력 (디버깅 용도)
 
     // 여기에 AJAX 호출 또는 폼 제출 코드 추가
