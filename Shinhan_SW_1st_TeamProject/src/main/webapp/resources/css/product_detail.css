@@ -683,9 +683,10 @@
 }
 .container-detail-img-wrap>div{
     width: 50%;
-    text-align: center;
+    text-align: left;
     /* border: 1px solid green; */
     height: 100vh;    
+    padding-left: 50px;
 }
 /* 상세 이미지 */
 .container-detail-prod-img{
@@ -709,8 +710,19 @@
 .container-detail-prod-subtext{
 	
 }
-
-
+.container-detail-prod-subtext > h1{
+	padding-bottom: 20px;
+}
+.container-detail-prod-subtext > h2{
+	padding: 20px 0;
+}
+.container-detail-prod-subtext>p{
+	padding: 10px 0 0;
+	color: #666;
+}
+.prod-subtext-scroll > p{
+	padding-top: 40px;
+}
 /* bxSilder 커스텀 */
 .product-image > .bx-wrapper{
     -webkit-box-shadow:none;
