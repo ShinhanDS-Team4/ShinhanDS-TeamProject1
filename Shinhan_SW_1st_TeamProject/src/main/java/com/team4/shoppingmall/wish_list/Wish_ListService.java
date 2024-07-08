@@ -23,8 +23,8 @@ public class Wish_ListService {
 		return wish_listDAO.selectByProdId(prod_id);
 	}
 	
-	public List<Wish_ListDTO> selectAll() {
-		return wish_listDAO.selectAll();
+	public List<Wish_ListDTO> selectAll(String memberId) {
+		return wish_listDAO.selectAll(memberId);
 	}
 	
 	public int wish_listInsert(Wish_ListDTO wish_list) {
