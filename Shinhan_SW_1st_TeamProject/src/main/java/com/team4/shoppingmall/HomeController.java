@@ -62,7 +62,7 @@ public class HomeController {
 		 
 		String message = "";
 
-		CouponDTO coupon = cService.selectFirst();
+		CouponDTO coupon = cService.selectFirst(); 
 		if(member != null) {
 			coupon.setMember_id(member.getMember_id()); 
 		} else {

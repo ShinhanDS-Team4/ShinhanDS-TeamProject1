@@ -21,7 +21,7 @@
 		FROM (
 		    SELECT *
 		    FROM EVENT
-		    ORDER BY event_id DESC
+		    ORDER BY event_id asc
 		)
 		WHERE ROWNUM = 1
 	</select>
