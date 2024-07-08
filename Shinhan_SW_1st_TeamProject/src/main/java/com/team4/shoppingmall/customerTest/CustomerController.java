@@ -273,8 +273,10 @@ public class CustomerController {
 		// 주문 상세 목록에 대한 반복문 수행
 		for (Order_DetailDTO order_DetailDTO : orderDetailDTOs) {
 
+			System.out.println("주문 상태 처리 전 orderDetail:"+order_DetailDTO);
 			// 주문 상세의 주문 상태를 '결제완료'로 변경
 			order_DetailDTO.setOrder_state("결제완료");
+			System.out.println("주문 상태 처리 후 orderDetail:"+order_DetailDTO);
 
 			// 해당 주문이 구매한 판매 재고 정보를 가져오기
 			String s_stock_id = order_DetailDTO.getS_stock_id();
@@ -298,15 +300,19 @@ public class CustomerController {
 		String customerID = orderProdDTO.getMember_id();
 		CustomerDTO customerDTO = customerService.selectById(customerID);
 
-		if (!Objects.isNull(customerDTO)) {
-			// 사용한 쿠폰의 ID로 쿠폰 개수 1 줄이기
-			CouponDTO couponDTO = couponService.selectById(couponId);
+		System.out.println(customerDTO);
+		
+		
+		// 사용한 쿠폰의 ID로 쿠폰 개수 1 줄이기
+		CouponDTO couponDTO = couponService.selectById(couponId);
+		System.out.println("사용한 쿠폰:"+couponDTO);
+		if(!Objects.isNull(couponDTO)) {
 			int couponQuantity = couponDTO.getQuantity();
 			couponDTO.setQuantity(couponQuantity - 1);
 
 			int couponUpdateResult = couponService.couponUse(couponDTO);
 		}
-
+		
 		// 보유 포인트, 멤버등급, 누적 구매액
 		int point = customerDTO.getPoint();
 		String member_level = customerDTO.getMember_level();
@@ -323,15 +329,15 @@ public class CustomerController {
 		double rate = 0.0;
 
 		if ("Family".equals(member_level)) {
-			rate = 0.1;
+			rate = 0.001;
 		} else if ("Bronze".equals(member_level)) {
-			rate = 0.5;
+			rate = 0.005;
 		} else if ("Silver".equals(member_level)) {
-			rate = 1.0;
+			rate = 0.01;
 		} else if ("Gold".equals(member_level)) {
-			rate = 1.5;
+			rate = 0.015;
 		} else if ("Platinum".equals(member_level)) {
-			rate = 2.0;
+			rate = 0.02;
 		}
 
 		int upadatedPoint = point + (int) Math.round(finalPrice * rate);
@@ -393,9 +399,11 @@ public class CustomerController {
 		String customerID = rentDTO.getMember_id();
 		CustomerDTO customerDTO = customerService.selectById(customerID);
 		
-		if (!Objects.isNull(customerDTO)) {
-			// 사용한 쿠폰의 ID로 쿠폰 개수 1 줄이기
-			CouponDTO couponDTO = couponService.selectById(couponId);
+		
+		// 사용한 쿠폰의 ID로 쿠폰 개수 1 줄이기
+		CouponDTO couponDTO = couponService.selectById(couponId);
+		System.out.println("사용한 쿠폰:"+couponDTO);
+		if(!Objects.isNull(couponDTO)) {
 			int couponQuantity = couponDTO.getQuantity();
 			couponDTO.setQuantity(couponQuantity - 1);
 

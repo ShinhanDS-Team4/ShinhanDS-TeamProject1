@@ -69,14 +69,12 @@
 		UPDATE ORDER_DETAIL
 		SET
 		orderdetail_id = #{orderdetail_id},
-		order_product_price =
-		#{order_product_price},
+		order_product_price = #{order_product_price},
 		order_num = #{order_num},
-		order_id =
-		#{order_id},
-		s_stock_id = #{s_stock_id}
-		WHERE orderdetail_id =
-		#{orderdetail_id}
+		order_id = #{order_id},
+		s_stock_id = #{s_stock_id},
+		order_state = #{order_state}
+		WHERE orderdetail_id = #{orderdetail_id}
 	</update>
 
 	<update id="orderDetailStatusUpdate"
