@@ -459,9 +459,6 @@ public class ProdTestController {
 		
 		MemberDTO member =  (MemberDTO) session.getAttribute("member");
 		String member_id = member.getMember_id();
-		//String member_id = "testid";
-		//prod_id = "자수 미니 원피스 - 화이트_199-81-21909";
-		//prod_id = "논아이론 사틴 솔리드 드레스 셔츠 - 화이트_199-81-22242";
 		
 		
          buyer_inq_map.put("buyer_inq_title", qnaTitle); 
