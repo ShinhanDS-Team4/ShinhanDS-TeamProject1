@@ -53,27 +53,13 @@ public class CoordinationController {
 		MemberDTO member = (MemberDTO)session.getAttribute("member");
 		String member_id = member.getMember_id();
 		
-		/*
-		 * List<CartDTO> sellStockCartList =
-		 * cartService.selectSellStockByMemberId(member_id);
-		 * model.addAttribute("sellStockCartList", sellStockCartList);
-		 * System.out.println("sellStockCartList=" + sellStockCartList);
-		 * 
-		 * List<CartDTO> rentStockCartList
-		 * =cartService.selectRentStockByMemberId(member_id);
-		 * model.addAttribute("rentStockCartList", rentStockCartList);
-		 * System.out.println("rentStockCartList=" + rentStockCartList);
-		 */
+		
 		//판매 장바구니 상품 정보 모두 조회
 		List<Map<String,Object>> cartProdInfo = cartService.selectSellCartProdInfo(member_id);
 		model.addAttribute("cartProdInfo", cartProdInfo);
 		//대여 장바구니 상품 정보 모두 조회
 		List<Map<String,Object>> cartRentProdInfo = cartService.selectRentCartProdInfo(member_id);
 		//System.out.println("cartRentProdInfo=" + cartRentProdInfo);	
-		
-		//장바구니 상품 이미지
-		
-       
 		
         
 		return "customer/coordination";
