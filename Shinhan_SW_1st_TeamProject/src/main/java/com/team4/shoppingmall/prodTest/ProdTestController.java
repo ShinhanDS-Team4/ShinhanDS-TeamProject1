@@ -1,5 +1,6 @@
 package com.team4.shoppingmall.prodTest;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -202,7 +203,11 @@ public class ProdTestController {
 	) throws JsonProcessingException {
 		
 		//나중에 삭제하기
+
+//		prod_id = "여성 원피스_199-81-22245";
+
 		//prod_id = "여성 원피스_199-81-22245"; //사진연결
+
 		//prod_id = "논아이론 사틴 솔리드 드레스 셔츠 - 화이트_199-81-22242"; //판매에 있고 ,대여재고없는상품 test
 		//prod_id = "[대여상품]원피스 - 화이트_222-81-77709"; //대여재고만 있는 상품	
 		//prod_id = "세일러 셔츠-스카이블루_199-81-22361";
@@ -277,10 +282,36 @@ public class ProdTestController {
 		System.out.println("imgIdList" + imgIdList);
 		
 		//메인 사진들 조회
-		List<Map<String,Object>> mainImgIdList = imageService.prodMainImgInfoByProdId(prod_id); 
+//		List<Map<String,Object>> mainImgIdList = imageService.prodMainImgInfoByProdId(prod_id); 
+//		model.addAttribute("mainImgIdList", mainImgIdList);
+		
+		File file;
+		String img_id = (String) prod_detail_info.get("prod_id");
+		Map<String, String> temp;
+		List<Map<String, String>> mainImgIdList = new ArrayList<Map<String,String>>();
+		for(int i=1;i<=5;i++) {
+			file = new File("C:\\uploaded_files\\main/"+img_id+"_image_"+i+".jpg");
+			if(file.exists()) {
+				temp = new HashMap<String, String>();
+				temp.put("IMG_ID", img_id+"_image_"+i+".jpg");
+				mainImgIdList.add(temp);
+			} else break;
+		}
 		model.addAttribute("mainImgIdList", mainImgIdList);
+		
 		//상품 정보 사진 조회
-		List<Map<String,Object>> subImgIdList = imageService.prodSubImgInfoByProdId(prod_id); 
+//		List<Map<String,Object>> subImgIdList = imageService.prodSubImgInfoByProdId(prod_id); 
+//		model.addAttribute("subImgIdList", subImgIdList);
+		
+		List<Map<String, String>> subImgIdList = new ArrayList<Map<String,String>>();
+		for(int i=1;i<=8;i++) {
+			file = new File("C:\\uploaded_files\\desc/"+img_id+"_desc_image_"+i+".jpg");
+			if(file.exists()) {
+				temp = new HashMap<String, String>();
+				temp.put("IMG_ID", img_id+"_desc_image_"+i+".jpg");
+				subImgIdList.add(temp);
+			} else break;
+		}
 		model.addAttribute("subImgIdList", subImgIdList);
 		
 		//상품 설명
