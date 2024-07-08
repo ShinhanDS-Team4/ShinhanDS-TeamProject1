@@ -57,15 +57,15 @@
 		<url-pattern>/admin/*</url-pattern>
 	</filter-mapping>
 	
-<!-- 		<filter> -->
-<!-- 		<display-name>LoginFilter</display-name> -->
-<!-- 		<filter-name>LoginFilter</filter-name> -->
-<!-- 		<filter-class>com.team4.shoppingmall.filter.LoginFilter</filter-class> -->
-<!-- 	</filter> -->
-<!-- 	<filter-mapping> -->
-<!-- 		<filter-name>LoginFilter</filter-name> -->
-<!-- 		<url-pattern>*.do</url-pattern> -->
-<!-- 	</filter-mapping> -->
+		<filter>
+		<display-name>LoginFilter</display-name>
+		<filter-name>LoginFilter</filter-name>
+		<filter-class>com.team4.shoppingmall.filter.LoginFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>LoginFilter</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping>
 	
     <!-- 특정 에러 코드에 대한 에러 페이지 설정 -->
     <error-page>

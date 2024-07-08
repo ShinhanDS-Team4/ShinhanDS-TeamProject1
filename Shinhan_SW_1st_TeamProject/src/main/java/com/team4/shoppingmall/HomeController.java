@@ -59,10 +59,16 @@ public class HomeController {
 		// 이벤트와 쿠폰정보 담기 
 		model.addAttribute("event", eService.selectFirst()); 
 		MemberDTO member = (MemberDTO) session.getAttribute("member");   
+		System.out.println("로그인한 member: " + member);
 		 
 		String message = "";
 
 		CouponDTO coupon = cService.selectFirst(); 
+		System.out.println("서비스에서 받아온 쿠폰: " + coupon);
+		
+		System.out.println("멤버: " + member);
+		System.out.println("null이라는 쿠폰: " + coupon);
+		
 		if(member != null) {
 			coupon.setMember_id(member.getMember_id()); 
 		} else {

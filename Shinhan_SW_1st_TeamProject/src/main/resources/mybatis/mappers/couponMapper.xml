@@ -38,10 +38,10 @@
 	<select id="selectFirst" resultType="couponVO">
 		SELECT *
 		FROM (
-		SELECT *
-		FROM COUPON
-		WHERE member_id = 'admin'
-		ORDER BY coupon_id DESC
+			SELECT *
+			FROM COUPON
+			WHERE member_id = 'admin'
+			ORDER BY coupon_id desc
 		)
 		WHERE ROWNUM = 1
 	</select>

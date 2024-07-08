@@ -126,12 +126,13 @@ public class TestControllerYun {
 		}
 	}
 
-	@PostMapping("/returnRent.do")
+	@PostMapping("/returnRent")
 	@ResponseBody
-	public String returnRent(@RequestParam("rentalCode") int rentalCode, HttpServletResponse response) {
-		//System.out.println("대여코드: " + rentalCode);
+	public String returnRent(int rentalCode, HttpServletResponse response) {
+		System.out.println("대여코드: " + rentalCode);
 
 		int returnSuccess = rentService.returnRent(rentalCode);
+		System.out.println("반납여부: "+ returnSuccess);
 		String message = "";
 
 		
@@ -144,12 +145,12 @@ public class TestControllerYun {
 		}
 	}
 
-	@GetMapping("/orderlist.do")
+	@GetMapping("/orderlist")
 	public String test3(Model model, HttpServletRequest request) {
 		HttpSession session = request.getSession();
-		MemberDTO mem = (MemberDTO)session.getAttribute("member");
-		String member_id = mem.getMember_id();
-		
+		//MemberDTO mem = (MemberDTO)session.getAttribute("member"); 
+		//String member_id = mem.getMember_id();  
+		String member_id = "Member002";
 		
 	    System.out.println("/customer/orderlist.jsp");
 
@@ -194,10 +195,10 @@ public class TestControllerYun {
 	}
 
 	
-	@PostMapping("/refund.do")
+	@PostMapping("/refund")
 	@ResponseBody
-	public String processRefund(@RequestParam("orderId") int orderId, HttpServletResponse response) throws IOException {
-		System.out.println("orderId: " + orderId);
+	public String processRefund(int orderId, HttpServletResponse response) throws IOException {
+		System.out.println("환불컨트롤러 orderId: " + orderId);
 
 		// �Ǹ��ڿ��� ȯ�ҿ�û ������
 
