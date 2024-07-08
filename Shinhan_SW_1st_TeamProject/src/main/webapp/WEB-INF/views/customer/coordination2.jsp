@@ -19,7 +19,11 @@
  	<%@ include file="../common/header.jsp" %>
       <div class="container inner">
 	 	  <h1 class="main-title">제목</h1>
-	 	
+	 	   <div>
+	 	   		<div class="content"></div>
+	 	   		<div class="content"></div>
+	 	   		<div class="content"></div>
+	 	   </div>
       </div>
  	<%@ include file="../common/footer.jsp" %>
 </body>
