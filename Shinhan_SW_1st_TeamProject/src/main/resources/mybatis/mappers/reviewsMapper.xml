@@ -45,20 +45,23 @@
 	</select>
 	<!-- 리뷰 평균과 리뷰 수 -->
 	<select id="reviewAvgByProdId" parameterType="string"
-		resultType="reviewsVO">
-		SELECT DISTINCT
-		    r.*,
-		    AVG(r.RATE) OVER() AS avg_rate,
-    		COUNT(r.review_id) OVER() AS review_count
-		FROM 
-		    REVIEWS r
-		JOIN 
-		    ORDER_DETAIL od ON r.orderdetail_id = od.orderdetail_id
-		JOIN 
-		    SELL_PROD_STOCK sp ON od.s_stock_id = sp.s_stock_id
-		WHERE 
-		    sp.prod_id = #{prod_id} 
-		    AND od.order_state = '배송완료'
+		resultType="map">
+<!-- 		SELECT DISTINCT -->
+<!-- 		    r.*, -->
+<!-- 		    AVG(r.RATE) OVER() AS avg_rate, -->
+<!--     		COUNT(r.review_id) OVER() AS review_count -->
+<!-- 		FROM  -->
+<!-- 		    REVIEWS r -->
+<!-- 		JOIN  -->
+<!-- 		    ORDER_DETAIL od ON r.orderdetail_id = od.orderdetail_id -->
+<!-- 		JOIN  -->
+<!-- 		    SELL_PROD_STOCK sp ON od.s_stock_id = sp.s_stock_id -->
+<!-- 		WHERE  -->
+<!-- 		    sp.prod_id = #{prod_id}  -->
+<!-- 		    AND od.order_state = '배송완료' -->
+			SELECT COUNT(*) "REVIEW_COUNT", AVG(RATE) "AVG_RATE"
+			FROM REVIEWS
+			WHERE REVIEWS.REVIEW_TITLE =  #{REVIEW_TITLE}
 	</select>
 	
 	<select id="selectById" parameterType="int"

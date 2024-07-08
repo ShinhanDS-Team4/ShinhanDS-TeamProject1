@@ -21,7 +21,7 @@ public class ReviewsDAOMybatis implements ReviewsDAOInterface {
 		return sqlSession.selectList(namespace+"selectAllProductReviewByProdName", prod_name);
 	};
 	//리뷰 평균과 리뷰 수
-	public ReviewsDTO reviewAvgByProdId(String prod_id) {
+	public Map<Integer, Integer> reviewAvgByProdId(String prod_id) {
 		return sqlSession.selectOne(namespace+"reviewAvgByProdId", prod_id);
 	};
 	
