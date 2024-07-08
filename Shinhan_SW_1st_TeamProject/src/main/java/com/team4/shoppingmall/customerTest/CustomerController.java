@@ -298,12 +298,14 @@ public class CustomerController {
 		String customerID = orderProdDTO.getMember_id();
 		CustomerDTO customerDTO = customerService.selectById(customerID);
 
-		// 사용한 쿠폰의 ID로 쿠폰 개수 1 줄이기
-		CouponDTO couponDTO = couponService.selectById(couponId);
-		int couponQuantity = couponDTO.getQuantity();
-		couponDTO.setQuantity(couponQuantity - 1);
+		if (!Objects.isNull(customerDTO)) {
+			// 사용한 쿠폰의 ID로 쿠폰 개수 1 줄이기
+			CouponDTO couponDTO = couponService.selectById(couponId);
+			int couponQuantity = couponDTO.getQuantity();
+			couponDTO.setQuantity(couponQuantity - 1);
 
-		int couponUpdateResult = couponService.couponUse(couponDTO);
+			int couponUpdateResult = couponService.couponUse(couponDTO);
+		}
 
 		// 보유 포인트, 멤버등급, 누적 구매액
 		int point = customerDTO.getPoint();
@@ -390,13 +392,15 @@ public class CustomerController {
 		// 고객의 포인트와 고객등급, 누적 구매액 가져오기
 		String customerID = rentDTO.getMember_id();
 		CustomerDTO customerDTO = customerService.selectById(customerID);
+		
+		if (!Objects.isNull(customerDTO)) {
+			// 사용한 쿠폰의 ID로 쿠폰 개수 1 줄이기
+			CouponDTO couponDTO = couponService.selectById(couponId);
+			int couponQuantity = couponDTO.getQuantity();
+			couponDTO.setQuantity(couponQuantity - 1);
 
-		// 사용한 쿠폰의 ID로 쿠폰 개수 1 줄이기
-		CouponDTO couponDTO = couponService.selectById(couponId);
-		int couponQuantity = couponDTO.getQuantity();
-		couponDTO.setQuantity(couponQuantity - 1);
-
-		int couponUpdateResult = couponService.couponUse(couponDTO);
+			int couponUpdateResult = couponService.couponUse(couponDTO);
+		}
 
 		// 보유 포인트, 멤버등급, 누적 구매액
 		int point = customerDTO.getPoint();
