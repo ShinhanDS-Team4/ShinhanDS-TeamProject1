@@ -158,6 +158,8 @@ public class CartController {
 				
 				int ordDetailInsertResult = order_DetailService.orderDetailInsert(order_DetailDTO);
 			}
+			
+			int cartDeleteResult = cartService.cartDelete(cartId);//주문상세 생성 완료 후 해당 장바구니 삭제
 		}
 		
 		OrderProdDTO orderProdDTO = new OrderProdDTO();
@@ -222,6 +224,8 @@ public class CartController {
 				
 				int rentDetailInsertResult = rentDetailService.rentDetailInsert(rentDetailDTO);
 			}
+			
+			int cartDeleteResult = cartService.cartDelete(cartId);//대여상세 생성 완료 후 해당 장바구니 삭제
 		}
 		
 		RentDTO rentDTO = new RentDTO();

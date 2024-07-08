@@ -67,66 +67,88 @@
 		alert(selectedCouponId);
 		alert(orderPrice);
 
-		$.ajax({
-			url : "/shoppingmall/customer/applyCoupon.do",
-			type : 'POST',
-			contentType : 'application/json',
-			data : JSON.stringify({
-				couponid : selectedCouponId,
-				orderPrice : orderPrice
-			}),
-			success : function(response) {
-				console.log(response); // 응답 데이터를 로그로 출력하여 확인
+		// 쿠폰 남은 개수 확인
+	    $.ajax({
+	        url: "/shoppingmall/coupon/checkCouponAvailability.do",
+	        type: 'POST',
+	        data: { couponid: selectedCouponId },
+	        success: function(response) {
+	        	console.log(response);
+	        	//쿠폰이 남아있으면 적용 로직 수행
+	        	if(response>0){
+	        		$.ajax({
+	        			url : "/shoppingmall/customer/applyCoupon.do",
+	        			type : 'POST',
+	        			contentType : 'application/json',
+	        			data : JSON.stringify({
+	        				couponid : selectedCouponId,
+	        				orderPrice : orderPrice
+	        			}),
+	        			success : function(response) {
+	        				console.log(response); // 응답 데이터를 로그로 출력하여 확인
 
-				var discountedPrice = response.discountedPrice;
-				var discount = response.discount;
+	        				var discountedPrice = response.discountedPrice;
+	        				var discount = response.discount;
 
-				console.log(discountedPrice);
-				console.log(discount);
+	        				console.log(discountedPrice);
+	        				console.log(discount);
 
-				$('#discountAmount').text(discount);
-				$('#finalPrice').text(discountedPrice);
-				$('#couponselectedPrice').val(discountedPrice);
-				$('#usePoint').val(0);
-				$('#pointWillUse').text(0);
-			},
-			error : function() {
-				alert('서버 요청 중 오류가 발생했습니다.');
-			}
-		});
+	        				$('#discountAmount').text(discount);
+	        				$('#finalPrice').text(discountedPrice);
+	        				$('#couponselectedPrice').val(discountedPrice);
+	        				$('#usePoint').val(0);
+	        				$('#pointWillUse').text(0);
+	        			},
+	        			error : function() {
+	        				alert('서버 요청 중 오류가 발생했습니다.');
+	        			}
+	        		});
+	        	}else{
+	        		alert('선택하신 쿠폰을 모두 소진하였습니다.');
+	        	}
+	        	
+	        },
+	        error:function(){
+	        	 alert('서버 요청 중 오류가 발생했습니다.');
+	        }
+	    });
 	}
 
 	function applyPoint() {
-		var usePoint = $('#usePoint').val();
+		var availablePoint = parseInt($('#availPoint').val());
+		var usePoint = parseInt($('#usePoint').val());
 		var couponAppliedPrice = $('#couponselectedPrice').val();
 
 		alert(usePoint);
 		alert(couponAppliedPrice);
+		
+		if(availablePoint-usePoint >=0){
+			$.ajax({
+				url : "/shoppingmall/customer/applyPoint.do",
+				type : 'POST',
+				contentType : 'application/json',
+				data : JSON.stringify({
+					usePoint : usePoint,
+					couponAppliedPrice : couponAppliedPrice
+				}),
+				success : function(response) {
+					console.log(response);
 
-		$.ajax({
-			url : "/shoppingmall/customer/applyPoint.do",
-			type : 'POST',
-			contentType : 'application/json',
-			data : JSON.stringify({
-				usePoint : usePoint,
-				couponAppliedPrice : couponAppliedPrice
-			}),
-			success : function(response) {
-				console.log(response);
+					var usedPoint = response.usePoint;
+					var pointAppliedPrice = response.pointAppliedPrice;
 
-				var usedPoint = response.usePoint;
-				var pointAppliedPrice = response.pointAppliedPrice;
-
-				$('#pointUseDiscount').val(usedPoint);
-				$('#pointUsedPrice').val(pointAppliedPrice);
-				$('#finalPrice').text(pointAppliedPrice);
-				$('#pointWillUse').text(usedPoint);
-			},
-			error : function() {
-				alert('서버 요청 중 오류가 발생했습니다.');
-			}
-		});
-
+					$('#pointUseDiscount').val(usedPoint);
+					$('#pointUsedPrice').val(pointAppliedPrice);
+					$('#finalPrice').text(pointAppliedPrice);
+					$('#pointWillUse').text(usedPoint);
+				},
+				error : function() {
+					alert('서버 요청 중 오류가 발생했습니다.');
+				}
+			});
+		}else{
+			alert("보유하신 포인트 범위를 초과하셨습니다.");
+		}
 	}
 
 	$("cancelBtn").on("click", function() {
@@ -136,12 +158,12 @@
 			type : "POST",
 			url : "/shoppingmall/customer/cancelOrderPay.do",
 			data : {
-				"order_id" : order_id
+				order_id : order_id
 			},
 			success : function(response) {
 				if (response === "Canceled") {
 					alert("주문을 취소하고 이전 페이지로 돌아갑니다.");
-					history.back();
+					window.history.back();
 				} else {
 					alert("주문 취소에 실패하였습니다.")
 				}
@@ -153,55 +175,53 @@
 		});
 	});
 
-	$()
-			.ready(
-					function() {
-						var IMP = window.IMP;
-						IMP.init('imp31438144'); // 가맹점 식별코드 입력
+	$().ready(
+			function() {
+				var IMP = window.IMP;
+				IMP.init('imp31438144'); // 가맹점 식별코드 입력
+				$("#orderBtn").on("click",function() {
+					console.log("구매버튼");
+					
+					var order_id = '${orderInfo.order_id}';
+					var userid = '${memberInfo.member_id}';
+					var username = '${memberInfo.member_name}';
+					var phone = '${memberInfo.phone}';
+					var merchant_uid = 'orderPay_'+ order_id//DB에 주문ID로 저장될, 고유한 주문 ID
+					var amount = $('#finalPrice').text();//결제 금액
+					
+					var coupon_id=parseInt($('#selectedCoupon').val());
+					var point = parseInt($('#pointWillUse').text());
+					var finalPrice = parseInt($('#finalPrice').text());
 
-						$("#orderBtn")
-								.on(
-										"click",
-										function() {
-											alert("구매버튼");
-											var order_id = '${orderInfo.order_id}';
-											var userid = '${memberInfo.member_id}';
-											var username = '${memberInfo.member_name}';
-											var phone = '${memberInfo.phone}';
-											var merchant_uid = 'orderPay_'
-													+ order_id//DB에 주문ID로 저장될, 고유한 주문 ID
-											var amount = $('#finalPrice').val();//결제 금액
-
-											IMP
-													.request_pay(
-															{
-																pg : "html5_inicis", // 등록된 pg사 (적용된 pg사는 KG이니시스)
-																pay_method : "card",
-																merchant_uid : merchant_uid, // 주문 고유 번호
-																name : "상품 주문",
-																amount : $(
-																		'#finalPrice')
-																		.val(),
-																buyer_email : '${memberInfo.email}',
-																buyer_name : username,
-																buyer_tel : phone,
-																buyer_addr : "서울특별시 강남구 신사동",
-																buyer_postcode : "01181",
-															},
-															function(rsp) {
-																if (rsp.success) {
-																	alert("결제 완료");
-																	window.location.href = "/shoppingmall/customer/sellPaySuccess?order_id="
-																			+ encodeURIComponent(order_id);
-																} else {
-																	var msg = '결제에 실패하였습니다.';
-																	msg += '에러내용 : '
-																			+ rsp.error_msg;
-																}
-																alert(msg);
-															});
-										});
+					IMP.request_pay({
+						pg : "html5_inicis", // 등록된 pg사 (적용된 pg사는 KG이니시스)
+						pay_method : "card",
+						merchant_uid : merchant_uid, // 주문 고유 번호
+						name : "상품 주문",
+						amount : $('#finalPrice').text(),
+						buyer_email : '${memberInfo.email}',
+						buyer_name : username,
+						buyer_tel : phone,
+						buyer_addr : "서울특별시 강남구 신사동",
+						buyer_postcode : "01181",
+					},
+					function(rsp) {
+						if (rsp.success) {
+							alert("결제 완료");
+							
+							//결제 완료 후, order_id, coupon_id, point, finalPrice를 가지고 sellPaySuccess로 이동
+							window.location.href = "${path}/customer/sellPaySuccess.do?order_id=" + encodeURIComponent(order_id)
+									"&coupon_id=" + encodeURIComponet(coupon_id) +
+									"&point=" + encodeURIComponent(point)+
+									"&finalPrice=" + encodeURIComponent(finalPrice);
+						} else {
+							var msg = '결제에 실패하였습니다.';
+							msg += '에러내용 : '+ rsp.error_msg;
+						}
+						alert(msg);
 					});
+				});
+			});
 </script>
 </head>
 <body>
@@ -225,12 +245,22 @@
 					<c:set var="brand" value="${brandandProdName['BRAND']}" />
 					<c:forEach var="orderDetail" items="${orderDetailList}">
 						<tr>
+							<!-- 주문번호 -->
 							<td>
 								<p>${orderDetail.order_id}</p>
 							</td>
+							
+							<!-- 주문상세번호(hidden) -->
+							<td class="order-detail-id">
+                            	<p class="hidden">${orderDetail.orderdetail_id}</p>
+                        	</td>
+                        	
+                        	<!-- 브랜드와 상품명 -->
 							<td>
 								<p>(${brand}) ${prodName}</p>
 							</td>
+							
+							<!-- 가격 -->
 							<td>
 								<p>
 									<fmt:formatNumber value="${orderDetail.order_product_price}"
@@ -238,9 +268,13 @@
 									(원)
 								</p>
 							</td>
+							
+							<!-- 구매 수량 -->
 							<td>
 								<p>${orderDetail.order_num}(개)</p>
 							</td>
+							
+							<!-- 최종가 -->
 							<td>
 								<p>
 									<fmt:formatNumber
@@ -316,7 +350,7 @@
 
 
 					<div class="form-group">
-						<label for="pointLeft">보유 포인트</label> <input type="number"
+						<label for="pointLeft">보유 포인트</label> <input id="availPoint" type="number"
 							value="${customerInfo.point}" readonly="readonly">
 					</div>
 					<div class="form-group">
@@ -367,8 +401,7 @@
 							<p>최종 결제 금액</p>
 							<p id="finalPrice">
 								<fmt:formatNumber value="${orderInfo.total_price}" type="number"
-									groupingUsed="true" />
-								원
+									groupingUsed="true"/>
 							</p>
 						</div>
 					</div>
