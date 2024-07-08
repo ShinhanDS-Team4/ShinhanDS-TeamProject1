@@ -77,7 +77,8 @@ public class HomeController {
 		//16개 베스트 판매상품 정보 조회
 		List<Map<String,Object>> bestItems = seller_Prod_StockTestService.selectBestProducts();
 		model.addAttribute("bestItems", bestItems); 
-		System.out.println(bestItems);
+		
+		System.out.println("bestItems="+ bestItems);
 		
 		return "home";
 	}

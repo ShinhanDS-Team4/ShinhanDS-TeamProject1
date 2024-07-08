@@ -132,15 +132,33 @@
                     </div>
                 </li>
             </ul>
+            
+            <%-- 판매량별 16개 인기상품 슬라이드 --%>
             <section>
                <h2 class="main_title">전체 인기 상품</h2>
                <div class="main_product_list">
                    <ul>
                    	<c:forEach items="${bestItems}" var="bestItem">
                    		 <li>
-                           <a href="#">
+                         <%--   <a href="javascript:#void">
                            	   <img src="http://localhost:9090/saren/ProdImgFile/desc/${bestItem.IMAGE_ID}" alt="${bestItem.IMAGE_ID}">	
                            </a>
+                            --%>
+                           <c:choose>
+                               <c:when test="${not empty bestItems}">
+                                <a href="javascript:#void">
+                                   <img src="http://localhost:9090/saren/ProdImgFile/main/${bestItem.IMG_ID}" 
+                                        alt="메인이미지" />
+                                 </a>
+                               </c:when>
+                               <c:otherwise>
+                             	  <a href="javascript:#void">
+                                   <img src="${path}/resources/images/no-prod-img.png" 
+                                        alt="기본이미지(100x100)" />
+                                  </a>	
+                               </c:otherwise>
+                           </c:choose>
+                           
                            <div class="product_text">
                                <p class="brand">${bestItem.BRAND}</p>
                                <p class="product_name">${bestItem.PROD_NAME}</p>

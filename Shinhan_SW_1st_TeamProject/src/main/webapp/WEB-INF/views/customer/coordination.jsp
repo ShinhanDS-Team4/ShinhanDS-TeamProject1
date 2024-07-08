@@ -73,7 +73,7 @@
 				                                <td>${cartProduct.CART_AMOUNT}(개)</td>
 				                                <td>${cartProduct.PROD_PRICE}(원)</td>
 				                                <td>
-				                                    <button>추천버튼</button>
+				                                    <button type="button">추천버튼</button>
 				                                </td>
 				                            </tr>
 				                        </tbody>
