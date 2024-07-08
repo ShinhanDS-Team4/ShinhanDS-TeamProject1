@@ -16,6 +16,11 @@ public class CartService {
 	@Autowired
 	CartDAOInterface cartDAO;
 	
+	//해당 장바구니ID의 상품정보 조회
+	public Map<String, Object> sellCartProdByCart_id(String member_id, Integer cart_id){
+		 return cartDAO.sellCartProdByCart_id(member_id, cart_id);
+	}
+	
 	//대여 장바구니 담은 개수
 	public int countRentCartList(String member_id) {
 		return cartDAO.countRentCartList(member_id);

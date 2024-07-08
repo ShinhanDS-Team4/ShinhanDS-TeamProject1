@@ -37,7 +37,9 @@
 
 p.title{
     font-weight: bold;
-    font-size: 40px;
+    font-size: 39px;
+    padding: 0 30px;
+    text-wrap: balance;
 }
 .bannerText>p:nth-child(2){
     font-size: 18px;

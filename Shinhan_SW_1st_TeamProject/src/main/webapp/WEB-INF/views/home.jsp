@@ -81,7 +81,7 @@
                     <div class="bannerImg">
                         <img src="${path}/resources/images/mainbanner/1.jpg" alt="">
                         <div class="bannerText">
-                            <p class="title">계절을 앞서는 감각</p>
+                            <p class="title">당신의 스타일, 한층 더 특별하게</p>
                             <p>새롭게 출시된 스타일을 만나보세요</p>
                         </div>
                     </div>
@@ -99,7 +99,7 @@
                     <div class="bannerImg">
                         <img src="${path}/resources/images/mainbanner/3.jpg" alt="">
                         <div class="bannerText">
-                            <p class="title">계절을 앞서는 감각</p>
+                            <p class="title">새로운 시즌, 새로운 나를 위한 컬렉션</p>
                             <p>새롭게 출시된 스타일을 만나보세요</p>
                         </div>
                     </div>
@@ -108,7 +108,7 @@
                     <div class="bannerImg">
                         <img src="${path}/resources/images/mainbanner/4.jpg" alt="">
                         <div class="bannerText">
-                            <p class="title">계절을 앞서는 감각</p>
+                            <p class="title">당신의 옷장에 필요한 모든 것</p>
                             <p>새롭게 출시된 스타일을 만나보세요</p>
                         </div>
                     </div>
@@ -117,7 +117,7 @@
                     <div class="bannerImg">
                         <img src="${path}/resources/images/mainbanner/5.jpg" alt="">
                         <div class="bannerText">
-                            <p class="title">계절을 앞서는 감각</p>
+                            <p class="title">새로운 시즌, 새로운 나를 위한 컬렉션</p>
                             <p>새롭게 출시된 스타일을 만나보세요</p>
                         </div>
                     </div>
@@ -126,7 +126,7 @@
                     <div class="bannerImg">
                         <img src="${path}/resources/images/mainbanner/6.jpg" alt="">
                         <div class="bannerText">
-                            <p class="title">계절을 앞서는 감각</p>
+                            <p class="title">스타일 변신의 완벽한 기회</p>
                             <p>새롭게 출시된 스타일을 만나보세요</p>
                         </div>
                     </div>

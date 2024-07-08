@@ -3,6 +3,36 @@
       PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.cart">
+	<!-- 해당 장바구니ID의 상품정보 조회 -->
+	<select id="sellCartProdByCart_id" parameterType="map" resultType="map">
+		SELECT
+		    c.cart_id,
+		    p.prod_name,
+		    pi.img_id
+		FROM
+		    CART c
+		LEFT JOIN
+		    SELL_PROD_STOCK sps ON c.s_stock_id = sps.s_stock_id
+		LEFT JOIN
+		    RENT_PROD_STOCK rps ON c.r_stock_id = rps.r_stock_id
+		LEFT JOIN
+		    PROD p ON p.prod_id = COALESCE(sps.prod_id, rps.prod_id)
+		LEFT JOIN
+		    (
+		        SELECT pi.prod_id, pi.img_id
+		        FROM (
+		            SELECT pi.prod_id, pi.img_id,
+		                   ROW_NUMBER() OVER (PARTITION BY pi.prod_id ORDER BY pi.img_id) AS rn
+		            FROM PROD_IMAGE pi
+		            WHERE pi.img_type = 0
+		        ) pi
+		        WHERE pi.rn = 1
+		    ) pi ON pi.prod_id = COALESCE(sps.prod_id, rps.prod_id)
+		WHERE
+		    c.member_id = #{member_id}
+		    AND c.cart_id = #{cart_id}
+		    AND sps.s_stock_id IS NOT NULL
+	</select>
 
 	<!-- 대여 장바구니 담은 개수 -->
 	<select id="countRentCartList" parameterType="string" resultType="int">
