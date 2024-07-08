@@ -63,15 +63,22 @@
 	function applyCoupon() {
 		var selectedCouponId = $('#selectedCoupon').val();
 		var orderPrice = $('#orderPrice').text();
+		var customerID = '${memberInfo.member_id}';
 
-		alert(selectedCouponId);
-		alert(orderPrice);
+		console.log(selectedCouponId);
+		console.log(orderPrice);
+		console.log(customerID);
+		
 
 		// 쿠폰 남은 개수 확인
 	    $.ajax({
-	        url: "${path}/coupon/checkCouponAvailability.do",
+	        url: "${path}/coupons/checkCouponAvailability.do",
 	        type: 'POST',
-	        data: { couponid: selectedCouponId },
+	        contentType: 'application/json',
+			data:JSON.stringify({
+				couponid : selectedCouponId,
+			    customerid : customerID
+			}),
 	        success: function(response) {
 	        	console.log(response);
 	        	//쿠폰이 남아있으면 적용 로직 수행
@@ -82,6 +89,7 @@
 	        			contentType : 'application/json',
 	        			data : JSON.stringify({
 	        				couponid : selectedCouponId,
+	        			    customerid : customerID,
 	        				orderPrice : orderPrice
 	        			}),
 	        			success : function(response) {
@@ -231,8 +239,8 @@
 						} else {
 							var msg = '결제에 실패하였습니다.';
 							msg += '에러내용 : '+ rsp.error_msg;
+							alert(msg);
 						}
-						alert(msg);
 					});
 				});
 			});
