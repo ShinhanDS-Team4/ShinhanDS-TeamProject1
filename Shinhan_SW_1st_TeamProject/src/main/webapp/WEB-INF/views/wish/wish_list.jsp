@@ -237,7 +237,7 @@ h1 {
 	        const itemId = $(this).data('id');
 	        deleteItems([itemId]);
 	    });
-debugger
+
 	    function deleteItems(itemIds) {
 	        console.log(itemIds);
 	        $.ajax({
