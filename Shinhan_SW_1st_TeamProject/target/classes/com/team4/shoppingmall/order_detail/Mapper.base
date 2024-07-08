@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.saren.?">
+
+	<select id="selectBy?" parameterType="?"
+		resultType="?VO">
+		SELECT *
+		FROM ?
+		WHERE "?" = #{?}
+	</select>
+
+	<select id="selectAll" resultType="?VO">
+		SELECT *
+		FROM ?
+	</select>
+
+	<insert id="?Insert" parameterType="?VO">
+		INSERT
+		INTO ?("?", "?", "?", "?", "?",
+					"?", "?", "?", "?", "?")
+		VALUES(#{?}, #{?}, #{?}, #{?}, #{?},
+			   #{?}, #{?}, #{?}, #{?}, #{?})
+	</insert>
+
+	<update id="?Update" parameterType="?VO">
+		UPDATE ?
+		SET
+		"?" = #{?}, "?" = #{?}, "?" = #{?},
+		"?" = #{?}, "?" = #{?}, "?" = #{?},
+		"?" = #{?}, "?" = #{?}, 
+		"?" = #{?}
+		WHERE "?" = #{?}
+	</update>
+
+	<delete id="?Delete" parameterType="?">
+		DELETE
+		FROM ?
+		WHERE "?" = #{?}
+	</delete>
+	
+</mapper>
