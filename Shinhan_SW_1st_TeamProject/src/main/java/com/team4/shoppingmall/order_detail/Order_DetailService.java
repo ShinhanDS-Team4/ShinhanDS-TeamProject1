@@ -13,7 +13,11 @@ public class Order_DetailService {
 	
 	@Autowired
 	Order_DetailDAOInterface order_DetailDAO;
-
+	
+	//주문상품 브랜드,이름
+	public Map<String,String> getOrderProdBrand(int order_id){
+		return order_DetailDAO.getOrderProdBrand(order_id);
+	};
 	public List<Order_DetailDTO> selectByOrder_Id(int order_id) {
 		return order_DetailDAO.selectByOrder_Id(order_id);
 	}

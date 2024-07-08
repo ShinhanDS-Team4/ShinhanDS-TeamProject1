@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -30,6 +31,8 @@ import com.team4.shoppingmall.category.CategoryService;
 import com.team4.shoppingmall.member.MemberDTO;
 import com.team4.shoppingmall.order_detail.Order_DetailService;
 import com.team4.shoppingmall.order_prod.OrderProdService;
+import com.team4.shoppingmall.prod.ProdDTO;
+import com.team4.shoppingmall.prod.ProdService;
 import com.team4.shoppingmall.prod.ProductNewVO;
 import com.team4.shoppingmall.prod_image.Prod_ImageDTO;
 import com.team4.shoppingmall.prod_image.Prod_ImageService;
@@ -49,12 +52,15 @@ import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestService
 public class ProdTestController {
 	
 	/* Test패키지로 작업  */
-	
+
 	@Autowired
 	Seller_Prod_StockTestService seller_Prod_StockTestService; 
 	
 	@Autowired
-	ProdTestService prodTestService; 
+	ProdTestService prodTestService;  //ProdTest
+	
+	@Autowired
+	ProdService prodService; 
 	
 	@Autowired
 	Prod_OptionTestService prod_OptionTestService; 
@@ -86,25 +92,120 @@ public class ProdTestController {
 	@Autowired
 	CategoryService categoryService; 
 	
+
+	@PostMapping("/getproductnumsbyctg")
+	@ResponseBody
+	public Integer getProductNumsByCtg(@RequestBody Map<String, Object> schInfo) {
+		return prodTestService.searchNumsByBrndAndPrc(schInfo);
+	}
+	
+	@PostMapping("/setproductbyctg")
+	@ResponseBody
+	public List<Map<String, Object>> setProductByCtg(@RequestBody Map<String, Object> schInfo) {
+		final Integer productsPerPage = 24;
+		
+		Integer currentPg = (Integer) schInfo.get("currentPage");
+		schInfo.put("start", productsPerPage*(currentPg-1));
+		schInfo.put("end", productsPerPage*(currentPg)+1);
+		
+		List<Map<String, Object>> prdtLstByBrnd = prodTestService.searchByBrndAndPrc(schInfo);
+
+		return prdtLstByBrnd;
+	}
+	
+	@PostMapping("/headerctg")
+	@ResponseBody
+	public Map<String, List<CategoryDTO>> headerCtg(@RequestBody Map<String, Object> highest) {
+		Map<String, List<CategoryDTO>> ctgsPerCtg = new HashMap<String, List<CategoryDTO>>();
+		for(String high_ctg :highest.keySet()) {
+			ctgsPerCtg.put(high_ctg, categoryService.selectByParentId((Integer) highest.get(high_ctg)));
+		}
+		return ctgsPerCtg;
+	}
+	
+	@GetMapping("/setbrnds")
+	public String getbrnds(Model model, Integer category_id, Integer brndPg, Integer is_lowest) {
+		final Integer brndsPerPage = 20;
+		
+		Map<String, Integer> brndInfo = new HashMap<>();
+		brndInfo.put("category_id", category_id);
+		brndInfo.put("start", brndsPerPage*(brndPg-1));
+		brndInfo.put("end", brndsPerPage*(brndPg)+1);
+		brndInfo.put("is_lowest", is_lowest);
+		
+		List<String> brndsList = prodTestService.selectBrndsByCtgId(brndInfo);
+		Integer totalBrnds = prodTestService.selectBrndsNumsByCtgId(brndInfo);
+		
+		model.addAttribute("brndsList", brndsList);
+		model.addAttribute("totalBrnds", totalBrnds);
+		
+		return "/prod/setbrndresp";
+	}
+
 	@Autowired
 	Prod_ImageService imageService;
+
 	
-	
-	@GetMapping("/productlistTest")
-	public void productList() {
+	@GetMapping("/productlist")
+	public void productList(Model model, Integer shwCtgNum, Integer currentPg) {
+		final Integer productsPerPage = 24;
 		
+		if(currentPg == null) {
+			currentPg = 1;
+		}
+		
+		if(shwCtgNum == null) {
+			shwCtgNum = 11000000;
+		}
+		
+		CategoryDTO currentCtg = categoryService.selectById(shwCtgNum);
+		Map<String, Integer> beforeTrace = new HashMap<>();
+		
+		beforeTrace.put("category_id1", currentCtg.getCategory_id());
+		beforeTrace.put("category_id2", currentCtg.getCategory_id()-currentCtg.getCategory_id()%100);
+		beforeTrace.put("category_id3", currentCtg.getCategory_id()-currentCtg.getCategory_id()%10000);
+		beforeTrace.put("category_id4", currentCtg.getCategory_id()-currentCtg.getCategory_id()%1000000);
+		
+		List<CategoryDTO> traceCtgs = categoryService.traceCurCtg(beforeTrace);
+		model.addAttribute("currentCtg", currentCtg);
+		model.addAttribute("traceCtgs", traceCtgs);
+		
+		Map<String, Integer> InfoForSelect = new HashMap<>();
+		InfoForSelect.put("category_id", shwCtgNum);
+		InfoForSelect.put("start", productsPerPage*(currentPg-1));
+		InfoForSelect.put("end", productsPerPage*(currentPg)+1);
+		
+		List<Map<String, Object>> allProdByCtg;
+		List<CategoryDTO> categoriesByCurCtg;
+		Integer allProdNumsByCtg;
+		
+		if(currentCtg.getIs_lowest() == 0) {
+			categoriesByCurCtg = categoryService.selectByParentId(shwCtgNum);
+			allProdNumsByCtg = prodTestService.selectAllProdNumsByCurCtg(shwCtgNum);
+			allProdByCtg = prodTestService.selectAllProdByCurCtg(InfoForSelect);			
+		} else {
+			categoriesByCurCtg = categoryService.selectByParentId(currentCtg.getParent_category_id());
+			allProdNumsByCtg = prodTestService.selectProdNumsByLwstCtgId(shwCtgNum);
+			allProdByCtg = prodTestService.selectProdByLwstCtgId(InfoForSelect);
+		}
+		
+		model.addAttribute("categoriesByCurCtg", categoriesByCurCtg);
+		model.addAttribute("allProdNumsByCtg", allProdNumsByCtg);
+		model.addAttribute("allProdByCtg", allProdByCtg);
+		model.addAttribute("currentPg", currentPg);
 	}
 		
 	/* 상품 상세 페이지 */
 	@GetMapping("/product_detail")
 	public void productDetail(String prod_id, 
 								Model model
+								//,@RequestParam(value = "prod_id", required = false) String prod_id
 								//,@RequestBody Map<String, Object> request 
 	) throws JsonProcessingException {
 		
 		//나중에 삭제하기
+		prod_id = "여성 원피스_199-81-22245";
 		//prod_id = "논아이론 사틴 솔리드 드레스 셔츠 - 화이트_199-81-22242"; //판매에 있고 ,대여재고없는상품 test
-		prod_id = "자수 미니 원피스 - 화이트_199-81-21909"; //판매,대여 둘다 는 상품
 		//prod_id = "[대여상품]원피스 - 화이트_222-81-77709"; //대여재고만 있는 상품	
 		//prod_id = "세일러 셔츠-스카이블루_199-81-22361";
 		
@@ -112,7 +213,7 @@ public class ProdTestController {
 		//옵션명과 값 전부 조회
 		ArrayList<Object> prod_Options = (ArrayList<Object>) prod_OptionTestService.selectAllOptionsByProdId(prod_id);
 		model.addAttribute("prod_Options", prod_Options);
-		 
+		 System.out.println("prod_Options="+prod_Options);
 		//판매 상품 옵션별 재고량 조회
 		List<Seller_Prod_StockTestDTO> seller_prod_stockDTO = seller_Prod_StockTestService.selectSpsOptionByProdId(prod_id);
 		model.addAttribute("seller_prod_stockDTO", seller_prod_stockDTO);
@@ -125,6 +226,7 @@ public class ProdTestController {
 		prod_detail_info.put("prod_id", prod_id); 
 		model.addAttribute("prod_detail_info", prod_detail_info);
 		
+		System.out.println("prod_detail_info=" + prod_detail_info);
 		System.out.println("상품id=" + prod_id);
 		
 		//상품 카테고리 조회
@@ -132,7 +234,10 @@ public class ProdTestController {
 		model.addAttribute("category", category);
 		
 		//리뷰 평균과 리뷰 수
-		ReviewsDTO reviewInfo = reviewsService.reviewAvgByProdId(prod_id); 
+		ProdDTO prod = prodService.selectByProdId(prod_id);
+		String prod_name = prod.getProd_name();
+		Map<Integer, Integer> reviewInfo = reviewsService.reviewAvgByProdId(prod_name); 
+		System.out.println(reviewInfo);
 		model.addAttribute("reviewInfo", reviewInfo);
 		
 		//대여 상품 옵션별 재고량 조회
@@ -142,13 +247,15 @@ public class ProdTestController {
 		String jsonTextRent = rentMapper.writeValueAsString( rentStockList );
 		model.addAttribute( "rentStockList", jsonTextRent );
 		
-		/* 상품 전체 리뷰 목록 */			
-		List<Map<String,String>> productReviews = reviewsService.selectAllProductReviewByProdId(prod_id);
+		/* 상품 전체 리뷰 목록 */		
+		List<Map<String,String>> productReviews = reviewsService.selectAllProductReviewByProdName(prod_name);
+		System.out.println(productReviews);
 		model.addAttribute("productReviews", productReviews);
 		
 		//리뷰 목록에 불러올 상품의 옵션 목록
 		List<Prod_OptionDTO> prodOptions = prod_OptionTestService.productAllOptionsByProdId(prod_id);
 		model.addAttribute("prodOptions", prodOptions);
+		System.out.println("prodOptions="+prodOptions);
 		
 		/* 상품 전체 문의 목록 */
 		List<Buyer_InqDTO> buyer_inqList = buyer_InqService.selectByProdId(prod_id);
@@ -170,25 +277,29 @@ public class ProdTestController {
 		
 		//메인 사진들 조회
 		List<Map<String,Object>> mainImgIdList = imageService.prodMainImgInfoByProdId(prod_id); 
+		model.addAttribute("mainImgIdList", mainImgIdList);
 		//상품 정보 사진 조회
 		List<Map<String,Object>> subImgIdList = imageService.prodSubImgInfoByProdId(prod_id); 
+		model.addAttribute("subImgIdList", subImgIdList);
 		
-		System.out.println("mainImgIdList" + mainImgIdList);
-		System.out.println("subImgIdList" + subImgIdList);
+		//상품 설명
+		ProdDTO prodDesc = prodService.selectByProdId(prod_id);
+		model.addAttribute("prodDesc", prodDesc);
+		System.out.println("prodDesc=" + prodDesc);
 	}
 	
 
    // 로그인 여부 확인 
-   @GetMapping("/checkLoginStatus")
+   @RequestMapping("/checkLoginStatus")
     public ResponseEntity<Map<String, Boolean>> checkLoginStatus(HttpSession session) {
         Map<String, Boolean> response = new HashMap<>();
         response.put("isLoggedIn", session.getAttribute("member") != null);
         return ResponseEntity.ok(response);
     }
-	
-	
+   
+
     //장바구니 - 상품(판매)
-	@PostMapping("/productCartInsert.do")
+	@RequestMapping("/productCartInsert.do")
 	@ResponseBody
 	public Map<String, Object> productCartInsert(String prod_id,
 								 HttpServletRequest request, 
@@ -223,7 +334,7 @@ public class ProdTestController {
 		
 	}
 	//장바구니 - 상품(대여)
-	@PostMapping("/rentProductCartInsert.do")
+	@RequestMapping("/rentProductCartInsert.do")
 	@ResponseBody
 	public Map<String, Object> rentProductCartInsert(String prod_id,
 									 HttpServletRequest request, 
@@ -258,7 +369,7 @@ public class ProdTestController {
 	    
 	/* 구매하기 */ 
 	//ProductNewVO 생성
-	@PostMapping("/productOrderInsert.do")
+	@RequestMapping("/productOrderInsert.do")
 	@ResponseBody
 	public Map<String, Object> productOrderInsert(HttpServletRequest request, 
 								  Model model,
@@ -298,7 +409,7 @@ public class ProdTestController {
     }
 	
 	/* 대여하기 */
-	@PostMapping("/rentProductOrderInsert.do")
+	@RequestMapping("/rentProductOrderInsert.do")
 	@ResponseBody
 	public Map<String, Object> rentProductOrderInsert(HttpServletRequest request, 
 								  Model model,

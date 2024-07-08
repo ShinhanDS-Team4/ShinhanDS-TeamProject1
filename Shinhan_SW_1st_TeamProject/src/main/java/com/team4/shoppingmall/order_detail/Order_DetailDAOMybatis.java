@@ -17,6 +17,10 @@ public class Order_DetailDAOMybatis implements Order_DetailDAOInterface{
 	
 	String namespace = "com.saren.order_detail.";
 	
+	//주문상품 브랜드,이름
+	public Map<String,String> getOrderProdBrand(int order_id){
+		return sqlSession.selectOne(namespace+"getOrderProdBrand", order_id);
+	};
 	
 	@Override
 	public List<Order_DetailDTO> selectByOrder_Id(int order_id) {

@@ -4,8 +4,24 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.cart">
 
+	<!-- 대여 장바구니 담은 개수 -->
+	<select id="countRentCartList" parameterType="string" resultType="int">
+		SELECT count(*)
+		FROM CART c
+		JOIN MEMBER m on(c.member_id = m.member_id)
+		WHERE c.member_id = #{member_id} 
+		AND r_stock_id is NOT NULL
+	</select>
+	<!-- 판매상품 장바구니 담은 개수 -->
+	<select id="countSellCartList" parameterType="string" resultType="int">
+		SELECT count(*)
+		FROM CART c
+		JOIN MEMBER m on(c.member_id = m.member_id)
+		WHERE c.member_id = #{member_id} 
+		AND s_stock_id is NOT NULL
+	</select>
 	<!-- 회원의 장바구니 상품 정보 전체 조회  -->
-	<select id="selectCartProdInfo" parameterType="string" resultType="map">
+	<select id="selectSellCartProdInfo" parameterType="string" resultType="map">
 		SELECT
 		    c.cart_id,
 		    c.member_id,
@@ -45,6 +61,50 @@
 		    PROD_OPTION o5 ON o5.opt_id = COALESCE(sps.opt_id5, rps.opt_id5)
 		WHERE
 		    c.member_id = #{member_id} 
+		AND sps.s_stock_id is not null 
+	</select>
+	<!-- 회원의 대여 장바구니 상품 정보 전체 조회  -->
+	<select id="selectRentCartProdInfo" parameterType="string" resultType="map">
+		SELECT
+		    c.cart_id,
+		    c.member_id,
+		    p.prod_name,
+		    p.prod_price,
+		    sps.s_stock_id,
+		    rps.r_stock_id,
+		    o1.opt_name AS opt_name1,
+		    o2.opt_name AS opt_name2,
+		    o3.opt_name AS opt_name3,
+		    o4.opt_name AS opt_name4,
+		    o5.opt_name AS opt_name5,
+		    o1.opt_value AS opt_value1,
+		    o2.opt_value AS opt_value2,
+		    o3.opt_value AS opt_value3,
+		    o4.opt_value AS opt_value4,
+		    o5.opt_value AS opt_value5,
+		    c.cart_amount,
+		    c.product_type
+		FROM
+		    CART c
+		LEFT JOIN
+		    SELL_PROD_STOCK sps ON c.s_stock_id = sps.s_stock_id
+		LEFT JOIN
+		    RENT_PROD_STOCK rps ON c.r_stock_id = rps.r_stock_id
+		LEFT JOIN
+		    PROD p ON p.prod_id = COALESCE(sps.prod_id, rps.prod_id)
+		LEFT JOIN
+		    PROD_OPTION o1 ON o1.opt_id = COALESCE(sps.opt_id1, rps.opt_id1)
+		LEFT JOIN
+		    PROD_OPTION o2 ON o2.opt_id = COALESCE(sps.opt_id2, rps.opt_id2)
+		LEFT JOIN
+		    PROD_OPTION o3 ON o3.opt_id = COALESCE(sps.opt_id3, rps.opt_id3)
+		LEFT JOIN
+		    PROD_OPTION o4 ON o4.opt_id = COALESCE(sps.opt_id4, rps.opt_id4)
+		LEFT JOIN
+		    PROD_OPTION o5 ON o5.opt_id = COALESCE(sps.opt_id5, rps.opt_id5)
+		WHERE
+		    c.member_id = #{member_id} 
+		AND rps.r_stock_id is not null 
 	</select>
 	<!-- CART테이블에 넣을 선택한 옵션 이름으로 상품의 재고ID 찾기(parameterType = 동적VO)  -->
     <select id="searchStockId" parameterType="com.team4.shoppingmall.cart.CartDynamicVO" 
@@ -91,7 +151,7 @@
 		resultType="cartVO">
 		SELECT * 
 		FROM CART 
-		WHERE "cart_id" = #{cart_id}
+		WHERE cart_id = #{cart_id}
 	</select>
 
 	<select id="selectAll" resultType="cartVO">
@@ -111,7 +171,8 @@
 	    select * 
 	    from CART
 	    where member_id = #{member_id}
-	    and s_stock_id is null
+	    and s_stock_id is null and
+        r_stock_id = #{r_stock_id}
 	</select>
 	
 	<!-- 장바구니(구매상품) 생성 : 시퀀스 사용(cart_squence), product_type칼럼 추가  -->
@@ -162,15 +223,18 @@
 	<update id="cartUpdate" parameterType="cartVO">
 		UPDATE CART
 		SET
-		"member_id" = #{member_id}, "sellstock_id" = #{sellstock_id}, 
-		"cart_amount" = #{cart_amount}
-		WHERE "cart_id" = #{cart_id}
+		member_id = #{member_id}, 
+		s_stock_id = #{s_stock_id}, 
+		r_stock_id = #{r_stock_id}, 
+		cart_amount = #{cart_amount},
+		product_type = #{product_type}
+		WHERE cart_id = #{cart_id}
 	</update>
 	
 	<delete id="cartDelete" parameterType="int">
 		DELETE
 		FROM CART
-		WHERE "cart_id" = #{cart_id}
+		WHERE cart_id = #{cart_id}
 	</delete>
 	
 </mapper>

@@ -12,6 +12,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter@Setter@ToString
 public class CouponRequestDTO {
-	String couponid;
-	int orderid;
+	int couponid;
+	int orderPrice;
 }

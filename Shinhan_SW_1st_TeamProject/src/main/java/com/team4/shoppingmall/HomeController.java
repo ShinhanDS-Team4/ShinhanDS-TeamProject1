@@ -2,7 +2,9 @@ package com.team4.shoppingmall;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -21,6 +23,8 @@ import com.team4.shoppingmall.coupon.CouponService;
 import com.team4.shoppingmall.event.EventService;
 import com.team4.shoppingmall.member.MemberDTO;
 
+import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestService;
+
 /**
  * Handles requests for the application home page.
  */
@@ -32,7 +36,10 @@ public class HomeController {
 
 	@Autowired
 	CouponService cService = new CouponService();
-
+	
+	@Autowired
+	Seller_Prod_StockTestService seller_Prod_StockTestService;
+	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
 	/**
@@ -52,7 +59,7 @@ public class HomeController {
 		// 이벤트와 쿠폰정보 담기 
 		model.addAttribute("event", eService.selectFirst()); 
 		MemberDTO member = (MemberDTO) session.getAttribute("member");   
-		
+		 
 		String message = "";
 
 		CouponDTO coupon = cService.selectFirst();
@@ -64,8 +71,16 @@ public class HomeController {
 
 		model.addAttribute("message", message);
 		model.addAttribute("coupon", coupon);
-
+ 
+		model.addAttribute("serverTime", formattedDate );
+		
+		//16개 베스트 판매상품 정보 조회
+		List<Map<String,Object>> bestItems = seller_Prod_StockTestService.selectBestProducts();
+		model.addAttribute("bestItems", bestItems); 
+		System.out.println(bestItems);
+		
 		return "home";
 	}
-
+	
+ 
 }

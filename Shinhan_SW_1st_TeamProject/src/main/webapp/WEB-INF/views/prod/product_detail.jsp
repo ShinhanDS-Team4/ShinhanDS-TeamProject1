@@ -110,7 +110,6 @@
                //slideMargin: 10
     	});
         
-        
 	});
 </script>
 </head>
@@ -194,8 +193,8 @@
 	        <div class="popup-icon">!</div>	       
 	        <p class="saveCartText">선택한 상품이 장바구니에 저장됩니다.</p> 
 	        <p>장바구니로 이동하시겠습니까?</p>	        
-	        <button class="popup-button yes-button">네</button>
-	        <button class="popup-button no-button">아니요</button>
+	        <button id="yesCartBtn" class="popup-button yes-button">네</button>
+	        <button id="noCartBtn" class="popup-button no-button">아니요</button>
 	    </div>
 	</div>
 	<%-- 상품 문의 모달 창 --%>
@@ -233,9 +232,11 @@
 					<%-- 메인 상품 사진 :판매자가 등록한 이미지 중 첫번째 --%>
 					<div class="product-image">
 						<ul class="product-img-slide">
-							<li><img src="${path}/resources/images/testImg/testimg1.jpg" alt="1"></li>
-							<li><img src="${path}/resources/images/testImg/testimg2.jpg" alt="2"></li>
-							<li><img src="${path}/resources/images/testImg/testimg3.jpg" alt="3"></li>
+							<c:forEach var="imgNameMain" items="${mainImgIdList}">
+								<li>
+									<img src="http://localhost:9090/saren/ProdImgFile/main/${imgNameMain.IMG_ID}" alt="메인이미지">
+								</li>
+							</c:forEach>
 						</ul>
 					</div>
 					
@@ -249,9 +250,10 @@
 							</p>
 						</div>
 						<p class="rate">
-							★${reviewInfo.avg_rate != nul ? reviewInfo.avg_rate : 0} <span>
+							★${reviewInfo.AVG_RATE != nul ? reviewInfo.AVG_RATE : 0} <span>
 							<a href="javascript:#void" class="review-rate-btn">
-								리뷰 ${reviewInfo.review_count != null ? reviewInfo.review_count : 0 }건
+								리뷰 ${reviewInfo.REVIEW_COUNT != null ? reviewInfo.REVIEW_COUNT : 0 }건
+
 							</a>
 							</span>
 						</p>
@@ -358,9 +360,7 @@
 	        		//아니요 선택 시 현재페이지 계속 쇼핑
 	        		$('.no-button').on('click', function(e) {
 	        			e.preventDefault();
-	        			sendProdOption();
-	        			
-	        			location.reload(); 
+	        			$('.popup-background').hide();
 	        		});
 	        		
 		        });
@@ -370,7 +370,7 @@
 				   
 					// 상품 원래 가격 (숫자만 추출)
 				    var originalPrice = parseInt($('.productPrice').text().replace(/[^0-9]/g, ''));
-				    $('.total').text(originalPrice + '원');
+				    $('.total').text(originalPrice.toLocaleString('ko-KR') + '원');
 
 				    var previousValue = parseInt($('#order_num').val());
 
@@ -391,7 +391,7 @@
 				       	
 				    	// 총 가격 업데이트 
 				        var totalPrice = originalPrice * currentValue;
-				        $('.total').text(totalPrice.toLocaleString() + '원');
+				        $('.total').text(totalPrice.toLocaleString('ko-KR') + '원');
 				       } else {
 				       		alert("수량 초과");
 				       	//현재 재고까지만 수량 고르기 가능
@@ -442,7 +442,9 @@
 			                   	 location.href = "${path}/cart/cart.do?cart_id=" + response.cart_id;
 			                      
 			                    }else{
-			                    	alert("상품 재고가 없습니다.");
+		                            alert('로그인이 필요합니다.');
+		                        	// 로그인 페이지로 리다이렉트
+		                            window.location.href = '${path}/member_test/login.do'; 
 			                    }
 			                },
 			                error: function(error) {
@@ -467,20 +469,24 @@
 				<div class="container-detail-img-wrap">
 					<div class="container-detail-prod-img">  <%-- 스크롤처리 --%>
 						<ul class="prod-img-scroll">
-							<li><img src="${path}/resources/images/testImg/testimg1.jpg" alt="1"></li>
-							<li><img src="${path}/resources/images/testImg/testimg2.jpg" alt="2"></li>
-							<li><img src="${path}/resources/images/testImg/testimg3.jpg" alt="3"></li>
-							<li><img src="${path}/resources/images/testImg/testimg1.jpg" alt="1"></li>
-							<li><img src="${path}/resources/images/testImg/testimg2.jpg" alt="2"></li>
-							<li><img src="${path}/resources/images/testImg/testimg3.jpg" alt="3"></li>
+							<c:forEach var="imgName" items="${subImgIdList}">
+								<li>
+									<img src="http://localhost:9090/saren/ProdImgFile/desc/${imgName.IMG_ID}" alt="서브이미지">
+								</li>
+							</c:forEach>
+							
 						</ul>
 					</div>
+					<%-- 상품 설명 --%>
 					<div class="container-detail-prod-subtext">  <%-- fixed --%>
-						<h1>설명 텍스트 박스</h1>
+						<h1>상품 상세 설명</h1>
+						<h2>${prodDesc.prod_name}</h2>
+						<p><span>상품번호: <span>${prodDesc.prod_id} , ${prodDesc.member_id}</p>
+					    <c:forEach var="prod" items="${prod_Options}">
+					        <p>Option: ${prod.OPT_NAME}, ${prod.OPT_VALUE}</p> 
+					    </c:forEach> 
 						<div class="prod-subtext-scroll">
-							<h2>설명 제목</h2>
-							<p>서브 설명 설명</p>
-							<p>설명설명설명설명설명설명설명설명설명설명설명설명</p>
+							<p>${prodDesc.prod_desc}</p>
 						</div>
 					</div>				
 				</div>
@@ -550,7 +556,7 @@
 						<c:forEach items="${productReviews}" var="review">
 							<div class="review"> 
 								<div class="left">
-									<img src="" alt="review image">   <%-- 리뷰 사진 (db작업 후 수정할 것) --%>
+									<img src="${review.REVIEW_IMG}" width="150" height="150" alt="review image">   <%-- 리뷰 사진 (db작업 후 수정할 것) --%>
 								</div>
 								<div class="right">
 									<div class="rating">
@@ -604,17 +610,20 @@
 			<div class="review-write-btn">
 				<button class="button-write">리뷰 작성하기</button>
 			</div>
-			
 			<script type="text/javascript">
-				//리뷰작성하기 버튼 클릭 
-				$('.review-write-btn>button').on('click',function(e){
-					e.preventDefault();
-					location.href = "${path}/review/write.do";
-				});
+			    var path = "${path}";
+			    var prodName = "${prod_detail_info.PROD_NAME}";
 			</script>
-			
-			
-			<div class="qa-section inner">
+			<script type="text/javascript">
+			    //리뷰작성하기 버튼 클릭 
+			    $('.review-write-btn > button').on('click', function(e) {
+			        e.preventDefault();
+			        location.href = path + "/review/write.do?prod_name=" + encodeURIComponent(prodName);
+			    });
+			</script>
+
+
+				<div class="qa-section inner">
 				<h2>상품 Q&A</h2>
 				<div class="qa-section_txt">
 				
@@ -738,7 +747,7 @@
 
 	// 상품 원래 가격 (숫자만 추출)
     var originalPrice = parseInt($('.productPrice').text().replace(/[^0-9]/g, ''));
-    $('.total').text(originalPrice + '원');
+    $('.total').text(originalPrice.toLocaleString('ko-KR') + '원');
 
     var previousValue = parseInt($('#order_num').val());
 
@@ -759,7 +768,7 @@
         	
 	    	 // 총 가격 업데이트 
 	        var totalPrice = originalPrice * currentValue;
-	        $('.total').text(totalPrice.toLocaleString() + '원');
+	        $('.total').text(totalPrice.toLocaleString('ko-KR') + '원');
         } else {
         	 //현재 재고까지만 수량 고르기 가능
         	 $('#order_num').val(currentStock.stock);
@@ -796,13 +805,13 @@
             $('#order_num').val(1); // 값이 변경된 경우 order_num(수량)를 1로 설정
             // 가격 초기화
             var totalPrice = originalPrice;
-            $('.total').text(totalPrice.toLocaleString() + '원');
+            $('.total').text(totalPrice.toLocaleString('ko-KR') + '원');
         } else if (allOptionsSelected) {
             var order_num = parseInt($('#order_num').val(), 10);
             $('#order_num').val(order_num + 1); // 모든 옵션이 선택된 경우 order_num 값을 1 증가
             // 총 가격 업데이트
             var totalPrice = originalPrice * (order_num + 1);
-            $('.total').text(totalPrice.toLocaleString() + '원');
+            $('.total').text(totalPrice.toLocaleString('ko-KR') + '원');
         }
         
         			
@@ -901,7 +910,9 @@
 	                        //주문페이지로 이동
 	                        location.href = "${path}/customer/orderPay.do?order_id=" + response.order_id;
 	                    } else {
-	                        alert("상품 재고가 없습니다.");
+                            alert('로그인이 필요합니다.');
+                        	// 로그인 페이지로 리다이렉트
+                            window.location.href = '${path}/member_test/login.do'; 
 	                    }
 	                },
 	                error: function(error) {
@@ -939,7 +950,7 @@
      function updateTotalPrice() {
          var rent_num = $('#rent_num').val();
          var totalPrice = basePrice * rent_num;
-         $('.total-amount>strong').text(totalPrice.toLocaleString() + '원');
+         $('.total-amount>strong').text(totalPrice.toLocaleString('ko-KR') + '원');
          
          $('#rent_product_price').val(basePrice);
          
@@ -980,7 +991,7 @@
 	var previousValues = {};
 	// 상품 원래 가격 (숫자만 추출)
     var originalPrice = parseInt($('.productPrice').text().replace(/[^0-9]/g, ''));
-    $('.total').text(originalPrice + '원');
+    $('.total').text(originalPrice.toLocaleString('ko-KR') + '원');
 
     var previousValue = parseInt($('#order_num').val());
 
@@ -1001,7 +1012,7 @@
        	
     	// 총 가격 업데이트 
         var totalPrice = originalPrice * currentValue;
-        $('.total').text(totalPrice.toLocaleString() + '원');
+        $('.total').text(totalPrice.toLocaleString('ko-KR') + '원');
        } else {
        	alert("수량 초과");
        	//현재 재고까지만 수량 고르기 가능
@@ -1037,13 +1048,13 @@
            $('#rent_num').val(1); // 값이 변경된 경우 rent_num(수량)를 1로 설정
            // 가격 초기화
            var totalPrice = originalPrice;
-           $('.total').text(totalPrice.toLocaleString() + '원');
+           $('.total').text(totalPrice.toLocaleString('ko-KR') + '원');
        } else if (allOptionsSelected) {
            var rent_num = parseInt($('#rent_num').val(), 10);
            $('#rent_num').val(order_num + 1); // 모든 옵션이 선택된 경우 rent_num 값을 1 증가
            // 총 가격 업데이트
            var totalPrice = originalPrice * (rent_num + 1);
-           $('.total').text(totalPrice.toLocaleString() + '원');
+           $('.total').text(totalPrice.toLocaleString('ko-KR') + '원');
        }
        
        // 현재 대여재고아이디 저장				
@@ -1142,7 +1153,9 @@
                     //대여 결제페이지로 이동
                     location.href = "${path}/customer/rentPay.do?rental_code=" + response.rental_code;
                 } else {
-                	 alert("오류가 발생했습니다. 다시 시도해주세요.");
+                    alert('로그인이 필요합니다.');
+                	// 로그인 페이지로 리다이렉트
+                    window.location.href = '${path}/member_test/login.do'; 
                 }
               	 
               	 
@@ -1178,7 +1191,7 @@
 	       	param.r_stock_id =  currentStock.r_stock_id;   
            	param[item.name] = item.value;
     });
-debugger	
+	
 	 console.log(param);
 	 
 	//모든 옵션이 선택된 경우 서버에 전송
@@ -1195,7 +1208,9 @@ debugger
 	                   alert("대여상품 장바구니 저장 완료(현재 남은 재고" + currentStock.stock + "개)");
 	                   location.href = "${path}/cart/cart.do?cart_id=" + response.rentCartId;
                    }else{
-                	   alert("현재 대여 재고가 없습니다.");
+                       alert('로그인이 필요합니다.');
+                   	// 로그인 페이지로 리다이렉트
+                       window.location.href = '${path}/member_test/login.do'; 
                    }
                },
                error: function(error) {
