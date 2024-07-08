@@ -122,12 +122,12 @@
 			type : "POST",
 			url : "/shoppingmall/customer/cancelRentPay.do",
 			data : {
-				"rental_code" : order_id
+				rental_code : order_id
 			},
 			success : function(response) {
 				if (response === "Canceled") {
 					alert("주문을 취소하고 이전 페이지로 돌아갑니다.");
-					history.back();
+					window.history.back();
 				} else {
 					alert("주문 취소에 실패하였습니다.")
 				}
@@ -139,69 +139,49 @@
 		});
 	});
 
-	$()
-			.ready(
-					function() {
-						var IMP = window.IMP;
-						IMP.init('imp31438144'); // 가맹점 식별코드 입력
+	$().ready(function() {
+		var IMP = window.IMP;
+		IMP.init('imp31438144'); // 가맹점 식별코드 입력
 
-						$("#orderBtn")
-								.on(
-										"click",
-										function() {
-											alert("구매버튼");
-											var rental_code = '${rentInfo.rental_code}';
-											var userid = '${memberInfo.member_id}';
-											var username = '${memberInfo.member_name}';
-											var phone = '${memberInfo.phone}';
-											var merchant_uid = 'rentPay_'
-													+ rental_code;//DB에 주문ID로 저장될, 고유한 주문 ID
-											var amount = $('#finalPrice')
-													.text();//결제 금액
+		$("#orderBtn").on("click",function() {
+			alert("구매버튼");
+			var rental_code = '${rentInfo.rental_code}';
+			var userid = '${memberInfo.member_id}';
+			var username = '${memberInfo.member_name}';
+			var phone = '${memberInfo.phone}';
+			var merchant_uid = 'rentPay_'+ rental_code;//DB에 주문ID로 저장될, 고유한 주문 ID
+			var amount = $('#finalPrice').text();//결제 금액
 
-											var coupon_id = parseInt($(
-													'#selectedCoupon').val());
-											var point = parseInt($(
-													'#pointWillUse').text());
-											var finalPrice = parseInt($(
-													'#finalPrice').text());
+			var coupon_id = parseInt($('#selectedCoupon').val());
+			var point = parseInt($('#pointWillUse').text());
+			var finalPrice = parseInt($('#finalPrice').text());
 
-											IMP
-													.request_pay(
-															{
-																pg : "html5_inicis", // 등록된 pg사 (적용된 pg사는 KG이니시스)
-																pay_method : "card",
-																merchant_uid : merchant_uid, // 주문 고유 번호
-																name : "상품 주문",
-																amount : $(
-																		'#finalPrice')
-																		.text(),
-																buyer_email : '${memberInfo.email}',
-																buyer_name : username,
-																buyer_tel : phone,
-																buyer_addr : "서울특별시 강남구 신사동",
-																buyer_postcode : "01181",
-															},
-															function(response) {
-																if (response.success) {
-																	alert("결제 완료");
-																	window.location.href = "${path}/customer/rentPaySuccess?&rental_code="
-																			+ encodeURIComponent(rental_code)
-																	"&coupon_id="
-																			+ encodeURIComponet(coupon_id)
-																			+ "&point="
-																			+ encodeURIComponent(point)
-																			+ "&finalPrice="
-																			+ encodeURIComponent(finalPrice);
-																} else {
-																	var msg = '결제에 실패하였습니다.';
-																	msg += '에러내용 : '
-																			+ rsp.error_msg;
-																}
-																alert(msg);
-															});
-										});
-					});
+			IMP.request_pay({
+				pg : "html5_inicis", // 등록된 pg사 (적용된 pg사는 KG이니시스)
+			pay_method : "card",
+			merchant_uid : merchant_uid, // 주문 고유 번호
+			name : "상품 주문",
+			amount : $('#finalPrice').text(),
+			buyer_email : '${memberInfo.email}',
+			buyer_name : username,
+			buyer_tel : phone,
+			buyer_addr : "서울특별시 강남구 신사동",
+			buyer_postcode : "01181",
+			},function(response) {
+				if (response.success) {
+					alert("결제 완료");
+					window.location.href = "${path}/customer/rentPaySuccess.do?rental_code="+ encodeURIComponent(rental_code)
+							"&coupon_id="+ encodeURIComponet(coupon_id)+
+							"&point="+ encodeURIComponent(point)+ 
+							"&finalPrice="+ encodeURIComponent(finalPrice);
+					} else {
+						var msg = '결제에 실패하였습니다.';
+						msg += '에러내용 : '+ rsp.error_msg;
+						}
+				alert(msg);
+				});
+			});
+		});
 </script>
 </head>
 <body>
