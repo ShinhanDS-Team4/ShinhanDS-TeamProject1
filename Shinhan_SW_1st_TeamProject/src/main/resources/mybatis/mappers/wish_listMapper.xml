@@ -26,12 +26,12 @@
 	</select>
 
 	<select id="selectAll" parameterType="string" resultType="wish_listVO">
-		SELECT w.member_id, w.prod_id, p.prod_name, p.prod_desc, p.prod_price, pi.img_id, po.opt_name, po.opt_value
-        FROM WISH_LIST w
-        JOIN PROD p ON w.prod_id = p.prod_id
-        LEFT JOIN PROD_IMAGE pi ON p.prod_id = pi.prod_id AND pi.img_type = 0
-        LEFT JOIN PROD_OPTION po ON p.prod_id = po.prod_id;
-        WHERE w.member_id = #{memberId}
+		SELECT DISTINCT w.member_id, w.prod_id, p.prod_name, p.prod_desc, p.prod_price, pi.img_id, po.opt_name, po.opt_value
+	    FROM WISH_LIST w
+	    JOIN PROD p ON w.prod_id = p.prod_id
+	    LEFT JOIN PROD_IMAGE pi ON p.prod_id = pi.prod_id AND pi.img_type = '0'
+	    LEFT JOIN PROD_OPTION po ON p.prod_id = po.prod_id
+	    WHERE w.member_id = #{customerId}
 	</select>
 
 	<insert id="wish_listInsert" parameterType="wish_listVO">
@@ -47,10 +47,20 @@
 		WHERE "member_id" = #{member_id} and "prod_id" = #{prod_id}
 	</update>
 
-	<delete id="wish_listDelete" parameterType="map">
-		DELETE
-		FROM WISH_LIST
-		WHERE "member_id" = #{member_id} and "prod_id" = #{prod_id}
+	<insert id="selectWish" parameterType="map">
+		INSERT 
+		INTO WISH_LIST (member_id, prod_id) 
+		VALUES (#{member_id}, #{prod_id})
+	</insert>
+	<delete id="selectDelete" parameterType="map">
+		DELETE FROM wish_list 
+		WHERE member_id = #{member_id}
+		AND prod_id = #{prod_id}
 	</delete>
 	
+	<delete id="wishAllDelete" parameterType="string">
+		DELETE FROM wish_list 
+		WHERE member_id = #{member_id};
+	</delete>
+		
 </mapper>

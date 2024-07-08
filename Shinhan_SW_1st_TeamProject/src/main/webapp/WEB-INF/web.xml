@@ -66,6 +66,7 @@
  		<filter-name>LoginFilter</filter-name>
 		<url-pattern>*.do</url-pattern> 
 	</filter-mapping> 
+>>>>>>> main
 	
     <!-- 특정 에러 코드에 대한 에러 페이지 설정 -->
     <error-page>
