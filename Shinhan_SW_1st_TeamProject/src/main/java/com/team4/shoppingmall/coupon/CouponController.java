@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.team4.shoppingmall.member.MemberDTO;
 
-
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -25,37 +23,46 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/coupon") 
 public class CouponController {
  
-    @Autowired
-    CouponService couponService;
+  @Autowired
+  CouponService couponService;
 
-    
-    
-    @PostMapping("/receive")
-    @ResponseBody
-    public Map<String, String> receiveCoupon(CouponDTO coupon, HttpSession session) {
-        Map<String, String> response = new HashMap<>();
-        MemberDTO member = (MemberDTO) session.getAttribute("member");
+	@PostMapping("/receive")
+	@ResponseBody
+	public Map<String, String> receiveCoupon(CouponDTO coupon, HttpSession session) {
+		Map<String, String> response = new HashMap<>();
+		MemberDTO member = (MemberDTO) session.getAttribute("member");
 
-        if (member == null) {
-            response.put("status", "error");
-            response.put("message", "濡쒓렇�씤 �썑 荑좏룿�쓣 諛쏆쓣 �닔 �엳�뒿�땲�떎.");
-            return response;
-        }
+		if (member == null) {
+			response.put("status", "error");
+			response.put("message", "로그인 후 쿠폰을 받을 수 있습니다.");
+			return response;
+		}
+ 
+		coupon.setMember_id(member.getMember_id());
+		coupon.setQuantity(1); 
 
-        coupon.setMember_id(member.getMember_id()); 
+		// 사용자가 이미 쿠폰을 가지고 있는지 확인
+		if (couponService.hasCoupon(coupon) > 0) {
+			System.out.println("이미 발급받은 쿠폰입니다.");
+			response.put("status", "error");
+			response.put("message", "이미 발급받은 쿠폰입니다.");
+			return response;
+		}
 
-//        CouponDTO coupon2 = new CouponDTO();
-//        coupon2.setCoupon_id(coupon.getCoupon_id());
-//        coupon2.setMember_id(member.getMember_id());
-//        coupon2.setCoupon_name(coupon.getCoupon_name());
-//        coupon2.setDiscount_rate((double)coupon.getDiscount_rate());
-        coupon.setQuantity(1);
-
+		int success = couponService.assignCouponToMember(coupon);
+ 
+		if (success == 1) {
+			response.put("status", "success");
+			response.put("message", "쿠폰이 성공적으로 발급되었습니다.");
+		} else {
+			response.put("status", "error");
+			response.put("message", "쿠폰 발급에 실패했습니다.");
+		} 
 		
-	  // �궗�슜�옄媛� �씠誘� 荑좏룿�쓣 媛�吏�怨� �엳�뒗吏� �솗�씤  
+	  // 사용자가 이미 쿠폰을 가지고 있는지 확인  
 	  if (couponService.hasCoupon(coupon) > 0 ) {
-		  System.out.println("�씠誘� 諛쒓툒諛쏆� 荑좏룿�엯�땲�떎."); response.put("status", "error");
-		  response.put("message", "�씠誘� 諛쒓툒諛쏆� 荑좏룿�엯�땲�떎.");
+		  System.out.println("이미 발급받은 쿠폰입니다."); response.put("status", "error");
+		  response.put("message", "이미 발급받은 쿠폰입니다.");
 		  return response; 
 	  }
 			 
@@ -65,14 +72,14 @@ public class CouponController {
 
         if (success == 1) {
             response.put("status", "success");
-            response.put("message", "荑좏룿�씠 �꽦怨듭쟻�쑝濡� 諛쒓툒�릺�뿀�뒿�땲�떎.");
+            response.put("message", "쿠폰이 성공적으로 발급되었습니다.");
         } else { 
         	response.put("status", "error"); 
-        	response.put("message", "荑좏룿 諛쒓툒�뿉 �떎�뙣�뻽�뒿�땲�떎."); 
-        } 
+        	response.put("message", "쿠폰 발급에 실패했습니다."); 
+        }  
 
-        return response;
-    }
+		return response;
+	} 
 
 
 
@@ -97,5 +104,5 @@ public class CouponController {
 			return -1;
 		}
 		
-	} 
+	}  
 }

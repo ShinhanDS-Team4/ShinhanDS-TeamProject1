@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -56,21 +55,20 @@
             margin: 15px 0;
         }
         .alert {
-    padding: 20px;
-    background-color: #f44336;
-    color: white;
-    margin-bottom: 15px;
-    display: none; /* 처음에는 숨김 처리 */
-}
-.popup .alert {
-    padding: 20px;
-    color: white;
-    margin-bottom: 15px;
-    display: none; /* 처음에는 숨김 처리 */
-    border-radius: 5px; /* 모서리 둥글게 */
-    text-align: center;
-}
-
+            padding: 20px;
+            background-color: #f44336;
+            color: white;
+            margin-bottom: 15px;
+            display: none; /* 처음에는 숨김 처리 */
+        }
+        .popup .alert {
+            padding: 20px;
+            color: white;
+            margin-bottom: 15px;
+            display: none; /* 처음에는 숨김 처리 */
+            border-radius: 5px; /* 모서리 둥글게 */
+            text-align: center;
+        }
         
     </style>
 </head>
@@ -223,7 +221,8 @@
 
         // 쿠키 확인
         if (getCookie('popupNoShow') !== 'true') {
-            jq('#popupBtn').click();
+            jq('#popupOverlay').fadeIn();
+            jq('#popup').fadeIn();
         }
 
         jq('#receiveCouponBtn').click(function() {
@@ -291,5 +290,3 @@
 
 </body>
 </html>
-
-
