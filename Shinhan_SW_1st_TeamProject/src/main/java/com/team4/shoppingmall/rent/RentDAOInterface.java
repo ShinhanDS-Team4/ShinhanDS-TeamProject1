@@ -45,6 +45,12 @@ public interface RentDAOInterface {
 	public int updateRent(RentDTO rent);
 
 	public int rentprodDelete(int rental_code);
+
+	public List<SellerRentDTO> AllRent();
+
+	public List<SellerRentDTO> searchSellerByRent(String searchType);
+
+	public List<SellerRentDTO> searchCustomerByRent(String searchKeyword);
 	
 }
 

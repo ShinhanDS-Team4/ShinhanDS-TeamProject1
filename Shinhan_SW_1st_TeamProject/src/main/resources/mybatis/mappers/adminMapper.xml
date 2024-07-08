@@ -37,4 +37,24 @@
 		admin_phone = #{admin_phone}, admin_pw = #{admin_pw}
 		where admin_id = #{admin_id}
 	</update>
+	
+	<select id="dailyVisitorDataSeller" parameterType="string" resultType="map">
+		select to_char(last_access, 'dd') day, count(*) daycount from member 
+		where to_char(last_access, 'YYYY-MM') = #{year_month} and member_type = 2 and seller_authority = 'Y'
+		group by to_char(last_access, 'dd')
+		order by 1 asc
+	</select>
+
+	<select id="dailyVisitorDataCustomer" parameterType="string" resultType="map">
+		select to_char(last_access, 'dd') day, count(*) daycount from member 
+		where to_char(last_access, 'YYYY-MM') = #{year_month} and member_type = 1
+		group by to_char(last_access, 'dd')
+		order by 1 asc
+	</select>
+	
+	<select id="dailyRevenueChart" parameterType="string" resultType="map">
+		select to_char(order_date, 'dd') day, sum(total_price) total from order_prod 
+		where to_char(order_date, 'YYYY-MM') = #{year_month} 
+		group by to_char(order_date, 'dd') order by 1 asc
+	</select>
 </mapper>

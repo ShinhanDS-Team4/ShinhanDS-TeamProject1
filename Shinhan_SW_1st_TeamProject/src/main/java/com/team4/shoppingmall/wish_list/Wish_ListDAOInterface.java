@@ -20,5 +20,7 @@ public interface Wish_ListDAOInterface {
 	
 	public int wish_listUpdate(Wish_ListDTO wish_list);
 	
-	public int wish_listDelete(String member_id, Integer prod_id);
+	public int wish_listDelete1(String member_id, Integer prod_id);
+
+	public int wish_listDelete(Wish_ListDTO wishDelete);
 }

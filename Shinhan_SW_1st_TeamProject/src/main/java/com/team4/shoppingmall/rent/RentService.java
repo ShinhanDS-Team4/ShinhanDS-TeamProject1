@@ -119,4 +119,16 @@ public class RentService {
 		return rentDAO.rentprodDelete(rental_code);
 	}
 
+	public List<SellerRentDTO> AllRent() {		
+		return rentDAO.AllRent();
+	}
+
+	public List<SellerRentDTO> searchSellerByRent(String searchType) {		  
+		return rentDAO.searchSellerByRent(searchType);
+	}
+
+	public List<SellerRentDTO> searchCustomerByRent(String searchKeyword) {
+		return rentDAO.searchCustomerByRent(searchKeyword);
+	}
+
 }

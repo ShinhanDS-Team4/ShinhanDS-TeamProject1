@@ -88,5 +88,18 @@ public class RentDAOMybatis implements RentDAOInterface {
 		return sqlSession.delete(namespace+"rentprodDelete",rental_code);
 	}
 
+	@Override
+	public List<SellerRentDTO> AllRent() {
+		return sqlSession.selectList(namespace+"AllRent");
+	}
 
+	@Override
+	public List<SellerRentDTO> searchSellerByRent(String searchType) {
+		return sqlSession.selectList(namespace+"searchSellerByRent", searchType);
+	}
+	
+	@Override
+	public List<SellerRentDTO> searchCustomerByRent(String searchKeyword) {
+		return sqlSession.selectList(namespace+"searchCustomerByRent", searchKeyword);
+	}
 }

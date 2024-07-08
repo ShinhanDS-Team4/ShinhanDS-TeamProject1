@@ -15,31 +15,45 @@
 	<script>
 	document.addEventListener('DOMContentLoaded', function() {
 	    var ctxVisitors = document.getElementById('visitorsChart').getContext('2d');
-	    var last_day = new Date(2024, 11, 0).getDate(); // 11월을 설정하면 12월의 마지막 날을 얻을 수 있습니다.
+		 // 현재 연도와 월을 가져오기
+	    var now = new Date();
+	    var year = now.getFullYear();
+	    var month = now.getMonth() + 1; // 월은 0부터 시작하므로 +1
+
+	    // 마지막 날 구하기
+	    var last_day = new Date(year, month, 0).getDate();
+	    //var last_day = new Date(2024, 11, 0).getDate(); // 11월을 설정하면 12월의 마지막 날을 얻을 수 있습니다.
+	    
 	    var labels = [];
 	    for (let i = 1; i <= last_day; i++) {
 	        labels.push(i);
 	    }
-	
-	    var dailyVisitorDataForSellers = [
-	        { DAY: '2024-12-01', VISITOR_COUNT: 10 },
-	        { DAY: '2024-12-02', VISITOR_COUNT: 15 },
-	        { DAY: '2024-12-03', VISITOR_COUNT: 12 },
-	        { DAY: '2024-12-04', VISITOR_COUNT: 20 },
-	        { DAY: '2024-12-05', VISITOR_COUNT: 18 },
-	        { DAY: '2024-12-06', VISITOR_COUNT: 25 },
-	        { DAY: '2024-12-07', VISITOR_COUNT: 30 }
-	    ];
-	
-	    var dailyVisitorDataForCustomers = [
-	        { DAY: '2024-12-01', VISITOR_COUNT: 5 },
-	        { DAY: '2024-12-02', VISITOR_COUNT: 8 },
-	        { DAY: '2024-12-03', VISITOR_COUNT: 7 },
-	        { DAY: '2024-12-04', VISITOR_COUNT: 10 },
-	        { DAY: '2024-12-05', VISITOR_COUNT: 12 },
-	        { DAY: '2024-12-06', VISITOR_COUNT: 15 },
-	        { DAY: '2024-12-07', VISITOR_COUNT: 20 }
-	    ];
+		
+	    // 현재 날짜를 "YYYY-MM" 형식으로 가져오기
+    	var currentDate = new Date().toISOString().slice(0, 7);
+    
+    	// 해당 요소 선택
+    	var monthlyVisitorsTitle = document.getElementById("monthlyVisitors");
+    	var monthlyRevenueTitle = document.getElementById("monthlyRevenue");
+    
+    	// 제목 업데이트
+    	monthlyVisitorsTitle.textContent = "월간 접속자 수 (" + currentDate + ")";
+    	monthlyRevenueTitle.textContent = "월간 매출액 (" + currentDate + ")";
+    	
+		var yymm = new Date().toISOString().slice(0,8);
+	    
+	    var dailyVisitorDataForSellers = [];
+	    <c:forEach items="${dailyVisitorDataSeller}" var="dailyVisitorSeller">
+	    	dailyVisitorDataForSellers.push({ DAY: yymm+${dailyVisitorSeller.DAY}, VISITOR_COUNT: ${dailyVisitorSeller.DAYCOUNT} });
+	    </c:forEach>
+
+	    var dailyVisitorDataForCustomers = [];
+	    <c:forEach items="${dailyVisitorDataCustomer}" var="dailyVisitorCustomer">
+	    	dailyVisitorDataForCustomers.push({ DAY: yymm+${dailyVisitorCustomer.DAY}, VISITOR_COUNT: ${dailyVisitorCustomer.DAYCOUNT} });
+	    </c:forEach>
+	    
+	    console.log(dailyVisitorDataForSellers);
+	    console.log(dailyVisitorDataForCustomers);
 	
 	    var dailyRevenueData = [150, 200, 250, 300, 350, 400, 450];
 	
@@ -70,22 +84,43 @@
 	        },
 	        options: {}
 	    });
-	
+		    	    	    
+	    
+	    	   
+	    
 	    var ctxDailyRevenue = document.getElementById('dailyRevenueChart').getContext('2d');
+
+	    var dailyRevenueChartTotalData = [];
+	    <c:forEach items="${dailyRevenueChart}" var="dailyRevenue">
+	        dailyRevenueChartTotalData.push({ DAY: yymm + ${dailyRevenue.DAY}, TOTAL: ${dailyRevenue.TOTAL} });
+	    </c:forEach>
+
+	    console.log(dailyRevenueChartTotalData);
+
 	    var dailyRevenueChart = new Chart(ctxDailyRevenue, {
 	        type: 'bar',
 	        data: {
 	            labels: labels,
 	            datasets: [{
-	                label: 'Daily Revenue',
+	                label: 'Daily Revenue (total)',
 	                backgroundColor: 'rgba(75, 192, 192, 0.2)',
 	                borderColor: 'rgba(75, 192, 192, 1)',
-	                data: dailyRevenueData
+	                data: calculateDailyRevenueTotal(dailyRevenueChartTotalData)
 	            }]
 	        },
 	        options: {}
 	    });
+
+	    function calculateDailyRevenueTotal(data) {
+	        var counts = Array(last_day).fill(0);
+	        data.forEach(function(item) {
+	            var day = parseInt(item.DAY.split('-')[2], 10);
+	            counts[day - 1] = item.TOTAL;
+	        });
+	        return counts;
+	    }
 	});
+		
 	</script>
 </head>
 <body>
@@ -128,7 +163,7 @@
 				<div class="col-lg-6 col-md-12">
 					<div class="card">
 						<div class="card-body">
-							<h5 class="card-title">월간 접속자 수</h5>
+							<h5 class="card-title" id="monthlyVisitors"></h5>
 							<div class="chart-container">
 								<canvas id="visitorsChart"></canvas>
 							</div>
@@ -138,7 +173,7 @@
 				<div class="col-lg-6 col-md-12">
 					<div class="card">
 						<div class="card-body">
-							<h5 class="card-title">일일 수익</h5>
+							<h5 class="card-title" id="monthlyRevenue"></h5>
 							<div class="chart-container">
 								<canvas id="dailyRevenueChart"></canvas>
 							</div>

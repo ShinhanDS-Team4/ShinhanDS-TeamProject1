@@ -2,6 +2,7 @@
 package com.team4.shoppingmall.admin;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -9,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.ui.Model;
 
 @Repository
 public class AdminDAOMybatis {
@@ -52,4 +52,16 @@ public class AdminDAOMybatis {
     public int adminmypageedit(AdminDTO aDto) {
     	return sqlSession.update(namespace+"adminmypageedit", aDto);
     }
+    
+    public List<Map<String, Object>> dailyVisitorDataSeller(String yymm) {    	
+    	return sqlSession.selectList(namespace+"dailyVisitorDataSeller",yymm);
+    }
+    public List<Map<String, Object>> dailyVisitorDataCustomer(String yymm) {    	
+    	return sqlSession.selectList(namespace+"dailyVisitorDataCustomer",yymm);
+    }
+
+	public List<Map<String, Object>> dailyRevenueChart(String yymm) {		
+		return sqlSession.selectList(namespace+"dailyRevenueChart",yymm);
+	}
+	
 }

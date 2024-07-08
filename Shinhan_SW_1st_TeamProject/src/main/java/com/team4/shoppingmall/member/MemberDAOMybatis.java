@@ -154,6 +154,11 @@ public class MemberDAOMybatis implements MemberDAOInterface {
 	public MemberCustomerDTO customerByInfo(String member_id) {
 		return sqlSession.selectOne(namespace+"customerByInfo", member_id);
 	}
+	
+	@Override
+	public List<MemberDTO> selectBySeller_access(String searchSeller) {
+		return sqlSession.selectList(namespace+"selectBySeller_access", searchSeller);
+	}
 
 }
  

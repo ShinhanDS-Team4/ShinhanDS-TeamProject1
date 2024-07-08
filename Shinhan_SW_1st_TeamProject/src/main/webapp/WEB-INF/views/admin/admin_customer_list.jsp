@@ -46,6 +46,11 @@
                             <td>${customer.gender}</td>                           
                         </tr>                
                         </c:forEach>
+                        <c:if test="${empty customers}">
+	                        <tr>
+	                            <td colspan="10" class="text-center">고객 정보가 없습니다.</td>
+	                        </tr>
+                    	</c:if>
                     </tbody>
                 </table>
             </div>

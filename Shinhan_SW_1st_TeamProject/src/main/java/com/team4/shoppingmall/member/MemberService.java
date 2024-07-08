@@ -118,6 +118,10 @@ public class MemberService {
 		return memberDAO.seller_authority_access_deny(member_id, seller_authority);
 	} 
 
+	public List<MemberDTO> selectBySeller_access(String searchSeller) {
+		return memberDAO.selectBySeller_access(searchSeller);
+	}
+	
 	public List<MemberCustomerDTO> selectByAllCustomer() {
 		return memberDAO.selectByAllCustomer();
 	}

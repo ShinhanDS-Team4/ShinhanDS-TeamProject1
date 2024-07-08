@@ -1,8 +1,10 @@
 package com.team4.shoppingmall.admin;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 @Service
 public class AdminService {
@@ -28,4 +30,17 @@ public class AdminService {
 	public int adminmypageedit(AdminDTO aDto) {
 		return adminDAOMybatis.adminmypageedit(aDto);
 	}
+	
+    public List<Map<String, Object>> dailyVisitorDataSeller(String yymm) {
+    	return adminDAOMybatis.dailyVisitorDataSeller(yymm);
+    }
+
+    public List<Map<String, Object>> dailyVisitorDataCustomer(String yymm) {
+    	return adminDAOMybatis.dailyVisitorDataCustomer(yymm);
+    }
+
+	public List<Map<String, Object>> dailyRevenueChart(String yymm) {
+		return adminDAOMybatis.dailyRevenueChart(yymm);
+	}
+	
 }

@@ -35,7 +35,11 @@ public class Wish_ListService {
 		return wish_listDAO.wish_listUpdate(wish_list);
 	}
 	
-	public int wish_listDelete(String member_id, Integer prod_id) {
-		return wish_listDAO.wish_listDelete(member_id, prod_id);
+	public int wish_listDelete1(String member_id, Integer prod_id) {
+		return wish_listDAO.wish_listDelete1(member_id, prod_id);
 	}
+
+	public int wish_listDelete(Wish_ListDTO wishDelete) {
+		return wish_listDAO.wish_listDelete(wishDelete);		
+	}	
 }
