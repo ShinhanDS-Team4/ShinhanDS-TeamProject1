@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/coupon")
+@RequestMapping("/coupons")
 public class CouponController {
 
 	@Autowired

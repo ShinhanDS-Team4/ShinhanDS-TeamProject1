@@ -243,18 +243,19 @@
             jq('#popup').fadeIn();
         }
 
-        jq('#receiveCouponBtn').click(function() {
+        $('#receiveCouponBtn').click(function() {  
             console.log("쿠폰 받기 버튼 클릭됨"); // 디버깅용 로그
-            jq.ajax({
+            $.ajax({   
                 url: "${path}/coupons/checkLogin",
                 type: "POST",
                 success: function(loggedIn) {
-                    console.log("로그인 상태:", loggedIn); // 디버깅용 로그
+                    console.log("로그인 상태:", loggedIn); // 디버깅용 로그  
+                    
                     if (loggedIn) {
-                        jq.ajax({
+                        $.ajax({
                             url: "${path}/coupons/receive",
                             type: "POST",
-                            data: jq("#couponForm").serialize(),
+                            data: $("#couponForm").serialize(),
                             success: function(response) {
                                 showAlert(response.message, response.status === "success");
                             },
