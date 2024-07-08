@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                 borderColor: 'rgba(255, 99, 132, 1)',
                 data: 
-            }, {
+              {
                 label: 'Customers',
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgba(75, 192, 192, 1)',
@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }]
         },
         options: {}
+        
     });
 
     var ctxDailyRevenue = document.getElementById('dailyRevenueChart').getContext('2d');

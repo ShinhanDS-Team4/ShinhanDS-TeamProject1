@@ -85,6 +85,13 @@ public class OrderProdDAOMybatis implements OrderProdDAOInterface {
 	@Override
 	public int orderprodDelete(int order_id) {
 		return sqlSession.delete(namespace+"orderprodDelete",order_id);
+	}
+
+	@Override
+	public List<OrderProdDTO> selectByMemId(String member_id) {
+		return sqlSession.selectList(namespace+"selectByMemId", member_id);
 	} 
+	
+	
 
 }

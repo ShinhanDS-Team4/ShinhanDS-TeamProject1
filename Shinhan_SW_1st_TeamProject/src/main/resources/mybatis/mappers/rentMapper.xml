@@ -153,6 +153,12 @@
 		WHERE
 		rental_code = #{aa}
 	</update>
+	
+	<delete id="rentprodDelete" parameterType="int">
+		DELETE
+		FROM RENT
+		WHERE rental_code = #{rental_code}
+	</delete>
 
 	<!-- rentlist.jsp에서, 반납 -->
 	<update id="returnRent" parameterType="int">

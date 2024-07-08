@@ -97,6 +97,7 @@ public class CartController {
 		List<Map<String,Object>> cartProdInfo = cartService.selectSellCartProdInfo(member_id);
 		model.addAttribute("cartProdInfo", cartProdInfo);
 		System.out.println("cartProdInfo=" + cartProdInfo);
+		
 		//대여 장바구니 상품 정보 모두 조회
 		List<Map<String,Object>> cartRentProdInfo = cartService.selectRentCartProdInfo(member_id);
 		model.addAttribute("cartRentProdInfo", cartRentProdInfo);
@@ -158,6 +159,8 @@ public class CartController {
 				
 				int ordDetailInsertResult = order_DetailService.orderDetailInsert(order_DetailDTO);
 			}
+			
+			int cartDeleteResult = cartService.cartDelete(cartId);//주문상세 생성 완료 후 해당 장바구니 삭제
 		}
 		
 		OrderProdDTO orderProdDTO = new OrderProdDTO();
@@ -222,6 +225,8 @@ public class CartController {
 				
 				int rentDetailInsertResult = rentDetailService.rentDetailInsert(rentDetailDTO);
 			}
+			
+			int cartDeleteResult = cartService.cartDelete(cartId);//대여상세 생성 완료 후 해당 장바구니 삭제
 		}
 		
 		RentDTO rentDTO = new RentDTO();

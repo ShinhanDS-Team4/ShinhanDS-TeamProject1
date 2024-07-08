@@ -171,8 +171,9 @@
 				<p>${sellerInfo.member_id}</p>
 			</div>
 			<!-- 주문/배송 -->
+			<h3>판매 상품 주문 리스트</h3>
 			<div class="product-list">
-				<h3>판매 상품 주문 리스트</h3>
+				
 				<table class="sellPrdList">
 					<thead>
 						<tr>
@@ -219,8 +220,8 @@
 			
 
 			<!-- 대여 -->
+			<h3>대여 상품 주문 리스트</h3>
 			<div class="product-list">
-				<h3>대여 상품 주문 리스트</h3>
 				<table class="sellPrdList">
 					<thead>
 						<tr>

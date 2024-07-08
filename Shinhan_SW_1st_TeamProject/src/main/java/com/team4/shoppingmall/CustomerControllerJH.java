@@ -68,13 +68,13 @@ public class CustomerControllerJH {
 		List<Map<String,Object>> myAllOrders = orderProdService.orderProductById(member_id);
 	    model.addAttribute("myAllOrders", myAllOrders);
 	    model.addAttribute("orderCount", myAllOrders.size());
-	    System.out.println("전체 주문 목록: " + myAllOrders);
+	    //System.out.println("전체 주문 목록: " + myAllOrders);
 	    
 		//3.나의 대여 내역 (대여신청완료된 주문)
 	    List<Map<String,Object>> myAllRentOrders = rentService.rentProductById(member_id);
 	    model.addAttribute("myAllRentOrders", myAllRentOrders);
 	    model.addAttribute("rentCount", myAllRentOrders.size());
-	    System.out.println("전체 대여 목록: " + myAllRentOrders);
+	    //System.out.println("전체 대여 목록: " + myAllRentOrders);
 		
 	    //4.나의 문의 내역
 	    List<Buyer_InqDTO> myInqList =  buyer_InqService.selectByMemberId(member_id);

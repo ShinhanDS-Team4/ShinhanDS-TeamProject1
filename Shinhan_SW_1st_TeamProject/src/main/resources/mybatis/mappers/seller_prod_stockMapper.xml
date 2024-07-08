@@ -3,6 +3,7 @@
       PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.seller_prod_stock">
+
 	
 	<!-- ORDER_PROD테이블에 넣을 선택한 옵션 이름으로 상품의 재고ID 찾기(parameterType = 동적VO)  
 		 carMapper.xml 같은 select문임 -->
@@ -24,7 +25,23 @@
        		)
 	 	)||'%'
     </select>
-
+    <!-- 높은 판매량 상품 16개 출력(CDATA : SQL 쿼리를 문자 데이터로 취급) -->
+	<select id="selectBestProducts" resultType="map">
+	     <![CDATA[
+		   SELECT t.PROD_ID, t.PROD_NAME, t.PROD_PRICE, t.TOTAL, t.MEMBER_ID, m.BRAND, pi.IMG_ID, pi.IMG_TYPE
+			FROM (
+			    SELECT p.PROD_ID, p.PROD_NAME, p.PROD_PRICE, s.TOTAL, p.MEMBER_ID
+			    FROM SELL_PROD_STOCK s
+			    JOIN PROD p ON s.PROD_ID = p.PROD_ID
+			    WHERE s.TOTAL IS NOT NULL
+			    ORDER BY s.TOTAL DESC
+			) t
+			JOIN MEMBER m ON t.MEMBER_ID = m.MEMBER_ID
+			LEFT JOIN PROD_IMAGE pi ON t.PROD_ID = pi.PROD_ID AND pi.IMG_TYPE = 1
+			WHERE ROWNUM <= 16
+	    ]]>
+	</select>
+	
 	<!-- 상품ID로 판매 상품 옵션별 재고 조회 -->
 	<select id="selectSpsOptionByProdId" parameterType="string"
 		resultType="seller_prod_stockVO">

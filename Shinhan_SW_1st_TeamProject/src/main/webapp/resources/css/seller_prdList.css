@@ -139,6 +139,8 @@ span {
 .product-list {
 	height:400px;
 	border-bottom: 3px solid black;
+	overflow-y: auto;
+	
 }
 
 .sellPrdList th{

@@ -241,7 +241,7 @@
             <form class="review-form" action="write.do" method="post" enctype="multipart/form-data">
                 <label>
                     <span>상품명/옵션</span>
-                    <input type="text" name="review_title" placeholder="상품명/옵션을 입력하세요">
+                    <input type="text" name="review_title" value="${prod_name}" readonly>
                 </label>
 			    <label>
 			        <span>작성일자</span>
