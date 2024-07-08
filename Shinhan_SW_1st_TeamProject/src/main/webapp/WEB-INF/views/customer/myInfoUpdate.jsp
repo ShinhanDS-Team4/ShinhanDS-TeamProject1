@@ -243,8 +243,8 @@
 							<a href="${path}/review/myreview.do">나의글</a>
 						</h3>
 						<ul class="myinfo_submenu">
-							<li><a href="javascript:#void">문의글</a></li>
-							<li><a href="${path}/reivew/myreview.do">리뷰</a></li>
+							<li><a href="${path}/adminqna/myqna.do">문의글</a></li>
+							<li><a href="${path}/review/myreview.do">리뷰</a></li>
 						</ul>
 					</li>
 					<li>

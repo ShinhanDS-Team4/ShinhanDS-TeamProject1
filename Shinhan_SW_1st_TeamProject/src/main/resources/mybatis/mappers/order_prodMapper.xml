@@ -4,6 +4,17 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.orderprod">
 
+	<!-- 주문상품 브랜드,이름 -->
+	<select id="getOrderProdBrand" parameterType="int" 
+			resultType="map">
+		SELECT M.brand, p.prod_name
+		FROM MEMBER M
+		JOIN PROD P ON M.member_id = P.member_id
+		JOIN SELL_PROD_STOCK S ON P.prod_id = S.prod_id
+		JOIN ORDER_DETAIL O ON S.s_stock_id = O.s_stock_id
+		WHERE O.orderdetail_id = #{orderdetail_id};
+	</select>
+	
 	<!-- 결제 완료된 주문 상품 목록 (join수정-0705) -->
 	<select id="orderProductById" parameterType="string"
 		resultType="map">
@@ -76,6 +87,7 @@
 	<select id="selectAll" resultType="order_prodVO">
 		SELECT *
 		FROM ORDER_PROD
+		
 	</select>
 
 	
@@ -142,7 +154,7 @@
 		JOIN
 			ORDER_PROD OP ON OD.order_id = OP.order_id
 		JOIN
-			SELLER_PROD_STOCK S ON OD.s_stock_id = S.s_stock_id
+			SELL_PROD_STOCK S ON OD.s_stock_id = S.s_stock_id
 		JOIN
 			PROD P ON S.prod_id = P.prod_id
 		JOIN
@@ -174,5 +186,12 @@
 		WHERE 
 			order_id = #{aa} 
 	</update>
+	
+	<!-- 주문상세 -->
+	<select id="selectByMemId" parameterType="string" resultType="order_prodVO"> 
+		SELECT *
+		FROM ORDER_PROD
+		WHERE member_id = #{member_id}
+	</select>
 	
 </mapper>

@@ -1,6 +1,7 @@
 package com.team4.shoppingmall.category;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,10 @@ public class CategoryService {
 	
 	public int categoryDelete(Integer category_id) {
 		return categoryDAO.categoryDelete(category_id);
+	}
+	
+	public List<CategoryDTO> traceCurCtg(Map<String, Integer> traced) {
+		return categoryDAO.traceCurCtg(traced);
 	}
 	
 	public List<CategoryDTO> firstDepthCategoryList() {

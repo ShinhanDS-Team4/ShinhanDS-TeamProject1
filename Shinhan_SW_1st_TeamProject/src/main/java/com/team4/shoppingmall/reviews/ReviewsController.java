@@ -112,9 +112,10 @@ public class ReviewsController {
 	
 
 	@GetMapping("/write.do")
-	public String writeReview(HttpServletRequest request) {
+	public String writeReview(Model model, HttpServletRequest request, @RequestParam("prod_name") String prod_name) {
 		HttpSession session = request.getSession();
 		MemberDTO mem = (MemberDTO)session.getAttribute("member");
+		model.addAttribute("prod_name", prod_name);
 		//로그인테스트용, 현재는 필터링으로 거름.
 		if(mem == null) {
 			return "redirect:/member_test/login.do";
@@ -124,7 +125,9 @@ public class ReviewsController {
 	}
 
 	@PostMapping("/write.do")
-	public String postReview(ReviewsDTO review, HttpServletRequest request, @RequestParam("reviewImg") MultipartFile review_img, RedirectAttributes redirectAttributes) throws Exception {
+	public String postReview(ReviewsDTO review, HttpServletRequest request,
+			@RequestParam("reviewImg") MultipartFile review_img,
+			RedirectAttributes redirectAttributes) throws Exception {
 	    if (!review_img.isEmpty()) {
 	      // =========파일명 받아옴=====================/
 	        String originalFileName = review_img.getOriginalFilename();

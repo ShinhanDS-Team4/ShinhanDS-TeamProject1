@@ -72,8 +72,8 @@
 				<p>${sellerInfo.member_id}</p>
 			</div>
 			<!-- 고객 문의글 -->
+			<h3>고객 문의 목록</h3>
 			<div class="product-list">
-				<h3>고객 문의 목록</h3>
 				<table>
 					<thead>
 						<tr>
@@ -101,8 +101,8 @@
 					</tbody>
 				</table>
 			</div>
+			<h3>관리자 답변 목록</h3>
 			<div class="product-list">
-				<h3>관리자 답변 목록</h3>
 				<table>
 					<thead>
 						<tr>

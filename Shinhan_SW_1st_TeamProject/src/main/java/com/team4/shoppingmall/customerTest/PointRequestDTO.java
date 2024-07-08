@@ -12,6 +12,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter@Setter@ToString
 public class PointRequestDTO {
-	int point;
-	int orderid;
+	int usePoint;
+	int couponAppliedPrice;
 }

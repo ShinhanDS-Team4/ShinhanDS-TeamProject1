@@ -391,25 +391,27 @@
 					enctype="multipart/form-data" accept-charset="UTF-8">
 					
 					<div class="form-group">
-						<label>상품ID</label>
-						<input type="text" name="prdId"
+						<label style="display: inline-block; width: 100px;">상품ID</label>
+						<input class="unchangedInput" type="text" name="prdId"
 							value="${ProductInfo.prod_id}">
 					</div>
 					
 					<div class="form-group">
-						<label>상품명</label> <input type="text" name="prdName"
+						<label style="display: inline-block; width: 100px;">상품명</label>
+						<input class="unchangedInput" type="text" name="prdName"
 							value="${ProductInfo.prod_name}">
 					</div>
 					<div class="form-group">
-						<label>가격</label>
-						<input type="number" name="prdPrice"
+						<label style="display: inline-block; width: 100px;">가격</label>
+						<input id="prdPrice" type="number" name="prdPrice"
 							value="${ProductInfo.prod_price}">
+						<label style="display: inline-block; width: 100px;">원</label>
 					</div>
 					
 					<!-- 카테고리 -->
 					<div class="form-group">
-						<label>카테고리</label>
-						<p>${CategoryInfo.category_name}</p>
+						<label style="display: inline-block; width: 100px;">카테고리</label>
+						<p class="category" style="display: inline-block; margin: 0;">${CategoryInfo.category_name}</p>
 						<div class="categoryContainer">
 							<select class="prdCategory" id="depth1" onchange="firstDepth()">
 								<option value=0>선택 안함</option>
@@ -423,13 +425,12 @@
 					<!-- 메인 사진 미리보기 구역 : DB 및 서버 저장소에 등록되어 있는 사진 파일들을 미리보기로 보여준다 -->
 					<div id="prdMainImgPreview">
 						<div class="form-group">
-							<label>메인 사진목록</label>
+							<label style="display: inline-block; width: 100px;">메인 사진목록</label>
 							<button type="button" id="addImageBtn" onclick="resetMainProdImg()">사진 항목 초기화</button>
 						</div>
 						<div id="prdMainImgFileContainer">
 							<c:forEach var="mainImgName" items="${ProdMainImgList}">
-								<img
-									src="http://localhost:9090/saren/ProdImgFile/main/${mainImgName}"
+								<img src="http://localhost:9090/saren/ProdImgFile/main/${mainImgName}"
 									width="200" height="200">
 							</c:forEach>
 						</div>
@@ -438,7 +439,7 @@
 					<!-- 메인 사진 추가 구역 : 사진 재등록을 선택하면 활성화 & 화면에 표시됨 -->
 					<div id="mainImgSection" class="hidden">
 						<div class="form-group">
-							<label>메인사진</label>
+							<label style="display: inline-block; width: 100px;">메인사진</label>
 							<button type="button" id="addImageBtn" onclick="addMainImgFile()">사진 추가</button>
 						</div>
 						<div id="prdMainImgFileContainer"></div>
@@ -447,7 +448,7 @@
 					<!-- 설명 사진 미리보기 구역 : DB 및 서버 저장소에 등록되어 있는 사진 파일들을 미리보기로 보여준다 -->
 					<div id="prdDescImgPreview">
 						<div class="form-group">
-							<label>설명 사진목록</label>
+							<label style="display: inline-block; width: 100px;">설명 사진목록</label>
 							<button type="button" id="addImageBtn" onclick="resetDescProdImg()">사진 항목 초기화</button>
 						</div>
 						<div id="prdDescImgFileContainer">
@@ -462,7 +463,7 @@
 					<!-- 설명 사진 추가 구역 : 사진 재등록을 선택하면 활성화 & 화면에 표시됨 -->
 					<div id="descImgSection" class="hidden">
 						<div class="form-group">
-							<label>상품 설명 사진 등록</label>
+							<label style="display: inline-block; width: 100px;">상품 설명 사진 등록</label>
 							<button type="button" id="addImageBtn" onclick="addDescImgFile()">사진 추가</button>
 						</div>
 						<div id="prdDescImgFileContainer"></div>
@@ -480,7 +481,8 @@
 					
 					<h1>판매용 재고 정보 조회 / 재고 수정</h1>
 					<div class="form-group">
-						<label>재고명</label> <input type="text" name="stockid"
+						<label style="display: inline-block; width: 100px;">재고명</label>
+						<input class="unchangedInput" type="text" name="stockid"
 							value="${StockInfo.s_stock_id}">
 					</div>
 
@@ -507,8 +509,9 @@
 					</div>
 
 					<div class="form-group">
-						<label>재고량</label>
-						<input type="number" name="prdStock" value = "${StockInfo.stock}">
+						<label style="display: inline-block; width: 100px;">재고량</label>
+						<input id="prdPrice" type="number" name="prdStock" value = "${StockInfo.stock}">
+						<label style="display: inline-block; width: 100px;">개</label>
 					</div>
 					<div class="buttons">
 						<button type="submit">수정하기</button>

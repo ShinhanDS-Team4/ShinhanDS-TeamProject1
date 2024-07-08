@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.team4.shoppingmall.addr_list.Addr_ListDTO;
+import com.team4.shoppingmall.addr_list.Addr_ListService;
 import com.team4.shoppingmall.member.MemberDTO;
 import com.team4.shoppingmall.order_detail.Order_DetailDTO;
 import com.team4.shoppingmall.order_detail.Order_DetailService;
@@ -73,13 +75,15 @@ public class CartController {
 	
 	@Autowired
 	RentDetailService rentDetailService;
+	
+	@Autowired
+	Addr_ListService addr_ListService;
   
-  @GetMapping("/cart.do")
+	@GetMapping("/cart.do")
 	public String cartPage(HttpSession session, Model model) {
 		
 		MemberDTO member = (MemberDTO)session.getAttribute("member");
 		String member_id = member.getMember_id();
-				
 		
 		List<CartDTO> sellStockCartList = cartService.selectSellStockByMemberId(member_id);
 		model.addAttribute("sellStockCartList", sellStockCartList);
@@ -89,45 +93,47 @@ public class CartController {
 		model.addAttribute("rentStockCartList", rentStockCartList);
 		System.out.println("rentStockCartList=" + rentStockCartList);
 		
-	
-		List<Map<String,Object>> cartProdInfoList = cartService.selectCartProdInfo(member_id);
-		model.addAttribute("cartProdInfoList", cartProdInfoList);
+		//판매 장바구니 상품 정보 모두 조회
+		List<Map<String,Object>> cartProdInfo = cartService.selectSellCartProdInfo(member_id);
+		model.addAttribute("cartProdInfo", cartProdInfo);
+		System.out.println("cartProdInfo=" + cartProdInfo);
+		//대여 장바구니 상품 정보 모두 조회
+		List<Map<String,Object>> cartRentProdInfo = cartService.selectRentCartProdInfo(member_id);
+		model.addAttribute("cartRentProdInfo", cartRentProdInfo);
+		System.out.println("cartRentProdInfo=" + cartRentProdInfo);	
 		
-		
+		//판매 장바구니 건수
+		int countSellproduct = cartService.countSellCartList(member_id);
+		model.addAttribute("countSellproduct", countSellproduct);
+		//대여 장바구니 건수
+		int countRentproduct = cartService.countRentCartList(member_id);
+		model.addAttribute("countRentproduct", countRentproduct);
 		
 		return "cart/cart";
 	}
 	
 	@PostMapping("/createOrder.do")
 	@ResponseBody
-	public String createOrder(@RequestBody Integer request, HttpSession session) {
+	public OrderProdDTO createOrder(@RequestBody  List<Integer> cartIds, HttpSession session) {
 		
 		MemberDTO mem = (MemberDTO)session.getAttribute("member");
 		String customerID = mem.getMember_id();
+		
+		//계정의 대표주소 가져오기
+		Addr_ListDTO addr_ListDTO = addr_ListService.findMasterAddr(customerID);
 		
 		LocalDate localDate = LocalDate.now();
 		// LocalDate로 현재 날짜를 받아와 SQL.Date로 전환
 		Date sqlDate = Date.valueOf(localDate);
 		
-		// 7일 뒤의 날짜를 LocalDate로 계산
-        LocalDate futureDate = localDate.plusDays(7);
-
-        // 7일 뒤의 날짜를 SQL Date로 전환
-        Date sqlFutureDate = Date.valueOf(futureDate);
-		
-		//장바구니에서 장바구니 ID 목록 넘겨받기
-		List<Integer> cartIdList = request.getCartIds();
-		
 		//대여 항목과 주문 항목의 최대값을 각각 가져오기
-		int maxOrder_id = orderprodDAO.sequenceOrderId()+1; 
-		int maxRent_id = rentprodDAO.searchRentId()+1;
+		int maxOrder_id = orderprodDAO.sequenceOrderId()+1;
 		
 		//총 구매가
 		int orderTotal_price = 0;
-		int rentTotal_price = 0;
 		
 		//각 장바구니 ID에 대한 반복문 처리
-		for(Integer cartId : cartIdList) {
+		for(Integer cartId : cartIds) {
 			CartDTO cartDTO = cartService.selectByCartId(cartId);
 			
 			String s_stock_ID = cartDTO.getS_stock_id();
@@ -142,94 +148,139 @@ public class CartController {
 				
 				//해당 재고에 대한 판매 상세 객체 생성
 				Order_DetailDTO order_DetailDTO = new Order_DetailDTO();
-				order_DetailDTO.setOrderdetail_id(0);//판매상세 ID 설정
 				order_DetailDTO.setOrder_num(amount);
 				order_DetailDTO.setOrder_id(maxOrder_id);
 				order_DetailDTO.setOrder_product_price(prodDTO.getProd_price());
 				order_DetailDTO.setS_stock_id(s_stock_ID);
-				order_DetailDTO.setOrder_state("결제대기중");
 				
 				int price = amount * prodDTO.getProd_price();
 				orderTotal_price += price;
 				
 				int ordDetailInsertResult = order_DetailService.orderDetailInsert(order_DetailDTO);
 			}
+			
+			int cartDeleteResult = cartService.cartDelete(cartId);//주문상세 생성 완료 후 해당 장바구니 삭제
+		}
+		
+		OrderProdDTO orderProdDTO = new OrderProdDTO();
+		orderProdDTO.setOrder_id(maxOrder_id);
+		orderProdDTO.setOrder_date(sqlDate);
+		orderProdDTO.setMember_id(customerID);
+		orderProdDTO.setTotal_price(orderTotal_price);
+		orderProdDTO.setAddr_num(addr_ListDTO.getAddr_num());//주소를 대표주소로 설정
+		
+		int orderInsertResult = orderprodDAO.orderprodInsert(orderProdDTO);
+		
+		return orderProdDTO;
+	}
+	
+	
+	@PostMapping("/createRent.do")
+	@ResponseBody
+	public RentDTO createRent(@RequestBody  List<Integer> cartIds, HttpSession session) {
+		
+		MemberDTO mem = (MemberDTO)session.getAttribute("member");
+		String customerID = mem.getMember_id();
+		
+		LocalDate localDate = LocalDate.now();
+		// LocalDate로 현재 날짜를 받아와 SQL.Date로 전환
+		Date sqlDate = Date.valueOf(localDate);
+		
+		// 7일 뒤의 날짜를 LocalDate로 계산
+		LocalDate futureDate = localDate.plusDays(7);
+		
+		// 7일 뒤의 날짜를 SQL Date로 전환
+		Date sqlFutureDate = Date.valueOf(futureDate);
+		
+		//대여 항목과 주문 항목의 최대값을 각각 가져와서 1 더하기
+		int maxRent_id = rentprodDAO.searchRentId()+1;
+		
+		//총 구매가
+		int rentTotal_price = 0;
+		
+		//각 장바구니 ID에 대한 반복문 처리
+		for(Integer cartId : cartIds) {
+			CartDTO cartDTO = cartService.selectByCartId(cartId);
+			
+			String s_stock_ID = cartDTO.getS_stock_id();
+			String r_stock_ID = cartDTO.getR_stock_id();
+			Integer amount = cartDTO.getCart_amount();
+			
 			//장바구니 ID가 대여 상품을 가진 경우
-			else if(Objects.isNull(s_stock_ID)&&!Objects.isNull(r_stock_ID)) {
+			if(Objects.isNull(s_stock_ID)&&!Objects.isNull(r_stock_ID)) {
 				//해당 상세 주뭉의 대여 재고 가격을 알아냄
 				RentProdStockDTO rentProdStockDTO = rentProdStockService.selectById(r_stock_ID);
 				ProdDTO prodDTO = prodService.selectByProdId(rentProdStockDTO.getProd_id());
 				
 				//해당 재고에 대한 대여 상세 객체 생성
 				RentDetailDTO rentDetailDTO = new RentDetailDTO();
-				rentDetailDTO.setRentdetail_id(0);//대여상세ID설정
 				rentDetailDTO.setRent_num(amount);
 				rentDetailDTO.setRental_code(maxRent_id);
 				rentDetailDTO.setRent_product_price(prodDTO.getProd_price());
 				rentDetailDTO.setR_stock_id(r_stock_ID);
-				rentDetailDTO.setRent_state("대여신청완료");
 				
 				int price = amount * prodDTO.getProd_price();
 				rentTotal_price += price;
 				
 				int rentDetailInsertResult = rentDetailService.rentDetailInsert(rentDetailDTO);
 			}
+			
+			int cartDeleteResult = cartService.cartDelete(cartId);//대여상세 생성 완료 후 해당 장바구니 삭제
 		}
 		
-		List<Order_DetailDTO> OrderDetailList = order_DetailService.selectByOrder_Id(maxOrder_id);
-		List<RentDetailDTO> RentDetailList = rentDetailService.selectByRental_code(maxRent_id);
+		RentDTO rentDTO = new RentDTO();
+		rentDTO.setRental_code(maxRent_id);
+		rentDTO.setRent_start_date(sqlDate);
+		rentDTO.setRent_end_date(sqlFutureDate);
+		rentDTO.setMember_id(customerID);
+		rentDTO.setTotal_rent_price(rentTotal_price);
 		
-		if(!Objects.isNull(OrderDetailList) && Objects.isNull(RentDetailList)) {
-			OrderProdDTO orderProdDTO = new OrderProdDTO();
-			orderProdDTO.setOrder_id(maxOrder_id);
-			orderProdDTO.setOrder_date(sqlDate);
-			orderProdDTO.setMember_id(customerID);
-			orderProdDTO.setTotal_price(orderTotal_price);
-			orderProdDTO.setAddr_num(0);
-			
-			int orderInsertResult = orderprodDAO.orderprodInsert(orderProdDTO);
-			
-			return "order Created";
+		int rentInsertResult = rentprodDAO.rentInsert(rentDTO);
 		
-		}else if(Objects.isNull(OrderDetailList) && !Objects.isNull(RentDetailList)) {
-			RentDTO rentDTO = new RentDTO();
-			rentDTO.setRental_code(maxRent_id);
-			rentDTO.setRent_start_date(sqlDate);
-			rentDTO.setRent_end_date(sqlFutureDate);
-			rentDTO.setMember_id(customerID);
-			rentDTO.setTotal_rent_price(rentTotal_price);
+		return rentDTO;
 			
-			int rentInsertResult = rentprodDAO.rentInsert(rentDTO);
-			
-			return "rent Created";
-		}		
 	}
-	
+  
 	@PostMapping("/deleteCart.do")
 	@ResponseBody
-	public String deleteCart(@RequestParam("cart_id") Integer cartID) {
-		int cartDeleteResult = cartService.cartDelete(cartID);
+	public String deleteCart(@RequestBody  CartDTO cartDTO) {
 		
-		return "cart Deleted";
+	    Integer cart_id = cartDTO.getCart_id();
+	    
+	    if (cart_id == null) {
+	        return "delete Error";
+	    }
+
+		int cartDeleteResult = cartService.cartDelete(cart_id);
+		
+		if(cartDeleteResult>0) {
+			return "cart Deleted";
+		}
+		else {
+			return "delete Error";
+		}
+		
+		
 	}
 	
 	@PostMapping("/changeCartAmount.do")
 	@ResponseBody
-	public String changeCartAmount(
-			@RequestParam("cart_id") Integer cartID,
-			@RequestParam("cart_amount") int cartAmount
-			) {
+	public String changeCartAmount(@RequestBody CartAmountRequest cartAmountRequest) {
+		int cartID = cartAmountRequest.getCart_id();
+		int cartAmount = cartAmountRequest.getCart_amount();
 		
 		CartDTO cartDTO = cartService.selectByCartId(cartID);
 		cartDTO.setCart_amount(cartAmount);
 		
 		int cartAmountUpdateResult = cartService.cartUpdate(cartDTO);
 		
-		return "cartAmount Updated";
+		
+		if(cartAmountUpdateResult>0) {
+			return "CartAmount Updated";
+		}
+		else {
+			return "Update Error";
+		}
 	}
-	
-	
-	
-	
 	
 }

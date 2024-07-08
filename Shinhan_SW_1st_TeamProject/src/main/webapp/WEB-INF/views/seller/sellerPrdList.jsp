@@ -100,8 +100,8 @@
 				<p>${sellerInfo.member_id}</p>
 			</div>
 			<!--판매 상품 목록 리스트-->
+			<h3>판매 상품 목록</h3>
 			<div class="product-list">
-				<h3>판매 상품 목록</h3>
 				<table class="sellPrdList">
 					<thead>
 						<tr>
@@ -110,7 +110,7 @@
 							<th>등록일자</th>
 							<th>가격</th>
 							<th>재고량</th>
-							<th>수정</th>
+							<th>조회/수정</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -121,7 +121,7 @@
 								<td>${sStock.prod_added_date}</td>
 								<td>${sStock.prod_price}</td>
 								<td>${sStock.stock}</td>
-								<td><button type="button" onclick="location.href='${path}/seller/ModifyProduct.do?stock_id=${sStock.s_stock_id}'">수정</button></td>
+								<td><button type="button" onclick="location.href='${path}/seller/ModifyProduct.do?stock_id=${sStock.s_stock_id}'">조회/수정</button></td>
 							</tr>
 						</c:forEach>
 						<!-- 여기는 예시 -->
@@ -134,8 +134,9 @@
 			</div>
 			
 			<!-- 대여 상품 리스트 -->
+			<h3>대여 상품 목록</h3>
 			<div class="product-list">
-				<h3>대여 상품 목록</h3>
+				
 				<table class="sellPrdList">
 					<thead>
 						<tr>
@@ -144,7 +145,7 @@
 							<th>등록일자</th>
 							<th>가격</th>
 							<th>재고량</th>
-							<th>수정</th>
+							<th>조회/수정</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -155,7 +156,7 @@
 								<td>${rStock.prod_added_date}</td>
 								<td>${rStock.prod_price}</td>
 								<td>${rStock.stock}</td>
-								<td><button type="button" onclick="location.href='${path}/seller/ModifyProduct.do?stock_id=${rStock.r_stock_id}'">수정</button></td>
+								<td><button type="button" onclick="location.href='${path}/seller/ModifyProduct.do?stock_id=${rStock.r_stock_id}'">조회/수정</button></td>
 							</tr>
 						</c:forEach>
 					</tbody>

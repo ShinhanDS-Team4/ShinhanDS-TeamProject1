@@ -3,6 +3,7 @@ package com.team4.shoppingmall.coupon;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,12 +15,26 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.team4.shoppingmall.member.MemberDTO;
 
-@Controller
-@RequestMapping("/coupons")
-public class CouponController {
 
+<<<<<<< HEAD
 	@Autowired
 	CouponService couponService;
+=======
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+
+@Controller
+@RequestMapping("/coupon") 
+public class CouponController {
+	
+	@Autowired
+	private CouponService couponService;
+ 
+    @Autowired
+    CouponService couponService;
+>>>>>>> 76f8761c6408fe7fb0ed6de20e3b3adcfe9db6ef
 
 	@PostMapping("/receive")
 	@ResponseBody
@@ -57,10 +72,38 @@ public class CouponController {
 		return response;
 	}
 
+<<<<<<< HEAD
 	@PostMapping("/checkLogin")
 	@ResponseBody
 	public boolean checkLogin(HttpSession session) {
 		MemberDTO member = (MemberDTO) session.getAttribute("member");
 		return member != null;
 	}
+=======
+        return response;
+    }
+
+
+
+    @PostMapping("/checkLogin")
+    @ResponseBody
+    public boolean checkLogin(HttpSession session) {
+        MemberDTO member = (MemberDTO) session.getAttribute("member");
+        return member != null;
+    } 
+	@PostMapping("/checkCouponAvailability.do")
+	@ResponseBody
+	public int checkCouponAvailability(@RequestParam("couponid") int couponId) {
+		
+		CouponDTO couponDTO = couponService.selectById(couponId);
+		
+		if(!Objects.isNull(couponDTO)) {
+			int couponRemain = couponDTO.getQuantity();
+			return couponRemain;
+		}else {
+			return -1;
+		}
+		
+	} 
+>>>>>>> 76f8761c6408fe7fb0ed6de20e3b3adcfe9db6ef
 }

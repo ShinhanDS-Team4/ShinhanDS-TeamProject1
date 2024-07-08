@@ -1,6 +1,7 @@
 package com.team4.shoppingmall.seller_prod_stockTest;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,11 @@ public class Seller_Prod_StockTestService {
 	
 	@Autowired
 	Seller_Prod_StockTestDAOInterface seller_prod_stockDAO;
+	
+	//높은 판매량 상품 16개 출력
+	public List<Map<String,Object>> selectBestProducts(){
+		return seller_prod_stockDAO.selectBestProducts();
+	};	
 	
 	//상품ID로 옵션별 판매 상품 재고 조회
 	public List<Seller_Prod_StockTestDTO> selectSpsOptionByProdId(String prod_id){
