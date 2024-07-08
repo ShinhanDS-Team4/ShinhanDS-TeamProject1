@@ -549,7 +549,7 @@
 						<c:forEach items="${productReviews}" var="review">
 							<div class="review"> 
 								<div class="left">
-									<img src="" alt="review image">   <%-- 리뷰 사진 (db작업 후 수정할 것) --%>
+									<img src="${review.REVIEW_IMG}" width="150" height="150" alt="review image">   <%-- 리뷰 사진 (db작업 후 수정할 것) --%>
 								</div>
 								<div class="right">
 									<div class="rating">
@@ -603,17 +603,20 @@
 			<div class="review-write-btn">
 				<button class="button-write">리뷰 작성하기</button>
 			</div>
-			
 			<script type="text/javascript">
-				//리뷰작성하기 버튼 클릭 
-				$('.review-write-btn>button').on('click',function(e){
-					e.preventDefault();
-					location.href = "${path}/review/write.do";
-				});
+			    var path = "${path}";
+			    var prodName = "${prod_detail_info.PROD_NAME}";
 			</script>
-			
-			
-			<div class="qa-section inner">
+			<script type="text/javascript">
+			    //리뷰작성하기 버튼 클릭 
+			    $('.review-write-btn > button').on('click', function(e) {
+			        e.preventDefault();
+			        location.href = path + "/review/write.do?prod_name=" + encodeURIComponent(prodName);
+			    });
+			</script>
+
+
+				<div class="qa-section inner">
 				<h2>상품 Q&A</h2>
 				<div class="qa-section_txt">
 				

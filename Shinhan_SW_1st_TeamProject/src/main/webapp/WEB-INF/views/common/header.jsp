@@ -42,7 +42,7 @@
 							</a>
 						</li>
 						<li>
-							<a href="${path}/member_test/signup.do">
+							<a href="${path}/member_test/signup">
 								<p>회원가입</p>
 								<img src="${path}/resources/images/icon-sign-in.png" alt="회원가입">
 							</a>

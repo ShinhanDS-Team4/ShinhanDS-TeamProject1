@@ -29,15 +29,19 @@
 	  	and  od.ORDER_STATE = '배송완료'
 	</select>
  -->
-	<select id="selectAllProductReviewByProdId" parameterType="string"
+	<select id="selectAllProductReviewByProdName" parameterType="string"
 		resultType="map">
-		SELECT R.*  
-		FROM REVIEWS R
-		JOIN ORDER_DETAIL OD ON (R.ORDERDETAIL_ID = OD.ORDERDETAIL_ID)
-		JOIN SELL_PROD_STOCK SPS ON (OD.S_STOCK_ID = SPS.S_STOCK_ID)
-		JOIN PROD P ON (P.PROD_ID = SPS.PROD_ID)
-		WHERE P.PROD_ID = #{prod_id} 
-		and ORDER_STATE = '배송완료'
+<!-- 		SELECT R.*   -->
+<!-- 		FROM REVIEWS R -->
+<!-- 		JOIN ORDER_DETAIL OD ON (R.ORDERDETAIL_ID = OD.ORDERDETAIL_ID) -->
+<!-- 		JOIN SELL_PROD_STOCK SPS ON (OD.S_STOCK_ID = SPS.S_STOCK_ID) -->
+<!-- 		JOIN PROD P ON (P.PROD_ID = SPS.PROD_ID) -->
+<!-- 		WHERE P.PROD_NAME = #{prod_name}  -->
+<!-- 		and ORDER_STATE = '배송완료' -->
+			SELECT R.*
+	        FROM REVIEWS R
+	        JOIN PROD P ON (P.PROD_NAME = R.REVIEW_TITLE)
+	        WHERE P.PROD_NAME = #{PROD_NAME}
 	</select>
 	<!-- 리뷰 평균과 리뷰 수 -->
 	<select id="reviewAvgByProdId" parameterType="string"

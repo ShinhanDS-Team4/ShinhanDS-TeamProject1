@@ -30,6 +30,8 @@ import com.team4.shoppingmall.category.CategoryService;
 import com.team4.shoppingmall.member.MemberDTO;
 import com.team4.shoppingmall.order_detail.Order_DetailService;
 import com.team4.shoppingmall.order_prod.OrderProdService;
+import com.team4.shoppingmall.prod.ProdDTO;
+import com.team4.shoppingmall.prod.ProdService;
 import com.team4.shoppingmall.prod.ProductNewVO;
 import com.team4.shoppingmall.prod_image.Prod_ImageDTO;
 import com.team4.shoppingmall.prod_image.Prod_ImageService;
@@ -88,6 +90,9 @@ public class ProdTestController {
 	
 	@Autowired
 	Prod_ImageService imageService;
+
+	@Autowired
+	ProdService prodService;
 	
 	
 	@GetMapping("/productlistTest")
@@ -142,8 +147,11 @@ public class ProdTestController {
 		String jsonTextRent = rentMapper.writeValueAsString( rentStockList );
 		model.addAttribute( "rentStockList", jsonTextRent );
 		
-		/* 상품 전체 리뷰 목록 */			
-		List<Map<String,String>> productReviews = reviewsService.selectAllProductReviewByProdId(prod_id);
+		/* 상품 전체 리뷰 목록 */		
+		ProdDTO prod = prodService.selectByProdId(prod_id);
+		String prod_name = prod.getProd_name();
+		List<Map<String,String>> productReviews = reviewsService.selectAllProductReviewByProdName(prod_name);
+		System.out.println(productReviews);
 		model.addAttribute("productReviews", productReviews);
 		
 		//리뷰 목록에 불러올 상품의 옵션 목록
