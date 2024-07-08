@@ -65,6 +65,7 @@ public class CouponController {
 	@ResponseBody
 	public boolean checkLogin(HttpSession session) {
 		MemberDTO member = (MemberDTO) session.getAttribute("member");
+		System.out.println("로그인한 멤버: " + member);
 		return member != null;
 	}
 

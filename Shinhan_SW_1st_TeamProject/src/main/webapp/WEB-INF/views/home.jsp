@@ -243,9 +243,10 @@
             jq('#popup').fadeIn();
         }
 
-        $('#receiveCouponBtn').click(function() {  
-            console.log("쿠폰 받기 버튼 클릭됨"); // 디버깅용 로그
-            $.ajax({   
+
+        jq('#receiveCouponBtn').click(function() {
+            console.log("쿠폰 받기 버튼 클릭됨");  
+            jq.ajax({
                 url: "${path}/coupons/checkLogin",
                 type: "POST",
                 success: function(loggedIn) {
