@@ -59,11 +59,12 @@
     transform: translate(-50%, -50%);
 }
 .no-cart-list>li>p{
-	padding: 10px 0;
+	padding: 30px 0;
 }
 .no-cart-list>li>a{
    background-color: #eee;
-   padding: 5px 10px; 
+   padding: 15px 30px;
+   border-radius: 10px;
 }
 .copyTitle{
     color: #513AE4;

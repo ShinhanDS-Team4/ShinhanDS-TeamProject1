@@ -1,6 +1,5 @@
 package com.team4.shoppingmall;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,10 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.team4.shoppingmall.cart.CartDTO;
 import com.team4.shoppingmall.cart.CartService;
 import com.team4.shoppingmall.customer.CustomerService;
 import com.team4.shoppingmall.member.MemberDTO;
@@ -68,21 +69,24 @@ public class CoordinationController {
 	//id 리턴 시 리턴 타입 변경하기
 	@GetMapping("/recommend.do")
     public String coordination2Page(HttpSession session, 
-                                    Model model,
-                                    @RequestParam("cart_id") Integer cart_id) {
+                                    Model model
+                                    //,@RequestParam("cart_id") Integer cart_id
+                                    ){
 
+		
         // session
         MemberDTO member = (MemberDTO)session.getAttribute("member");
         String member_id = member.getMember_id();
-
-        // cart_id 읽어오기 (테스트용)
-        // Integer cart_id = 44;
+        
+         //cart_id 읽어오기 (테스트용)
+        Integer cart_id = 4;
 
         // 1. cart_id에 해당하는 상품 이름과 img_id(이미지파일이름) 조회
         Map<String,Object> prodInfoByCartId = cartService.sellCartProdByCart_id(member_id, cart_id);
         model.addAttribute("prodInfoByCartId", prodInfoByCartId);
         System.out.println("prodInfoByCartId"+ prodInfoByCartId);
 
-        return "customer/recommend"; // cart_id를 리턴
+        return "customer/recommend"; 
     }
+	
 }
