@@ -35,25 +35,38 @@ public class CouponController {
             return response;
         }
 
-        CouponDTO coupon2 = new CouponDTO();
-        coupon2.setCoupon_id(coupon.getCoupon_id());
-        coupon2.setMember_id(member.getMember_id());
-        coupon2.setCoupon_name(coupon.getCoupon_name());
-        coupon2.setDiscount_rate((double)coupon.getDiscount_rate());
-        coupon2.setQuantity(1);
+        coupon.setMember_id(member.getMember_id()); 
 
-        int success = couponService.assignCouponToMember(coupon2);
+//        CouponDTO coupon2 = new CouponDTO();
+//        coupon2.setCoupon_id(coupon.getCoupon_id());
+//        coupon2.setMember_id(member.getMember_id());
+//        coupon2.setCoupon_name(coupon.getCoupon_name());
+//        coupon2.setDiscount_rate((double)coupon.getDiscount_rate());
+        coupon.setQuantity(1);
+
+		
+	  // 사용자가 이미 쿠폰을 가지고 있는지 확인  
+	  if (couponService.hasCoupon(coupon) > 0 ) {
+		  System.out.println("이미 발급받은 쿠폰입니다."); response.put("status", "error");
+		  response.put("message", "이미 발급받은 쿠폰입니다.");
+		  return response; 
+	  }
+			 
+		 
+
+        int success = couponService.assignCouponToMember(coupon);
 
         if (success == 1) {
             response.put("status", "success");
             response.put("message", "쿠폰이 성공적으로 발급되었습니다.");
-        } else {
-            response.put("status", "error");
-            response.put("message", "쿠폰 발급에 실패했습니다.");
-        }
+        } else { 
+        	response.put("status", "error"); 
+        	response.put("message", "쿠폰 발급에 실패했습니다."); 
+        } 
 
         return response;
     }
+
 
 
     @PostMapping("/checkLogin")

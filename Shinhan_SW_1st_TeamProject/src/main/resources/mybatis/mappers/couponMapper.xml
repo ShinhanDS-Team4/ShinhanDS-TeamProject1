@@ -54,4 +54,13 @@
 		VALUES 
 			(#{coupon_id}, #{member_id}, #{coupon_name}, #{discount_rate}, #{quantity})
 	</insert>
+	
+	<!-- 이미 발급받은 쿠폰인지 확인 -->
+	<select id="hasCoupon" parameterType="couponVO" resultType="int">
+		SELECT COUNT(*) cnt 
+        FROM COUPON
+        WHERE coupon_id = #{coupon_id}
+          AND member_id = #{member_id}
+	</select>
+	
 </mapper>

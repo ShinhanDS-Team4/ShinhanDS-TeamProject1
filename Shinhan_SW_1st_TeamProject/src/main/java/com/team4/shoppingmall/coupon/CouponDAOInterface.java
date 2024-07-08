@@ -32,4 +32,7 @@ public interface CouponDAOInterface {
 
 	// 쿠폰 받기
 	public int assignCouponToMember(CouponDTO coupon);
+
+	// 사용자가 쿠폰 발급받았는지 확인
+	public int hasCoupon(CouponDTO coupon);
 }

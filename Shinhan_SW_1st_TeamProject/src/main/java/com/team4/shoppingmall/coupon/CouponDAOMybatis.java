@@ -48,5 +48,11 @@ public class CouponDAOMybatis implements CouponDAOInterface {
 	public int assignCouponToMember(CouponDTO coupon) { 
 		return sqlSession.insert(namespace+"assignCouponToMember", coupon);
 	}
-	 
+
+	// 이미 발급받은 쿠폰인지 확인
+	@Override
+	public int hasCoupon(CouponDTO coupon) {
+		return sqlSession.selectOne(namespace+"hasCoupon", coupon); 
+	}
+	
 }

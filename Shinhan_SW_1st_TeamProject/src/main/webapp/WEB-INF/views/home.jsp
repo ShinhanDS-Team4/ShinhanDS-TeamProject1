@@ -267,12 +267,15 @@
 
     function showAlert(message, isSuccess) {
         alert(message);
-        jq('#popupOverlay').fadeOut();
-        jq('#popup').fadeOut();
+        if (isSuccess) {
+            jq('#popupOverlay').fadeOut();
+            jq('#popup').fadeOut();
+        }
     }
 </script>
 
 <%@ include file="./common/footer.jsp" %>
 </body>
 </html>
+
 

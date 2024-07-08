@@ -38,8 +38,15 @@ public class CouponService {
 		return couponDAO.selectFirst();
 	}
 
+	// 쿠폰 발급 
 	public int assignCouponToMember(CouponDTO coupon) { 
 		return couponDAO.assignCouponToMember(coupon); 
+	} 
+
+	// 이미 발급된 쿠폰인지 확인
+	public int hasCoupon(CouponDTO coupon) {
+		return couponDAO.hasCoupon(coupon); 
+
 	}
 
 }
