@@ -40,7 +40,7 @@
 		FROM (
 		SELECT *
 		FROM COUPON
-		WHERE member_id = '0'
+		WHERE member_id = 'admin'
 		ORDER BY coupon_id DESC
 		)
 		WHERE ROWNUM = 1
