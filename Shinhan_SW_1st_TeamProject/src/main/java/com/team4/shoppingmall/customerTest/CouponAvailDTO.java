@@ -1,18 +1,14 @@
 package com.team4.shoppingmall.customerTest;
 
-import java.sql.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
+@Setter@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter@Setter@ToString
-public class CouponRequestDTO {
+public class CouponAvailDTO {
 	int couponid;
 	String customerid;
-	int orderPrice;
 }

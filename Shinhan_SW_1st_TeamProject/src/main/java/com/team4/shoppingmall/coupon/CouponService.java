@@ -14,8 +14,8 @@ public class CouponService {
 	CouponDAOInterface couponDAO;
 	
 	// 쿠폰상세
-	public CouponDTO selectById(int coupon_id) {
-		return couponDAO.selectById(coupon_id);
+	public CouponDTO selectById(CouponDTO couponDTO) {
+		return couponDAO.selectById(couponDTO);
 	}
 	
 	// 쿠폰목록

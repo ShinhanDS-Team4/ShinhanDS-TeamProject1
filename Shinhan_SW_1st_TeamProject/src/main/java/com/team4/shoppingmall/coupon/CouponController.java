@@ -10,9 +10,11 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.team4.shoppingmall.customerTest.CouponAvailDTO;
 import com.team4.shoppingmall.member.MemberDTO;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -71,12 +73,18 @@ public class CouponController {
 
 	@PostMapping("/checkCouponAvailability.do")
 	@ResponseBody
-	public int checkCouponAvailability(@RequestParam("couponid") int couponId) {
+	public int checkCouponAvailability(@RequestBody CouponAvailDTO request) {
+		int couponid = request.getCouponid();
+		String customerid = request.getCustomerid();
+		
+		CouponDTO couponDTO = new CouponDTO();
+		couponDTO.setCoupon_id(couponid);
+		couponDTO.setMember_id(customerid);
+		
+		CouponDTO couponFind = couponService.selectById(couponDTO);
 
-		CouponDTO couponDTO = couponService.selectById(couponId);
-
-		if (!Objects.isNull(couponDTO)) {
-			int couponRemain = couponDTO.getQuantity();
+		if (!Objects.isNull(couponFind)) {
+			int couponRemain = couponFind.getQuantity();
 			return couponRemain;
 		} else {
 			return -1;
