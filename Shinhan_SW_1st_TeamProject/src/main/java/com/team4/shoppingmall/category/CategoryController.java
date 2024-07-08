@@ -1,10 +1,9 @@
 package com.team4.shoppingmall.category;
-
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -13,19 +12,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.team4.shoppingmall.admin.AdminService;
 import com.team4.shoppingmall.member.MemberDTO;
 import com.team4.shoppingmall.member.MemberService;
 import com.team4.shoppingmall.prod.ProdDTO;
 import com.team4.shoppingmall.prod.ProdService;
+import com.team4.shoppingmall.prod_image.Prod_ImageDTO;
+import com.team4.shoppingmall.prod_image.Prod_ImageService;
 import com.team4.shoppingmall.prod_option.Prod_OptionDTO;
 import com.team4.shoppingmall.prod_option.Prod_OptionService;
 import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockDTO;
 import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockService;
 import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestService;
 import com.team4.shoppingmall.util.DateUtil;
-
 @Controller
 @RequestMapping("/category")
 public class CategoryController {
@@ -42,6 +41,8 @@ public class CategoryController {
 	Prod_OptionService prod_optionService;
 	@Autowired
 	AdminService adminService;
+	@Autowired
+	Prod_ImageService prod_imageService;
 	
 	@GetMapping("/dbset")
 	public void dbSet() throws IOException, ParseException {
@@ -51,18 +52,12 @@ public class CategoryController {
 		String[] phones = new String[] {"010-6349-3464", "010-9723-4740", "010-2717-9614", "010-7552-8293", "010-4590-9812", "010-7137-8144"};
 		
 		JSONParser parser = new JSONParser();
-
-		Reader pl_reader = new FileReader("C:\\close\\shds\\ShinhanDS-TeamProject1\\Shinhan_SW_1st_TeamProject\\src\\main\\webapp\\resources\\dbset/product_list.json");
-		Reader bm_reader = new FileReader("C:\\close\\shds\\ShinhanDS-TeamProject1\\Shinhan_SW_1st_TeamProject\\src\\main\\webapp\\resources\\dbset/business_mans.json");
+		Reader pl_reader = new FileReader("C:\\close\\shds\\ShinhanDS-TeamProject1\\Shinhan_SW_1st_TeamProject\\src\\main\\webapp\\resources\\dbset/products_list_final.json");
+		Reader bm_reader = new FileReader("C:\\close\\shds\\ShinhanDS-TeamProject1\\Shinhan_SW_1st_TeamProject\\src\\main\\webapp\\resources\\dbset/business_mans_final.json");
 		Reader ctg_reader = new FileReader("C:\\close\\shds\\ShinhanDS-TeamProject1\\Shinhan_SW_1st_TeamProject\\src\\main\\webapp\\resources\\dbset/ctg_url_matching.json");
-		Reader updatedMatching_reader = new FileReader("C:\\close\\shds\\ShinhanDS-TeamProject1\\Shinhan_SW_1st_TeamProject\\src\\main\\webapp\\resources\\dbset/updated_matching.json");
-		Reader updatedMatchingRev_reader = new FileReader("C:\\close\\shds\\ShinhanDS-TeamProject1\\Shinhan_SW_1st_TeamProject\\src\\main\\webapp\\resources\\dbset/updated_matching_rev.json");
-
 		JSONObject prod_list = (JSONObject) parser.parse(pl_reader);
 		JSONObject bm_list = (JSONObject) parser.parse(bm_reader);
 		JSONObject ctg_list = (JSONObject) parser.parse(ctg_reader);
-		JSONObject updatedMatching = (JSONObject) parser.parse(updatedMatching_reader);
-		JSONObject updatedMatchingRev = (JSONObject) parser.parse(updatedMatchingRev_reader);
 		
 		JSONObject prod_detail;
 		
@@ -71,15 +66,15 @@ public class CategoryController {
 		Prod_OptionDTO prod_option;
 		MemberDTO member;
 		CategoryDTO category;
+		Prod_ImageDTO image;
 		
 		Long tmp;
-		
 		
 		int stock;
 		for(Object prod_id :prod_list.keySet()) {
 			prod = new ProdDTO();
 			prod_detail = (JSONObject) prod_list.get((String) prod_id);
-			prod_id = (String) updatedMatching.get((String) prod_id);
+			prod_id = (String) prod_id;
 			
 			prod.setProd_id((String) prod_id);
 			prod.setMember_id((String) prod_detail.get("bm_num"));
@@ -88,12 +83,39 @@ public class CategoryController {
 			prod.setCategory_id(tmp.intValue());
 			prod.setProd_price(Integer.parseInt((String) prod_detail.get("price")));
 			prod.setProd_added_date(DateUtil.getSQLDate("2023-1"+String.valueOf((int) (Math.random()*3)) + "-" + String.valueOf((int) (Math.random()*17+10))));
+			prod.setProd_desc(((String) prod_id) + ".jsp");
 			
 			prodService.prodInsert(prod);
 			
+			File file;
+			String img_url;
+			for(int i=1;i<=5;i++) {
+				img_url = "C:/uploaded_files/main/"+prod_id+"_image_"+i+".jpg";
+				file = new File(img_url);
+				if(file.exists()) {
+					image = new Prod_ImageDTO();
+					image.setImg_id(prod_id+"_image_"+i+".jpg");
+					image.setProd_id((String) prod_id);
+					image.setImg_type(0);
+					prod_imageService.prod_imageInsert(image);
+				} else break;
+			}
+			
+			for(int i=1;i<=8;i++) {
+				img_url = "C:/uploaded_files/desc/"+prod_id+"_desc_image_"+i+".jpg";
+				file = new File(img_url);
+				if(file.exists()) {
+					image = new Prod_ImageDTO();
+					image.setImg_id(prod_id+"_desc_image_"+i+".jpg");
+					image.setProd_id((String) prod_id);
+					image.setImg_type(1);
+					prod_imageService.prod_imageInsert(image);
+				} else break;
+			}
+			
 			for(String size :sizes) {
 				prod_option = new Prod_OptionDTO();
-				prod_option.setOpt_name("占쏙옙占쏙옙占쏙옙");
+				prod_option.setOpt_name("사이즈");
 				prod_option.setOpt_value(size);
 				prod_option.setProd_id((String) prod_id);
 				prod_optionService.optionInsert(prod_option);
@@ -115,7 +137,6 @@ public class CategoryController {
 		}
 		
 		System.out.println("sell_prod_stock table set end.");
-
 		for(Object brand :bm_list.keySet()) {
 			member = new MemberDTO();
 			member.setMember_id((String) bm_list.get(brand));
@@ -151,7 +172,6 @@ public class CategoryController {
 			category.setParent_category_id(tmp!=null ? tmp.intValue() : null);
 			categoryService.categoryInsert(category);
 		}
-
 	}
 	
 }

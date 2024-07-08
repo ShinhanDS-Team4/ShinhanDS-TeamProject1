@@ -75,7 +75,7 @@ public class TestControllerYun {
 	 * return "customer/productlist"; }
 	 */
 
-	@GetMapping("/rentlist")
+	@GetMapping("/rentlist.do")
 	public String test2(Model model, HttpServletRequest request) {
 	    System.out.println("/customer/rentlist.jsp");
 	
