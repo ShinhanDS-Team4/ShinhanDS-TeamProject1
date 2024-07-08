@@ -22,7 +22,7 @@ import com.team4.shoppingmall.member.MemberService;
 public class CustomerControllerJH {
 	
 	//@Autowired
-	Addr_ListService addrService; 
+//	Addr_ListService addrService; 
 	
 	@Autowired
 	Addr_ListService addrService; //회원 주소 

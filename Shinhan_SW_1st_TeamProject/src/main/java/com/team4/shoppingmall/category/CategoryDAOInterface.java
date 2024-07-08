@@ -1,6 +1,7 @@
 package com.team4.shoppingmall.category;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CategoryDAOInterface {
 	
@@ -20,4 +21,6 @@ public interface CategoryDAOInterface {
 	public int categoryUpdate(CategoryDTO category);
 	
 	public int categoryDelete(Integer category_id);
+	
+	public List<CategoryDTO> traceCurCtg(Map<String, Integer> traced);
 }

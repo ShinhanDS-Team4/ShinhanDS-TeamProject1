@@ -51,12 +51,18 @@ public class CategoryController {
 		String[] phones = new String[] {"010-6349-3464", "010-9723-4740", "010-2717-9614", "010-7552-8293", "010-4590-9812", "010-7137-8144"};
 		
 		JSONParser parser = new JSONParser();
-		Reader pl_reader = new FileReader("C:/Users/jh981/Desktop/products_list.json");
-		Reader bm_reader = new FileReader("C:/Users/jh981/Desktop/business_mans.json");
-		Reader ctg_reader = new FileReader("C:/Users/jh981/Desktop/ctg_url_matching.json");
+		Reader pl_reader = new FileReader("C:\\close\\shds\\ShinhanDS-TeamProject1\\Shinhan_SW_1st_TeamProject\\src\\main\\webapp\\resources\\dbset/product_list.json");
+		Reader bm_reader = new FileReader("C:\\close\\shds\\ShinhanDS-TeamProject1\\Shinhan_SW_1st_TeamProject\\src\\main\\webapp\\resources\\dbset/business_mans.json");
+		Reader ctg_reader = new FileReader("C:\\close\\shds\\ShinhanDS-TeamProject1\\Shinhan_SW_1st_TeamProject\\src\\main\\webapp\\resources\\dbset/ctg_url_matching.json");
+		Reader updatedMatching_reader = new FileReader("C:\\close\\shds\\ShinhanDS-TeamProject1\\Shinhan_SW_1st_TeamProject\\src\\main\\webapp\\resources\\dbset/updated_matching.json");
+		Reader updatedMatchingRev_reader = new FileReader("C:\\close\\shds\\ShinhanDS-TeamProject1\\Shinhan_SW_1st_TeamProject\\src\\main\\webapp\\resources\\dbset/updated_matching_rev.json");
+
 		JSONObject prod_list = (JSONObject) parser.parse(pl_reader);
 		JSONObject bm_list = (JSONObject) parser.parse(bm_reader);
 		JSONObject ctg_list = (JSONObject) parser.parse(ctg_reader);
+		JSONObject updatedMatching = (JSONObject) parser.parse(updatedMatching_reader);
+		JSONObject updatedMatchingRev = (JSONObject) parser.parse(updatedMatchingRev_reader);
+		
 		JSONObject prod_detail;
 		
 		ProdDTO prod;
@@ -70,10 +76,11 @@ public class CategoryController {
 		for(Object prod_id :prod_list.keySet()) {
 			prod = new ProdDTO();
 			prod_detail = (JSONObject) prod_list.get((String) prod_id);
+			prod_id = (String) updatedMatching.get((String) prod_id);
 			
 			prod.setProd_id((String) prod_id);
 			prod.setMember_id((String) prod_detail.get("bm_num"));
-			prod.setProd_name((String) prod_detail.get("img_name"));
+			prod.setProd_name(((String) prod_detail.get("img_name")));
 			tmp = (Long) prod_detail.get("category");
 			prod.setCategory_id(tmp.intValue());
 			prod.setProd_price(Integer.parseInt((String) prod_detail.get("price")));
@@ -106,42 +113,43 @@ public class CategoryController {
 		
 		System.out.println("sell_prod_stock table set end.");
 
-		for(Object brand :bm_list.keySet()) {
-			member = new MemberDTO();
-			member.setMember_id((String) bm_list.get(brand));
-			member.setMember_pw("0000");
-			member.setMember_name(names[(int) (Math.random()*6)]);
-			member.setEmail(emails[(int) (Math.random()*6)]);
-			member.setPhone(phones[(int) (Math.random()*6)]);
-			member.setBrand((String) brand);
-			member.setBirth_date(DateUtil.getSQLDate("199"+String.valueOf((int) Math.random()*9)+"-0"+String.valueOf((int) (Math.random()*9+1)) + "-" + String.valueOf((int) (Math.random()*17+10))));
-			member.setLast_access(DateUtil.getSQLDate("2024-0"+String.valueOf((int) (Math.random()*3+1)) + "-" + String.valueOf((int) (Math.random()*17+10))));
-			member.setMember_type(2);
-			member.setGender(Math.random() > 0.5 ? "M":"W");
-			member.setSeller_authority("Y");
-			member.setCreate_date(DateUtil.getSQLDate("2023-0"+String.valueOf((int) (Math.random()*9+1)) + "-" + String.valueOf((int) (Math.random()*17+10))));
-			memberService.memberInsert(member);
-		}
+//		for(Object brand :bm_list.keySet()) {
+//			member = new MemberDTO();
+//			member.setMember_id((String) bm_list.get(brand));
+//			member.setMember_pw("0000");
+//			member.setMember_name(names[(int) (Math.random()*6)]);
+//			member.setEmail(emails[(int) (Math.random()*6)]);
+//			member.setPhone(phones[(int) (Math.random()*6)]);
+//			member.setBrand((String) brand);
+//			member.setBirth_date(DateUtil.getSQLDate("199"+String.valueOf((int) Math.random()*9)+"-0"+String.valueOf((int) (Math.random()*9+1)) + "-" + String.valueOf((int) (Math.random()*17+10))));
+//			member.setLast_access(DateUtil.getSQLDate("2024-0"+String.valueOf((int) (Math.random()*3+1)) + "-" + String.valueOf((int) (Math.random()*17+10))));
+//			member.setMember_type(2);
+//			member.setGender(Math.random() > 0.5 ? "M":"W");
+//			member.setSeller_authority("Y");
+//			member.setCreate_date(DateUtil.getSQLDate("2023-0"+String.valueOf((int) (Math.random()*9+1)) + "-" + String.valueOf((int) (Math.random()*17+10))));
+//			memberService.memberInsert(member);
+//		}
+//		
+//		System.out.println("member(seller) table set end.");
 		
-		System.out.println("member(seller) table set end.");
-		
-		String parent;
-		for(CategoryEnum ce :CategoryEnum.values()) {
-			if(ce.name().equals("highest")) continue;
-			category = new CategoryDTO();
-			tmp = (Long) ctg_list.get(ce.name());
-			category.setCategory_id(tmp.intValue());
-			category.setCategory_depth(ce.name().split("_").length);
-			category.setCategory_name(ce.getNameKor().split("_")[0]);
-			
-			parent = ce.getParent();
-			
-			tmp = parent!=null ? ((Long) ctg_list.get(parent)) : null;
-			category.setParent_category_id(tmp!=null ? tmp.intValue() : null);
-			categoryService.categoryInsert(category);
-		}
-		
-		System.out.println("category table set end.");
+//		String parent;
+//		for(CategoryEnum ce :CategoryEnum.values()) {
+//			if(ce.name().equals("highest")) continue;
+//			category = new CategoryDTO();
+//			tmp = (Long) ctg_list.get(ce.name());
+//			category.setCategory_id(tmp.intValue());
+//			category.setCategory_depth(ce.name().split("_").length);
+//			category.setCategory_name(ce.getNameKor().split("_")[0]);
+//			category.setIs_lowest(ce.getChildren() == null ? 1:0);
+//			
+//			parent = ce.getParent();
+//			
+//			tmp = parent!=null ? ((Long) ctg_list.get(parent)) : null;
+//			category.setParent_category_id(tmp!=null ? tmp.intValue() : null);
+//			categoryService.categoryInsert(category);
+//		}
+//		
+//		System.out.println("category table set end.");
 	}
 	
 }

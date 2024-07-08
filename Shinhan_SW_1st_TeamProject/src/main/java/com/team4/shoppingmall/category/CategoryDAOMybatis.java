@@ -1,6 +1,7 @@
 package com.team4.shoppingmall.category;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +48,10 @@ public class CategoryDAOMybatis implements CategoryDAOInterface {
 	@Override
 	public int categoryDelete(Integer category_id) {
 		return sqlSession.delete(namespace+"categoryDelete", category_id);
+	}
+	
+	@Override
+	public List<CategoryDTO> traceCurCtg(Map<String, Integer> traced) {
+		return sqlSession.selectList(namespace+"traceCurCtg", traced);
 	}
 }

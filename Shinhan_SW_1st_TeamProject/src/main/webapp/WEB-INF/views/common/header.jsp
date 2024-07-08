@@ -5,7 +5,6 @@
 
 <%-- 로그인 여부를 확인하기 위한 세션 값 확인 --%>
 <c:set var="isLoggedIn" value="${not empty sessionScope.member}"   />
-
 <%-- header --%>
 <header>
 	<div class="header_top inner">
@@ -62,32 +61,28 @@
 			<%-- 메인 메뉴 카테고리 --%>
 			<ul class="left_menu">
 				<li data-menu="0">
-					<a href="${path}/customer/productlist"
+					<a href="${path}/prod/productlist?shwCtgNum=11000000"
 					class="category_name">여성</a>
 				</li>
 				<li data-menu="1">
-					<a href="${path}/customer/productlist"
+					<a href="${path}/prod/productlist?shwCtgNum=14000000"
 					class="category_name">남성</a>
 				</li>
 				<li data-menu="2">
-					<a href="${path}/customer/productlist"
+					<a href="${path}/prod/productlist?shwCtgNum=13000000"
 					class="category_name">키즈</a>
 				</li>
 				<li data-menu="3">
-					<a href="${path}/customer/productlist"
+					<a href="${path}/prod/productlist?shwCtgNum=15000000"
 					class="category_name">럭셔리</a>
 				</li>
 				<li data-menu="4">
-					<a href="${path}/customer/productlist"
-					class="category_name">키즈</a>
-				</li>
-				<li data-menu="5">
-					<a href="${path}/customer/productlist"
+					<a href="${path}/prod/productlist?shwCtgNum=12000000"
 					class="category_name">스포츠</a>
 				</li>
-				<li data-menu="6">
-					<a href="${path}/customer/productlist"
-					class="category_name">가방&신발</a>
+				<li data-menu="5">
+					<a href="${path}/prod/productlist?shwCtgNum=10000000"
+					class="category_name">가방＆신발</a>
 				</li>
 			</ul>
 			<%-- 오른쪽 메뉴 --%>
@@ -101,75 +96,17 @@
 		<%-- 서브 메뉴 부분 --%>
 		<div class="menu_pan inner">
 			<div class="dropdown_nav">
-				<ul>
-					<li><a href="#">신상품</a></li>
-					<li><a href="#">전체 상품</a></li>
-					<li><a href="#">아우터</a></li>
-					<li><a href="#">재킷/베스트</a></li>
-					<li><a href="#">니트</a></li>
-					<li><a href="#">셔츠/블라우스</a></li>
-					<li><a href="#">티셔츠</a></li>
-					<li><a href="#">원피스</a></li>
-					<li><a href="#">팬츠</a></li>
-					<li><a href="#">스커트</a></li>
-					<li><a href="#">쥬얼리/시계</a></li>
+				<ul ctg="women">
 				</ul>
-				<ul>
-					<li><a href="#">신상품</a></li>
-					<li><a href="#">전체 상품</a></li>
-					<li><a href="#">정장</a></li>
-					<li><a href="#">아우터</a></li>
-					<li><a href="#">재킷/베스트</a></li>
-					<li><a href="#">니트</a></li>
-					<li><a href="#">셔츠/블라우스</a></li>
-					<li><a href="#">티셔츠</a></li>
-					<li><a href="#">원피스</a></li>
-					<li><a href="#">팬츠</a></li>
+				<ul ctg="men">
 				</ul>
-				<ul>
-					<li><a href="#">신상품</a></li>
-					<li><a href="#">전체 상품</a></li>
-					<li><a href="#">남아</a></li>
-					<li><a href="#">여아</a></li>
+				<ul ctg="kids">
 				</ul>
-				<ul>
-					<li><a href="#">신상품</a></li>
-					<li><a href="#">전체 상품</a></li>
-					<li><a href="#">여성의류</a></li>
-					<li><a href="#">여성가방/지갑</a></li>
-					<li><a href="#">여성슈즈</a></li>
-					<li><a href="#">여성 쥬얼리/시계</a></li>
-					<li><a href="#">남성의류</a></li>
-					<li><a href="#">남성가방/지갑</a></li>
-					<li><a href="#">남성슈즈</a></li>
-					<li><a href="#">선글라스/안경테</a></li>
+				<ul ctg="luxury">
 				</ul>
-				<ul>
-					<li><a href="#">신상품</a></li>
-					<li><a href="#">전체 상품</a></li>
-					<li><a href="#">아우터</a></li>
-					<li><a href="#">재킷/베스트</a></li>
-					<li><a href="#">니트</a></li>
-					<li><a href="#">셔츠/블라우스</a></li>
-					<li><a href="#">티셔츠</a></li>
-					<li><a href="#">원피스</a></li>
-					<li><a href="#">팬츠</a></li>
-					<li><a href="#">스커트</a></li>
-					<li><a href="#">쥬얼리/시계</a></li>
+				<ul ctg="sports">
 				</ul>
-				<ul>
-					<li><a href="#">신상품</a></li>
-					<li><a href="#">전체 상품</a></li>
-					<li><a href="#">아웃도어/캠핑</a></li>
-					<li><a href="#">피트니스</a></li>
-				</ul>
-				<ul>
-					<li><a href="#">신상품</a></li>
-					<li><a href="#">전체 상품</a></li>
-					<li><a href="#">여성 가방</a></li>
-					<li><a href="#">여성 슈즈</a></li>
-					<li><a href="#">남성 가방</a></li>
-					<li><a href="#">남성 슈즈</a></li>
+				<ul ctg="bagAndShoes">
 				</ul>
 			</div>
 		</div>
@@ -208,6 +145,32 @@
 			$(".dropdown_nav").css("height", "0");
 			isFirstHover = true; // 마우스를 떠났을 때 다시 애니메이션 활성화
 		});
-
+		
+		var h_ctg = {
+				'women':11000000,
+				'men':14000000,
+				'kids':13000000,
+				'luxury':15000000,
+				'sports':12000000,
+				'bagAndShoes':10000000
+		}
+		$.ajax({
+			url:"${path}/prod/headerctg",
+			type:'post',
+			data:JSON.stringify(h_ctg),
+			dataType: "json",
+			contentType:"application/json",
+			success: function(ctgMap) {
+				for(var key in ctgMap) {
+					$('.dropdown_nav').find(`ul[ctg='\${key}']`).append(`<li><a href='${path}/prod/productlist?shwCtgNum=\${ctgMap[key][0].parent_category_id}'>전체 상품</a></li>`);
+					$(ctgMap[key]).each(function(index, ctgVO) {
+						$('.dropdown_nav').find(`ul[ctg='\${key}']`).append(`<li><a href='${path}/prod/productlist?shwCtgNum=\${ctgVO.category_id}'>\${ctgVO.category_name}</a></li>`);
+					});
+				}
+			},
+			error: function() {
+				
+			}
+		});
 	});
 </script>

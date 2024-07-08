@@ -3,9 +3,11 @@ package com.team4.shoppingmall.prodTest;
 import java.util.List;
 import java.util.Map;
 
+import com.team4.shoppingmall.prod.ProdDTO;
+
 public interface ProdDAOTestInterface {
 	
-	//»óÇ° »ó¼¼ Á¤º¸ Á¶È¸
+	//ï¿½ï¿½Ç° ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸
 	public Map<String,Object> selectProdDetailInfoByProdId(String prod_id);
 	
 	public ProdTestDTO selectByProdId(String prod_id);
@@ -19,4 +21,23 @@ public interface ProdDAOTestInterface {
 	public int prodUpdate(ProdTestDTO prod);
 	
 	public int prodDelete(Integer prod_id);
+	
+	public List<ProdDTO> selectByCtgId(Integer category_id);
+	
+	public List<Map<String, Object>> selectAllProdByCurCtg(Map<String, Integer> currentCtg);
+	
+	public List<Map<String, Object>> selectProdByLwstCtgId(Map<String, Integer> currentCtg);
+	
+	public int selectAllProdNumsByCurCtg(Integer category_id);
+	
+	public int selectProdNumsByLwstCtgId(Integer category_id);
+	
+	public List<String> selectBrndsByCtgId(Map<String, Integer> currentCtg);
+	
+	public Integer selectBrndsNumsByCtgId(Map<String, Integer> currentCtg);
+	
+	public List<Map<String, Object>> searchByBrndAndPrc(Map<String, Object> schInfo);
+	
+	public Integer searchNumsByBrndAndPrc(Map<String, Object> schInfo);
+	
 }
