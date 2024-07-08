@@ -109,8 +109,7 @@ a.category_name:hover {
     position: relative; 
     overflow: hidden;
     height: 0px;  
-    transition: height 0.1s; 
-   
+    transition: height 0.1s;
 }
 .dropdown_nav ul{
     position: absolute;
@@ -120,6 +119,7 @@ a.category_name:hover {
     overflow: hidden;
    /*  background-color: rgba(0, 0, 0, 0.8); */
    background-color: #fff;
+
     z-index: 2;
 }
 .dropdown_nav ul>li{

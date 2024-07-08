@@ -250,9 +250,10 @@
 							</p>
 						</div>
 						<p class="rate">
-							★${reviewInfo.avg_rate != nul ? reviewInfo.avg_rate : 0} <span>
+							★${reviewInfo.AVG_RATE != nul ? reviewInfo.AVG_RATE : 0} <span>
 							<a href="javascript:#void" class="review-rate-btn">
-								리뷰 ${reviewInfo.review_count != null ? reviewInfo.review_count : 0 }건
+								리뷰 ${reviewInfo.REVIEW_COUNT != null ? reviewInfo.REVIEW_COUNT : 0 }건
+
 							</a>
 							</span>
 						</p>
@@ -369,7 +370,7 @@
 				   
 					// 상품 원래 가격 (숫자만 추출)
 				    var originalPrice = parseInt($('.productPrice').text().replace(/[^0-9]/g, ''));
-				    $('.total').text(originalPrice + '원');
+				    $('.total').text(originalPrice.toLocaleString('ko-KR') + '원');
 
 				    var previousValue = parseInt($('#order_num').val());
 
@@ -390,7 +391,7 @@
 				       	
 				    	// 총 가격 업데이트 
 				        var totalPrice = originalPrice * currentValue;
-				        $('.total').text(totalPrice.toLocaleString() + '원');
+				        $('.total').text(totalPrice.toLocaleString('ko-KR') + '원');
 				       } else {
 				       		alert("수량 초과");
 				       	//현재 재고까지만 수량 고르기 가능
@@ -746,7 +747,7 @@
 
 	// 상품 원래 가격 (숫자만 추출)
     var originalPrice = parseInt($('.productPrice').text().replace(/[^0-9]/g, ''));
-    $('.total').text(originalPrice + '원');
+    $('.total').text(originalPrice.toLocaleString('ko-KR') + '원');
 
     var previousValue = parseInt($('#order_num').val());
 
@@ -767,7 +768,7 @@
         	
 	    	 // 총 가격 업데이트 
 	        var totalPrice = originalPrice * currentValue;
-	        $('.total').text(totalPrice.toLocaleString() + '원');
+	        $('.total').text(totalPrice.toLocaleString('ko-KR') + '원');
         } else {
         	 //현재 재고까지만 수량 고르기 가능
         	 $('#order_num').val(currentStock.stock);
@@ -804,13 +805,13 @@
             $('#order_num').val(1); // 값이 변경된 경우 order_num(수량)를 1로 설정
             // 가격 초기화
             var totalPrice = originalPrice;
-            $('.total').text(totalPrice.toLocaleString() + '원');
+            $('.total').text(totalPrice.toLocaleString('ko-KR') + '원');
         } else if (allOptionsSelected) {
             var order_num = parseInt($('#order_num').val(), 10);
             $('#order_num').val(order_num + 1); // 모든 옵션이 선택된 경우 order_num 값을 1 증가
             // 총 가격 업데이트
             var totalPrice = originalPrice * (order_num + 1);
-            $('.total').text(totalPrice.toLocaleString() + '원');
+            $('.total').text(totalPrice.toLocaleString('ko-KR') + '원');
         }
         
         			
@@ -949,7 +950,7 @@
      function updateTotalPrice() {
          var rent_num = $('#rent_num').val();
          var totalPrice = basePrice * rent_num;
-         $('.total-amount>strong').text(totalPrice.toLocaleString() + '원');
+         $('.total-amount>strong').text(totalPrice.toLocaleString('ko-KR') + '원');
          
          $('#rent_product_price').val(basePrice);
          
@@ -990,7 +991,7 @@
 	var previousValues = {};
 	// 상품 원래 가격 (숫자만 추출)
     var originalPrice = parseInt($('.productPrice').text().replace(/[^0-9]/g, ''));
-    $('.total').text(originalPrice + '원');
+    $('.total').text(originalPrice.toLocaleString('ko-KR') + '원');
 
     var previousValue = parseInt($('#order_num').val());
 
@@ -1011,7 +1012,7 @@
        	
     	// 총 가격 업데이트 
         var totalPrice = originalPrice * currentValue;
-        $('.total').text(totalPrice.toLocaleString() + '원');
+        $('.total').text(totalPrice.toLocaleString('ko-KR') + '원');
        } else {
        	alert("수량 초과");
        	//현재 재고까지만 수량 고르기 가능
@@ -1047,13 +1048,13 @@
            $('#rent_num').val(1); // 값이 변경된 경우 rent_num(수량)를 1로 설정
            // 가격 초기화
            var totalPrice = originalPrice;
-           $('.total').text(totalPrice.toLocaleString() + '원');
+           $('.total').text(totalPrice.toLocaleString('ko-KR') + '원');
        } else if (allOptionsSelected) {
            var rent_num = parseInt($('#rent_num').val(), 10);
            $('#rent_num').val(order_num + 1); // 모든 옵션이 선택된 경우 rent_num 값을 1 증가
            // 총 가격 업데이트
            var totalPrice = originalPrice * (rent_num + 1);
-           $('.total').text(totalPrice.toLocaleString() + '원');
+           $('.total').text(totalPrice.toLocaleString('ko-KR') + '원');
        }
        
        // 현재 대여재고아이디 저장				

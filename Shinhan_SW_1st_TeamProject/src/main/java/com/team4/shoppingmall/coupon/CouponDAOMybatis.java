@@ -36,5 +36,23 @@ public class CouponDAOMybatis implements CouponDAOInterface {
 	public List<CouponDTO> selectCustomerCouponList(String member_id) {
 		return sqlSession.selectList(namespace+"selectCustomerCouponList", member_id);
 	}
-	 
+
+	// 가장 최근의 쿠폰 가져오기
+	@Override
+	public CouponDTO selectFirst() {
+		return sqlSession.selectOne(namespace+"selectFirst");
+	}
+
+	// 쿠폰 발급하기(insert)
+	@Override
+	public int assignCouponToMember(CouponDTO coupon) { 
+		return sqlSession.insert(namespace+"assignCouponToMember", coupon);
+	}
+
+	// 이미 발급받은 쿠폰인지 확인
+	@Override
+	public int hasCoupon(CouponDTO coupon) {
+		return sqlSession.selectOne(namespace+"hasCoupon", coupon); 
+	}
+	
 }

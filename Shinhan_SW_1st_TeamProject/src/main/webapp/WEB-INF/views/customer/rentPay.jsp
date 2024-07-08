@@ -338,7 +338,7 @@
 			</div>
 			<div class="payment-group">
 				<button class="payment-button" id="orderBtn">결제하기</button>
-				<%-- <button class="payment-button" id="cancelBtn">뒤로가기</button> --%>
+				<button class="payment-button" id="cancelBtn">뒤로가기</button>
 			</div>
 		</div>
 	</main>

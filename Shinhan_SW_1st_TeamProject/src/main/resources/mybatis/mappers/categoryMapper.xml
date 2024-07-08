@@ -42,7 +42,8 @@
 
 	<insert id="categoryInsert" parameterType="categoryVO">
 		INSERT 
-		INTO CATEGORY(category_id, category_name,  
+
+		INTO CATEGORY(category_id, category_name, 
 					  category_depth, parent_category_id, is_lowest) 
 		VALUES(#{category_id}, #{category_name}, 
 			   #{category_depth}, #{parent_category_id}, #{is_lowest})
@@ -63,6 +64,27 @@
 		WHERE category_id = #{category_id}
 	</delete>
 	
+	<select id="traceCurCtg" parameterType="map" resultType="categoryVO">
+		SELECT DISTINCT *
+		FROM
+		(SELECT *
+		FROM CATEGORY
+		WHERE CATEGORY_ID = #{category_id1}
+		UNION
+		SELECT *
+		FROM CATEGORY
+		WHERE CATEGORY_ID = #{category_id2}
+		UNION
+		SELECT *
+		FROM CATEGORY
+		WHERE CATEGORY_ID = #{category_id3}
+		UNION
+		SELECT *
+		FROM CATEGORY
+		WHERE CATEGORY_ID = #{category_id4})
+		ORDER BY CATEGORY_ID
+	</select>
+	
 	<select id = "firstDepthCategoryList" resultType="categoryVO">
 		SELECT *
 		FROM CATEGORY
@@ -77,3 +99,4 @@
 	</select>
 	
 </mapper>
+
