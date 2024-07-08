@@ -16,6 +16,17 @@ public class CartDAOMybatis implements CartDAOInterface {
 
 	String namespace = "com.saren.cart.";
 	
+	//해당 장바구니ID의 상품정보 조회
+	public Map<String, Object> sellCartProdByCart_id(String member_id, Integer cart_id){
+		
+		Map<String, Object> params = new HashMap<>();
+		params.put("member_id", member_id);
+		params.put("cart_id", cart_id);
+		
+		return sqlSession.selectOne(namespace + "sellCartProdByCart_id", params);
+	};
+		
+	
 	//대여 장바구니 담은 개수
 	public int countRentCartList(String member_id) {
 		return sqlSession.selectOne(namespace + "countRentCartList", member_id);

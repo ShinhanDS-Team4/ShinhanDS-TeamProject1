@@ -61,9 +61,9 @@ public class MemberController {
 	    return "user/login";
 	}
 
-	@PostMapping("/login.do")
+	@PostMapping("/login.do") 
 	public String login(@RequestParam("member_id") String member_id, @RequestParam("member_pw") String member_pw, HttpSession session, HttpServletRequest request) {
-	    
+	     
 		MemberDTO member = memberService.selectById(member_id);
 		
 	    System.out.println(member);
@@ -84,7 +84,7 @@ public class MemberController {
 	        // 로그인 날짜를 현재 날짜로 지정
 	        member.setLast_access(sqlDate);
 	        memberService.memberUpdateAccess(member);
-	        return "redirect:/seller/MainPage.do";
+	        return "redirect:/seller/PrdList.do";
 	    } else {
 	        session.setAttribute("member", member);
 	        String lastRequest = (String) session.getAttribute("lastRequest");

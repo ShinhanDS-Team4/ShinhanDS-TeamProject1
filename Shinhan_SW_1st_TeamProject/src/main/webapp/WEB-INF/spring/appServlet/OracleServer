@@ -1,4 +1,4 @@
 강의실 내부일때
-jdbc.url=jdbc:oracle:thin:@192.168.0.39:1521:XE
-강의실 외부일때
+jdbc.url=jdbc:oracle:thin:@192.168.0.42:1521:XE
+야외 외부일때
 jdbc.url=jdbc:oracle:thin:@58.122.202.23:11521:XE

@@ -23,7 +23,7 @@
 					<img src="${path}/resources/images/icon_serch.png" alt="돋보기 아이콘" class="search_img" />
 				</label>
 			</form>
-		</div>
+		</div> 
 		<div class="rightGnb">  
 			<ul>
 				<c:choose>
@@ -99,7 +99,7 @@
 			</ul>
 			<%-- 오른쪽 메뉴 --%>
 			<ul class="right_menu">
-				<li><a href="javascript:void(0)" class="highlight">AI추천코디</a></li>
+				<li><a href="${path}/customer/coordination.do" class="highlight">AI추천코디</a></li>
 				<li><a href="${path}/customer/productlist" class="highlight">옷대여</a></li>
 				<li><a href="${path}/adminqna/myqna.do">Q&A</a></li>
 				<li><a href="${path}/notice/notices">공지사항</a></li>
@@ -107,7 +107,7 @@
 		</div>
 		<%-- 서브 메뉴 부분 --%>
 		<div class="menu-backgorund"></div>
-		<div class="menu_pan">
+		<div class="menu_pan inner">
 			<div class="dropdown_nav">
 
 				<ul ctg="women">

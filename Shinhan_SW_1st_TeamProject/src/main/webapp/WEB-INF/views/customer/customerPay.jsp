@@ -63,15 +63,22 @@
 	function applyCoupon() {
 		var selectedCouponId = $('#selectedCoupon').val();
 		var orderPrice = $('#orderPrice').text();
+		var customerID = '${memberInfo.member_id}';
 
-		alert(selectedCouponId);
-		alert(orderPrice);
+		console.log(selectedCouponId);
+		console.log(orderPrice);
+		console.log(customerID);
+		
 
 		// 쿠폰 남은 개수 확인
 	    $.ajax({
-	        url: "${path}/coupon/checkCouponAvailability.do",
+	        url: "${path}/coupons/checkCouponAvailability.do",
 	        type: 'POST',
-	        data: { couponid: selectedCouponId },
+	        contentType: 'application/json',
+			data:JSON.stringify({
+				couponid : selectedCouponId,
+			    customerid : customerID
+			}),
 	        success: function(response) {
 	        	console.log(response);
 	        	//쿠폰이 남아있으면 적용 로직 수행
@@ -82,6 +89,7 @@
 	        			contentType : 'application/json',
 	        			data : JSON.stringify({
 	        				couponid : selectedCouponId,
+	        			    customerid : customerID,
 	        				orderPrice : orderPrice
 	        			}),
 	        			success : function(response) {
@@ -160,8 +168,10 @@
 		}
 	}
 
-	$("cancelBtn").on("click", function() {
+	function cancelBtn() {
 		var order_id = $('#orderId').val();
+		
+		alert(order_id);
 
 		$.ajax({
 			type : "POST",
@@ -169,6 +179,9 @@
 			data : {
 				order_id : order_id
 			},
+			xhrFields: {
+	            withCredentials: true // 크로스 도메인 요청에서도 쿠키를 포함하여 세션을 유지합니다.
+	        },
 			success : function(response) {
 				if (response === "Canceled") {
 					alert("주문을 취소하고 이전 페이지로 돌아갑니다.");
@@ -182,7 +195,7 @@
 				alert("서버 요청 실패: " + errorThrown);
 			}
 		});
-	});
+	}
 
 	$().ready(
 			function() {
@@ -226,8 +239,8 @@
 						} else {
 							var msg = '결제에 실패하였습니다.';
 							msg += '에러내용 : '+ rsp.error_msg;
+							alert(msg);
 						}
-						alert(msg);
 					});
 				});
 			});
@@ -414,7 +427,7 @@
 			</div>
 			<div class="payment-group">
 				<button class="payment-button" id="orderBtn">결제하기</button>
-				<button class="payment-button" id="cancelBtn">뒤로가기</button>
+				<button class="payment-button" id="cancelBtn" onclick="cancelBtn()">뒤로가기</button>
 			</div>
 		</div>
 	</main>

@@ -12,7 +12,7 @@ public interface Wish_ListDAOInterface {
 
 	public List<Wish_ListDTO> selectByProdId(Integer prod_id);
 	
-	public List<Wish_ListDTO> selectAll();
+	public List<Wish_ListDTO> selectAll(String memberId);
 	
 //	public List<MemberDTO> selectByCondition();
 	
@@ -20,5 +20,7 @@ public interface Wish_ListDAOInterface {
 	
 	public int wish_listUpdate(Wish_ListDTO wish_list);
 	
-	public int wish_listDelete(String member_id, Integer prod_id);
+	public int wish_listDelete1(String member_id, Integer prod_id);
+
+	public int wish_listDelete(Wish_ListDTO wishDelete);
 }

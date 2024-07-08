@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.team4.shoppingmall.admin.AdminService;
 import com.team4.shoppingmall.member.MemberDTO;
 import com.team4.shoppingmall.member.MemberService;
@@ -30,7 +28,6 @@ import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockDTO;
 import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockService;
 import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestService;
 import com.team4.shoppingmall.util.DateUtil;
-
 @Controller
 @RequestMapping("/category")
 public class CategoryController {
@@ -51,6 +48,8 @@ public class CategoryController {
 	RentProdStockService rpsService;
 	@Autowired
 	AdminService adminService;
+	@Autowired
+	Prod_ImageService prod_imageService;
 	
 	@GetMapping("/dbset")
 	public void dbSet() throws IOException, ParseException {
@@ -60,6 +59,7 @@ public class CategoryController {
 		String[] phones = new String[] {"010-6349-3464", "010-9723-4740", "010-2717-9614", "010-7552-8293", "010-4590-9812", "010-7137-8144"};
 		
 		JSONParser parser = new JSONParser();
+
 
 		Reader pl_reader = new FileReader("C:\\close\\shds\\ShinhanDS-TeamProject1\\Shinhan_SW_1st_TeamProject\\src\\main\\webapp\\resources\\dbset/products_list_final.json");
 		Reader bm_reader = new FileReader("C:\\close\\shds\\ShinhanDS-TeamProject1\\Shinhan_SW_1st_TeamProject\\src\\main\\webapp\\resources\\dbset/business_mans_final.json");
@@ -77,7 +77,9 @@ public class CategoryController {
 		MemberDTO member;
 		CategoryDTO category;
 		Prod_ImageDTO image;
+
 		RentProdStockDTO rps;
+
 		
 		for(Object brand :bm_list.keySet()) {
 			member = new MemberDTO();
@@ -97,6 +99,7 @@ public class CategoryController {
 		}
 		Long tmp;
 		
+
 		String parent;
 		for(CategoryEnum ce :CategoryEnum.values()) {
 			if(ce.name().equals("highest")) continue;
@@ -117,7 +120,7 @@ public class CategoryController {
 			category.setParent_category_id(tmp!=null ? tmp.intValue() : null);
 			categoryService.categoryInsert(category);
 		}
-		
+
 		int stock;
 		for(Object prod_id :prod_list.keySet()) {
 			prod = new ProdDTO();
@@ -135,7 +138,7 @@ public class CategoryController {
 			
 			prodService.prodInsert(prod);
 			
-			
+
 			File file;
 			String img_url;
 			for(int i=1;i<=5;i++) {
@@ -182,6 +185,38 @@ public class CategoryController {
 			sps.setProd_id(po.getProd_id());
 			sps.setOpt_id1(po.getOpt_id());
 			spsService.seller_prod_stockInsert(sps);
+		}
+		
+		System.out.println("sell_prod_stock table set end.");
+		for(Object brand :bm_list.keySet()) {
+			member = new MemberDTO();
+			member.setMember_id((String) bm_list.get(brand));
+			member.setMember_pw("0000");
+			member.setMember_name(names[(int) (Math.random()*6)]);
+			member.setEmail(emails[(int) (Math.random()*6)]);
+			member.setPhone(phones[(int) (Math.random()*6)]);
+			member.setBrand((String) brand);
+			member.setBirth_date(DateUtil.getSQLDate("199"+String.valueOf((int) Math.random()*9)+"-0"+String.valueOf((int) (Math.random()*9+1)) + "-" + String.valueOf((int) (Math.random()*17+10))));
+			member.setLast_access(DateUtil.getSQLDate("2024-0"+String.valueOf((int) (Math.random()*3+1)) + "-" + String.valueOf((int) (Math.random()*17+10))));
+			member.setMember_type(2);
+			member.setGender(Math.random() > 0.5 ? "M":"W");
+			member.setSeller_authority("Y");
+			member.setCreate_date(DateUtil.getSQLDate("2023-0"+String.valueOf((int) (Math.random()*9+1)) + "-" + String.valueOf((int) (Math.random()*17+10))));
+			memberService.memberInsert(member);
+		}
+		
+		System.out.println("member(seller) table set end.");
+		
+		String parent;
+		for(CategoryEnum ce :CategoryEnum.values()) {
+			if(ce.name().equals("highest")) continue;
+			category = new CategoryDTO();
+			tmp = (Long) ctg_list.get(ce.name());
+			category.setCategory_id(tmp.intValue());
+			category.setCategory_depth(ce.name().split("_").length);
+			category.setCategory_name(ce.getNameKor().split("_")[0]);
+			category.setIs_lowest(ce.getChildren() == null ? 1:0);
+
 			
 			if(Math.random() > 0.5) {
 				rps = new RentProdStockDTO();
@@ -194,7 +229,6 @@ public class CategoryController {
 				rpsService.rentProdInsert(rps);
 			}
 		}
-		
 
 	}
 	

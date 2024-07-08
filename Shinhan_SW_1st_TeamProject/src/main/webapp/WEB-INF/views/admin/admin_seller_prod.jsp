@@ -6,16 +6,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>판매자 상세</title>
+    <title>판매자 판매 상품 조회</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <jsp:include page="common.jsp" />
     <div class="content">
         <div class="container-fluid">
-            <h1>판매자 상세</h1>
-            <h2>${seller_name}</h2>
-            <p>금지 상품을 올렸을 경우 관리자가 판매자의 상품을 임의로 삭제 후 판매자에게 통지</p>
+            <h1>판매자 판매 상품 조회</h1>
+            <%-- <h2>${seller_name}</h2> --%>
+            <p>금지 상품을 올렸을 경우 관리자가 판매자의 상품을 임의로 삭제 후 판매자에게 통지합니다.</p>
             
             <form id="searchForm" class="form-inline mb-3">
                 <input type="text" name="searchType2" id="searchType2" placeholder="판매자나 상품 또는 브랜드" class="form-control mr-2">

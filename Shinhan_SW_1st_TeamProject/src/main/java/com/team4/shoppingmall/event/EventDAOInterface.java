@@ -15,6 +15,7 @@ public interface EventDAOInterface {
 	public int eventUpdate(EventDTO event);
 	
 	public int eventDelete(Integer event_id);
-
-	public List<EventDTO> selectBySearch(String search_Event);
+ 
+	public EventDTO selectFirst(); 
+	public List<EventDTO> selectBySearch(String search_Event); 
 }

@@ -84,7 +84,7 @@
 	<main>
 		<aside>
 			<ul>
-				<li><a onclick="location.href='${path}/seller/MainPage.do'">통계</a></li>
+				<%-- <li><a onclick="location.href='${path}/seller/MainPage.do'">통계</a></li> --%>
 				<li><a onclick="location.href='${path}/seller/PrdList.do'">판매/대여
 						상품 목록</a></li>
 				<li><a onclick="location.href='${path}/seller/DeliveryList.do'">주문/배송</a></li>

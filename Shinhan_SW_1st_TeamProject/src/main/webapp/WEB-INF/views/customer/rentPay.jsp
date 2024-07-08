@@ -23,68 +23,76 @@
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
-	function applyCoupon() {
-		var selectedCouponId = $('#selectedCoupon').val();
-		var orderPrice = $('#orderPrice').text();
+function applyCoupon() {
+	var selectedCouponId = $('#selectedCoupon').val();
+	var orderPrice = $('#orderPrice').text();
+	var customerID = '${memberInfo.member_id}';
 
-		alert(selectedCouponId);
-		alert(orderPrice);
+	console.log(selectedCouponId);
+	console.log(orderPrice);
+	console.log(customerID);
+	
 
-		// 쿠폰 남은 개수 확인
-	    $.ajax({
-	        url: "${path}/coupon/checkCouponAvailability.do",
-	        type: 'POST',
-	        data: { couponid: selectedCouponId },
-	        success: function(response) {
-	        	console.log(response);
-	        	
-	        	if(response>0){
-	        		$.ajax({
-	        			url : "${path}/customer/applyCoupon.do",
-	        			type : 'POST',
-	        			contentType : 'application/json',
-	        			data : JSON.stringify({
-	        				couponid : selectedCouponId,
-	        				orderPrice : orderPrice
-	        			}),
-	        			success : function(response) {
-	        				console.log(response); // 응답 데이터를 로그로 출력하여 확인
+	// 쿠폰 남은 개수 확인
+    $.ajax({
+        url: "${path}/coupons/checkCouponAvailability.do",
+        type: 'POST',
+        contentType: 'application/json',
+		data:JSON.stringify({
+			couponid : selectedCouponId,
+		    customerid : customerID
+		}),
+        success: function(response) {
+        	console.log(response);
+        	//쿠폰이 남아있으면 적용 로직 수행
+        	if(response>0){//1
+        		$.ajax({
+        			url : "${path}/customer/applyCoupon.do",
+        			type : 'POST',
+        			contentType : 'application/json',
+        			data : JSON.stringify({
+        				couponid : selectedCouponId,
+        			    customerid : customerID,
+        				orderPrice : orderPrice
+        			}),
+        			success : function(response) {
+        				console.log(response); // 응답 데이터를 로그로 출력하여 확인
+						
+        				var discountedPrice = response.discountedPrice;
+        				var discount = response.discount;
 
-	        				var discountedPrice = response.discountedPrice;
-	        				var discount = response.discount;
+        				console.log(discountedPrice);
+        				console.log(discount);
 
-	        				console.log(discountedPrice);
-	        				console.log(discount);
-
-	        				$('#discountAmount').text(discount);
-	        				$('#finalPrice').text(discountedPrice);
-	        				$('#couponselectedPrice').val(discountedPrice);
-	        				$('#usePoint').val(0);
-	        				$('#pointWillUse').text(0);
-	        			},
-	        			error : function() {
-	        				alert('서버 요청 중 오류가 발생했습니다.');
-	        			}
-	        		});
-	        	}else if(response == -1){ //선택 안함
-	        		alert('쿠폰을 사용하지 않습니다.');
-	        	
-	        		$('#discountAmount').text(0);
-    				$('#finalPrice').text(orderPrice);
-    				$('#couponselectedPrice').val(orderPrice);
-    				$('#usePoint').val(0);
-    				$('#pointWillUse').text(0);
-	        	
-	        	} else{ //0
-	        		alert('선택하신 쿠폰을 모두 소진하였습니다.');
-	        	}
-	        		
-	        },
-	        error:function(){
-	        	 alert('서버 요청 중 오류가 발생했습니다.');
-	        }
-	    });
-	}
+        				$('#discountAmount').text(discount);
+        				$('#finalPrice').text(discountedPrice);
+        				$('#couponselectedPrice').val(discountedPrice);
+        				$('#usePoint').val(0);
+        				$('#pointWillUse').text(0);
+        			},
+        			error : function() { 
+        				alert('서버 요청 중 오류가 발생 0');
+        			}
+        		});
+        	} else if(response == -1){ //-1
+        		alert('쿠폰을 사용하지 않습니다.');
+        	
+        		$('#discountAmount').text(0);
+				$('#finalPrice').text(orderPrice);
+				$('#couponselectedPrice').val(orderPrice);
+				$('#usePoint').val(0);
+				$('#pointWillUse').text(0);
+        	
+        	} else{ //0
+        		alert('선택하신 쿠폰을 모두 소진하였습니다.');
+        	}
+        	
+        },
+        error:function(){
+        	 alert('서버 요청 중 오류가 발생 2');
+        }
+    });
+}
 
 	function applyPoint() {
 		var availablePoint = parseInt($('#availPoint').val());
@@ -124,7 +132,7 @@
 
 	}
 
-	$("cancelBtn").on("click", function() {
+	function cancelBtn() {
 		var order_id = $('#orderId').val();
 
 		$.ajax({
@@ -133,6 +141,9 @@
 			data : {
 				rental_code : order_id
 			},
+			xhrFields: {
+	            withCredentials: true // 크로스 도메인 요청에서도 쿠키를 포함하여 세션을 유지합니다.
+	        },
 			success : function(response) {
 				if (response === "Canceled") {
 					alert("주문을 취소하고 이전 페이지로 돌아갑니다.");
@@ -146,7 +157,7 @@
 				alert("서버 요청 실패: " + errorThrown);
 			}
 		});
-	});
+	}
 
 	$().ready(function() {
 		var IMP = window.IMP;
@@ -179,8 +190,8 @@
 			},function(response) {
 				if (response.success) {
 					alert("결제 완료");
-					window.location.href = "${path}/customer/rentPaySuccess.do?rental_code="+ encodeURIComponent(rental_code)
-							"&coupon_id="+ encodeURIComponet(coupon_id)+
+					window.location.href = "${path}/customer/rentPaySuccess.do?rental_code="+ encodeURIComponent(rental_code)+
+							"&coupon_id="+ encodeURIComponent(coupon_id)+
 							"&point="+ encodeURIComponent(point)+ 
 							"&finalPrice="+ encodeURIComponent(finalPrice);
 					} else {
@@ -338,7 +349,7 @@
 			</div>
 			<div class="payment-group">
 				<button class="payment-button" id="orderBtn">결제하기</button>
-				<button class="payment-button" id="cancelBtn">뒤로가기</button>
+				<button class="payment-button" id="cancelBtn" onclick="cancelBtn">뒤로가기</button>
 			</div>
 		</div>
 	</main>

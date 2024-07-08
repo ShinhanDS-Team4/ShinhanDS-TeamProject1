@@ -1,0 +1,208 @@
+@charset "UTF-8";
+
+.hidden{
+	display: none;
+}
+.container{
+    padding: 70px 0;
+}
+.container>p{
+	border-bottom: 3px solid #333;
+    color: #ccc;
+    padding: 5px 0;
+}
+.container-wrapper{
+	display: flex;
+	justify-content: space-between;
+	gap: 20px;
+    padding: 50px 0 0;
+}
+.main-title{
+
+}
+.copy-right-wrapper{
+	width: 50%;
+	position: relative;
+}
+.img-gift{
+	position: absolute;
+    width: 600px;
+    bottom: 0;
+}
+.img-gift>img{
+	width: 100%;
+}
+/* 장바구니 */
+.cart-list-wrapper{
+	display: block;
+	width: 50%;
+	height: 600px;
+	box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
+	position: relative;
+    overflow-y: scroll;
+}
+.cart-list-wrapper>h3{
+	padding: 20px 0 0 20px;
+}
+.cart-list-wrapper::-webkit-scrollbar {
+        display: none;
+}
+.speech-bubble-icon{
+	padding-left: 20px;
+}
+
+.no-cart-list>li{
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.no-cart-list>li>p{
+	padding: 10px 0;
+}
+.no-cart-list>li>a{
+   background-color: #eee;
+   padding: 5px 10px; 
+}
+.copyTitle{
+    color: #513AE4;
+    font-size: 25px;
+    text-align: center;
+    padding-top: 40px;
+}
+.subCopyTitle{
+    padding: 30px 0 0;
+    text-align: center;
+}
+
+.cart-list{
+    padding: 20px;
+}
+.cart-list>li{
+	background-color: #f3f3f3;
+    padding: 20px;
+    border-radius: 5px;
+    margin: 5px 0;
+    }
+.cart-list>li:hover{
+	box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
+}
+.cart-list>li>table{
+	width: 100%;
+}
+.cart-list>li>table>tbody tr{
+	text-align: center;
+}
+.cart-list>li>table>tbody td{
+	width: calc(100% / 5);
+}
+.cart-list>li>table>tbody td{
+	width: calc(100% / 5);
+}
+.product-name{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 150px;
+    text-align: center;
+    padding-left: 15px;
+}
+.cart-list>li>table>tbody td>button{
+	background-color: black;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+.cart-list>li>table>tbody td>button:hover{
+	background-color: #513AE4;
+    color: #fff;
+}
+
+/* coordination2.jsp */
+.category-name{
+	display: flex;
+}
+.category-name > li{
+	margin-right: 20px;
+    margin-top: 20px;
+    border: 1px solid #000;
+    border-radius: 20px;
+    padding: 5px 15px;
+    transition: 0.3s;
+}
+.category-name > li >a{
+	font-size: 20px;
+    color: #666;
+    font-weight: bold;
+    
+}
+.category-name > li:hover{
+	background-color: #000;
+}  
+.category-name > li:hover a{
+	 color: #fff;
+}   
+ .content:hover {
+    z-index: 20;
+    transform: translateY(-20px); /* 살짝 위로 이동 */
+}
+.container-wrap {
+	position: relative;
+	width: 100%;
+	max-width: 1200px; /* 원하는 최대 너비를 설정하세요 */
+	margin: 0 auto; /* 가운데 정렬 */
+}
+.content-wrap {
+	position: relative;
+	height: 550px;
+	width: 100%;
+    margin: 50px 0;
+}
+.content {
+	position: absolute;
+    width: 39%; /* container 안에 들어가도록 조정 */
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 20px;
+    box-sizing: border-box;
+    background-color: #fff;
+    transition: z-index 0.3s, transform 0.3s; 
+    box-shadow: 1px 1px 10px 1px rgba(0, 0, 0, 0.2);
+}
+.box0 {
+	z-index: 4;
+	top: 0;
+	left: 0;
+}
+.box1 {
+	z-index: 3;
+	top: 0;
+	left: 20%;
+}
+.box2 {
+	z-index: 2;
+	top: 0;
+	left: 40%;
+}
+.box3 {
+	z-index: 1;
+	top: 0;
+	left: 60%;
+}
+.imgbox{
+	width: 400px;
+    height: 100%;
+    background-color: aliceblue; /*확인용*/
+    /* border: 1px solid #111; */  /*확인용*/
+}
+.imgbox>img{
+	width: 100%;
+    height: 100%;
+}
+
