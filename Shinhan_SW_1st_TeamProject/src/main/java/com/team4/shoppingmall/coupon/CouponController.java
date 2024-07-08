@@ -24,9 +24,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/coupon") 
 public class CouponController {
-	
-	@Autowired
-	private CouponService couponService;
  
     @Autowired
     CouponService couponService;
@@ -41,7 +38,7 @@ public class CouponController {
 
         if (member == null) {
             response.put("status", "error");
-            response.put("message", "로그인 후 쿠폰을 받을 수 있습니다.");
+            response.put("message", "濡쒓렇�씤 �썑 荑좏룿�쓣 諛쏆쓣 �닔 �엳�뒿�땲�떎.");
             return response;
         }
 
@@ -55,10 +52,10 @@ public class CouponController {
         coupon.setQuantity(1);
 
 		
-	  // 사용자가 이미 쿠폰을 가지고 있는지 확인  
+	  // �궗�슜�옄媛� �씠誘� 荑좏룿�쓣 媛�吏�怨� �엳�뒗吏� �솗�씤  
 	  if (couponService.hasCoupon(coupon) > 0 ) {
-		  System.out.println("이미 발급받은 쿠폰입니다."); response.put("status", "error");
-		  response.put("message", "이미 발급받은 쿠폰입니다.");
+		  System.out.println("�씠誘� 諛쒓툒諛쏆� 荑좏룿�엯�땲�떎."); response.put("status", "error");
+		  response.put("message", "�씠誘� 諛쒓툒諛쏆� 荑좏룿�엯�땲�떎.");
 		  return response; 
 	  }
 			 
@@ -68,10 +65,10 @@ public class CouponController {
 
         if (success == 1) {
             response.put("status", "success");
-            response.put("message", "쿠폰이 성공적으로 발급되었습니다.");
+            response.put("message", "荑좏룿�씠 �꽦怨듭쟻�쑝濡� 諛쒓툒�릺�뿀�뒿�땲�떎.");
         } else { 
         	response.put("status", "error"); 
-        	response.put("message", "쿠폰 발급에 실패했습니다."); 
+        	response.put("message", "荑좏룿 諛쒓툒�뿉 �떎�뙣�뻽�뒿�땲�떎."); 
         } 
 
         return response;
@@ -84,7 +81,9 @@ public class CouponController {
     public boolean checkLogin(HttpSession session) {
         MemberDTO member = (MemberDTO) session.getAttribute("member");
         return member != null;
-    } 
+    }
+    
+    
 	@PostMapping("/checkCouponAvailability.do")
 	@ResponseBody
 	public int checkCouponAvailability(@RequestParam("couponid") int couponId) {

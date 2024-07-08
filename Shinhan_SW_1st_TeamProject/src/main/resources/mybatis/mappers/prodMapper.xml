@@ -442,8 +442,6 @@
 			</otherwise>
 		</choose>
 	</select>
-	
-</mapper>
   
 	<select id="sellerByProd" parameterType="string"
 		resultType="SellerProdVO">

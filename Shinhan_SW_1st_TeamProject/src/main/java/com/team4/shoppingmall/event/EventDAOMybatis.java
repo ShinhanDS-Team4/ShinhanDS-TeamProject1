@@ -41,7 +41,8 @@ public class EventDAOMybatis implements EventDAOInterface {
 
 	@Override
 	public EventDTO selectFirst() {
-		return sqlSession.selectOne(namespace+"selectFirst"); 
+		return sqlSession.selectOne(namespace+"selectFirst");
+	}
 	
 	@Override
 	public List<EventDTO> selectBySearch(String search_Event) {
