@@ -15,12 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.team4.shoppingmall.member.MemberDTO;
 
-
-<<<<<<< HEAD
-	@Autowired
-	CouponService couponService;
-=======
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -28,13 +22,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/coupon") 
 public class CouponController {
-	
-	@Autowired
-	private CouponService couponService;
  
-    @Autowired
-    CouponService couponService;
->>>>>>> 76f8761c6408fe7fb0ed6de20e3b3adcfe9db6ef
+  @Autowired
+  CouponService couponService;
 
 	@PostMapping("/receive")
 	@ResponseBody
@@ -47,9 +37,9 @@ public class CouponController {
 			response.put("message", "로그인 후 쿠폰을 받을 수 있습니다.");
 			return response;
 		}
-
+ 
 		coupon.setMember_id(member.getMember_id());
-		coupon.setQuantity(1);
+		coupon.setQuantity(1); 
 
 		// 사용자가 이미 쿠폰을 가지고 있는지 확인
 		if (couponService.hasCoupon(coupon) > 0) {
@@ -60,28 +50,36 @@ public class CouponController {
 		}
 
 		int success = couponService.assignCouponToMember(coupon);
-
+ 
 		if (success == 1) {
 			response.put("status", "success");
 			response.put("message", "쿠폰이 성공적으로 발급되었습니다.");
 		} else {
 			response.put("status", "error");
 			response.put("message", "쿠폰 발급에 실패했습니다.");
-		}
+		} 
+		
+	  // 사용자가 이미 쿠폰을 가지고 있는지 확인  
+	  if (couponService.hasCoupon(coupon) > 0 ) {
+		  System.out.println("이미 발급받은 쿠폰입니다."); response.put("status", "error");
+		  response.put("message", "이미 발급받은 쿠폰입니다.");
+		  return response; 
+	  }
+			 
+		 
+
+        int success = couponService.assignCouponToMember(coupon);
+
+        if (success == 1) {
+            response.put("status", "success");
+            response.put("message", "쿠폰이 성공적으로 발급되었습니다.");
+        } else { 
+        	response.put("status", "error"); 
+        	response.put("message", "쿠폰 발급에 실패했습니다."); 
+        }  
 
 		return response;
-	}
-
-<<<<<<< HEAD
-	@PostMapping("/checkLogin")
-	@ResponseBody
-	public boolean checkLogin(HttpSession session) {
-		MemberDTO member = (MemberDTO) session.getAttribute("member");
-		return member != null;
-	}
-=======
-        return response;
-    }
+	} 
 
 
 
@@ -90,7 +88,9 @@ public class CouponController {
     public boolean checkLogin(HttpSession session) {
         MemberDTO member = (MemberDTO) session.getAttribute("member");
         return member != null;
-    } 
+    }
+    
+    
 	@PostMapping("/checkCouponAvailability.do")
 	@ResponseBody
 	public int checkCouponAvailability(@RequestParam("couponid") int couponId) {
@@ -104,6 +104,5 @@ public class CouponController {
 			return -1;
 		}
 		
-	} 
->>>>>>> 76f8761c6408fe7fb0ed6de20e3b3adcfe9db6ef
+	}  
 }

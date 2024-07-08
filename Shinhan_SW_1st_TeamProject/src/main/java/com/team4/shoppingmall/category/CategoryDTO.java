@@ -20,7 +20,4 @@ public class CategoryDTO {
 	//필드 추가
 	String currentCategoryName;
 	String parentCategoryName;
-	
-	Integer is_lowest;
-
 }

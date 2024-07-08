@@ -124,7 +124,7 @@
 
 	}
 
-	$("cancelBtn").on("click", function() {
+	function cancelBtn() {
 		var order_id = $('#orderId').val();
 
 		$.ajax({
@@ -133,6 +133,9 @@
 			data : {
 				rental_code : order_id
 			},
+			xhrFields: {
+	            withCredentials: true // 크로스 도메인 요청에서도 쿠키를 포함하여 세션을 유지합니다.
+	        },
 			success : function(response) {
 				if (response === "Canceled") {
 					alert("주문을 취소하고 이전 페이지로 돌아갑니다.");
@@ -338,7 +341,7 @@
 			</div>
 			<div class="payment-group">
 				<button class="payment-button" id="orderBtn">결제하기</button>
-				<button class="payment-button" id="cancelBtn">뒤로가기</button>
+				<button class="payment-button" id="cancelBtn" onclick="cancelBtn">뒤로가기</button>
 			</div>
 		</div>
 	</main>
