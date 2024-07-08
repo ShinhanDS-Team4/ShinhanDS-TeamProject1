@@ -1,5 +1,6 @@
 package com.team4.shoppingmall.category;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -19,8 +20,12 @@ import com.team4.shoppingmall.member.MemberDTO;
 import com.team4.shoppingmall.member.MemberService;
 import com.team4.shoppingmall.prod.ProdDTO;
 import com.team4.shoppingmall.prod.ProdService;
+import com.team4.shoppingmall.prod_image.Prod_ImageDTO;
+import com.team4.shoppingmall.prod_image.Prod_ImageService;
 import com.team4.shoppingmall.prod_option.Prod_OptionDTO;
 import com.team4.shoppingmall.prod_option.Prod_OptionService;
+import com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO;
+import com.team4.shoppingmall.rent_prod_stock.RentProdStockService;
 import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockDTO;
 import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockService;
 import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestService;
@@ -41,6 +46,10 @@ public class CategoryController {
 	@Autowired
 	Prod_OptionService prod_optionService;
 	@Autowired
+	Prod_ImageService prod_imageService;
+	@Autowired
+	RentProdStockService rpsService;
+	@Autowired
 	AdminService adminService;
 	
 	@GetMapping("/dbset")
@@ -52,17 +61,13 @@ public class CategoryController {
 		
 		JSONParser parser = new JSONParser();
 
-		Reader pl_reader = new FileReader("C:\\close\\shds\\ShinhanDS-TeamProject1\\Shinhan_SW_1st_TeamProject\\src\\main\\webapp\\resources\\dbset/product_list.json");
-		Reader bm_reader = new FileReader("C:\\close\\shds\\ShinhanDS-TeamProject1\\Shinhan_SW_1st_TeamProject\\src\\main\\webapp\\resources\\dbset/business_mans.json");
+		Reader pl_reader = new FileReader("C:\\close\\shds\\ShinhanDS-TeamProject1\\Shinhan_SW_1st_TeamProject\\src\\main\\webapp\\resources\\dbset/products_list_final.json");
+		Reader bm_reader = new FileReader("C:\\close\\shds\\ShinhanDS-TeamProject1\\Shinhan_SW_1st_TeamProject\\src\\main\\webapp\\resources\\dbset/business_mans_final.json");
 		Reader ctg_reader = new FileReader("C:\\close\\shds\\ShinhanDS-TeamProject1\\Shinhan_SW_1st_TeamProject\\src\\main\\webapp\\resources\\dbset/ctg_url_matching.json");
-		Reader updatedMatching_reader = new FileReader("C:\\close\\shds\\ShinhanDS-TeamProject1\\Shinhan_SW_1st_TeamProject\\src\\main\\webapp\\resources\\dbset/updated_matching.json");
-		Reader updatedMatchingRev_reader = new FileReader("C:\\close\\shds\\ShinhanDS-TeamProject1\\Shinhan_SW_1st_TeamProject\\src\\main\\webapp\\resources\\dbset/updated_matching_rev.json");
 
 		JSONObject prod_list = (JSONObject) parser.parse(pl_reader);
 		JSONObject bm_list = (JSONObject) parser.parse(bm_reader);
 		JSONObject ctg_list = (JSONObject) parser.parse(ctg_reader);
-		JSONObject updatedMatching = (JSONObject) parser.parse(updatedMatching_reader);
-		JSONObject updatedMatchingRev = (JSONObject) parser.parse(updatedMatchingRev_reader);
 		
 		JSONObject prod_detail;
 		
@@ -71,51 +76,9 @@ public class CategoryController {
 		Prod_OptionDTO prod_option;
 		MemberDTO member;
 		CategoryDTO category;
+		Prod_ImageDTO image;
+		RentProdStockDTO rps;
 		
-		Long tmp;
-		
-		
-		int stock;
-		for(Object prod_id :prod_list.keySet()) {
-			prod = new ProdDTO();
-			prod_detail = (JSONObject) prod_list.get((String) prod_id);
-			prod_id = (String) updatedMatching.get((String) prod_id);
-			
-			prod.setProd_id((String) prod_id);
-			prod.setMember_id((String) prod_detail.get("bm_num"));
-			prod.setProd_name(((String) prod_detail.get("img_name")));
-			tmp = (Long) prod_detail.get("category");
-			prod.setCategory_id(tmp.intValue());
-			prod.setProd_price(Integer.parseInt((String) prod_detail.get("price")));
-			prod.setProd_added_date(DateUtil.getSQLDate("2023-1"+String.valueOf((int) (Math.random()*3)) + "-" + String.valueOf((int) (Math.random()*17+10))));
-			
-			prodService.prodInsert(prod);
-			
-			for(String size :sizes) {
-				prod_option = new Prod_OptionDTO();
-				prod_option.setOpt_name("占쏙옙占쏙옙占쏙옙");
-				prod_option.setOpt_value(size);
-				prod_option.setProd_id((String) prod_id);
-				prod_optionService.optionInsert(prod_option);
-			}
-			
-		}
-		
-		System.out.println("prod, prod_option table set end.");
-		
-		for(Prod_OptionDTO po :prod_optionService.selectAll()) {
-			sps = new Seller_Prod_StockDTO();
-			sps.setS_stock_id(po.getProd_id() + "_SELL_" + po.getOpt_id());
-			stock = (int) (Math.random()*300);
-			sps.setStock(stock);
-			sps.setTotal((int) (Math.random()*stock));
-			sps.setProd_id(po.getProd_id());
-			sps.setOpt_id1(po.getOpt_id());
-			spsService.seller_prod_stockInsert(sps);
-		}
-		
-		System.out.println("sell_prod_stock table set end.");
-
 		for(Object brand :bm_list.keySet()) {
 			member = new MemberDTO();
 			member.setMember_id((String) bm_list.get(brand));
@@ -132,8 +95,7 @@ public class CategoryController {
 			member.setCreate_date(DateUtil.getSQLDate("2023-0"+String.valueOf((int) (Math.random()*9+1)) + "-" + String.valueOf((int) (Math.random()*17+10))));
 			memberService.memberInsert(member);
 		}
-		
-		System.out.println("member(seller) table set end.");
+		Long tmp;
 		
 		String parent;
 		for(CategoryEnum ce :CategoryEnum.values()) {
@@ -144,13 +106,95 @@ public class CategoryController {
 			category.setCategory_depth(ce.name().split("_").length);
 			category.setCategory_name(ce.getNameKor().split("_")[0]);
 			category.setIs_lowest(ce.getChildren() == null ? 1:0);
+			category.setCurrentCategoryName(ce.getNameKor().split("_")[0]);
 			
 			parent = ce.getParent();
+			
+			if(parent!=null)
+			category.setParentCategoryName(CategoryEnum.valueOf(parent).getNameKor());
 			
 			tmp = parent!=null ? ((Long) ctg_list.get(parent)) : null;
 			category.setParent_category_id(tmp!=null ? tmp.intValue() : null);
 			categoryService.categoryInsert(category);
 		}
+		
+		int stock;
+		for(Object prod_id :prod_list.keySet()) {
+			prod = new ProdDTO();
+			prod_detail = (JSONObject) prod_list.get((String) prod_id);
+			prod_id = (String) prod_id;
+			
+			prod.setProd_id((String) prod_id);
+			prod.setMember_id((String) prod_detail.get("bm_num"));
+			prod.setProd_name(((String) prod_detail.get("img_name")));
+			tmp = (Long) prod_detail.get("category");
+			prod.setCategory_id(tmp.intValue());
+			prod.setProd_price(Integer.parseInt((String) prod_detail.get("price")));
+			prod.setProd_added_date(DateUtil.getSQLDate("2023-1"+String.valueOf((int) (Math.random()*3)) + "-" + String.valueOf((int) (Math.random()*17+10))));
+			prod.setProd_desc(((String) prod_id) + ".jsp");
+			
+			prodService.prodInsert(prod);
+			
+			
+			File file;
+			String img_url;
+			for(int i=1;i<=5;i++) {
+				img_url = "C:/uploaded_files/main/"+prod_id+"_image_"+i+".jpg";
+				file = new File(img_url);
+				if(file.exists()) {
+					image = new Prod_ImageDTO();
+					image.setImg_id(prod_id+"_image_"+i+".jpg");
+					image.setProd_id((String) prod_id);
+					image.setImg_type(0);
+					prod_imageService.prod_imageInsert(image);
+				} else break;
+			}
+			
+			for(int i=1;i<=8;i++) {
+				img_url = "C:/uploaded_files/desc/"+prod_id+"_desc_image_"+i+".jpg";
+				file = new File(img_url);
+				if(file.exists()) {
+					image = new Prod_ImageDTO();
+					image.setImg_id(prod_id+"_desc_image_"+i+".jpg");
+					image.setProd_id((String) prod_id);
+					image.setImg_type(1);
+					prod_imageService.prod_imageInsert(image);
+				} else break;
+			}
+			
+			for(String size :sizes) {
+				prod_option = new Prod_OptionDTO();
+				prod_option.setOpt_name("사이즈");
+				prod_option.setOpt_value(size);
+				prod_option.setProd_id((String) prod_id);
+				prod_optionService.optionInsert(prod_option);
+			}
+			
+		}
+		
+		
+		for(Prod_OptionDTO po :prod_optionService.selectAll()) {
+			sps = new Seller_Prod_StockDTO();
+			sps.setS_stock_id(po.getProd_id() + "_SELL_" + po.getOpt_id());
+			stock = (int) (Math.random()*300);
+			sps.setStock(stock);
+			sps.setTotal((int) (Math.random()*stock));
+			sps.setProd_id(po.getProd_id());
+			sps.setOpt_id1(po.getOpt_id());
+			spsService.seller_prod_stockInsert(sps);
+			
+			if(Math.random() > 0.5) {
+				rps = new RentProdStockDTO();
+				rps.setR_stock_id(po.getProd_id() + "_RENT_" + po.getOpt_id());
+				stock = (int) (Math.random()*300);
+				rps.setStock(stock);
+				rps.setTotal((int) (Math.random()*stock));
+				rps.setProd_id(po.getProd_id());
+				rps.setOpt_id1(po.getOpt_id());
+				rpsService.rentProdInsert(rps);
+			}
+		}
+		
 
 	}
 	
