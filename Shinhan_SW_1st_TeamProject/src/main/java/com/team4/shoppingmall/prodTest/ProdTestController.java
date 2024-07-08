@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -51,7 +52,7 @@ import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestService
 public class ProdTestController {
 	
 	/* Test패키지로 작업  */
-	
+
 	@Autowired
 	Seller_Prod_StockTestService seller_Prod_StockTestService; 
 	
@@ -91,13 +92,107 @@ public class ProdTestController {
 	@Autowired
 	CategoryService categoryService; 
 	
+
+	@PostMapping("/getproductnumsbyctg")
+	@ResponseBody
+	public Integer getProductNumsByCtg(@RequestBody Map<String, Object> schInfo) {
+		return prodTestService.searchNumsByBrndAndPrc(schInfo);
+	}
+	
+	@PostMapping("/setproductbyctg")
+	@ResponseBody
+	public List<Map<String, Object>> setProductByCtg(@RequestBody Map<String, Object> schInfo) {
+		final Integer productsPerPage = 24;
+		
+		Integer currentPg = (Integer) schInfo.get("currentPage");
+		schInfo.put("start", productsPerPage*(currentPg-1));
+		schInfo.put("end", productsPerPage*(currentPg)+1);
+		
+		List<Map<String, Object>> prdtLstByBrnd = prodTestService.searchByBrndAndPrc(schInfo);
+
+		return prdtLstByBrnd;
+	}
+	
+	@PostMapping("/headerctg")
+	@ResponseBody
+	public Map<String, List<CategoryDTO>> headerCtg(@RequestBody Map<String, Object> highest) {
+		Map<String, List<CategoryDTO>> ctgsPerCtg = new HashMap<String, List<CategoryDTO>>();
+		for(String high_ctg :highest.keySet()) {
+			ctgsPerCtg.put(high_ctg, categoryService.selectByParentId((Integer) highest.get(high_ctg)));
+		}
+		return ctgsPerCtg;
+	}
+	
+	@GetMapping("/setbrnds")
+	public String getbrnds(Model model, Integer category_id, Integer brndPg, Integer is_lowest) {
+		final Integer brndsPerPage = 20;
+		
+		Map<String, Integer> brndInfo = new HashMap<>();
+		brndInfo.put("category_id", category_id);
+		brndInfo.put("start", brndsPerPage*(brndPg-1));
+		brndInfo.put("end", brndsPerPage*(brndPg)+1);
+		brndInfo.put("is_lowest", is_lowest);
+		
+		List<String> brndsList = prodTestService.selectBrndsByCtgId(brndInfo);
+		Integer totalBrnds = prodTestService.selectBrndsNumsByCtgId(brndInfo);
+		
+		model.addAttribute("brndsList", brndsList);
+		model.addAttribute("totalBrnds", totalBrnds);
+		
+		return "/prod/setbrndresp";
+	}
+
 	@Autowired
 	Prod_ImageService imageService;
+
 	
-	
-	@GetMapping("/productlistTest")
-	public void productList() {
+	@GetMapping("/productlist")
+	public void productList(Model model, Integer shwCtgNum, Integer currentPg) {
+		final Integer productsPerPage = 24;
 		
+		if(currentPg == null) {
+			currentPg = 1;
+		}
+		
+		if(shwCtgNum == null) {
+			shwCtgNum = 11000000;
+		}
+		
+		CategoryDTO currentCtg = categoryService.selectById(shwCtgNum);
+		Map<String, Integer> beforeTrace = new HashMap<>();
+		
+		beforeTrace.put("category_id1", currentCtg.getCategory_id());
+		beforeTrace.put("category_id2", currentCtg.getCategory_id()-currentCtg.getCategory_id()%100);
+		beforeTrace.put("category_id3", currentCtg.getCategory_id()-currentCtg.getCategory_id()%10000);
+		beforeTrace.put("category_id4", currentCtg.getCategory_id()-currentCtg.getCategory_id()%1000000);
+		
+		List<CategoryDTO> traceCtgs = categoryService.traceCurCtg(beforeTrace);
+		model.addAttribute("currentCtg", currentCtg);
+		model.addAttribute("traceCtgs", traceCtgs);
+		
+		Map<String, Integer> InfoForSelect = new HashMap<>();
+		InfoForSelect.put("category_id", shwCtgNum);
+		InfoForSelect.put("start", productsPerPage*(currentPg-1));
+		InfoForSelect.put("end", productsPerPage*(currentPg)+1);
+		
+		List<Map<String, Object>> allProdByCtg;
+		List<CategoryDTO> categoriesByCurCtg;
+		Integer allProdNumsByCtg;
+		
+		if(currentCtg.getIs_lowest() == 0) {
+			categoriesByCurCtg = categoryService.selectByParentId(shwCtgNum);
+			allProdNumsByCtg = prodTestService.selectAllProdNumsByCurCtg(shwCtgNum);
+			allProdByCtg = prodTestService.selectAllProdByCurCtg(InfoForSelect);			
+		} else {
+			categoriesByCurCtg = categoryService.selectByParentId(currentCtg.getParent_category_id());
+			allProdNumsByCtg = prodTestService.selectProdNumsByLwstCtgId(shwCtgNum);
+			allProdByCtg = prodTestService.selectProdByLwstCtgId(InfoForSelect);
+		}
+		
+		model.addAttribute("categoriesByCurCtg", categoriesByCurCtg);
+		model.addAttribute("allProdNumsByCtg", allProdNumsByCtg);
+		model.addAttribute("allProdByCtg", allProdByCtg);
+		model.addAttribute("currentPg", currentPg);
 	}
 		
 	/* 상품 상세 페이지 */
