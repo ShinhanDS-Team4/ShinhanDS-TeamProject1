@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>판매자 목록</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>    
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -16,6 +17,13 @@
     <div class="content">
         <div class="container-fluid">
             <h1>판매자 목록</h1>
+            
+            <form id="searchForm" class="form-inline mb-3">
+                <input type="text" name="searchSeller" id="searchSeller" placeholder="판매자 아이디, 이름 또는 이메일" class="form-control mr-2">
+                <input type="button" class="btn btn-primary" onclick="searchSellers()" value="검색"/>
+                <input type="button" class="btn btn-secondary ml-2" onclick="resetSearch()" value="초기화"/>                
+            </form>
+            
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
@@ -32,7 +40,7 @@
                             <th>삭제</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="sellerList">
                     	<c:forEach var="seller" items="${sellers}">
 	                        <tr>
 	                            <td><a href="admin_seller_info?member_id=${seller.member_id}">${seller.member_id}</a></td>
@@ -59,5 +67,29 @@
             </div>
         </div>
     </div>
+    
+    <script>
+        function searchSellers() {
+            var searchSeller = $('#searchSeller').val();
+            alert("bbb:"+searchSeller);
+            $.ajax({
+                url: 'search_seller',
+                type: 'GET',
+                data: { searchSeller: searchSeller },
+                success: function(response) {
+                	console.log(response);
+                    $('#sellerList').html(response);
+                },
+                error: function() {
+                    alert('판매자 검색에 실패했습니다.');
+                }
+            });
+        }
+
+        function resetSearch() {
+            $('#searchSeller').val('');
+            searchSellers();
+        }        
+    </script>
 </body>
 </html>

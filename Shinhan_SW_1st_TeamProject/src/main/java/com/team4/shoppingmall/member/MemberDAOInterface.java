@@ -57,7 +57,9 @@ public interface MemberDAOInterface {
 	
 	public List<MemberCustomerDTO> searchByCustomer(String searchCustomer);
 	
-	public MemberCustomerDTO customerByInfo(String member_id); 
+	public MemberCustomerDTO customerByInfo(String member_id);
+	
+	public List<MemberDTO> selectBySeller_access(String searchSeller); 
 
 }
 

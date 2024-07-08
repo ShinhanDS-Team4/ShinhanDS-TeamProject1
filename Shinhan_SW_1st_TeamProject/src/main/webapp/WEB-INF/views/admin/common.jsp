@@ -263,13 +263,15 @@ function f_search() {
     <div class="dropdown-container">
         <a href="admin_seller_list">판매자 목록</a> 
         <a href="admin_seller_register">판매자 등록</a> 
-        <a href="admin_seller_prod">판매자 상품</a>
+        <a href="admin_seller_prod">판매자 판매 상품</a>
+        <a href="admin_seller_rent">판매자 대여 상품</a>
     </div>
     
     <button class="dropdown-btn">고객</button>
     <div class="dropdown-container">
         <a href="admin_customer_list">고객 목록</a> 
         <a href="admin_customer_orderlist">고객 주문 목록</a> 
+        <a href="admin_customer_rentlist">고객 대여 목록</a> 
     </div>
     
     <button class="dropdown-btn">공지 / 이벤트 / 문의사항</button>

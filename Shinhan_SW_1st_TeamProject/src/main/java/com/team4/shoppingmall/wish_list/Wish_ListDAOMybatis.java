@@ -50,10 +50,15 @@ public class Wish_ListDAOMybatis implements Wish_ListDAOInterface {
 	}
 
 	@Override
-	public int wish_listDelete(String member_id, Integer prod_id) {
+	public int wish_listDelete1(String member_id, Integer prod_id) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("member_id", member_id);
 		map.put("prod_id", prod_id);
-		return sqlSession.delete(namespace+"wish_listDelete", map);
+		return sqlSession.delete(namespace+"wish_listDelete1", map);
+	}
+	
+	@Override
+	public int wish_listDelete(Wish_ListDTO wishDelete) {
+		return sqlSession.delete(namespace+"wish_listDelete", wishDelete);
 	}
 }

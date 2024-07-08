@@ -6,15 +6,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>판매자 판매 상품 조회</title>
+    <title>판매자 대여 상품 조회</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
 <jsp:include page="common.jsp" />
     <div class="content">
         <div class="container-fluid">
-            <h1>판매자 판매 상품 조회</h1>
-            <%-- <h2>${seller_name}</h2> --%>
+            <h1>판매자 대여 상품 조회</h1>
             <p>금지 상품을 올렸을 경우 관리자가 판매자의 상품을 임의로 삭제 후 판매자에게 통지합니다.</p>
             
             <form id="searchForm" class="form-inline mb-3">
@@ -33,19 +34,19 @@
                             <th>상품 설명</th>
                             <th>가격</th>
                             <th>재고</th>                        
-                            <th>Delete</th>
+                            <th>삭제</th>
                         </tr>
                     </thead>
-                    <tbody id="productList">
-                        <c:forEach var="product" items="${products}">
+                    <tbody id="rentList">
+                        <c:forEach var="rent" items="${rents}">
                         <tr>
-                            <td>${product.prod_added_date}</td>
-                            <td><img src="${product.img_id}" alt="Product ${product.img_id}" style="width: 50px;"></td>
-                            <td>${product.prod_name}</td>
-                            <td>${product.prod_desc}</td>
-                            <td>${product.prod_price}</td>
-                            <td>${product.stock}</td>
-                            <td><button class="btn btn-sm btn-danger" onclick="deleteProduct(${product.prod_id})">삭제</button></td>
+                            <td>${rent.prod_added_date}</td>
+                            <td><img src="${rent.img_id}" alt="Product ${rent.img_id}" style="width: 50px;"></td>
+                            <td>${rent.prod_name}</td>
+                            <td>${rent.prod_desc}</td>
+                            <td>${rent.prod_price}</td>
+                            <td>${rent.stock}</td>
+                            <td><button class="btn btn-sm btn-danger" onclick="deleteProduct(${rent.prod_id})">삭제</button></td>
                         </tr>                
                         </c:forEach>
                     </tbody>
@@ -57,14 +58,12 @@
     <script>
         function searchProducts() {
             var searchType = $('#searchType2').val();
-            alert("aaa:"+searchType);
             $.ajax({
-                url: 'search_seller_product_brand',
+                url: 'admin_seller_rent_search',
                 type: 'GET',
                 data: { searchType: searchType },
                 success: function(response) {
-                	console.log(response);
-                    $('#productList').html(response);
+                    $('#rentList').html(response);
                 },
                 error: function() {
                     alert('상품 검색에 실패했습니다.');
@@ -73,13 +72,13 @@
         }
 
         function resetSearch() {
-            $('#searchType').val('');
+            $('#searchType2').val('');
             searchProducts();
         }
 
         function deleteProduct(prod_id) {
             if (confirm('정말로 이 상품을 삭제하시겠습니까?')) {
-                window.location.href = 'product_delete?prod_id=' + prod_id;
+                window.location.href = 'rent_product_delete?prod_id=' + prod_id;
             }
         }
     </script>

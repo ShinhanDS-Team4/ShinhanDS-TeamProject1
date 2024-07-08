@@ -268,47 +268,54 @@
 		#{member_id} and member_type = 2
 	</update>
 
-	<select id="selectByAllCustomer" resultType="MemberCustomerVO">
-		SELECT
-		m.member_id,
-		m.member_pw,
-		m.member_name,
-		m.email,
-		m.phone,
-		m.brand,
-		m.birth_date,
-		m.last_access,
-		m.member_type,
-		m.gender,
-		m.seller_authority,
-		m.create_date,
-		c.point,
-		c.member_level,
-		c.accum_amount,
-		a.addr_num,
-		a.zipcode,
-		a.main_address,
-		a.detail_address,
-		a.is_master_addr,
-		a.sub_address,
-		cp.coupon_id,
-		cp.coupon_name,
-		cp.discount_rate,
-		cp.quantity,
-		cp.coupon_state
-		FROM
-		member m
-		JOIN customer c ON m.member_id
-		= c.member_id
-		LEFT JOIN addr_list a ON m.member_id = a.member_id
-		LEFT
-		JOIN coupon cp ON m.member_id = cp.member_id
-		WHERE
-		m.member_type = 1
-		ORDER BY
-		m.member_id
+	<select id="selectByAllCustomer" resultType="MemberCustomerVO">		
+    SELECT
+        m.member_id,
+        m.member_pw,
+        m.member_name,
+        m.email,
+        m.phone,
+        m.brand,
+        m.birth_date,
+        m.last_access,
+        m.member_type,
+        m.gender,
+        m.seller_authority,
+        m.create_date,
+        c.point,
+        c.member_level,
+        c.accum_amount,
+        a.addr_num,
+        a.zipcode,
+        a.main_address,
+        a.detail_address,
+        a.is_master_addr,
+        a.sub_address,
+        cp.coupon_id,
+        cp.coupon_name,
+        cp.discount_rate,
+        cp.quantity
+    FROM
+        member m
+        JOIN customer c ON m.member_id = c.member_id
+        LEFT JOIN addr_list a ON m.member_id = a.member_id
+        LEFT JOIN coupon cp ON m.member_id = cp.member_id
+    WHERE
+        m.member_type = 1
+    ORDER BY
+        m.member_id
 	</select>
 
+	<select id="selectBySeller_access" parameterType="string" resultType="memberVO">
+		SELECT * from member 
+		where member_type = 2 
+		and seller_authority = 'Y'
+		AND member_id LIKE '%' || #{searchCustomer} || '%'
+		OR member_name LIKE '%' || #{searchCustomer} || '%'
+		OR email LIKE '%' || #{searchCustomer} || '%'
+		ORDER BY member_id
+	</select>
+	
 	<select id="searchByCustomer" parameterType="String"
 		resultType="MemberCustomerVO">
 		SELECT

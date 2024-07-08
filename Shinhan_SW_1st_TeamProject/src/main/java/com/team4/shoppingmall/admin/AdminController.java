@@ -31,6 +31,8 @@ import com.team4.shoppingmall.notice.NoticeService;
 import com.team4.shoppingmall.order_detail.Order_DetailService;
 import com.team4.shoppingmall.prod.ProdService;
 import com.team4.shoppingmall.prod.SellerProdDTO;
+import com.team4.shoppingmall.rent.RentService;
+import com.team4.shoppingmall.rent.SellerRentDTO;
 
 @Controller
 @RequestMapping("/admin")
@@ -52,7 +54,9 @@ public class AdminController {
 	EventService evService;
 	@Autowired
 	Admin_InqService aiService;
-
+	@Autowired
+	RentService rService;
+	
 	Logger logger = LoggerFactory.getLogger(AdminController.class);
 
 	// 관리자 부분
@@ -173,14 +177,20 @@ public class AdminController {
 		System.out.println(totalMoneyAmount);
 		model.addAttribute("total_money_amount", totalMoneyAmount);
 
+		String yymm = new Date(new java.util.Date().getTime()).toString().substring(0, 7);
+		System.out.println(yymm);
+		
+		model.addAttribute("dailyVisitorDataSeller", aService.dailyVisitorDataSeller(yymm));
+		model.addAttribute("dailyVisitorDataCustomer", aService.dailyVisitorDataCustomer(yymm));
+		model.addAttribute("dailyRevenueChart", aService.dailyRevenueChart(yymm));		
+
 		int seller_monthly_increaseRate = mService.seller_Monthly_IncreaseRate();
 		model.addAttribute("seller_monthly_increaseRate", seller_monthly_increaseRate);
 		int customer_monthly_increaseRate = mService.customer_Monthly_IncreaseRate();
 		model.addAttribute("customer_monthly_increaseRate", customer_monthly_increaseRate);
-
+		
 		Double seller_monthly_increase_rate = mService.sellerMonthlyIncreaseRate();
 		model.addAttribute("seller_monthly_increase_rate", seller_monthly_increase_rate);
-
 		Double customer_monthly_increase_rate = mService.customerMonthlyIncreaseRate();
 		model.addAttribute("customer_monthly_increase_rate", customer_monthly_increase_rate);
 
@@ -191,7 +201,7 @@ public class AdminController {
 		return "admin/admin_page";
 	}
 
-	// 판매자 부분
+	// 판매자 부분	
 	// 판매자 목록 페이지		
 	@GetMapping("admin_seller_list")
 	public String adminsellerlist(Model model) {
@@ -200,6 +210,15 @@ public class AdminController {
 		return "admin/admin_seller_list";
 	}
 
+	// 판매자 검색		
+	@GetMapping("search_seller")
+	public String searchseller(Model model, String searchSeller) {
+		List<MemberDTO> sellerList = mService.selectBySeller_access(searchSeller);
+		System.out.println(sellerList);
+		model.addAttribute("sellers", sellerList);
+		return "admin/admin_seller_list_searchresult";
+	}
+		
 	// 판매자 상품 조회 페이지
 	@GetMapping("admin_seller_prod")
 	public String adminsellerdetail(Model model, String member_id) {
@@ -219,6 +238,24 @@ public class AdminController {
 		return "admin/admin_seller_prod_searchresult";
 	}
 
+	// 판매자 대여 조회 페이지
+	@GetMapping("admin_seller_rent")
+	public String adminsellerrent(Model model, String member_id) {
+		List<SellerRentDTO> allRentList = rService.AllRent();
+		System.out.println(allRentList);
+		model.addAttribute("rents", allRentList);
+		return "admin/admin_seller_rent";
+	}
+	
+	// 판매자 대여 상품 검색
+	@GetMapping("admin_seller_rent_search")
+	public String adminSellerRentSearch(Model model, String searchType) {
+		List<SellerRentDTO> rentList = rService.searchSellerByRent(searchType);
+		System.out.println(rentList);
+		model.addAttribute("rents", rentList);
+		return "admin/admin_seller_rent_search_result";
+	}
+	
 	// 판매자 허용/거부 페이지	
 	@GetMapping("admin_seller_register")
 	public String adminsellerregister(Model model) {
@@ -294,6 +331,21 @@ public class AdminController {
 		System.out.println(orderDetailList);		
 		//model.addAttribute("orderList", orderDetailList);
 		return orderDetailList;
+	}
+	
+	// 고객 대여 목록
+	@GetMapping("admin_customer_rentlist")
+	public String admincustomerrentlist() {
+		return "admin/admin_customer_rentlist";
+	}
+	
+	// 고객 대여 조회
+	@GetMapping("admin_customer_search_rentlist")
+	public @ResponseBody List<SellerRentDTO> admincustomersearchrentlist(Model model, String searchKeyword) {
+		System.out.println(searchKeyword);
+		List<SellerRentDTO> rentList = rService.searchCustomerByRent(searchKeyword);
+		System.out.println(rentList);		
+		return rentList;
 	}
 	
 	

@@ -151,68 +151,61 @@
 	</select>
 	
 	<select id="allProd" resultType="SellerProdVO">
-		SELECT
-		m.member_id,
-		m.member_name,
-		m.email,
-		m.phone,
-		m.brand,
-		m.birth_date,
-		m.last_access,
-		m.member_type,
-		m.gender,
-		m.seller_authority,
-		m.create_date,
-		p.prod_id,
-		p.prod_name,
-		p.prod_desc,
-		p.prod_price,
-		p.prod_added_date,
-		p.category_id,
-		pi.img_id,
-		pi.img_type,
-		s.s_stock_id AS s_stock_id,
-		s.stock,
-		s.total,
-		po1.opt_id AS opt_id1,
-		po2.opt_id AS opt_id2,
-		po3.opt_id AS opt_id3,
-		po4.opt_id AS opt_id4,
-		po5.opt_id AS opt_id5,
-		po.opt_id,
-		po.opt_name,
-		po.opt_value
-		FROM
-		prod p
-		JOIN
-		member m ON p.member_id = m.member_id
-		LEFT
-		JOIN
-		prod_image pi ON p.prod_id = pi.prod_id
-		LEFT JOIN
-		seller_prod_stock
-		s ON p.prod_id = s.prod_id
-		LEFT JOIN
-		prod_option po ON p.prod_id =
-		po.prod_id
-		LEFT JOIN
-		prod_option po1 ON p.prod_id = po1.prod_id AND
-		po1.opt_id = 1
-		LEFT JOIN
-		prod_option po2 ON p.prod_id = po2.prod_id AND
-		po2.opt_id = 2
-		LEFT JOIN
-		prod_option po3 ON p.prod_id = po3.prod_id AND
-		po3.opt_id = 3
-		LEFT JOIN
-		prod_option po4 ON p.prod_id = po4.prod_id AND
-		po4.opt_id = 4
-		LEFT JOIN
-		prod_option po5 ON p.prod_id = po5.prod_id AND
-		po5.opt_id = 5
-		ORDER BY
-		p.prod_id
+    SELECT
+        m.member_id,
+        m.member_name,
+        m.email,
+        m.phone,
+        m.brand,
+        m.birth_date,
+        m.last_access,
+        m.member_type,
+        m.gender,
+        m.seller_authority,
+        m.create_date,
+        p.prod_id,
+        p.prod_name,
+        p.prod_desc,
+        p.prod_price,
+        p.prod_added_date,
+        p.category_id,
+        pi.img_id,
+        pi.img_type,
+        s.s_stock_id AS s_stock_id,
+        s.stock,
+        s.total,
+        po1.opt_id AS opt_id1,
+        po2.opt_id AS opt_id2,
+        po3.opt_id AS opt_id3,
+        po4.opt_id AS opt_id4,
+        po5.opt_id AS opt_id5,
+        po.opt_id,
+        po.opt_name,
+        po.opt_value
+    FROM
+        prod p
+    JOIN
+        member m ON p.member_id = m.member_id
+    LEFT JOIN
+        prod_image pi ON p.prod_id = pi.prod_id
+    LEFT JOIN
+        sell_prod_stock s ON p.prod_id = s.prod_id
+    LEFT JOIN
+        prod_option po ON p.prod_id = po.prod_id
+    LEFT JOIN
+        prod_option po1 ON p.prod_id = po1.prod_id AND po1.opt_id = 1
+    LEFT JOIN
+        prod_option po2 ON p.prod_id = po2.prod_id AND po2.opt_id = 2
+    LEFT JOIN
+        prod_option po3 ON p.prod_id = po3.prod_id AND po3.opt_id = 3
+    LEFT JOIN
+        prod_option po4 ON p.prod_id = po4.prod_id AND po4.opt_id = 4
+    LEFT JOIN
+        prod_option po5 ON p.prod_id = po5.prod_id AND po5.opt_id = 5
+    ORDER BY
+        p.prod_id
 	</select>
+	
 	
 	<select id="searchSellerByProd" resultType="SellerProdVO"
 		parameterType="string">
@@ -259,7 +252,7 @@
 		prod_image pi ON p.prod_id =
 		pi.prod_id
 		LEFT JOIN
-		seller_prod_stock s ON p.prod_id = s.prod_id
+		sell_prod_stock s ON p.prod_id = s.prod_id
 		LEFT
 		JOIN
 		prod_option po ON p.prod_id = po.prod_id
@@ -299,4 +292,68 @@
 		PROD P ON M.member_id = P.member_id
 	</select>
 
+
+	<select id="allProd2" resultType="SellerProdVO">
+		SELECT
+		m.member_id,
+		m.member_name,
+		m.email,
+		m.phone,
+		m.brand,
+		m.birth_date,
+		m.last_access,
+		m.member_type,
+		m.gender,
+		m.seller_authority,
+		m.create_date,
+		p.prod_id,
+		p.prod_name,
+		p.prod_desc,
+		p.prod_price,
+		p.prod_added_date,
+		p.category_id,
+		pi.img_id,
+		pi.img_type,
+		s.s_stock_id AS s_stock_id,
+		s.stock,
+		s.total,
+		po1.opt_id AS opt_id1,
+		po2.opt_id AS opt_id2,
+		po3.opt_id AS opt_id3,
+		po4.opt_id AS opt_id4,
+		po5.opt_id AS opt_id5,
+		po.opt_id,
+		po.opt_name,
+		po.opt_value
+		FROM
+		prod p
+		JOIN
+		member m ON p.member_id = m.member_id
+		LEFT
+		JOIN
+		prod_image pi ON p.prod_id = pi.prod_id
+		LEFT JOIN
+		sell_prod_stock
+		s ON p.prod_id = s.prod_id
+		LEFT JOIN
+		prod_option po ON p.prod_id =
+		po.prod_id
+		LEFT JOIN
+		prod_option po1 ON p.prod_id = po1.prod_id AND
+		po1.opt_id = 1
+		LEFT JOIN
+		prod_option po2 ON p.prod_id = po2.prod_id AND
+		po2.opt_id = 2
+		LEFT JOIN
+		prod_option po3 ON p.prod_id = po3.prod_id AND
+		po3.opt_id = 3
+		LEFT JOIN
+		prod_option po4 ON p.prod_id = po4.prod_id AND
+		po4.opt_id = 4
+		LEFT JOIN
+		prod_option po5 ON p.prod_id = po5.prod_id AND
+		po5.opt_id = 5
+		ORDER BY
+		p.prod_id
+	</select>
 </mapper>
