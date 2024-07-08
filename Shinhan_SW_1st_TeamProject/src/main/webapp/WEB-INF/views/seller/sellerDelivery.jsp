@@ -167,13 +167,14 @@
 			<h2>마이페이지</h2>
 			<hr />
 			<div class="user-info">
-				<p>김철수</p>
-				<p>573-50-00882</p>
+				<p>${sellerInfo.member_name}</p>
+				<p>${sellerInfo.member_id}</p>
 			</div>
 			<!-- 주문/배송 -->
+			<h3>판매 상품 주문 리스트</h3>
 			<div class="product-list">
-				<h3>판매 상품 주문 리스트</h3>
-				<table>
+				
+				<table class="sellPrdList">
 					<thead>
 						<tr>
 							<th></th>
@@ -198,8 +199,10 @@
 						</c:forEach>
 					</tbody>
 				</table>
-				<div class="actions">
-					<select id="order_status_select">
+				
+			</div>
+			<div class="actions">
+					<select id="order_status_select" class="orderStatus">
 						<option>결제대기</option>
 						<option>결제완료</option>
 						<option>배송준비중</option>
@@ -213,12 +216,13 @@
 					<button id="batch_process_button" onclick="updateOrderStatus()">일괄처리</button>
 					<button id="delete_selected_button" onclick="deleteCheckedOrder()">선택 내역 삭제</button>
 				</div>
-			</div>
+			
+			
 
 			<!-- 대여 -->
+			<h3>대여 상품 주문 리스트</h3>
 			<div class="product-list">
-				<h3>대여 상품 주문 리스트</h3>
-				<table>
+				<table class="sellPrdList">
 					<thead>
 						<tr>
 							<th></th>
@@ -243,8 +247,11 @@
 						</c:forEach>
 					</tbody>
 				</table>
-				<div class="actions">
-					<select id="rent_status_select">
+				
+			</div>
+			
+		<div class="actions">
+					<select id="rent_status_select" class="orderStatus">
 						<option>대여신청완료</option>
 						<option>결제완료</option>
 						<option>대여취소</option>
@@ -252,12 +259,11 @@
 						<option>반납중</option>
 						<option>반납완료</option>
 					</select>
-					<button id="batch_process_button" onclick="updateRentStatus()">일괄처리</button>
-					<button id="delete_selected_button" onclick="deleteCheckedRent()">선택 내역 삭제</button>
+					<button class="button" id="batch_process_button" onclick="updateRentStatus()">일괄처리</button>
+					<button class="button" id="delete_selected_button" onclick="deleteCheckedRent()">선택 내역 삭제</button>
 				</div>
-			</div>
 		</section>
-		<aside class="notifications">
+		<%-- <aside class="notifications">
 			<div class="notify_icon">
 				<img src="${path}/resources/images/bell.png" alt="알림"
 					class="bell_icon" />
@@ -269,20 +275,8 @@
 					<p>결제 대기 주문 : 23건</p>
 				</div>
 			</div>
-		</aside>
+		</aside> --%>
 	</main>
-	<script>
-		document.querySelector(".notifications .bell_icon").addEventListener(
-				"click",
-				function() {
-					document.querySelector(".notifications .popup").classList
-							.toggle("show");
-				});
-	</script>
-	<style>
-.notifications .popup.show {
-	display: block;
-}
 </style>
 </body>
 </html>

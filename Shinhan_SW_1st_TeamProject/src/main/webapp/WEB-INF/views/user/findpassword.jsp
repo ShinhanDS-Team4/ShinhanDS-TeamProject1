@@ -26,30 +26,6 @@
             color: #333;
             display: flex;
             flex-direction: column;
-            align-items: center;
-        }
-        header {
-            background-color: #333;
-            width: 100%;
-            padding: 10px 0;
-            text-align: center;
-            color: #fff;
-        }
-        header .logo {
-            font-size: 2em;
-            font-weight: bold;
-        }
-        nav.navbar {
-            background-color: #333;
-            width: 100%;
-            text-align: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #555;
-        }
-        nav.navbar a {
-            margin: 0 15px;
-            text-decoration: none;
-            color: #fff;
         }
         .password_container {
             max-width: 600px;
@@ -154,6 +130,10 @@
             text-decoration: none;
             margin: 0 10px;
         }
+        .phone-icon {
+    	width: 25px; /* 원하는 너비로 조정 */
+   		height: auto; /* 비율 유지를 위해 자동 설정 */
+}
     </style>
 	<script>
 	    $(document).ready(function() {
@@ -194,16 +174,7 @@
 	</script>
 </head>
 <body>
-    <header>
-        <div class="logo">saren</div>
-    </header>
-    <nav class="navbar">
-        <a href="#">여성</a>
-        <a href="#">남성</a>
-        <a href="#">키즈</a>
-        <a href="#">악세서리</a>
-        <a href="#">기타</a>
-    </nav>
+	<%@ include file="../common/header.jsp" %>
     <div class="password_container">
         <h1>아이디 / 비밀번호 찾기</h1>
         <div class="tab">
@@ -217,7 +188,7 @@
         <div class="highlight-line"></div>
         <button class="btn-email">이메일 인증으로 찾기</button>
         <div class="contact-info">
-            <p><img src="https://via.placeholder.com/20" alt="전화 아이콘"> 1599-0007 (평일 09:00 - 18:00)</p>
+            <p><img src="${path}/resources/images/phone_icon.png" alt="전화 아이콘" class="phone-icon"> 1599-0007 (평일 09:00 - 18:00)</p>
         </div>
     </div>
     <footer>

@@ -1,6 +1,7 @@
 package com.team4.shoppingmall.seller_prod_stockTest;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,11 +15,16 @@ public class Seller_Prod_StockTestService {
 	@Autowired
 	Seller_Prod_StockTestDAOInterface seller_prod_stockDAO;
 	
-	//»óÇ°ID·Î ¿É¼Çº° ÆÇ¸Å »óÇ° Àç°í Á¶È¸
+	//ë†’ì€ íŒë§¤ëŸ‰ ìƒí’ˆ 16ê°œ ì¶œë ¥
+	public List<Map<String,Object>> selectBestProducts(){
+		return seller_prod_stockDAO.selectBestProducts();
+	};	
+	
+	//ìƒí’ˆIDë¡œ ì˜µì…˜ë³„ íŒë§¤ ìƒí’ˆ ì¬ê³  ì¡°íšŒ
 	public List<Seller_Prod_StockTestDTO> selectSpsOptionByProdId(String prod_id){
 		return seller_prod_stockDAO.selectSpsOptionByProdId(prod_id);
 	}
-	//ÁÖ¹® »ı¼º½Ã Àç°í¼ö ¾÷µ¥ÀÌÆ®
+	//ì£¼ë¬¸ ìƒì„±ì‹œ ì¬ê³ ìˆ˜ ì—…ë°ì´íŠ¸
 	public int sellProdStockUpdate(ProductNewVO prodVO) {
 		return seller_prod_stockDAO.sellProdStockUpdate(prodVO);
 	};

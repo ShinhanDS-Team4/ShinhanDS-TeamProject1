@@ -5,10 +5,10 @@
 <mapper namespace="com.saren.coupon">
 
 	<!-- 쿠폰상세 -->
-	<select id="couponSelectById" parameterType="string" resultType="couponVO">
+	<select id="couponSelectById" parameterType="int" resultType="couponVO">
 		SELECT *
 		FROM COUPON
-		WHERE "coupon_id" = #{coupon_id}
+		WHERE coupon_id = #{coupon_id}
 	</select>
 
 	<!-- 쿠폰목록 -->
@@ -21,14 +21,14 @@
 	<select id="selectCustomerCouponList" parameterType="string" resultType="couponVO">
 		SELECT *
 		FROM COUPON
-		WHERE member_id=#{member_id}
+		WHERE member_id = #{member_id}
 	</select>
 	
 	<!-- 쿠폰사용 -->
  	<update id="couponUse" parameterType="couponVO">
 		UPDATE COUPON
 		SET
-		"coupon_state" = #{coupon_state}
-		WHERE "coupon_id" = #{coupon_id}
+		quantity=#{quantity}
+		WHERE coupon_id = #{coupon_id} AND member_id = #{member_id}
 	</update>
 </mapper>

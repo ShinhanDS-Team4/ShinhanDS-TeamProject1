@@ -1,0 +1,141 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 800px;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.order-details p {
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-size: 20px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.order-list {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.order-item {
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.item-image {
+  width: 100px;
+  height: 100px;
+  text-align: center;
+  background-color: #ddd;
+  padding: 20px;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.item-details {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.close-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 20px;
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background-color: #444;
+}
+
+.popupform {
+  display: flex;
+}
+
+.popupform p {
+  width: 80px;
+}
+
+.popupform input {
+  border: none;
+  outline: none;
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+.pName {
+  width: 70px;
+  height: 30px;
+  margin-right: 5px;
+  border: none;
+  outline: none;
+  background-color: #f5f5f5;
+}
+
+.pOption {
+  width: 80px;
+  height: 30px;
+  margin-right: 3px;
+  border: none;
+  outline: none;
+  background-color: #f5f5f5;
+}
+
+.order_count {
+  display: flex;
+  height: 30px;
+}
+
+.order_count_input {
+  border: none;
+  outline: none;
+  background-color: #f5f5f5;
+}
+
+.order_count_label {
+  margin-right: 10px;
+  font-weight: bold;
+  align-items: center;
+}
+
+.item-info {
+  align-items: center;
+}

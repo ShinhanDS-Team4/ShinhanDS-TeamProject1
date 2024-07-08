@@ -1,0 +1,320 @@
+body {
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+main {
+	display: flex;
+}
+
+aside {
+	width: 200px;
+	background-color: #f8f8f8;
+	padding: 20px;
+}
+
+aside ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+aside ul li {
+	margin-bottom: 10px;
+}
+
+aside ul li a {
+	text-decoration: none;
+	color: #333;
+}
+
+section {
+	flex-grow: 1;
+	padding: 20px;
+}
+
+.user-info {
+	display: flex;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.user-info p {
+	margin-right: 20px;
+	font-size: 20px;
+}
+
+.product-list {
+	margin-bottom: 40px;
+}
+
+.product-list h3 {
+	margin-top: 0;
+}
+
+.product-list table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.product-list table th, .product-list table td {
+	border: 1px solid #ddd;
+	padding: 10px;
+	text-align: center;
+}
+
+.product-list .actions {
+	margin-top: 10px;
+	text-align: right;
+}
+
+.product-list .actions button {
+	margin-left: 10px;
+}
+
+.notifications {
+	margin-left: auto;
+	padding: 20px;
+	background-color: #fff;
+}
+
+.notifications .icon span {
+	font-weight: bold;
+}
+
+.notifications .popup {
+	display: none;
+	position: absolute;
+	top: 40px;
+	right: 0;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	padding: 10px;
+	width: 250px;
+}
+
+.notifications .popup p {
+	margin: 0;
+}
+
+.bell {
+	width: 64x;
+}
+
+.bell_icon {
+	width: 64px;
+}
+
+.notify_icon {
+	display: flex;
+}
+
+span {
+	top: 0;
+	right: 0;
+	background-color: red;
+	color: #fff;
+	padding: 5px 10px;
+	border-radius: 50%;
+}
+
+.file-item {
+	margin-bottom: 10px;
+}
+
+.form-group {
+	margin-bottom: 10px;
+}
+
+.form-group label {
+	width: 120px;
+	margin-right: 10px;
+	font-weight: bold;
+}
+
+.form-group input[type="text"], .form-group select, .form-group textarea
+	{
+	width: 60%;
+	padding: 10px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+}
+
+.form-group input[type="file"] {
+	padding: 10px;
+}
+
+.form-group .radio-group {
+	display: flex;
+	gap: 20px;
+}
+
+.form-group .radio-group input {
+	margin-right: 5px;
+}
+
+.file-list {
+	max-height: 300px;
+	overflow-y: auto;
+	border-radius: 4px;
+	margin-bottom: 15px;
+}
+
+.file-list table {
+	width: 60%;
+	border-collapse: collapse;
+}
+
+.file-list th, .file-list td {
+	border: 1px solid #ddd;
+	padding: 8px;
+	text-align: center;
+}
+
+.file-list button {
+	background-color: black;
+	color: white;
+}
+
+.options {
+	margin-bottom: 15px;
+}
+
+.form-option-title {
+	width: 60%;
+	margin-bottom: 15px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.form-option-title button {
+	background-color: gray;
+	width: 80px;
+	height: 30px;
+	color: white;
+}
+
+.options .option-item {
+	display: flex;
+	width: 60%;
+	gap: 10px;
+	margin-bottom: 5px;
+}
+
+.options .option-item input {
+	flex: 1;
+}
+
+.options .option-item button {
+	padding: 5px 10px;
+	background-color: black;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.options .add-option {
+	text-align: right;
+}
+
+.options .add-option button {
+	padding: 5px 10px;
+	background-color: green;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.buttons {
+	text-align: center;
+}
+
+.buttons button {
+	padding: 10px 20px;
+	margin: 0 10px;
+	border: none;
+	border-radius: 4px;
+	background-color: black;
+	color: white;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+#option-name {
+	background-color: lightgray;
+}
+
+.file-upload-button {
+	background-color: black;
+	color: white;
+	font-size: 20px;
+}
+
+.image-preview img {
+	width: 200px;
+	height: 200px;
+}
+
+#prdMainImgFileContainer{
+	display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 4 columns */
+    grid-template-rows: repeat(3, auto); /* 2 rows */
+    gap: 10px; /* Gap between items */
+    padding: 10px; /* Padding around the grid */
+}
+#prdDescImgFileContainer{
+	display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 4 columns */
+    grid-template-rows: repeat(4, auto); /* 2 rows */
+    gap: 10px; /* Gap between items */
+    padding: 10px; /* Padding around the grid */  
+}
+
+.file-item{
+	width:250px;
+}
+
+.file-item img{
+	width: 300px;
+	height: 250px;
+}
+
+.optionList {
+  margin-bottom: 40px;
+}
+
+.optionList h3 {
+  margin-top: 0;
+}
+
+.optionList table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.optionList table th,
+.optionList table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.optionList .actions {
+  margin-top: 10px;
+  text-align: right;
+}
+
+.optionList .actions button {
+  margin-left: 10px;
+}
+
+#addImageBtn{
+	color: white;
+	background-color: black;
+	width: 200px;
+	height: 40px;
+}

@@ -3,7 +3,38 @@
       PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.rent">
-
+	
+	<!-- 대여 신청 완료된 대여 상품 목록 -->
+	<select id="rentProductById" parameterType="string"
+		resultType="map">
+		SELECT
+             r.rental_code,
+             p.prod_name, 
+             r.TOTAL_RENT_PRICE, 
+             rd.rent_num,
+             rd.RENT_PRODUCT_PRICE,         
+             r.RENT_START_DATE,
+             r.RENT_END_DATE,
+             pi.img_id,
+             rd.rent_state
+		FROM 
+		    RENT r
+		JOIN 
+		   RENT_DETAIL rd ON r.rental_code = rd.rental_code
+		JOIN 
+		    RENT_PROD_STOCK rps ON rps.r_stock_id = rd.r_stock_id
+        JOIN 
+           PROD p ON p.prod_id = rps.prod_id 
+        RIGHT JOIN 
+            PROD_IMAGE pi ON p.prod_id = pi.prod_id AND pi.img_id = (
+            SELECT MIN(img_id)
+            FROM PROD_IMAGE
+            WHERE prod_id = p.prod_id
+        )
+		WHERE 
+		    r.member_id = #{member_id}          
+	    AND rd.rent_state = '대여신청완료'
+	</select>
 	<!-- 대여상세 -->
 	<select id="selectById" parameterType="int" resultType="rentVO">
 		SELECT *
@@ -45,15 +76,28 @@
 		"rent_state" = #{rent_state}
 		WHERE "rental_code" = #{rental_code}
 	</update>
+	
+	<!--대여 수정 -->
+	<update id="updateRent" parameterType="rentVO">
+		UPDATE RENT
+		SET
+    		rent_start_date = #{rent_start_date},
+    		rent_end_date = #{rent_end_date},
+    		member_id = #{member_id},
+    		total_rent_price = #{total_rent_price}
+    	WHERE rental_code=#{rental_code}
+    </update>
+    
+     
 
 	<!-- orderlist.jsp에서, 상세상품 옵션 출력시, 모든 옵션 가져오기 -->
 	<select id="selectOptions" resultType="prod_optionVO">
 		SELECT *
-	    FROM PROD_OPTION 
+	    FROM PROD_OPTION
 	</select>
 
 	<!-- orderlist.jsp에 출력할 대여상품 상세정보 -->
-	<select id="selectById2" parameterType="int" resultType="map">
+	<select id="selectById2" parameterType="int" resultType="rent_selectVO">
 		SELECT P.prod_name,
 		   	   M.brand, 
 			   SPS.opt_id1,
@@ -62,19 +106,25 @@
 			   SPS.opt_id4,
 			   SPS.opt_id5,
 			   RD.rent_product_price,			   
-			   PI.img_url			   
+			   PI.img_id,
+			   RD.rent_state,
+			   RD.rentdetail_id,
+			   SPS.prod_id,
+			   RD.rent_num   
 		FROM
 			RENT R
 		JOIN
 			RENT_DETAIL RD ON R.rental_code = RD.rental_code
 		JOIN
-			RENT_PROD_STOCK SPS ON RD.stock_id = SPS.stock_id
+			RENT_PROD_STOCK SPS ON RD.r_stock_id = SPS.r_stock_id
 		JOIN
 			PROD P ON SPS.prod_id = P.prod_id
 		JOIN
 			MEMBER M ON P.member_id = M.member_id
 		JOIN
-			PROD_IMAGE PI ON P.prod_id = PI.prod_id
+			(SELECT prod_id, img_id
+    		 FROM PROD_IMAGE
+    		 WHERE img_id = CONCAT(prod_id, '_mainimage_1')) PI ON P.prod_id = PI.prod_id
 		where
 			r.rental_code = #{aa}
 	</select>
@@ -92,11 +142,11 @@
 	<!-- rentlist.jsp에서, 반납 -->
 	<update id="returnRent" parameterType="int">
 		UPDATE 
-			RENT
+			RENT_DETAIL
 		SET
 			rent_state = 'returned'
 		WHERE
-	    	rental_code = #{aa}
+	    	rentdetail_id = #{aa}
 	</update>
 
 </mapper>

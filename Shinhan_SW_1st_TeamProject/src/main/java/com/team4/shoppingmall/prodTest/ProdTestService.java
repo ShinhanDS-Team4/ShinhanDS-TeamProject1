@@ -9,12 +9,11 @@ import org.springframework.stereotype.Service;
 import com.team4.shoppingmall.prod.ProdDTO;
 
 @Service
-public class ProdTestService {
+public class ProdTestService{
 	
 	@Autowired
 	ProdDAOTestInterface prodDAO;
 	
-	//��ǰ �� ���� ��ȸ
 	public Map<String,Object> selectProdDetailInfoByProdId(String prod_id) {
 		return prodDAO.selectProdDetailInfoByProdId(prod_id);
 	}

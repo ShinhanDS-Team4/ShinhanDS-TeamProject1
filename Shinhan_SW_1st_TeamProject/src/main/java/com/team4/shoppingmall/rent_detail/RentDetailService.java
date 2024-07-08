@@ -1,6 +1,7 @@
 package com.team4.shoppingmall.rent_detail;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,27 +12,37 @@ public class RentDetailService {
 	@Autowired
 	RentDetailDAOInterface rentDetailDAO;
 	
-	// ´ë¿©»ó¼¼ »ó¼¼
+	//ëŒ€ì—¬ì£¼ë¬¸ìƒí’ˆ ë¸Œëœë“œ,ì´ë¦„
+	public Map<String,String> getRentOrderProdBrand(int rental_code){
+		return rentDetailDAO.getRentOrderProdBrand(rental_code);
+	};
+	
+	// ëŒ€ì—¬ìƒì„¸ ìƒì„¸
 	public RentDetailDTO selectById(Integer rentdetail_id) {
 		return rentDetailDAO.selectById(rentdetail_id);
 	}
 
-	// ´ë¿©»ó¼¼ ¸ñ·Ï
+	// ëŒ€ì—¬ìƒì„¸ ëª©ë¡
 	public List<RentDetailDTO> selectAll() {
 		return rentDetailDAO.selectAll();
 	}
 	
-	//ÆÇ¸ÅÀÚÀÇ ´ë¿© »ó¼¼ ¸ñ·Ï °¡Á®¿À±â
+	// ï¿½ë¿© IDï¿½ï¿½ ï¿½ë¿©ï¿½ï¿½ ï¿½ï¿½ï¿½
+	public List<RentDetailDTO> selectByRental_code(int rental_code){
+		return rentDetailDAO.selectByRental_code(rental_code);
+	}
+	
+	//íŒë§¤ìì˜ ëŒ€ì—¬ ìƒì„¸ ëª©ë¡ ê°€ì ¸ì˜¤ê¸°
 	public List<RentDetailDTO> selectBySellerID(String member_id){
 		return rentDetailDAO.selectBySellerID(member_id);
 	}
 
-	// ´ë¿©»ó¼¼ »ı¼º
+	// ëŒ€ì—¬ìƒì„¸ ìƒì„±
 	public int rentDetailInsert(RentDetailDTO rentdetail) {
 		return rentDetailDAO.rentDetailInsert(rentdetail);
 	}
 	
-	// ´ë¿©»ó¼¼ ¼öÁ¤ 
+	// ëŒ€ì—¬ìƒì„¸ ìˆ˜ì • 
 	public int rentDetailUpdate(RentDetailDTO rentdetail) {
 		return rentDetailDAO.rentDetailUpdate(rentdetail);
 	}
@@ -42,6 +53,10 @@ public class RentDetailService {
 	
 	public int rentDetailDelete(Integer rentdetail_id) {
 		return rentDetailDAO.rentDetailDelete(rentdetail_id);
+	}
+	
+	public int rentDetailDelByRentCode(Integer rental_code) {
+		return rentDetailDAO.rentDetailDelByRentCode(rental_code);
 	}
 
 }

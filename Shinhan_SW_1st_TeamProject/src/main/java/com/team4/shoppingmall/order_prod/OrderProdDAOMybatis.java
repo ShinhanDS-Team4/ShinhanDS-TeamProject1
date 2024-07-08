@@ -18,56 +18,80 @@ public class OrderProdDAOMybatis implements OrderProdDAOInterface {
 	String namespace = "com.saren.orderprod.";
 
 	
+	//결제 완료된 주문 상품 목록
+	public List<Map<String,Object>> orderProductById(String member_id){
+		return sqlSession.selectList(namespace+"orderProductById", member_id);
+	};
+	
+//	public List<OrderProdDetailDTO> selectById2(int order_id){
+//		return sqlSession.selectList(namespace+"selectById2", order_id);
+//	};
+	
+	//나의 주문 상품 정보 조회
 	public int sequenceOrderId() {
 		return sqlSession.selectOne(namespace+"sequenceOrderId");
 	};
-	// �ֹ���
+
+
 	@Override
 	public OrderProdDTO selectById(Integer order_id) {
 		return sqlSession.selectOne(namespace+"selectById", order_id);
 	}
 
-	// �ֹ����
 	@Override
 	public List<OrderProdDTO> selectAll() {
 		return sqlSession.selectList(namespace+"selectAll");
 	}
 
-	// �ֹ�����
 	@Override
 	public int orderprodInsert(OrderProdDTO orderprod) {
 		return sqlSession.insert(namespace+"orderprodInsert", orderprod);
 	}
 	
-	// �ֹ�����
 	@Override
 	public int orderprodUpdate(OrderProdDTO orderprod) {
 		return sqlSession.update(namespace+"orderprodUpdate", orderprod);
 	}
-	
-	// orderlist.jsp�� ����� ��ǰ��, �귣��, �ɼ�, ��ǰ����, �̹���URL
+
+
 	@Override
-	public Map<String, Object> selectById2(int order_id) { 
-        return sqlSession.selectOne(namespace + "selectById2", order_id);
+	public List<OrderProdDetailDTO> selectById2(int order_id) { 
+        return sqlSession.selectList(namespace + "selectById2", order_id);
     } 
 	
-	// orderlist.jsp����, �󼼻�ǰ �ɼ� ��½�, ��� �ɼ� ��������
 	@Override
 	public List<Prod_OptionDTO> selectOptions() { 
 		List<Prod_OptionDTO> optlist = sqlSession.selectList(namespace + "selectOptions"); 
         return optlist;
 	}
 
-	// orderlist.jsp����, �ֹ����
+	// orderlist.jsp����, �ֹ����
 	@Override
 	public int orderCancel(int orderId) {
         return sqlSession.update(namespace + "orderCancel", orderId);
 	}
 
-	// orderlist.jsp����, �ֹ�ȯ��
+	// orderlist.jsp����, �ֹ�ȯ��
 	@Override
 	public int orderRefund(int orderId) {
         return sqlSession.update(namespace + "orderRefund", orderId); 
+	}
+
+	@Override
+	public int updateOrderPrice(OrderProdDTO orderprod) {
+		return sqlSession.update(namespace+"updateOrderPrice", orderprod);
+	}
+
+	@Override
+	public int orderprodDelete(int order_id) {
+		return sqlSession.delete(namespace+"orderprodDelete",order_id);
+	}
+
+	@Override
+	public List<OrderProdDTO> selectByMemId(String member_id) {
+		return sqlSession.selectList(namespace+"selectByMemId", member_id);
 	} 
+	
+	
 
 }

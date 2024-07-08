@@ -3,13 +3,22 @@
       PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.customer">
+	<!--  -->
+	<select id="">
+		SELECT M.brand, p.prod_name
+		FROM MEMBER M
+		JOIN PROD P ON M.member_id = P.member_id
+		JOIN SELL_PROD_STOCK S ON P.prod_id = S.prod_id
+		JOIN ORDER_DETAIL O ON S.s_stock_id = O.s_stock_id
+		WHERE O.orderdetail_id = #{orderdetail_id};
+	</select>
 
 	<!-- 고객상세 -->
 	<select id="selectById" parameterType="string"
 		resultType="com.team4.shoppingmall.customer.CustomerDTO">
 		SELECT *
 		FROM CUSTOMER
-		WHERE "member_id" = #{member_id}
+		WHERE member_id = #{member_id}
 	</select>
 
 	<!-- 고객목록 -->
@@ -20,13 +29,10 @@
 	</select>
 
 	<!-- 고객등록 -->
-	<insert id="customerInsert"
-		parameterType="com.team4.shoppingmall.customer.CustomerDTO">
+	<insert id="customerInsert" parameterType="CustomerVO">
 		INSERT
-		INTO CUSTOMER("member_id", "point",
-		"member_level", "account_amount")
-		VALUES(#{member_id}, #{point},
-		#{member_level})
+		INTO CUSTOMER(member_id, point, member_level, accum_amount)
+		VALUES(#{member_id}, #{point}, #{member_level}, #{accum_amount})
 	</insert>
 
 	<!-- 고객수정 -->
@@ -34,10 +40,9 @@
 		parameterType="com.team4.shoppingmall.customer.CustomerDTO">
 		UPDATE CUSTOMER
 		SET
-		"point" = #{point}, "member_level" =
-		#{member_level}, "accum_amount" = #{accum_amount}
-		WHERE "member_id" =
-		#{member_id}
+		point = #{point}, member_level = #{member_level}, 
+		accum_amount = #{accum_amount}
+		WHERE member_id = #{member_id}
 	</update>
 
 	<select id="TotalMoneyAmount" resultType="long">

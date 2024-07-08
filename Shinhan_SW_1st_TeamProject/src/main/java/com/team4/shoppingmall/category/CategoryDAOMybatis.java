@@ -54,4 +54,16 @@ public class CategoryDAOMybatis implements CategoryDAOInterface {
 	public List<CategoryDTO> traceCurCtg(Map<String, Integer> traced) {
 		return sqlSession.selectList(namespace+"traceCurCtg", traced);
 	}
+
+
+	@Override
+	public List<CategoryDTO> categoryListBydepth(CategoryDTO category) {
+		return sqlSession.selectList(namespace+"categoryListBydepth", category);
+	}
+
+	@Override
+	public List<CategoryDTO> firstDepthCategoryList() {
+		return sqlSession.selectList(namespace+"firstDepthCategoryList");
+	}
 }
+

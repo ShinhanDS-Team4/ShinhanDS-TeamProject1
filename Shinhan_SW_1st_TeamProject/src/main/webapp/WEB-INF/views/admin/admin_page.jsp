@@ -180,7 +180,7 @@
 									<td>${seller.create_date}</td>
 									<td colspan="2">
 										<button class="btn btn-sm" onclick="location.href='admin_seller_info?member_id=${seller.member_id}'">자세히 보기</button>
-										<button class="btn btn-sm" onclick="location.href='admin_seller_delete.jsp?id=${seller.member_id}'">삭제</button>
+										<button class="btn btn-sm" onclick="location.href='admin_seller_delete?returnUrl=adminPage&member_id=${seller.member_id}'">삭제</button>
 									</td>
 								</tr>
 							</c:if>
@@ -191,11 +191,9 @@
 							</tr>
 						</c:if>
 					</tbody>
-				</table>
-				<div class="text-right">
-					<a href="admin_seller_list" class="btn btn-primary">자세히 보기</a>
-				</div>
+				</table>				
 			</div>
+
 			<div class="card">
 				<div class="card-body">
 					<h5 class="card-title">세이렌 인기상품 TOP 10</h5>
@@ -203,6 +201,7 @@
 						<thead>
 							<tr>
 								<th>순위</th>
+								<th>판매량</th>
 								<th>상품사진</th>
 								<th>상품명</th>
 								<th>상품 설명</th>
@@ -213,17 +212,16 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="product" items="${topProducts}">
+							<c:forEach var="topproduct" items="${topProducts}">
 								<tr>
-									<td>${product.total}</td>
-									<td><a href="admin_seller_detail?id=${product.sellerId}">
-									<img src="${product.img_id}" alt="${product.prod_name}" style="width: 50px;"></a></td>
-									<td><a href="admin_seller_detail?id=${product.sellerId}">${product.prod_name}</a></td>
-									<td>${product.desc}</td>
-									<td>${product.price}</td>
-									<td>${product.opt_name}</td>
-									<td>${product.stock}</td>
-									<td>${product.added_date}</td>
+									<td></td>
+									<td>${topproduct.TOTAL}</td>
+									<td><a href="admin_seller_prod?id=${topproduct.MEMBER_ID}">
+									<img src="${topproduct.IMG_ID}" alt="${topproduct.PROD_NAME}" style="width: 50px;"></a></td>
+									<td><a href="admin_seller_prod?id=${topproduct.MEMBER_ID}">${topproduct.PROD_NAME}</a></td>
+									<td>${topproduct.PROD_DESC}</td>
+									<td>${topproduct.PROD_PRICE}</td>
+									<td>${topproduct.OPT_VALUE}</td>									
 								</tr>
 							</c:forEach>
 							<c:if test="${empty topProducts}">
@@ -232,10 +230,7 @@
 								</tr>
 							</c:if>
 						</tbody>
-					</table>
-					<div class="text-right">
-						<a href="admin_seller_prod" class="btn btn-primary">자세히 보기</a>
-					</div>
+					</table>					
 				</div>
 			</div>
 

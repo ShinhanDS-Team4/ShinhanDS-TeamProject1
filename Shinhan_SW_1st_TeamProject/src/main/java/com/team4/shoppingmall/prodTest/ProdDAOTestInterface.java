@@ -7,7 +7,7 @@ import com.team4.shoppingmall.prod.ProdDTO;
 
 public interface ProdDAOTestInterface {
 	
-	//��ǰ �� ���� ��ȸ
+
 	public Map<String,Object> selectProdDetailInfoByProdId(String prod_id);
 	
 	public ProdTestDTO selectByProdId(String prod_id);

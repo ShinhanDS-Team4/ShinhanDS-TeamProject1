@@ -4,8 +4,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-	<c:set var="path" value="${pageContext.servletContext.contextPath}" />
-	<!-- 헤더,푸터 css -->
+    <c:set var="path" value="${pageContext.servletContext.contextPath}" />
+    <!-- 헤더,푸터 css -->
     <link rel="stylesheet" href="${path}/resources/css/header_footer.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,7 +21,6 @@
         header {
             background-color: #fff;
             padding: 10px 0;
-            text-align: center;
         }
         header .logo {
             font-size: 2em;
@@ -62,7 +61,7 @@
             display: flex;
             flex-direction: row;
             align-items: center;
-            /* margin-bottom: 15px; 삭제 */
+            margin-bottom: 15px;
         }
         .form-group label {
             flex: 0 0 150px; /* 고정된 너비 설정 */
@@ -91,21 +90,41 @@
         }
         .btn {
             padding: 10px;
-            background-color: #333;
+            background-color: #513AE4;
             color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 20px;
         }
         .btn:hover {
-            background-color: #555;
+            background-color: #4331B7;
         }
         .error-message {
-            color: red;
             font-size: 0.9em;
             margin-top: -10px;
             margin-bottom: 15px;
+        }
+        .error-message.red {
+            color: red;
+        }
+        .error-message.green {
+            color: green;
+        }
+        .email-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        .email-container input[type="email"] {
+            flex: 1;
+            margin-right: 10px;
+        }
+        .address-container {
+            display: flex;
+            flex-direction: column;
+        }
+        .hidden {
+            display: none;
         }
         footer {
             background-color: #333;
@@ -136,9 +155,25 @@
         }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script>
     $(document).ready(function() {
         var verificationCode = '';
+
+        // 초기 상태: 브랜드 input 숨기기
+        $('#brand-group').addClass('hidden');
+
+        // 구분 선택에 따라 아이디 레이블 변경 및 브랜드 input 표시/숨기기
+        $('#member_type').on('change', function() {
+            var selectedType = $(this).val();
+            if (selectedType == '2') {
+                $('label[for="member_id"]').text('사업자등록번호');
+                $('#brand-group').removeClass('hidden');
+            } else {
+                $('label[for="member_id"]').text('아이디');
+                $('#brand-group').addClass('hidden');
+            }
+        });
 
         // 이메일 인증번호 받기
         $('#email-verify-btn').on('click', function() {
@@ -179,20 +214,66 @@
         $('#confirm-password').on('input', function() {
             var password = $('#member_pw').val();
             var confirmPassword = $(this).val();
-            if (password !== confirmPassword) {
-                $('#password-error').text('비밀번호가 다릅니다.');
+            if (password === '' || confirmPassword === '') {
+                $('#password-error').text('').removeClass('red green');
+            } else if (password !== confirmPassword) {
+                $('#password-error').text('비밀번호가 다릅니다.').removeClass('green').addClass('red');
             } else {
-                $('#password-error').text('');
+                $('#password-error').text('비밀번호가 일치합니다.').removeClass('red').addClass('green');
             }
+        });
+
+        // 주소 입력 버튼 클릭 시 카카오 API 호출
+        $('#address-btn').on('click', function() {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    var addr = ''; // 주소 변수
+                    var extraAddr = ''; // 참고항목 변수
+
+                    // 사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                    if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                        addr = data.roadAddress;
+                    } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                        addr = data.jibunAddress;
+                    }
+
+                    // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                    if (data.userSelectedType === 'R') {
+                        if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                            extraAddr += data.bname;
+                        }
+                        if (data.buildingName !== '' && data.apartment === 'Y') {
+                            extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                        }
+                        if (extraAddr !== '') {
+                            extraAddr = ' (' + extraAddr + ')';
+                        }
+                    }
+
+                    // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                    document.getElementById('zipcode').value = data.zonecode;
+                    document.getElementById("main_address").value = addr;
+                    document.getElementById("sub_address").value = extraAddr;
+                    document.getElementById("detail_address").focus();
+                }
+            }).open();
         });
 
         // 회원가입 폼 제출
         $('form').on('submit', function(event) {
-            if (!$('#email').prop('readonly')) {
+            var password = $('#member_pw').val();
+            var confirmPassword = $('#confirm-password').val();
+            var emailVerified = $('#email').prop('readonly');
+
+            if (!emailVerified) {
                 event.preventDefault();
                 $('#email-error').text('이메일을 인증해 주세요.');
+            } else if (password === '' || confirmPassword === '' || password !== confirmPassword) {
+                event.preventDefault();
+                $('#password-error').text('비밀번호를 설정해주세요.').removeClass('green').addClass('red');
+            } else {
+                alert('회원가입 완료!');
             }
-            alert('SAREN에 어서오세요!');
         });
     });
     </script>
@@ -202,7 +283,7 @@
     <%@ include file="../common/header.jsp" %>
     <div class="container">
         <h1>회원가입</h1>
-        <form method="post" accept-charset="UTF-8" action="${path}/member_test/signup.do">
+        <form method="post" accept-charset="UTF-8" action="${path}/member_test/signup">
             <div class="form-group">
                 <label for="member_type">구분</label>
                 <select id="member_type" name="member_type">
@@ -221,8 +302,8 @@
             <div class="form-group">
                 <label for="confirm-password">비밀번호 확인</label>
                 <input type="password" id="confirm-password" name="confirmPassword">
-                <div id="password-error" class="error-message"></div>
             </div>
+            <div id="password-error" class="error-message"></div>
             <div class="form-group">
                 <label for="member_name">이름</label>
                 <input type="text" id="member_name" name="member_name">
@@ -233,10 +314,12 @@
             </div>
             <div class="form-group">
                 <label for="email">이메일</label>
-                <input type="email" id="email" name="email">
-                <button type="button" id="email-verify-btn" class="btn">인증번호 받기</button>
-                <div id="email-error" class="error-message"></div>
+                <div class="email-container">
+                    <input type="email" id="email" name="email">
+                    <button type="button" id="email-verify-btn" class="btn">인증번호 받기</button>
+                </div>
             </div>
+            <div id="email-error" class="error-message red"></div>
             <div class="form-group">
                 <label for="birth_date">생년월일</label>
                 <input type="date" id="birth_date" name="birth_date">
@@ -249,11 +332,23 @@
                 <label for="female">여성</label>
             </div>
             <div class="form-group">
-                <label for="address">주소</label>
-                <input type="text" id="address" name="address" placeholder="우편번호">
-                <input type="text" id="detail-address" name="detailAddress" placeholder="상세주소">
+                <label for="zipcode">주소</label>
+                <button type="button" id="address-btn" class="btn address-button">주소 입력</button>
+                <input type="text" id="zipcode" name="zipcode" placeholder="우편번호" readonly>
             </div>
             <div class="form-group">
+                <label for="main_address"></label>
+                <input type="text" id="main_address" name="main_address" placeholder="주소" readonly>
+            </div>
+            <div class="form-group">
+                <label for="detail_address"></label>
+                <input type="text" id="detail_address" name="detail_address" placeholder="상세주소">
+            </div>
+            <div class="form-group">
+                <label for="sub_address"></label>
+                <input type="text" id="sub_address" name="sub_address" placeholder="참고주소">
+            </div>
+            <div class="form-group hidden" id="brand-group">
                 <label for="brand">브랜드</label>
                 <input type="text" id="brand" name="brand">
             </div>

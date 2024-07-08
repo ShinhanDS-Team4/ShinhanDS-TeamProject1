@@ -16,19 +16,38 @@ public class CartService {
 	@Autowired
 	CartDAOInterface cartDAO;
 	
+	//대여 장바구니 담은 개수
+	public int countRentCartList(String member_id) {
+		return cartDAO.countRentCartList(member_id);
+	};
+	//판매상품 장바구니 담은 개수
+	public int countSellCartList(String member_id) {
+		return cartDAO.countSellCartList(member_id);
+	};
+	
+	//판매 장바구니 상품 정보 조회
+	public List<Map<String,Object>> selectSellCartProdInfo(String member_id) {
+		return cartDAO.selectSellCartProdInfo(member_id);
+	};
+	
+	//대여 장바구니 상품 정보 조회
+	public List<Map<String,Object>> selectRentCartProdInfo(String member_id) {
+		return cartDAO.selectRentCartProdInfo(member_id);
+	};
 	//선택한 옵션 상품의 재고ID 조회
 	public String searchStockId(HashMap<String, String> map, String prod_id) {
 		return cartDAO.searchStockId(map, prod_id);
 	}
 	
 	//장바구니에 같은 상품이 존재하는지 조회
-//	public CartDTO selectCartBySellstock(Map<String,String> map) {
-//		return cartDAO.selectCartBySellstock(map);
-//	}
 	public CartDTO selectCartBySellstock(CartDTO cartDTO) {
 		return cartDAO.selectCartBySellStock(cartDTO);
 	}
-	
+
+	//장바구니 상품 수량 업데이트
+	public int updateCartBySellStock(CartDTO cart) {
+		return cartDAO.updateCartBySellStock(cart);
+	}
 	public List<CartDTO> selectSellStockByMemberId(String member_id) {
 		return cartDAO.selectSellStockByMemberId(member_id);
 	}
@@ -49,6 +68,17 @@ public class CartService {
 		return cartDAO.selectAll();
 	}
 	
+	public int cartInsert(CartDTO cart) {
+		return cartDAO.cartInsert(cart);
+	}
+	
+	public int cartUpdate(CartDTO cart) {
+		return cartDAO.cartUpdate(cart);
+	}
+	
+	public int cartDelete(Integer cart_id) {
+		return cartDAO.cartDelete(cart_id);
+	}
 	//판매상품 장바구니 insert문
 	@Transactional
 	public int cartInsert(ProductNewVO prodVO, String member_id, int cart_amount) {
@@ -59,7 +89,7 @@ public class CartService {
 		//cartDTO.setCart_amount(prodVO.getOrder_num()); 
 		cartDTO.setCart_amount(cart_amount); 
 		
-		//재고 있는지 조회
+		//같은 재고 있는지 조회
 		CartDTO isExistsSellCart = cartDAO.selectCartBySellStock(cartDTO);
 		
 		if(isExistsSellCart != null){
@@ -72,7 +102,11 @@ public class CartService {
 		}else {
 			
 			int result = cartDAO.cartInsert(cartDTO);
-			return result;
+			
+			//insert된 장바구니 ID 저장
+			int cart_id = cartDTO.getCart_id();
+			
+			return cart_id;
 		}
 	}
 	//대여상품 장바구니 insert문
@@ -80,10 +114,11 @@ public class CartService {
 		
 		CartDTO cartDTO = new CartDTO();
 		cartDTO.setMember_id(member_id);
-		cartDTO.setS_stock_id(prodVO.getS_stock_id());
-		cartDTO.setCart_amount(prodVO.getRent_num());//����
+		cartDTO.setR_stock_id(prodVO.getR_stock_id());  //대여재고ID
+		//cartDTO.setS_stock_id(prodVO.getS_stock_id());
+		cartDTO.setCart_amount(prodVO.getRent_num());
 		
-		//재고 있는지 조회
+		//같은 대여상품 재고 있는지 조회 - 수정
 		CartDTO isExistsRentCart = cartDAO.selectCartByRentStock(cartDTO);
 		
 		if(isExistsRentCart != null){
@@ -95,22 +130,12 @@ public class CartService {
 			
 		}else {
 			int result = cartDAO.cartRentProductInsert(cartDTO);
-			return result;
+			//장바구니id(대여)
+			int rentCartId = cartDTO.getCart_id();
+			
+			return rentCartId;
 		}
 	}
 
-	//장바구니 상품 수량 업데이트
-	public int updateCartBySellStock(CartDTO cart) {
-		return cartDAO.updateCartBySellStock(cart);
-	}
-	
-	public int cartUpdate(CartDTO cart) {
-		return cartDAO.cartUpdate(cart);
-	}
-	
-	public int cartDelete(Integer cart_id) {
-		return cartDAO.cartDelete(cart_id);
-	}
-	
 	
 }

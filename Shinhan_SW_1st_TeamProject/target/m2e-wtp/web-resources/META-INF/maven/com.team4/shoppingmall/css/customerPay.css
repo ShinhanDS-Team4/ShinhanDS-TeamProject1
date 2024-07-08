@@ -1,0 +1,255 @@
+/* 湲곗〈�쓽 �뒪���씪 肄붾뱶�� 異붽��맂 �뒪���씪 肄붾뱶 */
+/* 疫꿸퀣�덌옙�벥 占쎈뮞占쏙옙占쎌뵬 �굜遺얜굡占쏙옙 �빊遺쏙옙占쎈쭆 占쎈뮞占쏙옙占쎌뵬 �굜遺얜굡 */
+main {
+	width: 80%;
+	margin: 20px auto;
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	
+}
+
+main h1 {
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+#orderList {
+	margin-bottom: 20px;
+}
+
+#orderTable {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+#orderTable th, #orderTable td {
+	border: 1px solid #ccc;
+	padding: 10px;
+	text-align: center;
+}
+
+#orderTable th {
+	background-color: black;
+	color:white;
+}
+
+
+
+.info{
+	display: flex;
+	
+  	align-items: center;
+}
+
+.left,
+.right {
+  padding : 10px;
+}
+.right{
+	width: 300px;
+}
+
+.left p{
+	font-size: 15px;
+}
+
+.right input{
+  border: none;
+  outline: none;
+  text-align: center;
+  font-size: 15px;
+  width: 300px;
+}
+
+.order-summary, .delivery-info, .coupon-info {
+	margin-bottom: 30px;
+}
+
+.order-summary .product-info {
+	display: flex;
+	gap: 20px;
+}
+
+.order-summary .product-info img {
+	width: 150px;
+	height: 150px;
+	object-fit: cover;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+}
+
+.order-summary .product-details {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.product {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 10px;
+}
+
+.productIMG{
+	width: 100px;
+	height: 100px;
+}
+
+.product-details, .coupon {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+input {
+	width: 100px;
+	height: 30px;
+}
+
+.delivery-info h2, .coupon-info h2, .terms-and-payment h2 {
+	border-bottom: 2px solid #000;
+	padding-bottom: 5px;
+	margin-bottom: 15px;
+}
+
+.order-total{
+	display:flex;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	justify-content: center;
+}
+
+.order-total p{
+	font-size:30px;
+	
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+.form-group {
+	display: flex;
+	align-items: center;
+	padding-bottom: 10px;
+}
+
+.form-group label {
+	width: 200px;
+	font-weight: bold;
+}
+
+.form-group input[type="text"], .form-group input[type="number"],
+	.form-group select {
+	flex: 1;
+	padding: 10px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+}
+
+.form-group input[type="checkbox"] {
+	width: auto;
+}
+
+.form-group .address-button, .form-group .coupon-button, .submit-button,
+	.payment-button {
+	background-color: black;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.form-group .address-button {
+	margin-left: 10px;
+}
+
+.form-group .coupon-button {
+	margin-left: 10px;
+}
+
+.submit-button {
+	align-self: flex-end;
+	margin: 5px;
+}
+
+.payment-summary {
+	font-size: 20px;
+	font-weight: bold;
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.terms-and-payment form {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.terms-and-payment form .form-group {
+	display: flex;
+	align-items: center;
+}
+
+.terms-and-payment form .form-group label {
+	flex: 1;
+}
+
+.payment-group{
+	text-align: center;
+}
+
+.payment-button {
+	background-color: #6200ea;
+	color: white;
+	padding: 15px;
+	font-size: 18px;
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+	align-self: center;
+	width: 200px;
+	margin: 20px;
+}
+
+footer {
+	background-color: #fff;
+	padding: 20px;
+	border-top: 1px solid #ddd;
+	text-align: center;
+}
+
+footer ul {
+	list-style: none;
+	display: flex;
+	justify-content: center;
+	gap: 15px;
+	padding: 0;
+}
+
+footer ul li {
+	display: inline;
+}
+
+footer ul li a {
+	text-decoration: none;
+	color: #000;
+	font-size: 16px;
+}
+
+.select-button {
+	background-color: black;
+	color: white;
+	font-size: 15px;
+	padding: 6px 10px;
+	margin: 5px;
+	border-radius: 5px;
+}
+
+.addrListClass td{
+	margin:5px;
+}

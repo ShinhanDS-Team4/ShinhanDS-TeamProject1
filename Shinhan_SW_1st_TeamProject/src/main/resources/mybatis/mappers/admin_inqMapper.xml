@@ -21,21 +21,25 @@
 		SELECT *
 		FROM ADMIN_INQ
 	</select>
+	
+	<select id="findMaxAdminInqId" resultType = "int">
+		SELECT MAX(admin_inq_id) AS max_admin_inq_id
+		FROM ADMIN_INQ
+	</select>
 
 	<insert id="admin_inqInsert" parameterType="admin_inqVO">
 		INSERT 
 		INTO ADMIN_INQ(admin_inq_id, admin_inq_title, admin_inq_content, 
 					   admin_inq_date, member_id) 
-		VALUES(#{admin_inq_id}, #{admin_inq_title}, #{admin_inq_content},  
+		VALUES(seq_admin_inq_id.nextval, #{admin_inq_title}, #{admin_inq_content},  
 			   #{admin_inq_date}, #{member_id})
 	</insert>
 
 	<update id="admin_inqUpdate" parameterType="admin_inqVO">
 		UPDATE ADMIN_INQ
 		SET
-		admin_inq_title = #{admin_inq_title}, "admin_inq_content" = #{admin_inq_content}, 
-		admin_inq_date = #{admin_inq_date}, "admin_reply" = #{admin_reply}, 
-		member_id = #{member_id}
+		admin_inq_title = #{admin_inq_title},
+		admin_inq_content = #{admin_inq_content}
 		WHERE admin_inq_id = #{admin_inq_id}
 	</update>
 
@@ -45,4 +49,51 @@
 		WHERE admin_inq_id = #{admin_inq_id}
 	</delete>
 	
+	<select id="selectBySellerAll" resultType="admin_inqVO">
+		select *
+		from admin_inq
+		join 
+	    (select member_id
+	    from member
+	    where member_type = 2) selected
+		using(member_id)
+	</select>
+
+	<select id="selectByCustomerAll" resultType="admin_inqVO">
+		select *
+		from admin_inq
+		join 
+	    (select member_id
+	    from member
+	    where member_type = 1) selected
+		using(member_id)
+	</select>
+	
+	<select id="searchFaq" parameterType="map" resultType="admin_inqVO">
+		SELECT ai.* FROM ADMIN_INQ ai 
+		JOIN MEMBER m ON ai.member_id = m.member_id 
+		WHERE m.member_type = #{boardType} 
+		<if test='searchQuery != null and searchQuery != ""'>
+			and ai.admin_inq_title = #{searchQuery}
+		</if>
+	</select>
+		
+	<update id="adminfaqreply" parameterType="map">
+		update admin_inq set SET admin_reply = #{admin_reply}, admin_inq_date = #{admin_inq_date}
+    	WHERE admin_inq_id = #{admin_inq_id}
+	</update>
+	
+	<update id="admin_reply_delete" parameterType="int">		
+		UPDATE ADMIN_INQ
+    	SET admin_reply = NULL
+    	WHERE admin_inq_id = #{admin_inq_id}
+	</update>
+	
+	<update id="admin_replyUpdate" parameterType="admin_inqVO">
+		UPDATE ADMIN_INQ
+		SET
+		admin_inq_date = #{admin_inq_date},
+		admin_reply = #{admin_reply}
+		WHERE admin_inq_id = #{admin_inq_id}
+	</update>
 </mapper>

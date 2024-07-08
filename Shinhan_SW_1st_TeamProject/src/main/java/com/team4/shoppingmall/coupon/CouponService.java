@@ -11,23 +11,23 @@ public class CouponService {
 	@Autowired
 	CouponDAOInterface couponDAO;
 	
-	// ÄíÆù»ó¼¼
-	public CouponDTO selectById(String coupon_id) {
+	// ì¿ í°ìƒì„¸
+	public CouponDTO selectById(int coupon_id) {
 		return couponDAO.selectById(coupon_id);
 	}
 	
-	// ÄíÆù¸ñ·Ï
+	// ì¿ í°ëª©ë¡
 	public List<CouponDTO> selectAll() {
 		return couponDAO.selectAll();
 	}
 	
-	//È¸¿øº° º¸À¯ ÄíÆù ¸ñ·Ï
+	//íšŒì›ë³„ ë³´ìœ  ì¿ í° ëª©ë¡
 	public List<CouponDTO> selectCustomerCouponList(String member_id){
 		return couponDAO.selectCustomerCouponList(member_id);
 	}
 	
-	// ÄíÆù»ç¿ë
-	public int couponUse(String coupon_id) {
-		return couponDAO.couponUse(coupon_id);
+	// ì¿ í°ì‚¬ìš©
+	public int couponUse(CouponDTO couponDTO) {
+		return couponDAO.couponUse(couponDTO);
 	}
 }

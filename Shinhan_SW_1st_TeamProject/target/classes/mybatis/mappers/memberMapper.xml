@@ -4,23 +4,33 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saren.member">
 
-	<!-- (확인 필요) 로그인한 회원의 비밀번호체크  -->
+	<!-- (확인 필요) 로그인한 회원의 비밀번호체크 -->
 	<select id="selectByPw" parameterType="string"
 		resultType="memberVO">
 		SELECT *
 		FROM MEMBER
-		WHERE member_pw = #{member_pw} and member_id = #{member_id}
+		WHERE member_pw = #{member_pw} and
+		member_id = #{member_id}
 	</select>
-
+	
+	<!-- 로그인 회원 정보 수정용 비밀번호 체크  -->
+	<select id="memberCheckByPw" parameterType="memberVO"
+		resultType="memberVO">
+		SELECT *
+		FROM MEMBER
+		WHERE member_pw = #{member_pw}
+		and member_id = #{member_id}
+	</select>
+	
+	<!-- 회원 정보 검색 -->
 	<select id="selectById" parameterType="string"
 		resultType="memberVO">
 		SELECT *
 		FROM MEMBER
 		WHERE member_id = #{member_id}
 	</select>
-	
-	<select id="findId" parameterType="string"
-		resultType="memberVO">
+
+	<select id="findId" parameterType="string" resultType="memberVO">
 		SELECT *
 		FROM MEMBER
 		WHERE phone = #{phone}
@@ -30,48 +40,349 @@
 		SELECT *
 		FROM MEMBER
 	</select>
-		<select id="loginChk" resultType="membervo" parameterType="String"> 
-		select member_id, member_pw 
+
+	<select id="loginChk" resultType="membervo"
+		parameterType="String">
+		select member_id, member_pw
 		from MEMBER
-		where member_id = #{member_id}
+		where member_id =
+		#{member_id}
 	</select>
 
 	<insert id="memberInsert" parameterType="memberVO">
 		INSERT
 		INTO MEMBER(member_id, member_pw, member_name, email, phone,
-					brand, birth_date, last_access, member_type, gender)
-		VALUES(#{member_id}, #{member_pw}, #{member_name}, #{email}, #{phone},
-		        <choose>
-		            <when test="brand == null">
-		                null
-		            </when>
-		            <otherwise>
-		                #{brand}
-		            </otherwise>
-		        </choose>,
-				#{birth_date}, #{last_access}, #{member_type}, #{gender})
+		brand, birth_date, last_access, member_type, gender, seller_authority,
+		create_date)
+		VALUES(#{member_id}, #{member_pw}, #{member_name},
+		#{email}, #{phone},
+		<choose>
+			<when test="brand == null">
+				null
+			</when>
+			<otherwise>
+				#{brand}
+			</otherwise>
+		</choose>
+		,
+		#{birth_date}, #{last_access}, #{member_type}, #{gender},
+		<choose>
+			<when test="member_type == 1">
+				'U'
+			</when>
+			<otherwise>
+				'N'
+			</otherwise>
+		</choose>
+		,
+		#{create_date})
 	</insert>
+
+	<!-- 구매자 회원 정보 수정 -->
+	<update id="myInfoUpdate" parameterType="memberVO">
+		UPDATE MEMBER
+		SET 
+		member_id = #{member_id}, 
+		member_pw = #{member_pw},
+		email = #{email},
+		phone = #{phone}
+		WHERE member_id = #{member_id}
+	</update>
 
 	<update id="memberUpdate" parameterType="memberVO">
 		UPDATE MEMBER
 		SET
-		member_pw = #{member_pw}, member_name = #{member_name}, email = #{email},
-		phone = #{phone}, brand = #{brand}, birth_date = #{birth_date},
-		last_access = #{last_access}, member_type = #{member_type}, 
+		member_pw = #{member_pw}, member_name = #{member_name}, email =
+		#{email},
+		phone = #{phone}, brand = #{brand}, birth_date =
+		#{birth_date},
+		last_access = #{last_access}, member_type =
+		#{member_type},
+		member_pw = #{member_pw},
+		member_name = #{member_name}, 
+		email = #{email},
+		phone = #{phone}, 
+		brand = #{brand}, 
+		birth_date = #{birth_date},
+		last_access = #{last_access}, 
+		member_type = #{member_type}, 
 		gender = #{gender}
+		WHERE member_id = #{member_id}
+	</update>
+
+	<update id="memberUpdateAccess" parameterType="memberVO">
+		UPDATE MEMBER
+		SET
+		last_access = #{last_access}
 		WHERE member_id = #{member_id}
 	</update>
 
 	<delete id="memberDelete" parameterType="string">
 		DELETE
 		FROM MEMBER
-		WHERE member_id = #{member_id}
+		WHERE
+		member_id = #{member_id}
 	</delete>
-	
+
+	<select id="selectBySeller" resultType="memberVO">
+		select * from member
+		where member_type = 2
+	</select>
+
+	<select id="selectByCustomer" resultType="memberVO">
+		select * from member
+		where member_type = 1
+	</select>
+
+	<select id="selectBySeller_authority" resultType="memberVO">
+		select * from
+		member where seller_authority = 'Y'
+		and member_type = 2
+	</select>
+
+	<select id="selectBySeller_info" resultType="memberVO">
+		select * from member
+		where member_id = #{member_id}
+	</select>
+
+	<select id="searchMembers" parameterType="map"
+		resultType="memberVO">
+		SELECT * FROM MEMBER
+		WHERE ${searchType} LIKE '%' ||
+		#{keyword} || '%'
+	</select>
+
+
+	<select id="sellerMonthlyIncreaseRate" resultType="double">
+    <![CDATA[
+    WITH this_month AS (
+        SELECT COUNT(*) AS count_this_month
+        FROM member
+        WHERE create_date >= TRUNC(SYSDATE, 'MM')
+    ),
+    last_month AS (
+        SELECT COUNT(*) AS count_last_month
+        FROM member
+        WHERE create_date >= ADD_MONTHS(TRUNC(SYSDATE, 'MM'), -1)
+          AND create_date < TRUNC(SYSDATE, 'MM')
+    )
+    SELECT
+        CASE 
+            WHEN last_month.count_last_month = 0 THEN 
+                CASE 
+                    WHEN this_month.count_this_month = 0 THEN 0
+                    ELSE 100
+                END
+            ELSE ROUND(
+                (this_month.count_this_month - last_month.count_last_month) / 
+                last_month.count_last_month * 100, 2
+            )
+        END AS increase_percentage
+    FROM
+        this_month,
+        last_month
+    ]]>
+	</select>
+
+	<select id="customerMonthlyIncreaseRate" resultType="double">
+    <![CDATA[
+    WITH this_month AS (
+        SELECT COUNT(*) AS count_this_month
+        FROM member
+        WHERE create_date >= TRUNC(SYSDATE, 'MM')
+    ),
+    last_month AS (
+        SELECT COUNT(*) AS count_last_month
+        FROM member
+        WHERE create_date >= ADD_MONTHS(TRUNC(SYSDATE, 'MM'), -1)
+          AND create_date < TRUNC(SYSDATE, 'MM')
+    )
+    SELECT
+        CASE 
+            WHEN last_month.count_last_month = 0 THEN NULL
+            ELSE ROUND(
+                (this_month.count_this_month - last_month.count_last_month) / 
+                last_month.count_last_month * 100, 2
+            )
+        END AS increase_percentage
+    FROM
+        this_month,
+        last_month
+    ]]>
+	</select>
+
+	<select id="seller_Monthly_IncreaseRate" resultType="int">
+		SELECT
+		COUNT(*)
+		FROM MEMBER
+		WHERE member_type = 2
+		AND
+		TO_CHAR(create_date,
+		'YYYY-MM') = TO_CHAR(SYSDATE,
+		'YYYY-MM')
+	</select>
+	<select id="customer_Monthly_IncreaseRate" resultType="int">
+		SELECT
+		COUNT(*)
+		FROM MEMBER
+		WHERE member_type = 1
+		AND
+		TO_CHAR(create_date,
+		'YYYY-MM') = TO_CHAR(SYSDATE,
+		'YYYY-MM')
+	</select>
+
+	<select id="TodayVisitor" resultType="map">
+		SELECT
+		TO_CHAR(last_access,
+		'YYYY-MM-DD') AS day,
+		COUNT(*) AS
+		visitor_count
+		FROM MEMBER
+		WHERE
+		last_access BETWEEN
+		TRUNC(SYSDATE, 'MM') AND LAST_DAY(SYSDATE)
+		GROUP BY
+		TO_CHAR(last_access, 'YYYY-MM-DD')
+		ORDER BY day;
+	</select>
+
 	<update id="memberUpdatePassword" parameterType="memberVO">
 		UPDATE MEMBER
 		SET member_pw = #{member_pw}
 		WHERE member_id = #{member_id}
 	</update>
+
+	<update id="seller_authority_access_deny" parameterType="map">
+		UPDATE
+		MEMBER SET seller_authority = #{seller_authority} WHERE member_id =
+		#{member_id} and member_type = 2
+	</update>
+
+	<select id="selectByAllCustomer" resultType="MemberCustomerVO">
+		SELECT
+		m.member_id,
+		m.member_pw,
+		m.member_name,
+		m.email,
+		m.phone,
+		m.brand,
+		m.birth_date,
+		m.last_access,
+		m.member_type,
+		m.gender,
+		m.seller_authority,
+		m.create_date,
+		c.point,
+		c.member_level,
+		c.accum_amount,
+		a.addr_num,
+		a.zipcode,
+		a.main_address,
+		a.detail_address,
+		a.is_master_addr,
+		a.sub_address,
+		cp.coupon_id,
+		cp.coupon_name,
+		cp.discount_rate,
+		cp.quantity,
+		cp.coupon_state
+		FROM
+		member m
+		JOIN customer c ON m.member_id
+		= c.member_id
+		LEFT JOIN addr_list a ON m.member_id = a.member_id
+		LEFT
+		JOIN coupon cp ON m.member_id = cp.member_id
+		WHERE
+		m.member_type = 1
+		ORDER BY
+		m.member_id
+	</select>
+
+	<select id="searchByCustomer" parameterType="String"
+		resultType="MemberCustomerVO">
+		SELECT
+		m.member_id,
+		m.member_pw,
+		m.member_name,
+		m.email,
+		m.phone,
+		m.brand,
+		m.birth_date,
+		m.last_access,
+		m.member_type,
+		m.gender,
+		m.seller_authority,
+		m.create_date,
+		c.point,
+		c.member_level,
+		c.accum_amount,
+		a.addr_num,
+		a.zipcode,
+		a.main_address,
+		a.detail_address,
+		a.is_master_addr,
+		a.sub_address,
+		cp.coupon_id,
+		cp.coupon_name,
+		cp.discount_rate,
+		cp.quantity,
+		cp.coupon_state
+		FROM
+		member m
+		JOIN customer
+		c ON m.member_id = c.member_id
+		LEFT JOIN addr_list a ON m.member_id =
+		a.member_id
+		LEFT JOIN coupon cp ON m.member_id = cp.member_id
+		WHERE
+		m.member_type = 1
+		AND m.member_id LIKE '%' ||
+		#{searchCustomer} || '%'
+		OR m.member_name LIKE '%' || #{searchCustomer}
+		|| '%'
+		OR m.email LIKE
+		'%' || #{searchCustomer} || '%'
+		ORDER BY
+		m.member_id
+	</select>
+
+	<select id="customerByInfo" parameterType="string" resultType="MemberCustomerVO">
+		SELECT
+		m.member_id,
+		m.member_pw,
+		m.member_name,
+		m.email,
+		m.phone,
+		m.brand,
+		m.birth_date,
+		m.last_access,
+		m.member_type,
+		m.gender,
+		m.seller_authority,
+		m.create_date,
+		c.point,
+		c.member_level,
+		c.accum_amount,
+		a.addr_num,
+		a.zipcode,
+		a.main_address,
+		a.detail_address,
+		a.is_master_addr,
+		a.sub_address,
+		cu.coupon_id,
+		cu.coupon_name,
+		cu.discount_rate,
+		cu.quantity,
+		cu.coupon_state
+		FROM
+		member m
+		LEFT JOIN customer c ON m.member_id = c.member_id
+		LEFT JOIN addr_list a ON m.member_id = a.member_id
+		LEFT JOIN coupon cu ON m.member_id = cu.member_id
+		WHERE
+		m.member_id = #{member_id}
+	</select>
 	
 </mapper>

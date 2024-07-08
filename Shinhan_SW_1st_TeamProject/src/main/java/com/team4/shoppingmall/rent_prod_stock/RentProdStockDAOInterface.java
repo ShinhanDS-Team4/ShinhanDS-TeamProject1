@@ -8,41 +8,35 @@ import com.team4.shoppingmall.seller_prod_stockTest.Seller_Prod_StockTestDTO;
 
 public interface RentProdStockDAOInterface {
 	
-	//¼±ÅÃ ¿É¼Ç »óÇ°ÀÇ ´ë¿© Àç°íid Ã£±â
+	//ì„ íƒ ì˜µì…˜ ìƒí’ˆì˜ ëŒ€ì—¬ ì¬ê³ id ì°¾ê¸°
 	public Map<String,String> selectRentStockByProdId(String prod_id, String optionString);
 
-	//»óÇ°ÀÇ ´ë¿© Àç°íid Á¶È¸
+	//ìƒí’ˆì˜ ëŒ€ì—¬ ì¬ê³ id ì¡°íšŒ
 	public List<RentProdStockDTO> selectRentStockByProdId2(String prod_id);
 	
-	//´ë¿© »ı¼º½Ã ´ë¿© ¼ö·® ¾÷µ¥ÀÌÆ®
+	//ëŒ€ì—¬ ìƒì„±ì‹œ ëŒ€ì—¬ ìˆ˜ëŸ‰ ì—…ë°ì´íŠ¸
 	public int rentProdStockUpdate(ProductNewVO prodVO);
 	
-	//´ë¿© »óÇ° ¿É¼Çº° Àç°í Á¶È¸
+	//ëŒ€ì—¬ ìƒí’ˆ ì˜µì…˜ë³„ ì¬ê³  ì¡°íšŒ
 	public List<RentProdStockDTO> selectRpsOptionByProdId(String prod_id);
 	
-	// ´ë¿©»óÇ°»ó¼¼
+	// ëŒ€ì—¬ìƒí’ˆìƒì„¸
 	public RentProdStockDTO selectById(String r_stock_id);
 
 	public Integer findMaxStockNumber(String prod_id);
 	
 	public List<RentProdStockListDTO> findRentStockList(String member_id);
 	
-	// ´ë¿©»óÇ°¸ñ·Ï
+	// ëŒ€ì—¬ìƒí’ˆëª©ë¡
 	public List<RentProdStockDTO> selectAll();
 
-	// ´ë¿©»óÇ°µî·Ï
+	// ëŒ€ì—¬ìƒí’ˆë“±ë¡
 	public int rentProdInsert(RentProdStockDTO rentprod);
 
-	// ´ë¿©»óÇ°¼öÁ¤
-	public int rentProdUpdate(RentProdStockDTO rentprod);
-
-	// ´ë¿©»óÇ°»èÁ¦
+	// ëŒ€ì—¬ìƒí’ˆì‚­ì œ
 	public int rentProdDelete(String r_stock_id);
 
 	public int rentStockUpdate(RentProdStockDTO rentprod);
 
-	
-
-	
 
 }

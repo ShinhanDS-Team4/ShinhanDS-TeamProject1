@@ -17,6 +17,10 @@
     <div class="container-fluid">
         <h2 class="mb-4">관리자 정보</h2>
         <div class="form-group">
+            <label for="adminId">아이디</label>
+            <input type="text" class="form-control" id="adminId" name="adminId" value="${admin_id}" readonly="readonly">
+        </div>
+        <div class="form-group">
             <label for="adminName">이름</label>
             <input type="text" class="form-control" id="adminName" name="adminName" value="${admin_name}" readonly="readonly">
         </div>
@@ -48,6 +52,10 @@
             </div>
             <div class="modal-body">
                 <form id="editAdminForm" action="admin_mypage_edit" method="post">
+                    <div class="form-group">
+                        <label for="editAdminName">아이디</label>
+                        <input type="text" class="form-control" id="editAdminId" name="admin_id" value="${admin_id}" readonly>
+                    </div>
                     <div class="form-group">
                         <label for="editAdminName">이름</label>
                         <input type="text" class="form-control" id="editAdminName" name="admin_name" value="${admin_name}">

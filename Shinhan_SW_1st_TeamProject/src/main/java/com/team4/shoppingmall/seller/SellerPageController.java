@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,10 +35,14 @@ import com.team4.shoppingmall.admin_inq.Admin_InqService;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqDAOInterface;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqDTO;
 import com.team4.shoppingmall.buyer_inq.Buyer_InqService;
+import com.team4.shoppingmall.category.CategoryDTO;
+import com.team4.shoppingmall.category.CategoryService;
+import com.team4.shoppingmall.member.MemberDTO;
 import com.team4.shoppingmall.member.MemberService;
 import com.team4.shoppingmall.order_detail.OrderUpdateReqDTO;
 import com.team4.shoppingmall.order_detail.Order_DetailDTO;
 import com.team4.shoppingmall.order_detail.Order_DetailService;
+import com.team4.shoppingmall.prod.ProdDTO;
 import com.team4.shoppingmall.prod.ProdService;
 import com.team4.shoppingmall.prod_image.Prod_ImageDTO;
 import com.team4.shoppingmall.prod_image.Prod_ImageService;
@@ -48,6 +53,7 @@ import com.team4.shoppingmall.rent_detail.RentDetailDTO;
 import com.team4.shoppingmall.rent_detail.RentDetailService;
 import com.team4.shoppingmall.rent_prod_stock.RentProdStockDTO;
 import com.team4.shoppingmall.rent_prod_stock.RentProdStockService;
+import com.team4.shoppingmall.seller_prod_stock.StockUpdateDTO;
 import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockDTO;
 import com.team4.shoppingmall.seller_prod_stock.Seller_Prod_StockService;
 
@@ -72,6 +78,9 @@ public class SellerPageController {
 
 	@Autowired
 	ProdService prodService;
+	
+	@Autowired
+	CategoryService categoryService;
 
 	@Autowired
 	Prod_ImageService imageService;
@@ -91,58 +100,70 @@ public class SellerPageController {
 	@Autowired
 	Prod_OptionService prod_OptionService;
 
-	String member_id = "573-50-00882";// ÀÓ½Ã·Î »ç¿ëÇÒ ÆÇ¸ÅÀÚID(»ç¾÷ÀÚµî·Ï¹øÈ£)
+	//String member_id = "573-50-00882";// ì„ì‹œë¡œ ì‚¬ìš©í•  íŒë§¤ìID(ì‚¬ì—…ìë“±ë¡ë²ˆí˜¸)
 
-	// »óÇ° ÀÌ¹ÌÁö ÆÄÀÏ ¾÷·Îµå µğ·ºÅä¸®
-	// 1.¸ŞÀÎ ÀÌ¹ÌÁö ÆÄÀÏ
+	// ìƒí’ˆ ì´ë¯¸ì§€ íŒŒì¼ ì—…ë¡œë“œ ë””ë ‰í† ë¦¬
+	// 1.ë©”ì¸ ì´ë¯¸ì§€ íŒŒì¼
 	@Value("${file.main-img-upload-dir}")
 	private String mainIMG_uploadDir;
 
-	// 2.¼³¸í ÀÌ¹ÌÁö ÆÄÀÏ
+	// 2.ì„¤ëª… ì´ë¯¸ì§€ íŒŒì¼
 	@Value("${file.desc-img-upload-dir}")
 	private String descIMG_uploadDir;
 
-	// ¸ŞÀÎ È­¸é º¸¿©ÁÖ±â
+	// ë©”ì¸í˜ì´ì§€
 	@GetMapping("/MainPage.do")
-	public String mainpage(Model model) {
-
-		// ¿©±â¼­ SQL¹®À» »ç¿ëÇØ model·Î µ¥ÀÌÅÍ¸¦ ²ø¾î¿È
-		// ¿©±â¿¡´Â ÆÇ¸ÅÀÚ°¡ ÆÇ¸ÅÇÏ´Â »óÇ°µéÀÇ ÆÇ¸Å·® µ¥ÀÌÅÍ¸¦ ²ø¾î¿À°í, µ¥ÀÌÅÍ¸¦ ±×·¡ÇÁÈ­ÇÏ¿© Ç¥Çö
+	public String mainpage(Model model, HttpSession session) {
+		MemberDTO mem = (MemberDTO)session.getAttribute("member");
+		String sellerID = mem.getMember_id();
+		 
+		model.addAttribute("sellerInfo", memberService.selectById(sellerID));
+		
+		// ì—¬ê¸°ì„œ SQLë¬¸ì„ ì‚¬ìš©í•´ modelë¡œ ë°ì´í„°ë¥¼ ëŒì–´ì˜´
+		// ì—¬ê¸°ì—ëŠ” íŒë§¤ìê°€ íŒë§¤í•˜ëŠ” ìƒí’ˆë“¤ì˜ íŒë§¤ëŸ‰ ë°ì´í„°ë¥¼ ëŒì–´ì˜¤ê³ , ë°ì´í„°ë¥¼ ê·¸ë˜í”„í™”í•˜ì—¬ í‘œí˜„
 		// model.addAttribute(result, flashMap);
 		return "seller/sellerMain";
 	}
 
-	// ÆÇ¸Å&´ë¿© »óÇ° ÆäÀÌÁö º¸¿©ÁÖ±â
+	// íŒë§¤&ëŒ€ì—¬ ìƒí’ˆ í˜ì´ì§€ ë³´ì—¬ì£¼ê¸°
 	@GetMapping("/PrdList.do")
-	public String prdList(Model model1, Model model2) {
+	public String prdList(Model model, Model model1, Model model2, HttpSession session) {
+		MemberDTO mem = (MemberDTO)session.getAttribute("member");
+		String sellerID = mem.getMember_id();
+		
+		model.addAttribute("sellerInfo", memberService.selectById(sellerID));
+		
+		// íŒë§¤ ìƒí’ˆ ë¦¬ìŠ¤íŠ¸
+		model1.addAttribute("stockSList", seller_Prod_StockService.findSellStockList(sellerID));
 
-		// ÆÇ¸Å »óÇ° ¸®½ºÆ®
-		model1.addAttribute("stockSList", seller_Prod_StockService.findSellStockList(member_id));
+		System.out.println("ï¿½ë™‹ï§ã…¼ê¸½ï¿½ë­¹ ç”±ÑŠë’ªï¿½ë“ƒ éºëˆìœ­ï¿½ìƒ‚");
+		// ï¿½ï¿½ï¿½ë¿¬ ï¿½ê¸½ï¿½ë­¹ ç”±ÑŠë’ªï¿½ë“ƒ
+		model2.addAttribute("stockRList", rentProdStockService.findRentStockList(sellerID));
 
-		System.out.println("ÆÇ¸Å»óÇ° ¸®½ºÆ® ºÒ·¯¿È");
-		// ´ë¿© »óÇ° ¸®½ºÆ®
-		model2.addAttribute("stockRList", rentProdStockService.findRentStockList(member_id));
-
-		System.out.println("´ë¿©»óÇ° ¸®½ºÆ® ºÒ·¯¿È");
+		System.out.println("ï¿½ï¿½ï¿½ë¿¬ï¿½ê¸½ï¿½ë­¹ ç”±ÑŠë’ªï¿½ë“ƒ éºëˆìœ­ï¿½ìƒ‚");
 
 		return "/seller/sellerPrdList";
 	}
 
-	// ÆÇ¸Å&¹è¼Û ÆäÀÌÁö º¸¿©ÁÖ±â
+	// íŒë§¤&ë°°ì†¡ í˜ì´ì§€ ë³´ì—¬ì£¼ê¸°
 	@GetMapping("/DeliveryList.do")
-	public String deliveryList(Model model1, Model model2) {
+	public String deliveryList(Model model, Model model1, Model model2, HttpSession session) {
+		MemberDTO mem = (MemberDTO)session.getAttribute("member");
+		String sellerID = mem.getMember_id();
+		
+		model.addAttribute("sellerInfo", memberService.selectById(sellerID));
 
-		// ÆÇ¸Å&¹è¼Û ¸®½ºÆ®
-		// 1.ÆÇ¸Å »óÇ° ´ë»ó ÁÖ¹®»ó¼¼¸®½ºÆ®
-		System.out.println(order_DetailService.selectBySellerID(member_id));
-		System.out.println(rentDetailService.selectBySellerID(member_id));
+		// íŒë§¤&ë°°ì†¡ ë¦¬ìŠ¤íŠ¸
+		// 1.íŒë§¤ ìƒí’ˆ ëŒ€ìƒ ì£¼ë¬¸ìƒì„¸ë¦¬ìŠ¤íŠ¸
+		System.out.println(order_DetailService.selectBySellerID(sellerID));
+		System.out.println(rentDetailService.selectBySellerID(sellerID));
 
-		model1.addAttribute("orderDetailList", order_DetailService.selectBySellerID(member_id));
-		model2.addAttribute("rentDetailList", rentDetailService.selectBySellerID(member_id));
+		model1.addAttribute("orderDetailList", order_DetailService.selectBySellerID(sellerID));
+		model2.addAttribute("rentDetailList", rentDetailService.selectBySellerID(sellerID));
 		return "/seller/sellerDelivery";
 	}
 
-	// ÆÇ¸Å ÁÖ¹® Ç×¸ñ ÀÏ°ıÃ³¸®
+	// íŒë§¤ ì£¼ë¬¸ í•­ëª© ì¼ê´„ì²˜ë¦¬
 	@PostMapping("/updateOrderStatus")
 	@ResponseBody
 	public String updateOrderStauts(@RequestBody OrderUpdateReqDTO request) {
@@ -163,7 +184,7 @@ public class SellerPageController {
 		return "Update Success";
 	}
 
-	// ÆÇ¸Å ÁÖ¹® Ç×¸ñ ÀÏ°ı»èÁ¦
+	// íŒë§¤ ì£¼ë¬¸ í•­ëª© ì¼ê´„ì‚­ì œ
 	@PostMapping("/deleteOrderDetails")
 	@ResponseBody
 	public String deleteOrderDetails(@RequestBody OrderUpdateReqDTO request) {
@@ -176,12 +197,12 @@ public class SellerPageController {
 		return "Delete Success";
 	}
 
-	// ´ë¿© ÁÖ¹® Ç×¸ñ ÀÏ°ıÃ³¸®
+	// ëŒ€ì—¬ ì£¼ë¬¸ í•­ëª© ì¼ê´„ì²˜ë¦¬
 	@PostMapping("/updateRentStatus")
 	@ResponseBody
 	public String updateRentStatus(@RequestBody OrderUpdateReqDTO request) {
 		List<Integer> rentDetailIds = request.getOrderDetailIds();
-		System.out.println("´ë¿© ÀÏ°ıÃ³¸® ´ë»ó ¸ñ·Ï:" + rentDetailIds);
+		System.out.println("ï¿½ï¿½ï¿½ë¿¬ ï¿½ì”ªæ„¿ê¾©ì¿‚ç”±ï¿½ ï¿½ï¿½ï¿½ê¸½ ï§â‘¸ì¤‰:" + rentDetailIds);
 
 		String status = request.getStatus();
 
@@ -197,7 +218,7 @@ public class SellerPageController {
 		return "Update Success";
 	}
 
-	// ´ë¿© ÁÖ¹® Ç×¸ñ ÀÏ°ı»èÁ¦
+	// ëŒ€ì—¬ ì£¼ë¬¸ í•­ëª© ì¼ê´„ì‚­ì œ
 	@PostMapping("/deleteRentDetails")
 	@ResponseBody
 	public String deleteRentDetails(@RequestBody OrderUpdateReqDTO request) {
@@ -209,41 +230,94 @@ public class SellerPageController {
 		return "Delete Success";
 	}
 
-	// ¹®ÀÇ ¸ñ·Ï ÆäÀÌÁö º¸¿©ÁÖ±â
-	@GetMapping("/Q&AList.do")
-	public String qaList(Model model3, Model model4, HttpServletRequest request) {
+	@PostMapping("/deleteSellStocks")
+	@ResponseBody
+	public String deleteSellStocks(@RequestBody StockUpdateDTO request) {
+		List<String> sellStockIds = request.getSellStockIds();
+		for (String sellStockId : sellStockIds) {
+			int sellStockDelResult = seller_Prod_StockService.seller_prod_stockDelete(sellStockId);
+		}
+		return "Delete Success";
+	}
 
-		// ±¸¸ÅÀÚÀÇ ¹®ÀÇ ¸ñ·Ï
-		System.out.println(buyer_inqService.selectInqList(member_id));
-		model3.addAttribute("buyerQAList", buyer_inqService.selectInqList(member_id));
+	@PostMapping("/deleteRentStocks")
+	@ResponseBody
+	public String deletesSellStocks(@RequestBody StockUpdateDTO request) {
+		List<String> rentStockIds = request.getSellStockIds();
+		for (String rentStockId : rentStockIds) {
+			int rentStockDelResult = rentProdStockService.rentProdDelete(rentStockId);
+		}
+		return "Delete Success";
+	}
+
+	// ë¬¸ì˜ ëª©ë¡ í˜ì´ì§€ ë³´ì—¬ì£¼ê¸°
+	@GetMapping("/Q&AList.do")
+	public String qaList(Model model, Model model3, Model model4, HttpServletRequest request, HttpSession session) {
+		MemberDTO mem = (MemberDTO)session.getAttribute("member");
+		String sellerID = mem.getMember_id();
+		
+		model.addAttribute("sellerInfo", memberService.selectById(sellerID));
+
+		// êµ¬ë§¤ìì˜ ë¬¸ì˜ ëª©ë¡
+		System.out.println(buyer_inqService.selectInqList(sellerID));
+		model3.addAttribute("buyerQAList", buyer_inqService.selectInqList(sellerID));
 		// System.out.println(model1);
-		model4.addAttribute("adminQAList", admin_inqService.selectByMemberId(member_id));
+		model4.addAttribute("adminQAList", admin_inqService.selectByMemberId(sellerID));
 
 		return "/seller/sellerQ&dAList";
 	}
 
-	// »óÇ° µî·Ï ÆäÀÌÁö
+	// ìƒí’ˆ ë“±ë¡ í˜ì´ì§€
 	@GetMapping("/AddProduct.do")
-	public String addProduct() {
+	public String addProduct(Model model, HttpSession session) {
+		MemberDTO mem = (MemberDTO)session.getAttribute("member");
+		String sellerID = mem.getMember_id();
+
+		//Depth ê°’ì´ 1ì´ê³ , ë¶€ëª¨ ì¹´í…Œê³ ë¦¬ IDê°€ Nullì¸ ì¹´í…Œê³ ë¦¬ë“¤ì„ ê°€ì ¸ì˜¤ê¸°
+		CategoryDTO categoryDTO = new CategoryDTO();
+		categoryDTO.setCategory_depth(1);
+		categoryDTO.setParent_category_id(null);
+		
+		List<CategoryDTO> firstCategoryList = categoryService.firstDepthCategoryList();
+
+		
+		model.addAttribute("sellerInfo", memberService.selectById(sellerID));
+		model.addAttribute("depth1categoryList", firstCategoryList);
 		return "/seller/seller_addPrd";
 	}
 
-	// »óÇ° ¼öÁ¤ ÆäÀÌÁö
+	// ìƒí’ˆ ìˆ˜ì • í˜ì´ì§€
 	@GetMapping("/ModifyProduct.do")
-	public String modifyProduct(Model model1, Model model2, Model model3, Model model4, Model model5,
-			@RequestParam("stock_id") String stockID) throws UnsupportedEncodingException {
+	public String modifyProduct(Model model, @RequestParam("stock_id") String stockID, HttpSession session) throws UnsupportedEncodingException {
 
-		String stock_id = URLDecoder.decode(stockID, "UTF-8");// ÇÑ±Û·Î º¯È¯
-		System.out.println("°¡Á®¿Â stock_id:"+stock_id);
+		MemberDTO mem = (MemberDTO)session.getAttribute("member");
+		String sellerID = mem.getMember_id();
+		
+		//Depth ê°’ì´ 1ì´ê³ , ë¶€ëª¨ ì¹´í…Œê³ ë¦¬ IDê°€ Nullì¸ ì¹´í…Œê³ ë¦¬ë“¤ì„ ê°€ì ¸ì˜¤ê¸°
+		CategoryDTO categoryList = new CategoryDTO();
+		categoryList.setCategory_depth(1);
+		categoryList.setParent_category_id(null);
+		
+		List<CategoryDTO> firstCategoryList = categoryService.firstDepthCategoryList();
+		
+		String stock_id = URLDecoder.decode(stockID, "UTF-8");// í•œê¸€ë¡œ ë³€í™˜
+		System.out.println("ê°€ì ¸ì˜¨ stock_id:" + stock_id);
 
-		// Àç°íID°¡ ¾î´À Àç°í Å×ÀÌºí¿¡ ¼ÓÇÏ´ÂÁö È®ÀÎ
-		Seller_Prod_StockDTO seller_Prod_StockDTO = seller_Prod_StockService.selectByStockId(stock_id);// Àç°í µ¥ÀÌÅÍ¸¦ ÀüºÎ ²ø¾î¿È
-		System.out.println("È®ÀÎ°á°ú:"+seller_Prod_StockDTO);
-		if (Objects.isNull(seller_Prod_StockDTO)) {// ´ë¿©»óÇ° Àç°íÀÏ °æ¿ì
-			RentProdStockDTO rentProdStockDTO = rentProdStockService.selectById(stock_id);// Àç°íÀÇ ±âº» Á¤º¸ ²ø¾î¿À±â
-			System.out.println("Àç°íID:"+rentProdStockDTO);
+		// ì¬ê³ IDê°€ ì–´ëŠ ì¬ê³  í…Œì´ë¸”ì— ì†í•˜ëŠ”ì§€ í™•ì¸
+		Seller_Prod_StockDTO seller_Prod_StockDTO = seller_Prod_StockService.selectByStockId(stock_id);// ì¬ê³  ë°ì´í„°ë¥¼ ì „ë¶€ ëŒì–´ì˜´
+		System.out.println("í™•ì¸ê²°ê³¼:" + seller_Prod_StockDTO);
+		if (Objects.isNull(seller_Prod_StockDTO)) {// ëŒ€ì—¬ìƒí’ˆ ì¬ê³ ì¼ ê²½ìš°
+			RentProdStockDTO rentProdStockDTO = rentProdStockService.selectById(stock_id);// ì¬ê³ ì˜ ê¸°ë³¸ ì •ë³´ ëŒì–´ì˜¤ê¸°
+			System.out.println("ï¿½ì˜±æ€¨ìŸ…D:" + rentProdStockDTO);
 			
 			String ProdID = rentProdStockDTO.getProd_id();
+			
+			//í•´ë‹¹ ì¬ê³ ì™€ ì—°ë™ë˜ì–´ ìˆëŠ” ìƒí’ˆì˜ ì •ë³´ ê°€ì ¸ì˜¤ê¸°
+			ProdDTO prodDTO = prodService.selectByProdId(ProdID);
+			
+			//í•´ë‹¹ ì¬ê³ ì™€ ì—°ê²°ë˜ì–´ ìˆëŠ” ìƒí’ˆIDì™€ ì—°ë™ë˜ì–´ ìˆëŠ” ì¹´í…Œê³ ë¦¬ ì •ë³´ ê°€ì ¸ì˜¤ê¸°
+			int category_id = prodDTO.getCategory_id();
+			CategoryDTO categoryDTO =categoryService.selectById(category_id);
 
 			Prod_ImageDTO mainImageDTO = new Prod_ImageDTO();
 			mainImageDTO.setProd_id(ProdID);
@@ -253,9 +327,12 @@ public class SellerPageController {
 			descImageDTO.setProd_id(ProdID);
 			descImageDTO.setImg_type(1);
 
-			// ÇØ´ç Àç°íÀÇ »óÇ°ID¿Í ¿¬µ¿µÇ¾î ÀÖ´Â »óÇ°ÀÌ¹ÌÁöID(=ÀÌ¹ÌÁö ÆÄÀÏ¸í) ¸ñ·ÏÀ» °¡Á®¿Â´Ù.
+			// í•´ë‹¹ ì¬ê³ ì˜ ìƒí’ˆIDì™€ ì—°ë™ë˜ì–´ ìˆëŠ” ìƒí’ˆì´ë¯¸ì§€ID(=ì´ë¯¸ì§€ íŒŒì¼ëª…) ëª©ë¡ì„ ê°€ì ¸ì˜¨ë‹¤.
 			List<String> prodMainImgList = imageService.findMainImgFileNameByProdID(mainImageDTO);
 			List<String> prodDescImgList = imageService.findDescImgFileNameByProdID(descImageDTO);
+
+			System.out.println(prodMainImgList);
+			System.out.println(prodDescImgList);
 
 			List<Integer> optionList = new ArrayList<Integer>();
 
@@ -275,14 +352,26 @@ public class SellerPageController {
 				}
 			}
 
-			model1.addAttribute("StockInfo", rentProdStockDTO);
-			model2.addAttribute("ProductInfo", prodService.selectByProdId(ProdID));
-			model3.addAttribute("ProdMainImgList", prodMainImgList);
-			model4.addAttribute("ProdDescImgList", prodDescImgList);
-			
+			model.addAttribute("sellerInfo", memberService.selectById(sellerID));
+			model.addAttribute("StockInfo", rentProdStockDTO);
+			model.addAttribute("ProductInfo", prodDTO);
+			model.addAttribute("CategoryInfo", categoryDTO);
+			model.addAttribute("ProdMainImgList", prodMainImgList);
+			model.addAttribute("ProdDescImgList", prodDescImgList);
+			model.addAttribute("optionList", optionDTOList);
+			model.addAttribute("depth1categoryList", firstCategoryList);
+
 			return "/seller/seller_RentStock_modifyPrd";
-		} else {// ÆÇ¸Å»óÇ° Àç°íÀÏ °æ¿ì
+		} else {// íŒë§¤ìƒí’ˆ ì¬ê³ ì¼ ê²½ìš°
 			String ProdID = seller_Prod_StockDTO.getProd_id();
+			
+			//í•´ë‹¹ ì¬ê³ ì™€ ì—°ë™ë˜ì–´ ìˆëŠ” ìƒí’ˆì˜ ì •ë³´ ê°€ì ¸ì˜¤ê¸°
+			ProdDTO prodDTO = prodService.selectByProdId(ProdID);
+			
+			//í•´ë‹¹ ì¬ê³ ì™€ ì—°ê²°ë˜ì–´ ìˆëŠ” ìƒí’ˆIDì™€ ì—°ë™ë˜ì–´ ìˆëŠ” ì¹´í…Œê³ ë¦¬ ì •ë³´ ê°€ì ¸ì˜¤ê¸°
+			int category_id = prodDTO.getCategory_id();
+			CategoryDTO categoryDTO =categoryService.selectById(category_id);
+			
 			Prod_ImageDTO mainImageDTO = new Prod_ImageDTO();
 			mainImageDTO.setProd_id(ProdID);
 			mainImageDTO.setImg_type(0);
@@ -291,7 +380,7 @@ public class SellerPageController {
 			descImageDTO.setProd_id(ProdID);
 			descImageDTO.setImg_type(1);
 
-			// ÇØ´ç Àç°íÀÇ »óÇ°ID¿Í ¿¬µ¿µÇ¾î ÀÖ´Â »óÇ°ÀÌ¹ÌÁöID(=ÀÌ¹ÌÁö ÆÄÀÏ¸í) ¸ñ·ÏÀ» °¡Á®¿Â´Ù.
+			// í•´ë‹¹ ì¬ê³ ì˜ ìƒí’ˆIDì™€ ì—°ë™ë˜ì–´ ìˆëŠ” ìƒí’ˆì´ë¯¸ì§€ID(=ì´ë¯¸ì§€ íŒŒì¼ëª…) ëª©ë¡ì„ ê°€ì ¸ì˜¨ë‹¤.
 			List<String> prodMainImgList = imageService.findMainImgFileNameByProdID(mainImageDTO);
 			List<String> prodDescImgList = imageService.findDescImgFileNameByProdID(descImageDTO);
 
@@ -314,17 +403,20 @@ public class SellerPageController {
 			}
 
 			// System.out.println(uploadDir);
-			model1.addAttribute("StockInfo", seller_Prod_StockDTO);
-			model2.addAttribute("ProductInfo", prodService.selectByProdId(ProdID));
-			model3.addAttribute("ProdMainImgList", prodMainImgList);
-			model4.addAttribute("ProdDescImgList", prodDescImgList);
-			model5.addAttribute("optionList", optionDTOList);
-			
+			model.addAttribute("sellerInfo", memberService.selectById(sellerID));
+			model.addAttribute("StockInfo", seller_Prod_StockDTO);
+			model.addAttribute("ProductInfo", prodDTO);
+			model.addAttribute("CategoryInfo", categoryDTO);
+			model.addAttribute("ProdMainImgList", prodMainImgList);
+			model.addAttribute("ProdDescImgList", prodDescImgList);
+			model.addAttribute("optionList", optionDTOList);
+			model.addAttribute("depth1categoryList", firstCategoryList);
+
 			return "/seller/seller_SellStock_modifyPrd";
 		}
 	}
 
-	// ±¸¸ÅÀÚ¹®ÀÇ ´äº¯ ÆË¾÷
+	// êµ¬ë§¤ìë¬¸ì˜ ë‹µë³€ íŒì—…
 	@GetMapping("/answerCustomer.do")
 	public String answerCustomer(Model model, @RequestParam("buyer_inq_id") Integer buyer_inq_id,
 			HttpServletRequest request) {
@@ -338,28 +430,21 @@ public class SellerPageController {
 		return "/seller/seller_CustomerQAPopUp";
 	}
 
-	// ±¸¸ÅÀÚ ¹®ÀÇ¿¡ ´äº¯
+	// êµ¬ë§¤ì ë¬¸ì˜ì— ë‹µë³€
 	@PostMapping("/answerCustomer.do")
 	@ResponseBody
 	public String answerCquestion(@RequestParam("buyer_inq_id") Integer buyerInqId,
-			/*
-			 * @RequestParam("member_id") String memberId,
-			 * 
-			 * @RequestParam("buyer_inq_title") String questionTitle,
-			 * 
-			 * @RequestParam("buyer_inq_content") String buyerInqContent,
-			 */
 			@RequestParam("buyer_reply") String buyerReply) throws UnsupportedEncodingException {
 
 		String buyer_reply = URLDecoder.decode(buyerReply, "UTF-8");
 
 		System.out.println(buyer_reply);
 
-		// ¾÷·Îµå ³¯Â¥
-		// ¿À´Ã ³¯Â¥¸¦ LocalDate·Î °¡Á®¿È
+		// ì—…ë¡œë“œ ë‚ ì§œ
+		// ì˜¤ëŠ˜ ë‚ ì§œë¥¼ LocalDateë¡œ ê°€ì ¸ì˜´
 		LocalDate localDate = LocalDate.now();
 
-		// LocalDate¸¦ java.sql.Date·Î º¯È¯
+		// LocalDateë¥¼ java.sql.Dateë¡œ ë³€í™˜
 		Date sqlDate = Date.valueOf(localDate);
 
 		Buyer_InqDTO buyer_InqDTO = new Buyer_InqDTO();
@@ -374,23 +459,25 @@ public class SellerPageController {
 		return "Answer submitted successfully.";
 	}
 
-	// °ü¸®ÀÚ¹®ÀÇ Á¶È¸ ÆË¾÷
+	// ê´€ë¦¬ìë¬¸ì˜ ì¡°íšŒ íŒì—…
 	@GetMapping("/answerAdmin.do")
 	public String answerAdmin(Model model, @RequestParam("admin_inq_id") Integer admin_inq_id) {
 		model.addAttribute("aqa", admin_inqService.selectByInqId(admin_inq_id));
 		return "/seller/seller_AdminAPopUp";
 	}
 
-	// °ü¸®ÀÚ¹®ÀÇ µî·Ï ÆË¾÷
+	// ê´€ë¦¬ìë¬¸ì˜ ë“±ë¡ íŒì—…
 	@GetMapping("/addAdminQA.do")
-	public String addAdminQA(Model model) {
-		String member_id = "573-50-00882";// ÀÓ½Ã·Î »ç¿ëÇÒ ÆÇ¸ÅÀÚID(»ç¾÷ÀÚµî·Ï¹øÈ£)
-		System.out.println("Á¶È¸ : " + memberService.selectById(member_id));
-		model.addAttribute("aqa", memberService.selectById(member_id));
+	public String addAdminQA(Model model, HttpSession session) {
+		MemberDTO mem = (MemberDTO)session.getAttribute("member");
+		String sellerID = mem.getMember_id();
+		
+		System.out.println("íŒë§¤ìID : " + memberService.selectById(sellerID));
+		model.addAttribute("aqa", memberService.selectById(sellerID));
 		return "/seller/seller_AdminQPopUp";
 	}
 
-	// °ü¸®ÀÚ¿¡°Ô ¹®ÀÇ µî·Ï
+	// ê´€ë¦¬ìì—ê²Œ ë¬¸ì˜ ë“±ë¡
 	@PostMapping("/addAdminQA.do")
 	@ResponseBody
 	public String registerStoAquestion(@RequestParam("member_id") String mid,
@@ -401,20 +488,23 @@ public class SellerPageController {
 		String admin_inq_title = URLDecoder.decode(StoAqTitle, "UTF-8");
 		String admin_inq_content = URLDecoder.decode(StoAq, "UTF-8");
 
-		// ¾÷·Îµå ³¯Â¥
-		// ¿À´Ã ³¯Â¥¸¦ LocalDate·Î °¡Á®¿È
+		// ì—…ë¡œë“œ ë‚ ì§œ
+		// ì˜¤ëŠ˜ ë‚ ì§œë¥¼ LocalDateë¡œ ê°€ì ¸ì˜´
 		LocalDate localDate = LocalDate.now();
 
-		// LocalDate¸¦ java.sql.Date·Î º¯È¯
+		// LocalDateë¥¼ java.sql.Dateë¡œ ë³€í™˜
 		Date sqlDate = Date.valueOf(localDate);
 
-		// ¹®ÀÇID »ı¼º
-		Integer qid = 12305;
+		Integer maxAdminInqID = admin_inqService.findMaxAdminInqId();
+		
+		if (Objects.isNull(maxAdminInqID))
+			maxAdminInqID = 0;
+		maxAdminInqID++;
 
-		// ÀÌÈÄ¿¡ SQL¹®À¸·Î DB¿¡ µî·Ï
+		// ì´í›„ì— SQLë¬¸ìœ¼ë¡œ DBì— ë“±ë¡
 
 		Admin_InqDTO admin_InqDTO = new Admin_InqDTO();
-		admin_InqDTO.setAdmin_inq_id(qid);
+		admin_InqDTO.setAdmin_inq_id(maxAdminInqID);
 		admin_InqDTO.setAdmin_inq_title(admin_inq_title);
 		admin_InqDTO.setAdmin_inq_content(admin_inq_content);
 		admin_InqDTO.setAdmin_inq_date(sqlDate);

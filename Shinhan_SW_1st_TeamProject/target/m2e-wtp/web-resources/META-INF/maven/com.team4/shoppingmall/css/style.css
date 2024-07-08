@@ -1,0 +1,162 @@
+@import url(./common.css);
+
+/* 메인페이지 */
+
+/* 메인 배너 */
+.banner_wrap{
+    display: flex;
+    overflow: hidden;
+}
+.bannerImg{
+    position: relative;
+}
+.bannerImg>img{
+    width: 433px;
+    position: relative;
+}
+.banner_wrap .slick-slide img{
+    display: block;
+}
+.banner_wrap .slick-track{
+    height: 500px;
+}
+
+.bannerText{
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%,-50%);
+    color: #fff;
+    text-align: center;
+}
+
+p.title{
+    font-weight: bold;
+    font-size: 40px;
+}
+.bannerText>p:nth-child(2){
+    font-size: 18px;
+}
+
+/* 본문 */
+.main_title{
+    text-align: center;
+    margin: 50px 0;
+}
+div.main_product_list > ul{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+div.main_product_list > ul > li{
+    margin-bottom: 100px;
+}
+
+div.main_product_list > ul img{
+    width: 300px;
+}
+.product_text{
+    padding: 20px 0 0 10px;   
+    line-height: 1.5; 
+}
+p.brand{
+    font-weight: bold;
+}
+p.product_name{
+
+}
+p.product_price{
+    font-weight: bold;
+}
+
+/* 마이페이지 */
+.mypage_wrap{
+    margin: 50px 0
+}
+.myinfo{
+    display: flex;
+    justify-self: center;
+}
+.myinfo>nav{
+    width: 10%;
+    width: 15%;
+    margin-top: 100px;
+    margin-right: 50px;
+    text-align: right;
+    line-height: 1.5;
+}
+.myinfonav>ul li{
+
+}
+.myinfo>nav>ul>li>h3>a{
+    color: var(--accent-color);
+}
+.myinfo>nav>ul>li>h3:hover a{
+    filter: brightness(0.5);
+}
+.myinfo_submenu a{
+    font-size: 14px;
+    color: #666;
+}
+.profile_wrap{
+    width: 900px;
+}
+.myinfo_title{
+    padding-bottom: 20px;
+    margin-top: 50px;
+    border-bottom: 2px solid black;
+}
+.profile_info{
+    display: flex;
+}
+.profile_img{
+    width: 200px;
+    height: 200px;
+    box-sizing: border-box;
+    border: 1px solid red;
+    margin: 10px;
+}
+.profile_text{
+    padding: 40px 0;
+}
+.links {
+    margin: 25px 0 0;
+}
+.links a{
+    padding-right: 60px;
+}
+
+.links span{
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+.profile_text_box{
+    display: flex;
+    margin-top: 20px;
+    line-height: 26px;
+}
+.profile_text_box>p span{
+    font-size: 20px;
+}
+.profile_text_box>p:nth-child(1){
+    padding-right: 50px;
+}
+
+.detail_btn{    /* 공용으로 빼기 */
+    border: none;
+    border-radius: 5px;
+    background-color: var(--accent-color);
+    color: white;
+    padding: 5px 30px;
+    margin-left: 50px;
+}
+.info_text{
+    text-align: center;
+    margin: 50px 0;
+}
+
+.go_review{
+    color: #666;
+}

@@ -133,8 +133,7 @@ span {
 	font-weight: bold;
 }
 
-.form-group input[type="text"], .form-group select, .form-group textarea
-	{
+.formgroup input[type="text"], .form-group select, .form-group textarea{
 	width: 60%;
 	padding: 10px;
 	border: 1px solid #ddd;
@@ -152,6 +151,11 @@ span {
 
 .form-group .radio-group input {
 	margin-right: 5px;
+}
+
+.form-group label .category {
+	display: flex;
+	gap: 30px;
 }
 
 .file-list {
@@ -199,12 +203,13 @@ span {
 .options .option-item {
 	display: flex;
 	width: 60%;
-	gap: 10px;
+	gap: 5px;
 	margin-bottom: 5px;
 }
 
 .options .option-item input {
 	flex: 1;
+	border-radius: 5px;
 }
 
 .options .option-item button {
@@ -259,24 +264,115 @@ span {
 	height: 200px;
 }
 
-#prdMainImgFileContainer{
+#prdMainImgFileContainer {
 	display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    column-gap: 250px;
-    row-gapt:200px;  
-}
-#prdDescImgFileContainer{
-	display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    column-gap: 250px;
-    row-gapt:200px;  
+	grid-template-columns: repeat(2, 1fr); /* 4 columns */
+	grid-template-rows: repeat(3, auto); /* 2 rows */
+	gap: 10px; /* Gap between items */
+	padding: 10px; /* Padding around the grid */
 }
 
-.file-item{
-	width:250px;
+#prdDescImgFileContainer {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr); /* 4 columns */
+	grid-template-rows: repeat(4, auto); /* 2 rows */
+	gap: 10px; /* Gap between items */
+	padding: 10px; /* Padding around the grid */
 }
 
-.file-item img{
+.file-item {
+	width: 250px;
+}
+
+.file-item img {
 	width: 300px;
 	height: 250px;
+}
+
+.optionList {
+	margin-bottom: 40px;
+}
+
+.optionList h3 {
+	margin-top: 0;
+}
+
+.optionList table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.optionList table th, .optionList table td {
+	border: 1px solid #ddd;
+	padding: 10px;
+	text-align: center;
+}
+
+.optionList .actions {
+	margin-top: 10px;
+	text-align: right;
+}
+
+.optionList .actions button {
+	margin-left: 10px;
+}
+
+#addImageBtn{
+	color: white;
+	background-color: black;
+	width: 120px;
+	height: 30px;
+	border-radius: 5px;
+}
+
+h1{
+	margin-bottom: 10px;
+	margin-top: 20px;
+}
+
+#prdPrice{
+	width:180px;
+	height:30px;
+	font-size: 15px;
+	font-style: bold;
+	border-radius: 10px;
+	text-align: right;
+}
+
+p{
+	font-weight: bold;
+}
+
+.categoryContainer{
+	margin-top: 10px;
+}
+
+a{
+	font-style:bold;
+	color: black;
+	font-size:20px;
+}
+
+th {
+	background-color: black;
+	color: white;
+}
+
+
+table, th, td {
+	border-style: hidden;
+}
+
+select{
+	font-size: 15px;
+	font-style:bold;
+}
+
+.form-group .unchangedInput{
+	border: none;
+    outline: none; /* 포커스 시 기본 테두리도 제거 */
+    font-size: 15px;
+    color : black;
+    width :400px;
+    
 }

@@ -4,24 +4,63 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.saren.addr_list">
-	<select id="selectAll" resultType="com.team4.shoppingmall.addr_list.Addr_ListDTO">
+
+	<!-- 나의 주소 개수 -->
+	<select id="countAddresses"  parameterType="String"
+			resultType="int">
+			SELECT COUNT(*)
+			FROM ADDR_LIST a
+			JOIN MEMBER m ON a.member_id = m.member_id
+			WHERE m.MEMBER_ID = #{member_id}
+	</select>
+
+	<select id="selectAll" resultType="addr_listVO">
+
 			SELECT *
 			FROM ADDR_LIST 
 	</select>
 
-	<select id="selectByMember_Id"  parameterType="String"
-			resultType="com.team4.shoppingmall.addr_list.Addr_ListDTO">
+	<select id="selectByMember_Id2"  parameterType="String"
+			resultType="map">
+			SELECT a.*,  
+		           m.member_name,
+	               m.phone
+			FROM addr_list a
+			JOIN member m ON (a.member_id = m.member_id)
+			WHERE m.member_id = #{member_id}
+	</select>
+
+	<!-- 시퀀스 추가 -->
+<!-- 	<insert id="addressInsert" parameterType="com.team4.shoppingmall.addr_list.Addr_ListDTO"> -->
+<!-- 		   INSERT INTO ADDR_LIST (addr_num, member_id, zipcode, main_address, detail_address, is_master_addr, sub_address) -->
+<!-- 		    VALUES( ADDR_LIST_SEQUENCE.NEXTVAL ,  -->
+<!-- 				   #{member_id},  -->
+<!-- 				   #{zipcode},  -->
+<!-- 				   #{main_address},  -->
+<!-- 				   #{detail_address}, -->
+<!-- 				   #{is_master_addr},  -->
+<!-- 				   #{sub_address}) -->
+<!-- 	</insert> -->
+	<select id="selectByMember_Id"  parameterType="String" resultType="addr_listVO">
 			SELECT *
 			FROM ADDR_LIST
 			WHERE member_id = #{member_id}
 	</select>
-	<insert id="addressInsert" parameterType="com.team4.shoppingmall.addr_list.Addr_ListDTO">
-		INSERT
-		INTO ADDR_LIST(addr_num, member_id, zipcode, main_address, detail_address,
-					is_master_addr, sub_address)
-		VALUES(#{addr_num}, #{member_id}, #{zipcode}, #{main_address}, #{detail_address},
-			   #{is_master_addr}, #{sub_address})
-	</insert>
+	
+	<!-- 주소id에 해당하는 주소를 대표'Y'로 설정 -->
+	<update id="updateMasterAddrToY">
+		UPDATE ADDR_LIST
+		SET is_master_addr = 'Y'
+		WHERE addr_num = #{addr_num}
+	</update>
+
+    <!-- 기존 is_master_addr를 'N'으로 업데이트 -->
+    <update id="updateMasterAddrToN">
+        UPDATE ADDR_LIST
+        SET is_master_addr = 'N'
+        WHERE is_master_addr = 'Y'
+    </update>
+  
 	<update id="addressUpdate" parameterType="com.team4.shoppingmall.addr_list.Addr_ListDTO">
 		UPDATE ADDR_LIST
 		SET
@@ -36,5 +75,12 @@
 		FROM ADDR_LIST
 		WHERE addr_num = #{addr_num}
 	</delete>
+	
+	<select id="findMasterAddr" parameterType="string" resultType="com.team4.shoppingmall.addr_list.Addr_ListDTO">
+		SELECT * 
+		FROM ADDR_LIST 
+		WHERE member_id = #{member_id} 
+  		AND is_master_addr = 'Y'
+	</select>
 	
 </mapper>

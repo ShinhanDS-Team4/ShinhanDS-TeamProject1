@@ -16,6 +16,16 @@ public class MemberDAOMybatis implements MemberDAOInterface {
 	
 	String namespace = "com.saren.member.";
 	
+	//구매자 회원 정보 수정
+	public int myInfoUpdate(MemberDTO member) {
+		return sqlSession.update(namespace+"myInfoUpdate", member);
+	}
+	
+	//로그인 회원 정보 수정용 비밀번호 체크
+	public MemberDTO memberCheckByPw(MemberDTO member) {
+		return sqlSession.selectOne(namespace+"memberCheckByPw", member);
+	}
+	
 	@Override
 	public MemberDTO selectById(String member_id) {
 		return sqlSession.selectOne(namespace+"selectById", member_id);
@@ -112,4 +122,38 @@ public class MemberDAOMybatis implements MemberDAOInterface {
 	public int updatePassword(MemberDTO member) {
 		return sqlSession.update(namespace+"memberUpdatePassword", member);
 	}
+
+	@Override
+	public int memberUpdateAccess(MemberDTO member) {
+		return sqlSession.update(namespace+"memberUpdateAccess", member);
+	}
+	
+	@Override 
+	public MemberDTO memberCheckByPw2(MemberDTO member)  {
+		return sqlSession.selectOne(namespace+"memberCheckByPw2", member);
+	}
+ 
+	public int seller_authority_access_deny(String member_id, String seller_authority) {
+		Map<String, Object> upset = new HashMap<>();
+		upset.put("member_id", member_id);
+		upset.put("seller_authority", seller_authority);        
+		return sqlSession.update(namespace+"seller_authority_access_deny", upset);
+	}
+		
+	@Override
+	public List<MemberCustomerDTO> selectByAllCustomer() {
+		return sqlSession.selectList(namespace+"selectByAllCustomer");
+	}
+
+	@Override
+	public List<MemberCustomerDTO> searchByCustomer(String searchCustomer) {
+		return sqlSession.selectList(namespace+"searchByCustomer", searchCustomer);
+	}
+	
+	@Override
+	public MemberCustomerDTO customerByInfo(String member_id) {
+		return sqlSession.selectOne(namespace+"customerByInfo", member_id);
+	}
+
 }
+ 

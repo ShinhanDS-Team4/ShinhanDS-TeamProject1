@@ -1,8 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-<html lang="ko">
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
 <head>
 <c:set var="path" value="${pageContext.servletContext.contextPath}" />
 <link rel="stylesheet" href="${path}/resources/css/header_footer.css">
@@ -191,7 +194,7 @@ footer .footer-links a {
 }
 </style>
 <script>
-	$(function() {
+$(function() {
 		// 로컬 스토리지에서 저장된 아이디 불러오기
 		if (localStorage.getItem('rememberMe') === 'true') {
 			$('#remember-me').prop('checked', true);
@@ -228,11 +231,29 @@ footer .footer-links a {
 				: 'password';
 		passwordInput.setAttribute('type', type);
 	}
-</script>
+	
+    $(document).ready(function() {
+        // 고객 탭 클릭 시
+        $('#customer-tab').click(function() {
+            $('#customer-tab').addClass('active');
+            $('#seller-tab').removeClass('active');
+            $('#customer-form').addClass('active');
+            $('#seller-form').removeClass('active');
+        });
+
+        // 판매자 탭 클릭 시
+        $('#seller-tab').click(function() {
+            $('#seller-tab').addClass('active');
+            $('#customer-tab').removeClass('active');
+            $('#seller-form').addClass('active');
+            $('#customer-form').removeClass('active');
+        });
+    });
+</script>  
 </head>
 <body>
-	<%@ include file="../common/header.jsp"%>
-	<div class="login-container">
+	 	<%@ include file="../common/header.jsp"%>
+	 	<div class="login-container">
 		<h1>로그인</h1>
 		<div class="tab">
 			<div id="customer-tab" class="active">고객</div>
@@ -246,7 +267,7 @@ footer .footer-links a {
 						placeholder="아이디">
 					<div class="password-container">
 						<input type="password" id="member_pw" name="member_pw"
-							placeholder="비밀번호"> <img src="eye-icon.png"
+							placeholder="비밀번호"> <img src="${path}/resources/images/eye-icon.png"
 							class="toggle-password" onclick="togglePassword('member_pw')">
 					</div>
 				</div>
@@ -257,13 +278,13 @@ footer .footer-links a {
 					for="remember-me">아이디 저장</label>
 			</div>
 		</form>
-		<form id="seller-form" action="sellerLogin.html" method="post">
+		<form id="seller-form" action="${path }/member_test/login.do" method="post">
 			<div class="input-group">
 				<div class="input-fields">
-					<input type="text" name="sellerId" placeholder="사업자등록번호">
+					<input type="text" id="member_id" name="member_id" placeholder="사업자등록번호">
 					<div class="password-container">
-						<input type="password" id="sellerPassword" name="sellerPassword"
-							placeholder="비밀번호"> <img src="lower_half.png"
+						<input type="password" id="sellerPassword" name="member_pw"
+							placeholder="비밀번호"> <img src="${path}/resources/images/eye-icon.png"
 							class="toggle-password"
 							onclick="togglePassword('sellerPassword')">
 					</div>
@@ -275,7 +296,7 @@ footer .footer-links a {
 					name="rememberMeSeller"> <label for="remember-me-seller">사업자등록번호
 					저장</label>
 			</div>
-
+		</form>
 			<!-- 경고 메시지 출력 -->
 			<c:if test="${not empty sessionScope.loginResult}">
 				<script>
@@ -283,16 +304,15 @@ footer .footer-links a {
 					<c:remove var="loginResult" scope="session"/>
 				</script>
 			</c:if>
-		</form>
+
 		<div class="links">
 			<a href="${path }/member_test/findid">아이디 찾기</a> <a
 				href="${path }/member_test/findpassword">비밀번호 찾기</a> <a
-				href="${path }/member_test/signup.do">회원가입</a>
+				href="${path }/member_test/signup">회원가입</a>
 		</div>
 		
 		
 	</div>
-
 	<footer>
 		<div class="footer-line"></div>
 		<div class="footer-text">회사소개 이용약관 개인정보처리방침 이메일무단수집거부 단체주문 제휴문의

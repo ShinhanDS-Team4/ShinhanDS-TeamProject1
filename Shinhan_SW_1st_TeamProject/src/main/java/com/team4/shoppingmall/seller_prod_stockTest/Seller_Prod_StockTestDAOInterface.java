@@ -1,15 +1,19 @@
 package com.team4.shoppingmall.seller_prod_stockTest;
 
 import java.util.List;
+import java.util.Map;
 
 import com.team4.shoppingmall.prod.ProductNewVO;
 
 public interface Seller_Prod_StockTestDAOInterface {
 	
-	//»óÇ°ID·Î ¿É¼Çº° ÆÇ¸Å »óÇ° Àç°í Á¶È¸
+	//ë†’ì€ íŒë§¤ëŸ‰ ìƒí’ˆ 16ê°œ ì¶œë ¥
+	public List<Map<String,Object>> selectBestProducts();
+	
+	//ìƒí’ˆIDë¡œ ì˜µì…˜ë³„ íŒë§¤ ìƒí’ˆ ì¬ê³  ì¡°íšŒ
 	public List<Seller_Prod_StockTestDTO> selectSpsOptionByProdId(String prod_id);
 	
-	//ÁÖ¹® »ı¼º½Ã Àç°í¼ö ¾÷µ¥ÀÌÆ®
+	//ì£¼ë¬¸ ìƒì„±ì‹œ ì¬ê³ ìˆ˜ ì—…ë°ì´íŠ¸
 	//public int sellProdStockUpdate(Seller_Prod_StockTestDTO seller_prod_stock);
 	public int sellProdStockUpdate(ProductNewVO prodVO);
 	

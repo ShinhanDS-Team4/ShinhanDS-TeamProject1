@@ -1,6 +1,107 @@
 
+/* Style the popup */
+.modal {
+ /* display: none;  */
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.5); 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 회원 정보 수정 팝업창 */
+.myinfo-modal-content {
+	display : none; 
+ 	background-color: #ffffff;
+    border-radius: 10px;
+    padding: 50px 20px 20px 20px;
+    border: 1px solid #888;
+    width: 600px;
+    height: 750px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+}
+.myinfo-modal-content .modal-content{
+	background-color: #fff;
+    border-radius: 5px;
+}
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    right: 20px;
+    top: 10px;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Form Styling */
+.myinfo-modal-content .section_wrap {
+    padding: 20px;
+}
+
+.myinfo-modal-content .myinfo_title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.myinfo-modal-content .section {
+    margin-top: 20px;
+}
+
+.myinfo-modal-content .infoForm_wrap {
+    margin-top: 20px;
+}
+
+.myinfo-modal-content label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+.myinfo-modal-content input[type="text"], 
+.myinfo-modal-content input[type="email"], 
+.myinfo-modal-content input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.myinfo-modal-content input[type="button"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.myinfo-modal-content input[type="button"]:hover {
+    background-color: #45a049;
+}
+ 
+ /* myPage.jsp */
 .mypage_wrap{
-    margin: 50px 0
+    margin: 50px 0;   
 }
 .myinfo{
     display: flex;
@@ -56,7 +157,8 @@
     right: 50%;
     transform: translate(50%, -50%);
     color: #fff;
-    font-size: 18px;
+    font-size: 23px;
+    font-weight: bold;
 }
 .profile_text{
     padding: 40px 0;
@@ -72,7 +174,9 @@
     color: var(--accent-color);
     font-weight: bold;
 }
-
+.birthText{
+	color: #ccc;
+}
 .profile_text_box{
     display: flex;
     margin-top: 20px;
@@ -80,6 +184,7 @@
 }
 .profile_text_box>p span{
     font-size: 20px;
+    font-weight: bold;
 }
 .profile_text_box>p:nth-child(1){
     padding-right: 50px;
@@ -90,8 +195,9 @@
     border-radius: 5px;
     background-color: var(--accent-color);
     color: white;
-    padding: 5px 30px;
     margin-left: 50px;
+    padding: 10px 30px;
+    font-weight: bold;
 }
 .info_text{
     text-align: center;
@@ -103,16 +209,32 @@
 }
 
 
-
-/* 留덉씠�럹�씠吏� 硫붿씤 : 二쇰Ц �궡�뿭, ���뿬 �궡�뿭  */
-
 .order_table {
     width: 100%;
-    border: 1px solid #666;
+   
+}
+.order_table>thead>tr>th {
+    border-right: 1px solid #eee;
+    padding: 0 6px;
+    font-size: 15px;
+}
+.order_table>thead>tr>th:last-child {
+	 border-right: none;
+}
+.order_table>tbody>tr>td:nth-child(1){
+	/* width: 7%; */
+}
+.order_table>tbody>tr>td:nth-child(4){
+	/* width: 10%; */
+}
+.order_table>tbody>tr>td:nth-child(6){
+	width: 10%;
 }
 .product-info{
-    text-align: left;
     width: 300px;
+}
+.product-info>strong{
+	
 }
 .order_table>thead>tr{
     height: 50px;
@@ -124,12 +246,14 @@
 }
 .order_table>tbody td{
     padding: 30px 0;
+    background-color: #f9f9f9;
+    border-right: 1px solid #fff;
+}
+.order_table>tbody td.rentDateText{
+	width: 200px;
 }
 
-
-/* 5.�쉶�썝 �젙蹂� �닔�젙 硫붾돱  */
-
-/* STEP-1 �쉶�썝 �젙蹂� �닔�젙 泥섏쓬 �럹�씠吏� */
+/* STEP-1  */
 .mypage_here{
     width: 100%;
 }
@@ -172,15 +296,19 @@
 .button:hover {
     background-color: var(--accent-color);
 }
+.address-box-wrap{
+	position: relative;
+}
+
 .address-box {
-    border: 1px solid #ddd;
+    border: 1px solid #eee;
     padding: 20px;
     margin-bottom: 10px;
-    position: relative;
+    position: static;
     cursor: pointer;
 }
 .address-box:hover{
-   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
+   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
 }
 .address-box .label {
     display: inline-block;
@@ -197,20 +325,28 @@
 .delete-btn {
     display: inline-block;
     padding: 5px 10px;
-    background-color: #ddd;
-    color: black;
+    background-color: #eee;
+    color: #666666;
     text-align: center;
     border: none;
     cursor: pointer;
     position: absolute;
     top: 40px;
     right: 10px;
+    border-radius: 3px;
+    font-weight: bold;
+    transition: 0.3s;
+    
+}
+.delete-btn:hover {
+	background-color: #c70000;
+    color: white;
+    border-radius: 3px;
 }
 .adress-add{
     text-align: center;
 }
 
-/* STEP-2 鍮꾨�踰덊샇 �솗�씤 */
 .cancel{
     display: inline-block;
     padding: 12px 40px;
@@ -233,10 +369,9 @@
     border: 1px solid #ccc;
     padding: 7px 7px 7px 10px;
     box-sizing: border-box;
-    margin: 0 0 20px;
 }
 
-/* STEP-3 �쉶�썝 �젙蹂� �닔�젙 �엯�젰 */
+
 .infoForm_wrap {
     width: 500px;
     padding: 20px;
@@ -272,16 +407,19 @@
 }
 
 .infoForm_wrap input[type="button"]{
-    background-color: #000;
+    background-color: var(--accent-color); 
     color: white;
     cursor: pointer;
     transition: 0.3s;
+    padding: 11px 10px;
+    font-size: 16px;
+    font-weight: bold;
 }
 .infoForm_wrap input[type="button"]:hover{
-    background-color: var(--accent-color);
+    background-color:#000;
 }
 
-/* �쉶�썡�깉�눜 */
+
 .member_cancel::before{
     content: "";
     background: url(../images/icon-waste.png) no-repeat;

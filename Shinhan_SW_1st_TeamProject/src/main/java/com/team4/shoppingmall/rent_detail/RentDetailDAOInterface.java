@@ -1,26 +1,35 @@
 package com.team4.shoppingmall.rent_detail;
 
 import java.util.List;
+import java.util.Map;
 
 public interface RentDetailDAOInterface {
 	
-	// ´ë¿©»ó¼¼ »ó¼¼
+	//ëŒ€ì—¬ì£¼ë¬¸ìƒí’ˆ ë¸Œëœë“œ,ì´ë¦„
+	public Map<String,String> getRentOrderProdBrand(int rental_code);
+		
+	// ëŒ€ì—¬ìƒì„¸ ìƒì„¸
 	public RentDetailDTO selectById(Integer rentdetail_id);
 	
-	// ´ë¿©»ó¼¼ ¸ñ·Ï
+	// ëŒ€ì—¬ìƒì„¸ ëª©ë¡
 	public List<RentDetailDTO> selectAll();
 	
 	public List<RentDetailDTO> selectBySellerID(String member_id);
 	
-	// ´ë¿©»ó¼¼ »ı¼º
+	// ëŒ€ì—¬ìƒì„¸ ìƒì„±
 	public int rentDetailInsert(RentDetailDTO rentdetail);
 	
-	// ´ë¿©»ó¼¼ ¼öÁ¤
+	// ëŒ€ì—¬ìƒì„¸ ìˆ˜ì •
 	public int rentDetailUpdate(RentDetailDTO rentdetail);
 
 	public int rentDetailStatusUpdate(RentDetailDTO rentdetail);
 	
-	// ´ë¿©»ó¼¼ »èÁ¦
+	// ï¿½ë¿©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	public int rentDetailDelete(int rentdetail_id);
+
+	// ï¿½ë¿©IDï¿½ï¿½ ï¿½ë¿©ï¿½ï¿½ ï¿½ï¿½ï¿½
+	public List<RentDetailDTO> selectByRental_code(int rental_code);
+
+	public int rentDetailDelByRentCode(Integer rental_code);
 	
 }

@@ -8,7 +8,7 @@
 		resultType="noticeVO">
 		SELECT *
 		FROM NOTICE
-		WHERE "not_id" = #{not_id}
+		WHERE not_id = #{not_id}
 	</select>
 
 	<select id="selectAll" resultType="noticeVO">
@@ -18,21 +18,26 @@
 
 	<insert id="noticeInsert" parameterType="noticeVO">
 		INSERT
-		INTO NOTICE("not_id", "not_title", "not_content", "not_date")
+		INTO NOTICE(not_id, not_title, not_content, not_date)
 		VALUES(#{not_id}, #{not_title}, #{not_content}, #{not_date})
 	</insert>
 
 	<update id="noticeUpdate" parameterType="noticeVO">
 		UPDATE NOTICE
 		SET
-		"not_title" = #{not_title}, "not_content" = #{not_content}, "not_date" = #{not_date}
-		WHERE "not_id" = #{not_id}
+		not_title = #{not_title}, not_content = #{not_content}, not_date = #{not_date}
+		WHERE not_id = #{not_id}
 	</update>
 
 	<delete id="noticeDelete" parameterType="int">
 		DELETE
 		FROM NOTICE
-		WHERE "not_id" = #{not_id}
+		WHERE not_id = #{not_id}
 	</delete>
 	
+	<select id="noticeBysearch" parameterType="string" resultType="noticeVO">
+		SELECT *
+		FROM NOTICE
+		WHERE not_title = #{search_title}
+	</select>
 </mapper>

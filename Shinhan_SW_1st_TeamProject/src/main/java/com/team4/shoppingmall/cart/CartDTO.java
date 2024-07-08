@@ -14,5 +14,7 @@ public class CartDTO {
 	Integer cart_id;
 	String member_id;
 	String s_stock_id;
+	String r_stock_id;  //대여재고ID 추가
 	Integer cart_amount;
+	String product_type; //타입 
 }

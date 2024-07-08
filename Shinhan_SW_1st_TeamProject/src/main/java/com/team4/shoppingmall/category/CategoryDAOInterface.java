@@ -21,6 +21,14 @@ public interface CategoryDAOInterface {
 	public int categoryUpdate(CategoryDTO category);
 	
 	public int categoryDelete(Integer category_id);
+
 	
 	public List<CategoryDTO> traceCurCtg(Map<String, Integer> traced);
+
+
+
+	public List<CategoryDTO> categoryListBydepth(CategoryDTO category);
+
+	public List<CategoryDTO> firstDepthCategoryList();
 }
+

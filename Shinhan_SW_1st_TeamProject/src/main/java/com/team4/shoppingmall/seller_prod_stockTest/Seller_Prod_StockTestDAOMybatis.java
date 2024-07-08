@@ -1,6 +1,7 @@
 package com.team4.shoppingmall.seller_prod_stockTest;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,17 @@ public class Seller_Prod_StockTestDAOMybatis implements Seller_Prod_StockTestDAO
 	
 	String namespace = "com.saren.seller_prod_stock.";
 	
-	//»óÇ°ID·Î ¿É¼Çº° ÆÇ¸Å »óÇ° Àç°í Á¶È¸
+	//ë†’ì€ íŒë§¤ëŸ‰ ìƒí’ˆ 16ê°œ ì¶œë ¥
+	public List<Map<String,Object>> selectBestProducts(){
+		return sqlSession.selectList(namespace+"selectBestProducts");
+	};
+	
+	//ìƒí’ˆIDë¡œ ì˜µì…˜ë³„ íŒë§¤ ìƒí’ˆ ì¬ê³  ì¡°íšŒ
 	@Override
 	public List<Seller_Prod_StockTestDTO> selectSpsOptionByProdId(String prod_id){
 		return sqlSession.selectList(namespace+"selectSpsOptionByProdId", prod_id);
 	}
-	//ÁÖ¹® »ı¼º½Ã Àç°í¼ö ¾÷µ¥ÀÌÆ®
+	//ì£¼ë¬¸ ìƒì„±ì‹œ ì¬ê³ ìˆ˜ ì—…ë°ì´íŠ¸
 	@Override
 	public int sellProdStockUpdate(ProductNewVO prodVO) {
 		return sqlSession.update(namespace+"sellProdStockUpdate", prodVO);

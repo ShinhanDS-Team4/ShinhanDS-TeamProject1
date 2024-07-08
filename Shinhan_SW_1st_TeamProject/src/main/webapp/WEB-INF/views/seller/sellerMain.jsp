@@ -30,65 +30,6 @@
 
 </head>
 <body>
-	<script>
-	$(function(){
-		$("#toStatics").on("click",toStatics);//통계 대쉬보드
-		$("#toPrdList").on("click",toPrdList);//판매/대여 상품목록
-		$("#toDelivery").on("click",toDelivery);// 판매자 판매/배송 목록
-		$("#toQ&AList").on("click",toQAList);// 판매자 문의목록	
-	});
-	
-	function toStatics(){
-		$.ajax({
-			type:"get",
-			url:"seller/Statics.do",
-			success:function(responseData) {
-				alert("toStatics");
-				$("#section").html(responseData);
-			},
-			error : function(xhrmstatus, error) {
-				alert(error);
-			}
-		});		
-	}
-	function toPrdList(){
-		$.ajax({
-			type:"post",
-			url:"PrdList.do",
-			success:function(responseData) {
-				$("#section").html(responseData);
-			},
-			error : function(xhrmstatus, error) {
-				alert(error);
-			}
-		});		
-	}
-	function toDelivery(){
-		$.ajax({
-			type:,
-			url:,
-			success:function(responseData) {
-				$("#section").html(responseData);
-			},
-			error : function(xhrmstatus, error) {
-				alert(error);
-			}
-		});		
-	}
-	function toQAList(){
-		$.ajax({
-			type:,
-			url:,
-			success:function(responseData) {
-				$("#section").html(responseData);
-			},
-			error : function(xhrmstatus, error) {
-				alert(error);
-			}
-		});		
-	}
-	</script>
-
 	<%@ include file="../common/header.jsp"%>
 	<main>
 		<aside>
@@ -101,48 +42,41 @@
 		</aside>
 
 		<section id="section">
-			${path}
-			<h2>마이페이지</h2>
-			<hr />
-			<div class="user-info">
-				<p>김철수</p>
-				<p>573-50-00882</p>
-			</div>
 
-			<div class="stats">
-				<h3>통계</h3>
-				<div id="chart_div"></div>
-				<script type="text/javascript"
-					src="https://www.gstatic.com/charts/loader.js"></script>
-				<script type="text/javascript">
-					google.charts.load("current", {
-						packages : [ "corechart" ]
-					});
-					google.charts.setOnLoadCallback(drawChart);
-					function drawChart() {
-						var data = google.visualization.arrayToDataTable([
-								[ "날짜", "결제건수" ], [ "2024-05-01", 1 ],
-								[ "2024-05-02", 2 ], [ "2024-05-03", 1 ],
-								[ "2024-05-04", 3 ], [ "2024-05-05", 1 ],
-								[ "2024-05-06", 4 ], [ "2024-05-07", 2 ], ]);
-
-						var options = {
-							title : "결제건수",
-							curveType : "function",
-							legend : {
-								position : "bottom"
-							},
-						};
-
-						var chart = new google.visualization.LineChart(document
-								.getElementById("chart_div"));
-
-						chart.draw(data, options);
-					}
-				</script>
-			</div>
+			<div class="profile_wrap">
+					<h1 class="myinfo_title">마이페이지</h1>
+					<div class="profile">
+						<div class="profile_info">
+							<div class="profile_img">
+								<p>WELCOME</p>
+							</div>
+							<div class="profile_text">
+								<h3>
+									${member.member_name}님 <span>(${member.member_id})</span> <span class="birthText">${member.birth_date}</span>
+								</h3>
+								<%-- <div class="profile_text_box">
+									<p>
+										보유포인트: <span>${myPoints.point != 0 ? myPoints.point : 0 }p</span>
+									</p>
+									<p>
+										회원등급: <span>${myPoints.member_level}</span>
+									</p>
+									<button class="detail_btn">자세히 보기</button>
+								</div>
+								<p>
+									<a href="${path}/board/myreview.do" class="go_review">작성한 리뷰 보기</a>
+								</p>
+								<div class="links">
+									<a href="javascript:#void">주문내역 <span>${orderCount != 0 ? orderCount : 0} 건</span></a> 
+									<a href="javascript:#void">대여내역 <span>${rentCount != 0 ? rentCount : 0} 건</span></a>
+									<a href="javascript:#void">문의내역 <span>${inqCount != 0 ? inqCount : 0} 건</span></a>
+								</div> --%>
+							</div>
+						</div>
+					</div>
+				</div>
 		</section>
-		<aside class="notifications">
+		<%-- <aside class="notifications">
 			<div class="notify_icon">
 				<img src="${path}/resources/images/bell.png" alt="알림"
 					class="bell_icon" />
@@ -154,21 +88,7 @@
 					<p>결제 대기 주문 : 23건</p>
 				</div>
 			</div>
-		</aside>
+		</aside> --%>
 	</main>
-	<script>
-      document
-        .querySelector(".notifications .bell_icon")
-        .addEventListener("click", function () {
-          document
-            .querySelector(".notifications .popup")
-            .classList.toggle("show");
-        });
-    </script>
-	<style>
-.notifications .popup.show {
-	display: block;
-}
-</style>
 </body>
 </html>

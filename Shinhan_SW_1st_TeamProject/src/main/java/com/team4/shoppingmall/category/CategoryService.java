@@ -16,7 +16,6 @@ public class CategoryService {
 	public CategoryDTO productCategoryByProdId(String prod_id) {
 		return categoryDAO.productCategoryByProdId(prod_id);
 	};
-	
 	public CategoryDTO selectById(Integer category_id) {
 		return categoryDAO.selectById(category_id);
 	}
@@ -45,4 +44,11 @@ public class CategoryService {
 		return categoryDAO.traceCurCtg(traced);
 	}
 	
+	public List<CategoryDTO> firstDepthCategoryList() {
+		return categoryDAO.firstDepthCategoryList();
+	}
+	
+	public List<CategoryDTO> categoryListBydepth(CategoryDTO category){
+		return categoryDAO.categoryListBydepth(category);
+	}
 }

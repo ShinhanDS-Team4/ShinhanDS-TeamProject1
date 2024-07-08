@@ -250,9 +250,10 @@
 							</p>
 						</div>
 						<p class="rate">
-							★${reviewInfo.avg_rate != nul ? reviewInfo.avg_rate : 0} <span>
+							★${reviewInfo.AVG_RATE != nul ? reviewInfo.AVG_RATE : 0} <span>
 							<a href="javascript:#void" class="review-rate-btn">
-								리뷰 ${reviewInfo.review_count != null ? reviewInfo.review_count : 0 }건
+								리뷰 ${reviewInfo.REVIEW_COUNT != null ? reviewInfo.REVIEW_COUNT : 0 }건
+
 							</a>
 							</span>
 						</p>

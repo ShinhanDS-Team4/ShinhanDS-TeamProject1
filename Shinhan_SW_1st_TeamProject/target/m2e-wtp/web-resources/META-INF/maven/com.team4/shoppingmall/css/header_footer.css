@@ -1,0 +1,128 @@
+@import url(./common.css);
+
+/* header */
+.header_top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100px;
+}
+
+.leftGnb {
+    display: flex;
+    align-items: center;
+}
+
+.rightGnb {
+    padding-top: 40px;
+}
+
+.rightGnb>ul {
+    display: flex;
+    gap: 20px;
+}
+
+.rightGnb>ul>li {
+    position: relative;
+}
+
+.rightGnb>ul>li a {
+    font-size: 12px;
+    position: relative;
+
+}
+
+.rightGnb>ul>li img {
+    width: 35px;
+    position: absolute;
+    top: -40px;
+    left: 0px;
+    cursor: pointer;
+}
+
+.logo img {
+   width: 200px;
+}
+
+.search_form input {
+    border: none;
+    border-bottom: 1px solid #000;
+    outline: none;
+}
+
+.search_form>label {
+    display: flex;
+}
+
+.search_img {
+    width: 24px;
+}
+
+.header_bottom {
+    height: 50px;
+    line-height: 50px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+.menu_wrap {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+a.category_name {
+    transition: 0.2s;
+}
+
+a.category_name:hover {
+    border-bottom: 4px solid #513AE4;
+}
+
+.right_menu {
+    display: flex;
+    gap: 30px;
+}
+
+.left_menu {
+    display: flex;
+    gap: 30px;
+}
+.menu_pan{    
+    position: relative;
+}
+.dropdown_nav {
+    display: bock; /* 수정: 애니메이션 처리에 필요 */
+    position: relative; 
+    overflow: hidden; /* 추가: 숨김 처리 */
+    height: 0; /* 추가: 초기 높이 설정 */
+    transition: height 0.1s; /* 추가: 높이 변경 애니메이션 */
+   
+}
+.dropdown_nav ul{
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 0px; 
+    overflow: hidden; /* 추가: 높이 변경 시 내용 숨김 */
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 2;
+}
+.dropdown_nav ul>li{
+    height: 30px;
+}
+.dropdown_nav ul>li a{
+    font-size: 14px;
+    padding-left: 10px;
+    color: white;
+}
+.dropdown_nav ul>li:hover a{
+    font-weight: bold;
+}
+.highlight {
+    font-weight: bold;
+    color: var(--accent-color);
+}
+
+
+/* footer */
