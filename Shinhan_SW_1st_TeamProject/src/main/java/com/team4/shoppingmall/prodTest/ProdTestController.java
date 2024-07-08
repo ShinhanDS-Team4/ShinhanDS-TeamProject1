@@ -1,5 +1,6 @@
 package com.team4.shoppingmall.prodTest;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -202,11 +203,14 @@ public class ProdTestController {
 	) throws JsonProcessingException {
 		
 		//나중에 삭제하기
-		prod_id = "여성 원피스_199-81-22245"; //사진연결
+
+//		prod_id = "여성 원피스_199-81-22245";
+		//prod_id = "여성 원피스_199-81-22245"; //사진연결
 		//prod_id = "논아이론 사틴 솔리드 드레스 셔츠 - 화이트_199-81-22242"; //판매에 있고 ,대여재고없는상품 test
 		//prod_id = "[대여상품]원피스 - 화이트_222-81-77709"; //대여재고만 있는 상품	
 		//prod_id = "세일러 셔츠-스카이블루_199-81-22361";
-		//prod_id = "자수 미니 원피스 - 화이트_199-81-21909";
+		//prod_id = "자수 미니 원피스 - 화이트_199-81-21909"; //둘다 있는 상품
+		prod_id = "SRN000000002230";
 		
 		//상품의 정보와 옵션 조회
 		//옵션명과 값 전부 조회
@@ -276,10 +280,36 @@ public class ProdTestController {
 		System.out.println("imgIdList" + imgIdList);
 		
 		//메인 사진들 조회
-		List<Map<String,Object>> mainImgIdList = imageService.prodMainImgInfoByProdId(prod_id); 
+//		List<Map<String,Object>> mainImgIdList = imageService.prodMainImgInfoByProdId(prod_id); 
+//		model.addAttribute("mainImgIdList", mainImgIdList);
+		
+		File file;
+		String img_id = (String) prod_detail_info.get("prod_id");
+		Map<String, String> temp;
+		List<Map<String, String>> mainImgIdList = new ArrayList<Map<String,String>>();
+		for(int i=1;i<=5;i++) {
+			file = new File("C:\\uploaded_files\\main/"+img_id+"_image_"+i+".jpg");
+			if(file.exists()) {
+				temp = new HashMap<String, String>();
+				temp.put("IMG_ID", img_id+"_image_"+i+".jpg");
+				mainImgIdList.add(temp);
+			} else break;
+		}
 		model.addAttribute("mainImgIdList", mainImgIdList);
+		
 		//상품 정보 사진 조회
-		List<Map<String,Object>> subImgIdList = imageService.prodSubImgInfoByProdId(prod_id); 
+//		List<Map<String,Object>> subImgIdList = imageService.prodSubImgInfoByProdId(prod_id); 
+//		model.addAttribute("subImgIdList", subImgIdList);
+		
+		List<Map<String, String>> subImgIdList = new ArrayList<Map<String,String>>();
+		for(int i=1;i<=8;i++) {
+			file = new File("C:\\uploaded_files\\desc/"+img_id+"_desc_image_"+i+".jpg");
+			if(file.exists()) {
+				temp = new HashMap<String, String>();
+				temp.put("IMG_ID", img_id+"_desc_image_"+i+".jpg");
+				subImgIdList.add(temp);
+			} else break;
+		}
 		model.addAttribute("subImgIdList", subImgIdList);
 		
 		//상품 설명
@@ -385,6 +415,7 @@ public class ProdTestController {
         String prod_id = prodVO.getProd_id();
         System.out.println("援щℓ�븯湲곗긽�뭹id=" + prod_id);
         
+        
         //재고 체크 (프론트에서 체크 했는데 백도 나중에 추가)
     	if(prodVO.getS_stock_id() == null || prodVO == null) {
     		  return response;  
@@ -393,7 +424,6 @@ public class ProdTestController {
 		int productPrice = Integer.parseInt(prodVO.getProductPrice());
 		int total_price = productPrice * prodVO.getOrder_num();   //二쇰Ц 珥앷툑�븸
 		
-		//1.주문,주문상세 생성 (서비스에서 로직 처리)
 	    try {
 	    	//1.주문,주문상세 생성 (서비스에서 로직 처리)
 	        int order_id = orderProdService.orderprodInsert(prodVO, total_price, member_id);
@@ -465,7 +495,7 @@ public class ProdTestController {
 		 buyer_inq_map.put("buyer_inq_content", qnaTestarea); 
 		 buyer_inq_map.put("member_id", member_id); 
 		 buyer_inq_map.put("prod_id", prod_id); 
-		 
+		
 		int result = buyer_InqService.buyer_inqInsert(buyer_inq_map);
 		
 		String message;

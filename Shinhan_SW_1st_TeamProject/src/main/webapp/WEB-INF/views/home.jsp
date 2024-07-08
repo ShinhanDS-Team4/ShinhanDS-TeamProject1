@@ -23,6 +23,12 @@
     
     <!-- 팝업창 CSS -->
     <style>
+	    .pop-btn-box{
+	        position: fixed;
+		    bottom: 10px;
+		    right: 10px;
+		    z-index: 100;
+	    }
         .popup {
             display: none; 
             position: fixed; 
@@ -31,12 +37,12 @@
             transform: translate(-50%, -50%); 
             padding: 20px; 
             background: white; 
-            border: 2px solid black; 
             z-index: 1000;
             width: 400px; /* 팝업창 너비 설정 */
             height: 300px; /* 팝업창 높이 설정 */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
             border-radius: 10px; /* 모서리 둥글게 */
+            border:10px solid #fff;
         }
         .popup-overlay {
             display: none; 
@@ -52,7 +58,7 @@
             margin-top: 0;
         }
         .popup .content {
-            margin: 15px 0;
+          
         }
         .alert {
             padding: 20px;
@@ -69,11 +75,48 @@
             border-radius: 5px; /* 모서리 둥글게 */
             text-align: center;
         }
+        #receiveCouponBtn{
+     	    border: none;
+		    background-color: #c70f0f;
+		    color: #fff;
+		    font-weight: bold;
+		    padding: 20px 30px;
+		    font-size: 16px;
+		    border-radius: 5px;
+		    width: 100%;
+	        font-size: 20px;
+        }
+        #closePopupBtn{
+       	    position: absolute;
+		    top: 20px;
+		    right: 20px;
+		    border: none;
+		    background-color: transparent;
+   			font-size: 20px;
+   			
+        }
         
+        .popup .content>h1{
+       	    padding-top: 20px;
+       	    font-size: 35px;
+        }
+        .popup .content>h3{
+       	     padding: 40px 0px 20px;
+   			 color: #ccc;
+       	    
+        }
+         .popup .content>h2{
+	        padding-bottom: 20px;
+        }
     </style>
 </head>
 <body>
     <%@ include file="./common/header.jsp" %>
+    <div class="pop-btn-box">
+      <!-- 팝업창을 띄우는 버튼
+      <button id="popupBtn">팝업 열기</button> -->
+      <img id="popupBtn"  alt="쿠폰" src="${path}/resources/images/icons-gift-cupon.png">
+    </div>
     <div id="container">
         <div class="inner">
             <ul class="banner_wrap">
@@ -81,7 +124,7 @@
                     <div class="bannerImg">
                         <img src="${path}/resources/images/mainbanner/1.jpg" alt="">
                         <div class="bannerText">
-                            <p class="title">계절을 앞서는 감각</p>
+                            <p class="title">당신의 스타일, 한층 더 특별하게</p>
                             <p>새롭게 출시된 스타일을 만나보세요</p>
                         </div>
                     </div>
@@ -99,7 +142,7 @@
                     <div class="bannerImg">
                         <img src="${path}/resources/images/mainbanner/3.jpg" alt="">
                         <div class="bannerText">
-                            <p class="title">계절을 앞서는 감각</p>
+                            <p class="title">새로운 시즌, 새로운 나를 위한 컬렉션</p>
                             <p>새롭게 출시된 스타일을 만나보세요</p>
                         </div>
                     </div>
@@ -108,7 +151,7 @@
                     <div class="bannerImg">
                         <img src="${path}/resources/images/mainbanner/4.jpg" alt="">
                         <div class="bannerText">
-                            <p class="title">계절을 앞서는 감각</p>
+                            <p class="title">당신의 옷장에 필요한 모든 것</p>
                             <p>새롭게 출시된 스타일을 만나보세요</p>
                         </div>
                     </div>
@@ -117,7 +160,7 @@
                     <div class="bannerImg">
                         <img src="${path}/resources/images/mainbanner/5.jpg" alt="">
                         <div class="bannerText">
-                            <p class="title">계절을 앞서는 감각</p>
+                            <p class="title">새로운 시즌, 새로운 나를 위한 컬렉션</p>
                             <p>새롭게 출시된 스타일을 만나보세요</p>
                         </div>
                     </div>
@@ -126,7 +169,7 @@
                     <div class="bannerImg">
                         <img src="${path}/resources/images/mainbanner/6.jpg" alt="">
                         <div class="bannerText">
-                            <p class="title">계절을 앞서는 감각</p>
+                            <p class="title">스타일 변신의 완벽한 기회</p>
                             <p>새롭게 출시된 스타일을 만나보세요</p>
                         </div>
                     </div>
@@ -169,8 +212,6 @@
                    </ul>
                </div>
            </section>
-            <!-- 팝업창을 띄우는 버튼 -->
-            <button id="popupBtn">팝업 열기</button>
         </div>
     </div>
 
@@ -179,7 +220,7 @@
     <div class="popup" id="popup"> 
         <div class="alert" id="popupAlert"></div> <!-- 알림 메시지 추가 -->
         <div class="content">
-            <h1><c:out value="${event.event_title}" /></h1>
+            <h1><c:out value="${event.event_title}" />🎉</h1>
             <h2><c:out value="${event.event_content}" /></h2>
             <h3><c:out value="${event.event_date}" /></h3>
             <form id="couponForm" action="${path}/coupons/receive" method="post">
@@ -187,13 +228,14 @@
                 <input type="hidden" name="coupon_name" value="${coupon.coupon_name}">
                 <input type="hidden" name="discount_rate" value="${coupon.discount_rate}">
                 <input type="hidden" name="quantity" value="${coupon.quantity}">
-                <button type="button" id="receiveCouponBtn">쿠폰 받기</button>
+                <button type="button" id="receiveCouponBtn">쿠폰받기</button>
             </form>
-            <label><input type="checkbox" id="popupTodayNoShow"> 오늘 하루 그만 보기</label>
         </div>
-        <button id="closePopupBtn">닫기</button>
+        <div>
+	        <label><input type="checkbox" id="popupTodayNoShow"> 오늘 하루 그만 보기</label>
+	        <button id="closePopupBtn">X</button>
+        </div>
     </div>
-
   <script>
     /* 메인 배너 슬릭 슬라이더 */
     var jq = $.noConflict();

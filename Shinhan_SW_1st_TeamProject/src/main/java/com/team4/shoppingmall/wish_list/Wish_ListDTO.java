@@ -13,5 +13,10 @@ import lombok.ToString;
 public class Wish_ListDTO {
 	String member_id;
 	Integer prod_id;
-	String email;
+	String prod_name;
+	String prod_desc;
+	Integer prod_price;
+	String img_id;
+	String opt_name;
+	String opt_value;	
 }

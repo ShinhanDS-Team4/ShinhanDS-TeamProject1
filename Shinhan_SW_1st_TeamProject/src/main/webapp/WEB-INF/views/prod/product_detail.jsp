@@ -109,7 +109,7 @@
                //slideWidth: 500,
                //slideMargin: 10
     	});
-        
+      
 	});
 </script>
 </head>
@@ -201,7 +201,7 @@
 	<form id="productQnaForm">
 		
 		<input type="hidden" name="prod_id" value="${prod_detail_info.prod_id}">
-		
+				
 		<div id="myModal" class="modal">
 			<div class="modal-content">
 				<span class="close">&times;</span>
@@ -234,7 +234,7 @@
 						<ul class="product-img-slide">
 							<c:forEach var="imgNameMain" items="${mainImgIdList}">
 								<li>
-									<img src="http://localhost:9090/saren/ProdImgFile/main/${imgNameMain.IMG_ID}" alt="메인이미지">
+									<img src="/saren/ProdImgFile/main/${imgNameMain.IMG_ID}" alt="메인이미지">
 								</li>
 							</c:forEach>
 						</ul>
@@ -246,7 +246,7 @@
 						<h2>${prod_detail_info.PROD_NAME}</h2>
 						<div class="price_wrap">
 							<p class="productPrice">
-								${prod_detail_info.PROD_PRICE}원
+								${String.format("%,d", Integer.parseInt(prod_detail_info.PROD_PRICE))}원
 							</p>
 						</div>
 						<p class="rate">
@@ -471,7 +471,7 @@
 						<ul class="prod-img-scroll">
 							<c:forEach var="imgName" items="${subImgIdList}">
 								<li>
-									<img src="http://localhost:9090/saren/ProdImgFile/desc/${imgName.IMG_ID}" alt="서브이미지">
+									<img src="/saren/ProdImgFile/desc/${imgName.IMG_ID}" alt="서브이미지">
 								</li>
 							</c:forEach>
 							

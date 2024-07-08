@@ -442,7 +442,7 @@
 			</otherwise>
 		</choose>
 	</select>
-  
+
 	<select id="sellerByProd" parameterType="string"
 		resultType="SellerProdVO">
 		SELECT
