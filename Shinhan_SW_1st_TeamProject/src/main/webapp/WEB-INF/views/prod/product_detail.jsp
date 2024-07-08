@@ -201,7 +201,7 @@
 	<form id="productQnaForm">
 		
 		<input type="hidden" name="prod_id" value="${prod_detail_info.prod_id}">
-		
+				
 		<div id="myModal" class="modal">
 			<div class="modal-content">
 				<span class="close">&times;</span>
