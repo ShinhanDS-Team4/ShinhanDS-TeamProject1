@@ -129,6 +129,9 @@
 			imgContainer.classList.add("prdImgFile");
 			var img = document.createElement("img");
 			img.setAttribute("src", event.target.result);
+			
+			img.style.width = '300px';
+			img.style.height = '400px';
 			imgContainer.appendChild(img);
 
 			fileItem.appendChild(imgContainer);
@@ -432,7 +435,7 @@
 							<c:forEach var="mainImgName" items="${ProdMainImgList}">
 								<img
 									src="http://localhost:9090/saren/ProdImgFile/main/${mainImgName}"
-									width="300" height="300">
+									width="300" height="400">
 							</c:forEach>
 						</div>
 					</div>
@@ -456,7 +459,7 @@
 							<c:forEach var="imgName" items="${ProdDescImgList}">
 								<img
 									src="http://localhost:9090/saren/ProdImgFile/desc/${imgName}"
-									width="300" height="300">
+									width="300" height="400">
 							</c:forEach>
 						</div>
 					</div>
