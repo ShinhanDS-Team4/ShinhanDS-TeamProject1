@@ -66,23 +66,23 @@ public class SellerPrdModifyController {
 	@Autowired
 	RentProdStockService rentProdStockService;
 
-	//String member_id = "573-50-00882";// ÀÓ½Ã·Î »ç¿ëÇÒ ÆÇ¸ÅÀÚID(»ç¾÷ÀÚµî·Ï¹øÈ£)
+	//String member_id = "573-50-00882";// ï¿½Ó½Ã·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¸ï¿½ï¿½ï¿½ID(ï¿½ï¿½ï¿½ï¿½Úµï¿½Ï¹ï¿½È£)
 
-	// »óÇ° ÀÌ¹ÌÁö ÆÄÀÏ ¾÷·Îµå µğ·ºÅä¸®
-	// 1.¸ŞÀÎ ÀÌ¹ÌÁö ÆÄÀÏ
+	// ï¿½ï¿½Ç° ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Îµï¿½ ï¿½ï¿½ï¿½ä¸®
+	// 1.ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	@Value("${file.main-img-upload-dir}")
 	private String mainIMG_uploadDir;
 
-	// 2.¼³¸í ÀÌ¹ÌÁö ÆÄÀÏ
+	// 2.ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	@Value("${file.desc-img-upload-dir}")
 	private String descIMG_uploadDir;
 
 	@PostMapping("/resetMainProdImg")
 	@ResponseBody
 	public String resetMainProdImg(@RequestBody Map<String, Object> request) throws IOException {
-		System.out.println("¸ŞÀÎ »çÁø ¸ñ·Ï »èÁ¦ ÀÛ¾÷ ½ÃÀÛ");
+		System.out.println("ë©”ì¸ì´ë¯¸ì§€ ì‚­ì œ ì‘ì—… ì‹œì‘");
 		String prod_id = (String) request.get("prodid");
-		System.out.println("»óÇ°ID:" + prod_id);
+		System.out.println("ìƒí’ˆID:" + prod_id);
 
 		Prod_ImageDTO imageDTO = new Prod_ImageDTO();
 		imageDTO.setImg_id("imageDTOforSearch");
@@ -90,17 +90,17 @@ public class SellerPrdModifyController {
 		imageDTO.setImg_type(0);
 
 		List<String> imgIdList = imageService.findMainImgFileNameByProdID(imageDTO);
-		System.out.println(imgIdList);
+		System.out.println("ë©”ì¸ì´ë¯¸ì§€ ëª©ë¡:"+imgIdList);
 
-		System.out.println("¼öÇà ¿Ï·á");
+		System.out.println("ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½");
 
 		for (String imgID : imgIdList) {
 			int imgDeleteResult = imageService.prod_imageDelete(imgID);
 			Path filePath = Paths.get(mainIMG_uploadDir).resolve(imgID);
-			System.out.println("¸ŞÀÎ»çÁøÆÄÀÏ°æ·Î:" + filePath);
+			System.out.println("íŒŒì¼ê²½ë¡œ:" + filePath);
 			Files.delete(filePath);
 
-			System.out.println(imgID + "»èÁ¦ ¿Ï·á");
+			System.out.println(imgID + "ì‚­ì œë¨");
 		}
 
 		return "resetImgSuccess";
@@ -109,27 +109,27 @@ public class SellerPrdModifyController {
 	@PostMapping("/resetDescProdImg")
 	@ResponseBody
 	public String resetDescProdImg(@RequestBody Map<String, Object> request) throws IOException {
-		System.out.println("¼³¸í »çÁø ¸ñ·Ï »èÁ¦ ÀÛ¾÷ ½ÃÀÛ");
+		System.out.println("ì„¤ëª…ì´ë¯¸ì§€ ì‚­ì œ ì‹œì‘");
 		String prod_id = (String) request.get("prodid");
-		System.out.println("»óÇ°ID:" + prod_id);
+		System.out.println("ìƒí’ˆID:" + prod_id);
 
 		Prod_ImageDTO imageDTO = new Prod_ImageDTO();
 		imageDTO.setImg_id("imageDTOforSearch");
 		imageDTO.setProd_id(prod_id);
 		imageDTO.setImg_type(1);
 
-		List<String> imgIdList = imageService.findMainImgFileNameByProdID(imageDTO);
+		List<String> imgIdList = imageService.findDescImgFileNameByProdID(imageDTO);
 		System.out.println(imgIdList);
 
-		System.out.println("¼öÇà ¿Ï·á");
+		System.out.println("ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½");
 
 		for (String imgID : imgIdList) {
 			int imgDeleteResult = imageService.prod_imageDelete(imgID);
 			Path filePath = Paths.get(descIMG_uploadDir).resolve(imgID);
-			System.out.println("¼³¸í»çÁøÆÄÀÏ°æ·Î:" + filePath);
+			System.out.println("íŒŒì¼ê²½ë¡œ:" + filePath);
 			Files.delete(filePath);
 
-			System.out.println(imgID + "»èÁ¦ ¿Ï·á");
+			System.out.println(imgID + "ì‚­ì œë¨");
 		}
 
 		return "resetImgSuccess";
@@ -149,8 +149,8 @@ public class SellerPrdModifyController {
 		String sellerID = mem.getMember_id();
 		//String member_id = "573-50-00882";
 
-		String prod_id = URLDecoder.decode(prdID, "UTF-8");// »óÇ°ID
-		String prd_desc = URLDecoder.decode(prdDescription, "UTF-8");// »óÇ°¼³¸í
+		String prod_id = URLDecoder.decode(prdID, "UTF-8");// ï¿½ï¿½Ç°ID
+		String prd_desc = URLDecoder.decode(prdDescription, "UTF-8");// ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½
 		ProdDTO prodDTO = prodService.selectByProdId(prod_id);
 
 		prodDTO.setProd_id(prod_id);
@@ -165,36 +165,36 @@ public class SellerPrdModifyController {
 
 		int prdUpdateResult = prodService.prodModify(prodDTO);
 
-		// »óÇ°ÀÌ¹ÌÁö µî·ÏÀº ¸ŞÀÎ ÀÌ¹ÌÁö ¸ñ·Ï µî·Ï >> ¼³¸í ÀÌ¹ÌÁö ¸ñ·Ï µî·Ï ¼øÀ¸·Î ÁøÇà
-		int mainfileIndex = 1; // ¸ŞÀÎ ÀÌ¹ÌÁö ÆÄÀÏ ÀÎµ¦½º¸¦ 1·Î ÃÊ±âÈ­
-		int descfileIndex = 1; // ¼³¸í ÀÌ¹ÌÁö ÆÄÀÏ ÀÎµ¦½º¸¦ 1·Î ÃÊ±âÈ­
+		// ï¿½ï¿½Ç°ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ >> ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		int mainfileIndex = 1; // ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ 1ï¿½ï¿½ ï¿½Ê±ï¿½È­
+		int descfileIndex = 1; // ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ 1ï¿½ï¿½ ï¿½Ê±ï¿½È­
 
-		// ¸ŞÀÎ »çÁø ÃÊ±âÈ­ ÈÄ Àçµî·Ï
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		if (!Objects.isNull(mainFiles)) {
 			for (MultipartFile mainfile : mainFiles) {
-				// ÆÄÀÏ Å¸ÀÔ Ã¼Å©
+				// ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ Ã¼Å©
 				String contentType = mainfile.getContentType();
 				System.out.println(contentType);
 				if (!"image/jpeg".equals(contentType) && !"image/png".equals(contentType)) {
-					redirectAttributes.addFlashAttribute("PrdRegisterResult", "ÀÌ¹ÌÁö ÆÄÀÏÀÌ ¾Æ´Õ´Ï´Ù.");
-					return "/seller/sellerPrdList";// ¿À·ùÆäÀÌÁö·Î ¸®´ÙÀÌ·º¼Ç(ÆÀÇÁ·ÎÁ§Æ®¿¡¼­´Â alertÀ¸·Î ¿¡·¯¸¦ ¶ç¿ì°í ÆÇ¸ÅÀÚ-¹°Ç° ¸®½ºÆ®·Î ¸®´ÙÀÌ·ºÆ®)
+					redirectAttributes.addFlashAttribute("PrdRegisterResult", "ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´Õ´Ï´ï¿½.");
+					return "/seller/sellerPrdList";// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì·ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ alertï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¸ï¿½ï¿½ï¿½-ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì·ï¿½Æ®)
 				}
 
-				// ¼­¹ö ÄÄÇ»ÅÍÀÇ µğ·ºÅä¸®¿¡ ÆÄÀÏ ÀúÀå
+				// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç»ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ä¸®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-				// (1)¸ŞÀÎÀÌ¹ÌÁö ÆÄÀÏ
+				// (1)ï¿½ï¿½ï¿½ï¿½ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 				try {
-					// ÆÄÀÏ¸íÀº '»óÇ°¸í_ÆÇ¸ÅÀÚID_mainimage_x'(x´Â sequence)
+					// ï¿½ï¿½ï¿½Ï¸ï¿½ï¿½ï¿½ 'ï¿½ï¿½Ç°ï¿½ï¿½_ï¿½Ç¸ï¿½ï¿½ï¿½ID_mainimage_x'(xï¿½ï¿½ sequence)
 					String filename = prod_id + "_mainimage_" + mainfileIndex + ".png";
 					Path filePath = Paths.get(mainIMG_uploadDir).resolve(filename);
-					Files.createDirectories(filePath.getParent()); // µğ·ºÅä¸®°¡ Á¸ÀçÇÏÁö ¾ÊÀ¸¸é »ı¼º
-					Files.write(filePath, mainfile.getBytes()); // ÆÄÀÏ ÀúÀå
+					Files.createDirectories(filePath.getParent()); // ï¿½ï¿½ï¿½ä¸®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+					Files.write(filePath, mainfile.getBytes()); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-					// DB¿¡ ÀúÀå
+					// DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 					Prod_ImageDTO imageDTO = new Prod_ImageDTO();
 
-					imageDTO.setImg_id(filename);// »óÇ°¸í_ÆÇ¸ÅÀÚID_image_fileindex
-					imageDTO.setProd_id(prod_id);// »óÇ°_ÆÇ¸ÅÀÚID
+					imageDTO.setImg_id(filename);// ï¿½ï¿½Ç°ï¿½ï¿½_ï¿½Ç¸ï¿½ï¿½ï¿½ID_image_fileindex
+					imageDTO.setProd_id(prod_id);// ï¿½ï¿½Ç°_ï¿½Ç¸ï¿½ï¿½ï¿½ID
 					imageDTO.setImg_type(0);
 
 					System.out.println(imageDTO);
@@ -205,35 +205,35 @@ public class SellerPrdModifyController {
 
 				} catch (IOException e) {
 					e.printStackTrace();
-					redirectAttributes.addFlashAttribute("PrdRegisterResult", "»óÇ° Á¤º¸ ¾÷·Îµå¿¡ ½ÇÆĞÇÏ¿´½À´Ï´Ù.");
-					return "/seller/sellerPrdList";// ¿À·ùÆäÀÌÁö·Î ¸®´ÙÀÌ·º¼Ç(ÆÀÇÁ·ÎÁ§Æ®¿¡¼­´Â alertÀ¸·Î ¿¡·¯¸¦ ¶ç¿ì°í ÆÇ¸ÅÀÚ-¹°Ç° ¸®½ºÆ®·Î ¸®´ÙÀÌ·ºÆ®)
+					redirectAttributes.addFlashAttribute("PrdRegisterResult", "ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Îµå¿¡ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
+					return "/seller/sellerPrdList";// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì·ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ alertï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¸ï¿½ï¿½ï¿½-ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì·ï¿½Æ®)
 				}
 			}
 		}
 
 		if (!Objects.isNull(descFiles)) {
 			for (MultipartFile descfile : descFiles) {
-				// ÆÄÀÏ Å¸ÀÔ Ã¼Å©
+				// ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ Ã¼Å©
 				String contentType = descfile.getContentType();
 				System.out.println(contentType);
 				if (!"image/jpeg".equals(contentType) && !"image/png".equals(contentType)) {
-					redirectAttributes.addFlashAttribute("PrdRegisterResult", "ÀÌ¹ÌÁö ÆÄÀÏÀÌ ¾Æ´Õ´Ï´Ù.");
-					return "/seller/sellerPrdList";// ¿À·ùÆäÀÌÁö·Î ¸®´ÙÀÌ·º¼Ç(ÆÀÇÁ·ÎÁ§Æ®¿¡¼­´Â alertÀ¸·Î ¿¡·¯¸¦ ¶ç¿ì°í ÆÇ¸ÅÀÚ-¹°Ç° ¸®½ºÆ®·Î ¸®´ÙÀÌ·ºÆ®)
+					redirectAttributes.addFlashAttribute("PrdRegisterResult", "ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´Õ´Ï´ï¿½.");
+					return "/seller/sellerPrdList";// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì·ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ alertï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¸ï¿½ï¿½ï¿½-ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì·ï¿½Æ®)
 				}
 
-				// ¼­¹ö ÄÄÇ»ÅÍÀÇ µğ·ºÅä¸®¿¡ ÆÄÀÏ ÀúÀå
+				// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç»ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ä¸®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 				try {
-					// ÆÄÀÏ¸íÀº '»óÇ°¸í_ÆÇ¸ÅÀÚID_descimage_x'(x´Â sequence)
+					// ï¿½ï¿½ï¿½Ï¸ï¿½ï¿½ï¿½ 'ï¿½ï¿½Ç°ï¿½ï¿½_ï¿½Ç¸ï¿½ï¿½ï¿½ID_descimage_x'(xï¿½ï¿½ sequence)
 					String filename = prod_id + "_descimage_" + descfileIndex + ".png";
 					Path filePath = Paths.get(descIMG_uploadDir).resolve(filename);
-					Files.createDirectories(filePath.getParent()); // µğ·ºÅä¸®°¡ Á¸ÀçÇÏÁö ¾ÊÀ¸¸é »ı¼º
-					Files.write(filePath, descfile.getBytes()); // ÆÄÀÏ ÀúÀå
+					Files.createDirectories(filePath.getParent()); // ï¿½ï¿½ï¿½ä¸®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+					Files.write(filePath, descfile.getBytes()); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-					// DB¿¡ ÀúÀå
+					// DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 					Prod_ImageDTO imageDTO = new Prod_ImageDTO();
 
-					imageDTO.setImg_id(filename);// »óÇ°¸í_ÆÇ¸ÅÀÚID_image_fileindex
-					imageDTO.setProd_id(prod_id);// »óÇ°_ÆÇ¸ÅÀÚID
+					imageDTO.setImg_id(filename);// ï¿½ï¿½Ç°ï¿½ï¿½_ï¿½Ç¸ï¿½ï¿½ï¿½ID_image_fileindex
+					imageDTO.setProd_id(prod_id);// ï¿½ï¿½Ç°_ï¿½Ç¸ï¿½ï¿½ï¿½ID
 					imageDTO.setImg_type(1);
 
 					System.out.println(imageDTO);
@@ -244,38 +244,38 @@ public class SellerPrdModifyController {
 
 				} catch (IOException e) {
 					e.printStackTrace();
-					redirectAttributes.addFlashAttribute("PrdRegisterResult", "»óÇ° Á¤º¸ ¾÷·Îµå¿¡ ½ÇÆĞÇÏ¿´½À´Ï´Ù.");
-					return "/seller/sellerPrdList";// ¿À·ùÆäÀÌÁö·Î ¸®´ÙÀÌ·º¼Ç(ÆÀÇÁ·ÎÁ§Æ®¿¡¼­´Â alertÀ¸·Î ¿¡·¯¸¦ ¶ç¿ì°í ÆÇ¸ÅÀÚ-¹°Ç° ¸®½ºÆ®·Î ¸®´ÙÀÌ·ºÆ®)
+					redirectAttributes.addFlashAttribute("PrdRegisterResult", "ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Îµå¿¡ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
+					return "/seller/sellerPrdList";// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì·ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ alertï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¸ï¿½ï¿½ï¿½-ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì·ï¿½Æ®)
 				}
 			}
 		}
 
-		// Àç°íID-Àç°í·® º¯°æ
+		// ï¿½ï¿½ï¿½ID-ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		String stock_id = URLDecoder.decode(stockid, "UTF-8");
 
-		System.out.println("Àç°íID:" + stock_id);
+		System.out.println("ï¿½ï¿½ï¿½ID:" + stock_id);
 
-		if (stock_id.contains("_SELL_")) {// ÆÇ¸ÅÀç°íÀÎ °æ¿ì
+		if (stock_id.contains("_SELL_")) {// ï¿½Ç¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 			Seller_Prod_StockDTO seller_Prod_StockDTO = new Seller_Prod_StockDTO();
 			seller_Prod_StockDTO.setS_stock_id(stock_id);
 			seller_Prod_StockDTO.setStock(prdStock);
 
-			System.out.println("ÆÇ¸ÅÀç°í ¼öÁ¤µ¥ÀÌÅÍ:" + seller_Prod_StockDTO);
+			System.out.println("ï¿½Ç¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:" + seller_Prod_StockDTO);
 
 			int changeSellStock = seller_Prod_StockService.sellStockUpdate(seller_Prod_StockDTO);
 
-		} else if (stock_id.contains("_RENT_")) {// ´ë¿©Àç°íÀÎ °æ¿ì
+		} else if (stock_id.contains("_RENT_")) {// ï¿½ë¿©ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 			RentProdStockDTO rentProdStockDTO = new RentProdStockDTO();
 
 			rentProdStockDTO.setR_stock_id(stock_id);
 			rentProdStockDTO.setStock(prdStock);
 
-			System.out.println("´ë¿©Àç°í ¼öÁ¤µ¥ÀÌÅÍ:" + rentProdStockDTO);
+			System.out.println("ï¿½ë¿©ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:" + rentProdStockDTO);
 
 			int changeRentStock = rentProdStockService.rentStockUpdate(rentProdStockDTO);
 		}
 
-		redirectAttributes.addFlashAttribute("PrdRegisterResult", "»óÇ° Á¤º¸ ÃÖ½ÅÈ­¿¡ ¼º°øÇÏ¿´½À´Ï´Ù.");
-		return "redirect:/seller/PrdList.do";// ¼º°ø ÆäÀÌÁö·Î ¸®´ÙÀÌ·º¼Ç(ÆÀÇÁ·ÎÁ§Æ®¿¡¼­´Â ÆÇ¸ÅÀÚ-¹°Ç° ¸®½ºÆ®·Î ¸®´ÙÀÌ·ºÆ®)
+		redirectAttributes.addFlashAttribute("PrdRegisterResult", "ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½ ï¿½Ö½ï¿½È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
+		return "redirect:/seller/PrdList.do";// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì·ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¸ï¿½ï¿½ï¿½-ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì·ï¿½Æ®)
 	}
 }

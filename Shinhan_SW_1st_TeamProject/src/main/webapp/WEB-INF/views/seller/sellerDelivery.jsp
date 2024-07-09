@@ -277,6 +277,7 @@
 			</div>
 		</aside> --%>
 	</main>
+	<%@ include file="../common/footer.jsp"%>
 </style>
 </body>
 </html>
