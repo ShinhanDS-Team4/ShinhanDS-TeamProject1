@@ -185,7 +185,7 @@ public class SellerPrdModifyController {
 				// (1)�����̹��� ����
 				try {
 					// ���ϸ��� '��ǰ��_�Ǹ���ID_mainimage_x'(x�� sequence)
-					String filename = prod_id + "_image_" + mainfileIndex + ".png";
+					String filename = prod_id + "_image_" + mainfileIndex + ".jpg";
 					Path filePath = Paths.get(mainIMG_uploadDir).resolve(filename);
 					Files.createDirectories(filePath.getParent()); // ���丮�� �������� ������ ����
 					Files.write(filePath, mainfile.getBytes()); // ���� ����
@@ -224,7 +224,7 @@ public class SellerPrdModifyController {
 				// ���� ��ǻ���� ���丮�� ���� ����
 				try {
 					// ���ϸ��� '��ǰ��_�Ǹ���ID_descimage_x'(x�� sequence)
-					String filename = prod_id + "_descimage_" + descfileIndex + ".png";
+					String filename = prod_id + "_descimage_" + descfileIndex + ".jpg";
 					Path filePath = Paths.get(descIMG_uploadDir).resolve(filename);
 					Files.createDirectories(filePath.getParent()); // ���丮�� �������� ������ ����
 					Files.write(filePath, descfile.getBytes()); // ���� ����
