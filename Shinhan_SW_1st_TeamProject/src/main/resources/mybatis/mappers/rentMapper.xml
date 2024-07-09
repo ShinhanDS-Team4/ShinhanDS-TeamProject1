@@ -80,8 +80,8 @@
 	<update id="memberUpdate" parameterType="rentVO">
 		UPDATE RENT
 		SET
-		"rent_state" = #{rent_state}
-		WHERE "rental_code" = #{rental_code}
+		rent_state = #{rent_state}
+		WHERE rental_code = #{rental_code}
 	</update>
 
 	<!--대여 수정 -->
@@ -417,5 +417,10 @@
             )
         </if>
     ORDER BY p.prod_id
+	</select>
+	
+	<select id="findMaxRentID" resultType="int">
+		SELECT MAX(rental_code) AS max_rental_code
+		FROM RENT
 	</select>
 </mapper>

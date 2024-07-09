@@ -37,10 +37,10 @@
 		ORDER_DETAIL(orderdetail_id, order_product_price, order_num, order_id,
 		s_stock_id, order_state)
 		VALUES(
-		order_detail_sequence.nextval,
+		#{orderdetail_id},
 		#{order_product_price},
 		#{order_num},
-		ORDER_PROD_SEQUENCE.currval,
+		#{order_id},
 		#{s_stock_id},
 		'결제대기'
 		)
@@ -162,6 +162,11 @@
     	AND m.member_id = #{aa}
 		ORDER BY
 		m.member_id, o.order_date
+	</select>
+	
+	<select id = "findMaxOrderDetailID" resultType="int">
+		SELECT MAX(orderdetail_id) AS max_orderdetail_id
+		FROM ORDER_DETAIL
 	</select>
 
 </mapper>

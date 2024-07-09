@@ -44,5 +44,7 @@ public interface OrderProdDAOInterface {
 
 	public List<OrderProdDTO> selectByMemId(String member_id);
 
+	public int findMaxOrderID();
+
 	
 }

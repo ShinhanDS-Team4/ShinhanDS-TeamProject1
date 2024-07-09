@@ -203,4 +203,9 @@
 		WHERE order_id = #{order_id}
 	</delete>
 	
+	<select id="findMaxOrderID" resultType="int">
+		SELECT MAX(order_id) AS max_order_id
+		FROM ORDER_PROD
+	</select>
+	
 </mapper>

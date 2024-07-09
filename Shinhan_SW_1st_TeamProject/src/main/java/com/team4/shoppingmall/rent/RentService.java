@@ -130,5 +130,9 @@ public class RentService {
 	public List<SellerRentDTO> searchCustomerByRent(String searchKeyword) {
 		return rentDAO.searchCustomerByRent(searchKeyword);
 	}
+	
+	public int findMaxRentID() {
+		return rentDAO.findMaxRentID();
+	}
 
 }
