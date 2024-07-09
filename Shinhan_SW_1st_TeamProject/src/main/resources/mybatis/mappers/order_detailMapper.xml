@@ -40,7 +40,7 @@
 		order_detail_sequence.nextval,
 		#{order_product_price},
 		#{order_num},
-		#{order_id},
+		ORDER_PROD_SEQUENCE.currval,
 		#{s_stock_id},
 		'결제대기'
 		)

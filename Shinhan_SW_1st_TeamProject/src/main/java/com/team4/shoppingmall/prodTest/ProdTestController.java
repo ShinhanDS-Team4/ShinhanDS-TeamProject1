@@ -340,7 +340,7 @@ public class ProdTestController {
 		Map<String, Object> response = new HashMap<>();
 		
 		//session
-		MemberDTO member =  (MemberDTO) session.getAttribute("member");
+		MemberDTO member =  (MemberDTO) session.getAttribute("member");		
 		String member_id = member.getMember_id();
 		prod_id = prodVO.getProd_id();
         
@@ -412,7 +412,7 @@ public class ProdTestController {
 		MemberDTO member =  (MemberDTO) session.getAttribute("member");
 		String member_id = member.getMember_id();
         String prod_id = prodVO.getProd_id();
-        System.out.println("援щℓ�븯湲곗긽�뭹id=" + prod_id);
+        System.out.println("prod_id=" + prod_id);
         
         
         //재고 체크 (프론트에서 체크 했는데 백도 나중에 추가)
