@@ -445,7 +445,7 @@
 
 	<select id="sellerByProd" parameterType="string"
 		resultType="SellerProdVO">
-		SELECT
+		SELECT DISTINCT
 		p.prod_id,
 		p.prod_name,
 		p.prod_desc,
@@ -521,7 +521,7 @@
 	</select>
 	
 	<select id="allProd" resultType="SellerProdVO">
-    SELECT
+    SELECT DISTINCT
         m.member_id,
         m.member_name,
         m.email,
