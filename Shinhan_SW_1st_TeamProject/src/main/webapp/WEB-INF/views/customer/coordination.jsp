@@ -56,8 +56,8 @@
 				                            <tr>
 				                                <td>
 				                                    <c:choose>
-				                                        <c:when test="${not empty cartProduct.IMG_ID}">
-				                                            <img src="http://localhost:9090/saren/ProdImgFile/main/${cartProduct.IMG_ID}" 
+				                                        <c:when test="${not empty cartProduct.PROD_ID}">
+				                                            <img src="/saren/ProdImgFile/main/${cartProduct.PROD_ID}_image_1.jpg" 
 				                                                 alt="메인이미지"
 				                                                 style="width:100px; height:100px;" />
 				                                        </c:when>
@@ -69,12 +69,12 @@
 				                                </td>
 				                                <td>
 				                                    <p class="product-name">${cartProduct.PROD_NAME}</p>
-				                                    <input id="cartId" type="hidden" value="${cartProduct.CART_ID}" />
+				                                    <input id="prod_id" type="hidden" value="${cartProduct.PROD_ID}" />
 				                                </td>
 				                                <td>${cartProduct.CART_AMOUNT}(개)</td>
 				                                <td>${cartProduct.PROD_PRICE}(원)</td>
 				                                <td>
-				                                    <button id="recommendBtn" type="button">추천버튼</button>
+				                                    <button id="recommendBtn" type="button">추천받기</button>
 				                                </td>
 				                            </tr>
 				                        </tbody>
@@ -90,27 +90,10 @@
  	<script type="text/javascript">
  	$(function () {
  		$('#recommendBtn').on('click', function() {
- 	        var cart_id = $('#cartId').val(); // 카트 ID 값을 가져옴
- 	        console.log(cart_id);
+ 	        var prod_id = $('#prod_id').val(); // 카트 ID 값을 가져옴
+ 	        
 
- 	        $.ajax({
- 	            url: "${path}/prod/recommend.do",
- 	            type: 'POST',
- 	            data: JSON.stringify({ cart_id: cart_id }), // 데이터를 JSON 형식으로 전송
- 	            contentType: "application/json;charset=utf-8",
- 	            success: function(response) {
- 	                if (response.status === 'success') {
- 	                    alert("이동");
- 	                    // 추천 상품 페이지로 이동
- 	                    location.href = "${path}/customer/recommend.do?cart_id=" + cart_id;
- 	                } else {
- 	                    alert("이동 실패");
- 	                }
- 	            },
- 	            error: function(error) {
- 	                alert("Error: " + error);
- 	            }
- 	        });
+ 	        location.href = "${path}/customer/recommend.do?prod_id=" + prod_id;
  	    });
 	});
  	</script>

@@ -18,23 +18,23 @@ public class ProdTestService{
 		return prodDAO.selectProdDetailInfoByProdId(prod_id);
 	}
 	
-	public ProdTestDTO selectByProdId(String prod_id) {
+	public ProdDTO selectByProdId(String prod_id) {
 		return prodDAO.selectByProdId(prod_id);
 	}
 	
-	public List<ProdTestDTO> selectByMemberId(String member_id) {
+	public List<ProdDTO> selectByMemberId(String member_id) {
 		return prodDAO.selectByMemberId(member_id);
 	}
 	
-	public List<ProdTestDTO> selectAll() {
+	public List<ProdDTO> selectAll() {
 		return prodDAO.selectAll();
 	}
 	
-	public int prodInsert(ProdTestDTO prod) {
+	public int prodInsert(ProdDTO prod) {
 		return prodDAO.prodInsert(prod);
 	}
 	
-	public int prodUpdate(ProdTestDTO prod) {
+	public int prodUpdate(ProdDTO prod) {
 		return prodDAO.prodUpdate(prod);
 	}
 	
@@ -76,5 +76,9 @@ public class ProdTestService{
 	
 	public Integer searchNumsByBrndAndPrc(Map<String, Object> schInfo) {
 		return prodDAO.searchNumsByBrndAndPrc(schInfo);
+	}
+	
+	public List<ProdDTO> selectAllByCtgWhenRcmd(Integer category_id) {
+		return prodDAO.selectAllByCtgWhenRcmd(category_id);
 	}
 }

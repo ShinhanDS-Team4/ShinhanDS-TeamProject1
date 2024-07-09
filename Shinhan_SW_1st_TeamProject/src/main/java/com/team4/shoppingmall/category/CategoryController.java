@@ -58,7 +58,6 @@ public class CategoryController {
 		JSONObject prod_list = (JSONObject) parser.parse(pl_reader);
 		JSONObject bm_list = (JSONObject) parser.parse(bm_reader);
 		JSONObject ctg_list = (JSONObject) parser.parse(ctg_reader);
-		
 		JSONObject prod_detail;
 		
 		ProdDTO prod;
