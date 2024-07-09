@@ -221,8 +221,8 @@ public class SellerPrdUploadController {
 				//서버 컴퓨터의 디렉토리에 파일 저장
 				//(1)메인이미지 파일
 				try {
-					// 파일명은 '상품명_판매자ID_mainimage_x'(x는 sequence)
-					String filename = prod_id + "_mainimage_" + mainfileIndex+".png";
+					// 파일명은 '상품명_판매자ID_image_x'(x는 sequence)
+					String filename = prod_id + "_image_" + mainfileIndex+".png";
 					Path filePath = Paths.get(mainIMG_uploadDir).resolve(filename);
 					Files.createDirectories(filePath.getParent()); // �뵒�젆�넗由ш� 議댁옱�븯吏� �븡�쑝硫� �깮�꽦
 					Files.write(filePath, mainfile.getBytes()); // �뙆�씪 ���옣

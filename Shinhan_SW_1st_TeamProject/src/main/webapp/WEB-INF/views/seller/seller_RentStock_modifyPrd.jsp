@@ -129,6 +129,9 @@
 			imgContainer.classList.add("prdImgFile");
 			var img = document.createElement("img");
 			img.setAttribute("src", event.target.result);
+			
+			img.style.width = '300px';
+			img.style.height = '400px';
 			imgContainer.appendChild(img);
 
 			fileItem.appendChild(imgContainer);
@@ -138,7 +141,7 @@
 
 	//메인사진 미리보기 삭제 및 데이터 초기화
 	function resetMainProdImg() {
-		var prodid = '$ProductInfo.prod_id';
+		var prodid = '${ProductInfo.prod_id}';
 		if(confirm('상품의 메인 사진 목록을 초기화할까요?')){
 		$.ajax({
 			type : "POST",
@@ -172,8 +175,8 @@
 
 	//설명사진 미리보기 삭제 및 데이터 초기화
 	function resetDescProdImg() {
-		var prodid = '$ProductInfo.prod_id';
-		if(confirm('상품의 메인 사진 목록을 초기화할까요?')){
+		var prodid = '${ProductInfo.prod_id}';
+		if(confirm('상품의 설명 사진 목록을 초기화할까요?')){
 		$.ajax({
 			type : "POST",
 			url : "/shoppingmall/seller/resetDescProdImg",
@@ -182,7 +185,7 @@
 			success : function(response) {
 				// 서버에서 반환한 문자열에 따라 처리
 				if (response === "resetImgSuccess") {
-					console.log("상품 메인 이미지 초기화 성공");
+					console.log("상품 설명 이미지 초기화 성공");
 					// 성공했을 때 추가적인 작업 수행
 					// 예: 다른 UI 업데이트, 메시지 표시 등
 					document.getElementById('descImgSection').classList.remove('hidden');
@@ -370,7 +373,7 @@
 	<main>
 		<aside>
 			<ul>
-				<li><a onclick="location.href='${path}/seller/MainPage.do'">통계</a></li>
+				<%-- <li><a onclick="location.href='${path}/seller/MainPage.do'">통계</a></li> --%>
 				<li><a onclick="location.href='${path}/seller/PrdList.do'">판매/대여
 						상품 목록</a></li>
 				<li><a onclick="location.href='${path}/seller/DeliveryList.do'">주문/배송</a></li>
@@ -432,7 +435,7 @@
 							<c:forEach var="mainImgName" items="${ProdMainImgList}">
 								<img
 									src="http://localhost:9090/saren/ProdImgFile/main/${mainImgName}"
-									width="300" height="300">
+									width="300" height="400">
 							</c:forEach>
 						</div>
 					</div>
@@ -456,7 +459,7 @@
 							<c:forEach var="imgName" items="${ProdDescImgList}">
 								<img
 									src="http://localhost:9090/saren/ProdImgFile/desc/${imgName}"
-									width="300" height="300">
+									width="300" height="400">
 							</c:forEach>
 						</div>
 					</div>
@@ -531,5 +534,6 @@
 			</div>
 		</aside> --%>
 	</main>
+	<%@ include file="../common/footer.jsp"%>
 </body>
 </html>

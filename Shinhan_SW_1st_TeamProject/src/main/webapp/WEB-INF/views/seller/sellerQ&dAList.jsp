@@ -149,5 +149,6 @@
 			</div>
 		</aside> --%>
 	</main>
+	<%@ include file="../common/footer.jsp"%>
 </body>
 </html>

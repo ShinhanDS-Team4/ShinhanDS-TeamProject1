@@ -165,7 +165,7 @@
 		JOIN
     		(SELECT prod_id, img_id
     		 FROM PROD_IMAGE
-    		 WHERE img_id = CONCAT(prod_id, '_mainimage_1')) PI ON P.prod_id = PI.prod_id
+    		 WHERE img_id = CONCAT(prod_id, '_mainimage_1.jpg')) PI ON P.prod_id = PI.prod_id
 		where 
 			OD.ORDER_ID = #{aa}
 	</select>
@@ -183,9 +183,9 @@
 	<!-- ordrlist.jsp에서, 환불 -->
 	<update id="orderRefund" parameterType="int">
 		UPDATE 
-			ORDER_PROD 
+			ORDER_DETAIL
 		SET 
-			order_state = 'refunded' 
+			order_state = '환불완료' 
 		WHERE 
 			order_id = #{aa} 
 	</update>

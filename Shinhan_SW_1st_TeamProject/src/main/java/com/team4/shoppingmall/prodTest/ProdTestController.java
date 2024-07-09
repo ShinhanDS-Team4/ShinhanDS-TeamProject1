@@ -196,23 +196,20 @@ public class ProdTestController {
 		
 	/* 상품 상세 페이지 */
 	@GetMapping("/product_detail")
-	public void productDetail(String prod_id, 
-								Model model
-								//,@RequestParam(value = "prod_id", required = false) String prod_id
+	public void productDetail(Model model
+								,@RequestParam(value = "prod_id", required = false) String prod_id
 								//,@RequestBody Map<String, Object> request 
 	) throws JsonProcessingException {
 		
 		//나중에 삭제하기
 
-//		prod_id = "여성 원피스_199-81-22245";
-
+		//prod_id = "여성 원피스_199-81-22245";
 		//prod_id = "여성 원피스_199-81-22245"; //사진연결
-
 		//prod_id = "논아이론 사틴 솔리드 드레스 셔츠 - 화이트_199-81-22242"; //판매에 있고 ,대여재고없는상품 test
 		//prod_id = "[대여상품]원피스 - 화이트_222-81-77709"; //대여재고만 있는 상품	
 		//prod_id = "세일러 셔츠-스카이블루_199-81-22361";
 		//prod_id = "자수 미니 원피스 - 화이트_199-81-21909"; //둘다 있는 상품
-		prod_id = "SRN000000002230";
+		//prod_id = "SRN000000002230";
 		
 		//상품의 정보와 옵션 조회
 		//옵션명과 값 전부 조회
@@ -343,7 +340,7 @@ public class ProdTestController {
 		Map<String, Object> response = new HashMap<>();
 		
 		//session
-		MemberDTO member =  (MemberDTO) session.getAttribute("member");
+		MemberDTO member =  (MemberDTO) session.getAttribute("member");		
 		String member_id = member.getMember_id();
 		prod_id = prodVO.getProd_id();
         
@@ -415,7 +412,8 @@ public class ProdTestController {
 		MemberDTO member =  (MemberDTO) session.getAttribute("member");
 		String member_id = member.getMember_id();
         String prod_id = prodVO.getProd_id();
-        System.out.println("援щℓ�븯湲곗긽�뭹id=" + prod_id);
+        System.out.println("prod_id=" + prod_id);
+        
         
         //재고 체크 (프론트에서 체크 했는데 백도 나중에 추가)
     	if(prodVO.getS_stock_id() == null || prodVO == null) {
@@ -425,7 +423,6 @@ public class ProdTestController {
 		int productPrice = Integer.parseInt(prodVO.getProductPrice());
 		int total_price = productPrice * prodVO.getOrder_num();   //二쇰Ц 珥앷툑�븸
 		
-		//1.주문,주문상세 생성 (서비스에서 로직 처리)
 	    try {
 	    	//1.주문,주문상세 생성 (서비스에서 로직 처리)
 	        int order_id = orderProdService.orderprodInsert(prodVO, total_price, member_id);
@@ -497,7 +494,7 @@ public class ProdTestController {
 		 buyer_inq_map.put("buyer_inq_content", qnaTestarea); 
 		 buyer_inq_map.put("member_id", member_id); 
 		 buyer_inq_map.put("prod_id", prod_id); 
-		 
+		
 		int result = buyer_InqService.buyer_inqInsert(buyer_inq_map);
 		
 		String message;
