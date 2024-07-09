@@ -56,10 +56,8 @@ public class CustomerControllerJH {
 	@GetMapping("/myPage.do")
 	public String myPage(HttpSession session, Model model) {
 
-		
 		//1.회원정보 조회
 		MemberDTO member =  (MemberDTO) session.getAttribute("member");
-
 		String member_id = member.getMember_id();
 
 		
@@ -68,7 +66,7 @@ public class CustomerControllerJH {
 		List<Map<String,Object>> myAllOrders = orderProdService.orderProductById(member_id);
 	    model.addAttribute("myAllOrders", myAllOrders);
 	    model.addAttribute("orderCount", myAllOrders.size());
-	    //System.out.println("전체 주문 목록: " + myAllOrders);
+	    System.out.println("전체 주문 목록: " + myAllOrders);
 	    
 		//3.나의 대여 내역 (대여신청완료된 주문)
 	    List<Map<String,Object>> myAllRentOrders = rentService.rentProductById(member_id);

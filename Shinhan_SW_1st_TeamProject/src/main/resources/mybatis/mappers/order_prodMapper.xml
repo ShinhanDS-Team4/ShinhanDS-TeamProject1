@@ -15,7 +15,7 @@
 		WHERE O.orderdetail_id = #{orderdetail_id};
 	</select>
 	
-	<!-- 결제 완료된 주문 상품 목록 (join수정-0708) -->
+	<!-- 결제 완료된 주문 상품 목록 (join수정-0709) -->
 	<select id="orderProductById" parameterType="string"
 		resultType="map">
 		SELECT
@@ -36,7 +36,7 @@
 		    SELL_PROD_STOCK sps ON od.s_stock_id = sps.s_stock_id
 		JOIN 
 		    PROD p ON p.prod_id = sps.prod_id
-		JOIN (
+		LEFT OUTER JOIN (
 		    SELECT img_id, prod_id
 		    FROM (
 		        SELECT img_id, prod_id,
