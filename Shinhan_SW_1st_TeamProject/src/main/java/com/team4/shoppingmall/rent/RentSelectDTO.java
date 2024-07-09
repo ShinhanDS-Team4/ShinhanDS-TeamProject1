@@ -26,4 +26,5 @@ public class RentSelectDTO {
 	Integer rentdetail_id;
 	String prod_id;
 	Integer rent_num;
+	Integer rental_code;
 }
