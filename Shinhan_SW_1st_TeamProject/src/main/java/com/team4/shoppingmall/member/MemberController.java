@@ -145,7 +145,7 @@ public class MemberController {
 			memberService.memberSellerInsert(member);
 		}
 		addr.setIs_master_addr("Y");
-		addrService.addressInsert(addr);
+		addrService.addressInsert(addr, member.getMember_id());
 
 		return "redirect:login.do";
 	}

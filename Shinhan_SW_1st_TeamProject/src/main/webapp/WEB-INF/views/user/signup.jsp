@@ -264,6 +264,16 @@
             var password = $('#member_pw').val();
             var confirmPassword = $('#confirm-password').val();
             var emailVerified = $('#email').prop('readonly');
+            var allFieldsFilled = true;
+            var errorMessage = '모든 칸을 기입해주세요.';
+
+            // 필수 입력 칸 체크
+            $('input[required]').each(function() {
+                if ($(this).val() === '') {
+                    allFieldsFilled = false;
+                    return false; // 필수 입력 칸이 비어 있으면 루프 종료
+                }
+            });
 
             if (!emailVerified) {
                 event.preventDefault();
@@ -271,6 +281,9 @@
             } else if (password === '' || confirmPassword === '' || password !== confirmPassword) {
                 event.preventDefault();
                 $('#password-error').text('비밀번호를 설정해주세요.').removeClass('green').addClass('red');
+            } else if (!allFieldsFilled) {
+                event.preventDefault();
+                $('#form-error').text(errorMessage).addClass('red');
             } else {
                 alert('회원가입 완료!');
             }
@@ -283,6 +296,7 @@
     <%@ include file="../common/header.jsp" %>
     <div class="container">
         <h1>회원가입</h1>
+        <div id="form-error" class="error-message red"></div>
         <form method="post" accept-charset="UTF-8" action="${path}/member_test/signup">
             <div class="form-group">
                 <label for="member_type">구분</label>
@@ -293,56 +307,56 @@
             </div>
             <div class="form-group">
                 <label for="member_id">아이디</label>
-                <input type="text" id="member_id" name="member_id" placeholder="영문, 숫자, 특수문자('_')만 입력 가능">
+                <input type="text" id="member_id" name="member_id" placeholder="영문, 숫자, 특수문자('_')만 입력 가능" required>
             </div>
             <div class="form-group">
                 <label for="member_pw">비밀번호</label>
-                <input type="password" id="member_pw" name="member_pw" placeholder="영문, 숫자, 특수문자 조합 9자리 이상">
+                <input type="password" id="member_pw" name="member_pw" placeholder="영문, 숫자, 특수문자 조합 9자리 이상" required>
             </div>
             <div class="form-group">
                 <label for="confirm-password">비밀번호 확인</label>
-                <input type="password" id="confirm-password" name="confirmPassword">
+                <input type="password" id="confirm-password" name="confirmPassword" required>
             </div>
             <div id="password-error" class="error-message"></div>
             <div class="form-group">
                 <label for="member_name">이름</label>
-                <input type="text" id="member_name" name="member_name">
+                <input type="text" id="member_name" name="member_name" required>
             </div>
             <div class="form-group">
                 <label for="phone">휴대폰 번호</label>
-                <input type="text" id="phone" name="phone" placeholder="01012345678">
+                <input type="text" id="phone" name="phone" placeholder="01012345678, ('-'를 빼고 입력해주세요)" pattern="[0-9]{11}" required>
             </div>
             <div class="form-group">
                 <label for="email">이메일</label>
                 <div class="email-container">
-                    <input type="email" id="email" name="email">
+                    <input type="email" id="email" name="email" required>
                     <button type="button" id="email-verify-btn" class="btn">인증번호 받기</button>
                 </div>
             </div>
             <div id="email-error" class="error-message red"></div>
             <div class="form-group">
                 <label for="birth_date">생년월일</label>
-                <input type="date" id="birth_date" name="birth_date">
+                <input type="date" id="birth_date" name="birth_date" required>
             </div>
             <div class="form-group radio-group">
                 <label>성별</label>
-                <input type="radio" id="male" name="gender" value="M">
+                <input type="radio" id="male" name="gender" value="M" required>
                 <label for="male">남성</label>
-                <input type="radio" id="female" name="gender" value="F">
+                <input type="radio" id="female" name="gender" value="F" required>
                 <label for="female">여성</label>
             </div>
             <div class="form-group">
                 <label for="zipcode">주소</label>
                 <button type="button" id="address-btn" class="btn address-button">주소 입력</button>
-                <input type="text" id="zipcode" name="zipcode" placeholder="우편번호" readonly>
+                <input type="text" id="zipcode" name="zipcode" placeholder="우편번호" readonly required>
             </div>
             <div class="form-group">
                 <label for="main_address"></label>
-                <input type="text" id="main_address" name="main_address" placeholder="주소" readonly>
+                <input type="text" id="main_address" name="main_address" placeholder="주소" readonly required>
             </div>
             <div class="form-group">
                 <label for="detail_address"></label>
-                <input type="text" id="detail_address" name="detail_address" placeholder="상세주소">
+                <input type="text" id="detail_address" name="detail_address" placeholder="상세주소" required>
             </div>
             <div class="form-group">
                 <label for="sub_address"></label>
