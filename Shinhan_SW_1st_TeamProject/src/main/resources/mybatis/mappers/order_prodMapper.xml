@@ -19,35 +19,35 @@
 	<select id="orderProductById" parameterType="string"
 		resultType="map">
 		SELECT
-		    op.order_id,
-		    p.prod_name, 
-		    op.total_price, 
-		    od.order_num,
-		    od.order_product_price,
-		    od.order_id,
-		    op.order_date,
-		    pi.img_id,
-		    od.order_state
-		FROM 
-		    order_prod op
-		JOIN 
-		    order_detail od ON op.order_id = od.order_id
-		JOIN 
-		    SELL_PROD_STOCK sps ON od.s_stock_id = sps.s_stock_id
-		JOIN 
-		    PROD p ON p.prod_id = sps.prod_id
-		JOIN (
-		    SELECT img_id, prod_id
-		    FROM (
-		        SELECT img_id, prod_id,
-		               ROW_NUMBER() OVER (PARTITION BY prod_id ORDER BY img_id) AS rn
-		        FROM PROD_IMAGE
-		    ) pi
-		    WHERE pi.rn = 1
-		) pi ON p.prod_id = pi.prod_id
-		WHERE 
-		    op.member_id = #{member_id}
-		AND od.order_state = '결제완료'
+            op.order_id,
+            p.prod_name, 
+            op.total_price, 
+            od.order_num,
+            od.order_product_price,
+            od.order_id,
+            op.order_date,
+            pi.img_id,
+            od.order_state
+        FROM 
+            order_prod op
+        JOIN 
+            order_detail od ON op.order_id = od.order_id
+        JOIN 
+            SELL_PROD_STOCK sps ON od.s_stock_id = sps.s_stock_id
+        JOIN 
+            PROD p ON p.prod_id = sps.prod_id
+        LEFT OUTER JOIN (
+            SELECT img_id, prod_id
+            FROM (
+                SELECT img_id, prod_id,
+                       ROW_NUMBER() OVER (PARTITION BY prod_id ORDER BY img_id) AS rn
+                FROM PROD_IMAGE
+            ) pi
+            WHERE pi.rn = 1
+        ) pi ON p.prod_id = pi.prod_id
+        WHERE 
+            op.member_id = 'testjh'
+        AND od.order_state = '결제완료'
 	</select>
 	<!--  
 	<select id="selectById2" parameterType="int" 
@@ -140,34 +140,40 @@
 	<!-- orderlist.jsp에 출력할 상품명, 브랜드, 옵션, 상품가격, 이미지URL -->
 	<select id="selectById2" parameterType="int" resultType="order_prod_detailVO"> 
 		SELECT
-			P.prod_name,
-		   	M.brand, 
-			S.opt_id1,
-			S.opt_id2,
-			S.opt_id3,
-			S.opt_id4,
-			S.opt_id5,
-			OD.order_product_price,
-			PI.img_id,
-			OD.order_state,
-			S.prod_id,
-			OD.order_num
-		FROM
-			ORDER_DETAIL OD
+		    op.order_id,
+		    p.prod_name, 
+		    m.brand,
+		    sps.opt_id1,
+		    sps.opt_id2,
+		    sps.opt_id3,
+		    sps.opt_id4,
+		    sps.opt_id5,
+		    od.order_product_price,
+		    pi.img_id,
+		    od.order_state,
+		    p.prod_id,
+		    od.order_num
+		FROM 
+		    order_prod op
+		JOIN 
+		    order_detail od ON op.order_id = od.order_id
+		JOIN 
+		    SELL_PROD_STOCK sps ON od.s_stock_id = sps.s_stock_id
+		JOIN 
+		    PROD p ON p.prod_id = sps.prod_id
 		JOIN
-			ORDER_PROD OP ON OD.order_id = OP.order_id
-		JOIN
-			SELL_PROD_STOCK S ON OD.s_stock_id = S.s_stock_id
-		JOIN
-			PROD P ON S.prod_id = P.prod_id
-		JOIN
-			MEMBER M ON P.member_id = M.member_id
-		JOIN
-    		(SELECT prod_id, img_id
-    		 FROM PROD_IMAGE
-    		 WHERE img_id = CONCAT(prod_id, '_mainimage_1.jpg')) PI ON P.prod_id = PI.prod_id
-		where 
-			OD.ORDER_ID = #{aa}
+		    MEMBER m ON p.member_id = m.member_id
+		LEFT OUTER JOIN (
+		    SELECT img_id, prod_id
+		    FROM (
+		        SELECT img_id, prod_id,
+		               ROW_NUMBER() OVER (PARTITION BY prod_id ORDER BY img_id) AS rn
+		        FROM PROD_IMAGE
+		    ) pi
+		    WHERE pi.rn = 1
+		) pi ON p.prod_id = pi.prod_id
+		WHERE 
+		    op.member_id = 'testid'
 	</select>
 
 	<!-- orderlist.jsp에서, 주문취소 -->
