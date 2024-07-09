@@ -46,7 +46,7 @@
             WHERE pi.rn = 1
         ) pi ON p.prod_id = pi.prod_id
         WHERE 
-            op.member_id = 'testjh'
+            op.member_id = #{member_id}
         AND od.order_state = '결제완료'
 	</select>
 	<!--  
