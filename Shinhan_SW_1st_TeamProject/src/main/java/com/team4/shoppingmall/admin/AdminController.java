@@ -226,6 +226,10 @@ public class AdminController {
 		System.out.println(allProdList);
 		model.addAttribute("products", allProdList);
 
+		if (member_id != null && !member_id.isEmpty()) {
+	        model.addAttribute("searchType", member_id);
+	        return "search_seller_product_brand";
+	    }
 		return "admin/admin_seller_prod";
 	}
 
