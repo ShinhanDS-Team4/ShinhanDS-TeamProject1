@@ -22,30 +22,49 @@
 		 	  <h1 class="main-title">SAREN 나만의 코디 추천</h1>
 		 	  <p>옷장 속 아이템과 조화롭게 어울리는 패션을 쉽게 찾아보세요.</p>
 		 	  <ul class="category-name">
-		 	  	  <li><a href="javascript:#void">카테고리</a></li>
-			 	  <li><a href="javascript:#void">카테고리</a></li>
-			 	  <li><a href="javascript:#void">카테고리</a></li>
 		 	  </ul> 
 		 	  
 		 	   <div class="content-wrap">
 		 	   		<div class="content box0">  <%-- 장바구니 아이템 --%>
-		 	   		     <div class="imgbox">
-							<img src="http://localhost:9090/saren/ProdImgFile/main/${prodInfoByCartId.IMG_ID}" alt="사진" />
+		 	   			<span>아우터</span>
+		 	   		     <div class="imgbox" id="outer">
+							<img src="/saren/ProdImgFile/main/${prods.outer.prod_id}_image_1.jpg" alt="사진" onclick="location.href='${path}/prod/prod_detail/prod_id=${prods.outer.prod_id}'"/>
 		 	   		     </div>
 					</div>
 		 	   		<div class="content box1">  <%-- 추천 아이템 --%>
-		 	   			 <div class="imgbox">
-							<img src="${path}/resources/images/testImg/testimg1.jpg" alt="추천사진 예시" />
+		 	   			<span>재킷/베스트</span>
+		 	   			 <div class="imgbox" id="jacket">
+							<img src="/saren/ProdImgFile/main/${prods.jacket.prod_id}_image_1.jpg" alt="추천사진 예시" onclick="location.href='${path}/prod/prod_detail/prod_id=${prods.jacket.prod_id}'"  />
 		 	   		     </div>
 		 	   		</div>
 		 	   		<div class="content box2">
-		 	   			<div class="imgbox">
-							<img alt="" src="추천사진" />
+		 	   			<span>니트</span>
+		 	   			<div class="imgbox" id="neat">
+							<img alt="" src="/saren/ProdImgFile/main/${prods.neat.prod_id}_image_1.jpg" onclick="location.href='${path}/prod/prod_detail/prod_id=${prods.neat.prod_id}'" />
 		 	   		    </div>
 		 	   		</div>
 		 	   		<div class="content box3">
-						<div class="imgbox">
-							<img alt="" src="추천사진" />
+		 	   			<span>셔츠/블라우스</span>
+						<div class="imgbox" id="shirt">
+							<img alt="" src="/saren/ProdImgFile/main/${prods.shirt.prod_id}_image_1.jpg"  onclick="location.href='${path}/prod/prod_detail/prod_id=${prods.shirt.prod_id}'"/>
+		 	   		    </div>
+					</div>
+		 	   		<div class="content box4">
+		 	   			<span>티셔츠</span>
+		 	   			<div class="imgbox" id="tshirt">
+							<img alt="" src="/saren/ProdImgFile/main/${prods.tshirt.prod_id}_image_1.jpg"  onclick="location.href='${path}/prod/prod_detail/prod_id=${prods.tshirt.prod_id}'"/>
+		 	   		    </div>
+		 	   		</div>
+		 	   		<div class="content box5">
+		 	   			<span>팬츠</span>
+						<div class="imgbox" id="pants">
+							<img alt="" src="/saren/ProdImgFile/main/${prods.pants.prod_id}_image_1.jpg"  onclick="location.href='${path}/prod/prod_detail/prod_id=${prods.pants.prod_id}'"/>
+		 	   		    </div>
+					</div>
+		 	   		<div class="content box6">
+		 	   			<span>스커트</span>
+						<div class="imgbox" id="skirt">
+							<img alt="" src="/saren/ProdImgFile/main/${prods.skirt.prod_id}_image_1.jpg"  onclick="location.href='${path}/prod/prod_detail/prod_id=${prods.skirt.prod_id}'"/>
 		 	   		    </div>
 					</div>
 		 	   </div>
@@ -58,6 +77,9 @@
 	 	    }).on('mouseleave', function() {
 	 	        $(this).css('z-index', '');
 	 	    });
+	 	    
+	 	    $('#'+'${selected}').css('border', '4px double #000');
+	 	   	
 	 	});
  	  </script>
  	<%@ include file="../common/footer.jsp" %>

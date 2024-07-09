@@ -131,4 +131,8 @@ public class RentService {
 		return rentDAO.searchCustomerByRent(searchKeyword);
 	}
 
+	public List<RentDTO> selectByMemId(String member_id) {
+		return rentDAO.selectByMemId(member_id);
+	}
+
 }

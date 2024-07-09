@@ -57,6 +57,12 @@
 		SELECT *
 		FROM RENT
 	</select>
+	<!-- 멤버별 대여목록 -->
+	<select id="selectByMemId" resultType="rentVO">
+		SELECT *
+		FROM RENT
+		WHERE MEMBER_ID = #{aa}
+	</select>
 
 	<!-- 대여하기 (주문상태 칼럼 삭제) -->
 	<insert id="rentInsert" parameterType="rentVO">
@@ -144,8 +150,8 @@
 		where
 		r.rental_code =
 		#{aa}
-	</select>
-
+  </select>
+  		
 	<!-- rentlist.jsp에서, 대여취소 -->
 	<update id="cancelRent" parameterType="int">
 		UPDATE
@@ -300,6 +306,7 @@
 		</if>
 		ORDER BY p.prod_id
 	</select>
+  
 	<select id="searchSellerByRent" resultType="SellerRentVO"
 		parameterType="string">
 		SELECT DISTINCT
@@ -424,4 +431,5 @@
 		ORDER BY
 		p.prod_id
 	</select>
+  
 </mapper>
