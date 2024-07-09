@@ -30,9 +30,9 @@
                         	<th>연락처</th>
                             <th>주문 ID</th>
                             <th>주문 날짜</th>
+                            <th>주문 금액</th>
                             <th>상품 이름</th>
                             <th>수량</th>
-                            <th>가격</th>
                             <th>주문 상태</th>
                         </tr>
                     </thead>
@@ -61,13 +61,13 @@
                     		<tr>
                     			<td>\${customer.PROD_PRICE}</td>
                     			<td>\${customer.MEMBER_NAME} </td>
-                    			<td>\${customer.PROD_DESC}</td>
-                    			<td>\${customer.PROD_ID} </td>
-                    			<td>\${customer.CATEGORY_NAME}</td>
-                    			<td> </td>
-                    			<td> </td>
-                    			<td> </td>
-                    			<td> </td>
+                    			<td>\${customer.PHONE}</td>
+                    			<td>\${customer.ORDER_ID} </td>
+                    			<td>\${customer.ORDER_DATE}</td>
+                    			<td>\${customer.TOTAL_PRICE}</td>
+                    			<td>\${customer.PROD_NAME}</td>                    			
+                    			<td>\${customer.ORDER_NUM}</td>
+                    			<td>\${customer.ORDER_STATE}</td>
                     		</tr>
                     	`;
                 	});

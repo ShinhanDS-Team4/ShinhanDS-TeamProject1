@@ -168,7 +168,7 @@
             $('#event_id').val('');
             $('#event_title').val('');
             $('#event_content').val('');
-            $('#event_date').val('');
+            $('#event_date').val(new Date().toISOString().split('T')[0]);
             $('#deleteButton').hide();
             $('#eventDetailModal').modal('show');
         }

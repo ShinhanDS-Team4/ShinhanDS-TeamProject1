@@ -113,42 +113,45 @@
 	<!-- orderlist.jsp에 출력할 대여상품 상세정보 -->
 	<select id="selectById2" parameterType="int"
 		resultType="rent_selectVO">
-		SELECT 
-		    p.prod_name,
-		    m.brand,
-		    rps.opt_id1,
-		    rps.opt_id2,
-		    rps.opt_id3,
-		    rps.opt_id4,
-		    rps.opt_id5,
-		    rd.rent_product_price,
-		    pi.img_id,
-		    rd.rent_state,
-		    rd.rentdetail_id,
-		    p.prod_id,
-		    rd.rent_num,
-		    rd.rental_code
-		FROM 
-		    RENT_DETAIL rd
-		JOIN 
-		    RENT_PROD_STOCK rps ON rd.r_stock_id = rps.r_stock_id
-		JOIN 
-		    PROD p ON rps.prod_id = p.prod_id
-		JOIN 
-		    MEMBER m ON p.member_id = m.member_id
-		LEFT OUTER JOIN (
-		    SELECT img_id, prod_id
-		    FROM (
-		        SELECT img_id, prod_id,
-		               ROW_NUMBER() OVER (PARTITION BY prod_id ORDER BY img_id) AS rn
-		        FROM PROD_IMAGE
-		    ) pi
-		    WHERE pi.rn = 1
-		) pi ON p.prod_id = pi.prod_id
-		WHERE 
-		    rd.rental_code = #{aa}
-	</select>
-
+		SELECT P.prod_name,
+		M.brand,
+		SPS.opt_id1,
+		SPS.opt_id2,
+		SPS.opt_id3,
+		SPS.opt_id4,
+		SPS.opt_id5,
+		RD.rent_product_price,
+		PI.img_id,
+		RD.rent_state,
+		RD.rentdetail_id,
+		SPS.prod_id,
+		RD.rent_num,
+		R.rental_code
+		FROM
+		RENT R
+		JOIN
+		RENT_DETAIL RD ON R.rental_code = RD.rental_code
+		JOIN
+		RENT_PROD_STOCK
+		SPS ON RD.r_stock_id = SPS.r_stock_id
+		JOIN
+		PROD P ON
+		SPS.prod_id =
+		P.prod_id
+		JOIN
+		MEMBER M ON P.member_id = M.member_id
+		JOIN
+		(SELECT prod_id,
+		img_id
+		FROM PROD_IMAGE
+		WHERE img_id = CONCAT(prod_id,
+		'_mainimage_1.jpg'))
+		PI ON P.prod_id = PI.prod_id
+		where
+		r.rental_code =
+		#{aa}
+  </select>
+  		
 	<!-- rentlist.jsp에서, 대여취소 -->
 	<update id="cancelRent" parameterType="int">
 		UPDATE
@@ -159,11 +162,12 @@
 		WHERE
 		rental_code = #{aa}
 	</update>
-	
+
 	<delete id="rentprodDelete" parameterType="int">
 		DELETE
 		FROM RENT
-		WHERE rental_code = #{rental_code}
+		WHERE
+		rental_code = #{rental_code}
 	</delete>
 
 	<!-- rentlist.jsp에서, 반납 -->
@@ -302,6 +306,7 @@
 		</if>
 		ORDER BY p.prod_id
 	</select>
+  
 	<select id="searchSellerByRent" resultType="SellerRentVO"
 		parameterType="string">
 		SELECT DISTINCT
@@ -346,82 +351,85 @@
 		FROM
 		MEMBER m
 		JOIN PROD p ON m.member_id = p.member_id
-		LEFT JOIN PROD_IMAGE pi ON p.prod_id = pi.prod_id
-		JOIN RENT_PROD_STOCK rps ON p.prod_id = rps.prod_id
+		LEFT JOIN PROD_IMAGE
+		pi ON p.prod_id = pi.prod_id
+		JOIN RENT_PROD_STOCK rps ON p.prod_id =
+		rps.prod_id
 		JOIN RENT_DETAIL rd ON rps.r_stock_id = rd.r_stock_id
-		JOIN RENT r ON rd.rental_code = r.rental_code
-		LEFT JOIN PROD_OPTION ro ON rps.opt_id1 = ro.opt_id
+		JOIN
+		RENT r ON rd.rental_code = r.rental_code
+		LEFT JOIN PROD_OPTION ro ON
+		rps.opt_id1 = ro.opt_id
 		WHERE
 		m.member_type = 2
 		<if test="searchType != null and searchType != ''">
 			AND (
 			m.member_id = #{searchType}
-			OR m.member_name = #{searchType}
+			OR m.member_name =
+			#{searchType}
 			OR m.brand = #{searchType}
 			OR p.prod_name = #{searchType}
 			)
 		</if>
 		ORDER BY p.prod_id
 	</select>
-		
+
 	<select id="searchCustomerByRent" resultType="SellerRentVO"
-		parameterType="string">
+		parameterType="map">
 		SELECT DISTINCT
-        m.member_id,
-        m.member_name,
-        m.email,
-        m.phone,
-        m.brand,
-        m.birth_date,
-        m.last_access,
-        m.member_type,
-        m.gender,
-        m.seller_authority,
-        m.create_date,
-        p.prod_id,
-        p.prod_name,
-        p.prod_desc,
-        p.prod_price,
-        p.prod_added_date,
-        p.category_id,
-        pi.img_id,
-        pi.img_type,
-        rps.r_stock_id,
-        rps.stock,
-        rps.total,
-        rps.opt_id1,
-        rps.opt_id2,
-        rps.opt_id3,
-        rps.opt_id4,
-        rps.opt_id5,
-        ro.opt_id,
-        ro.opt_name,
-        ro.opt_value,
-        r.rental_code,
-        r.rent_start_date,
-        r.rent_end_date,
-        r.total_rent_price,
-        rd.rentdetail_id,
-        rd.rent_product_price,
-        rd.rent_num,
-        rd.rent_state
-    FROM
-        MEMBER m
-        JOIN PROD p ON m.member_id = p.member_id
-        LEFT JOIN PROD_IMAGE pi ON p.prod_id = pi.prod_id
-        JOIN RENT_PROD_STOCK rps ON p.prod_id = rps.prod_id
-        JOIN RENT_DETAIL rd ON rps.r_stock_id = rd.r_stock_id
-        JOIN RENT r ON rd.rental_code = r.rental_code
-        LEFT JOIN PROD_OPTION ro ON rps.opt_id1 = ro.opt_id
-    WHERE
-        m.member_type = 1
-        <if test="searchKeyword != null and searchKeyword != ''">
-            AND (
-                m.member_id = #{searchKeyword}
-                OR m.member_name = #{searchKeyword}            
-                OR p.prod_name = #{searchKeyword}
-            )
-        </if>
-    ORDER BY p.prod_id
-	</select> 
+		m.member_id,
+		m.member_name,
+		m.email,
+		m.phone,
+		m.brand,
+		m.birth_date,
+		m.last_access,
+		m.member_type,
+		m.gender,
+		m.seller_authority,
+		m.create_date,
+		p.prod_id,
+		p.prod_name,
+		p.prod_desc,
+		p.prod_price,
+		p.prod_added_date,
+		p.category_id,
+		pi.img_id,
+		pi.img_type,
+		rps.r_stock_id,
+		rps.stock,
+		rps.total,
+		rps.opt_id1,
+		rps.opt_id2,
+		rps.opt_id3,
+		rps.opt_id4,
+		rps.opt_id5,
+		ro.opt_name,
+		ro.opt_value,
+		r.rental_code,
+		r.rent_start_date,
+		r.rent_end_date,
+		r.total_rent_price,
+		rd.rentdetail_id,
+		rd.rent_product_price,
+		rd.rent_num,
+		rd.rent_state
+		FROM
+		MEMBER m
+		JOIN RENT r ON m.member_id = r.member_id
+		JOIN RENT_DETAIL rd ON r.rental_code = rd.rental_code
+		JOIN RENT_PROD_STOCK rps ON rd.r_stock_id = rps.r_stock_id
+		JOIN PROD p ON rps.prod_id = p.prod_id
+		LEFT JOIN PROD_IMAGE pi ON p.prod_id = pi.prod_id
+		LEFT JOIN PROD_OPTION ro ON rps.opt_id1 = ro.opt_id OR rps.opt_id2 =
+		ro.opt_id
+		OR rps.opt_id3 = ro.opt_id OR rps.opt_id4 = ro.opt_id
+		OR rps.opt_id5 = ro.opt_id
+		WHERE
+		m.member_type = 1
+		and m.member_id = #{member_id}
+		ORDER BY
+		p.prod_id
+	</select>
+  
 </mapper>

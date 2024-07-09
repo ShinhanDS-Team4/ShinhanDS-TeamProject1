@@ -9,8 +9,11 @@
 			style="width: 50px;"></td>
 		<td>${rent.prod_name}</td>
 		<td>${rent.prod_desc}</td>
-		<td>${rent.prod_price}</td>
+		<td>${rent.rent_product_price}</td>
 		<td>${rent.stock}</td>
+		<td>${rent.member_name}</td>
+		<td>${rent.brand}</td>
+		<td>${rent.phone}</td>
 		<td><button class="btn btn-sm btn-danger"
 				onclick="deleteProduct(${rent.prod_id})">삭제</button></td>
 	</tr>

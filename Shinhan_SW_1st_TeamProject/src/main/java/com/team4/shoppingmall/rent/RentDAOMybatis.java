@@ -107,4 +107,5 @@ public class RentDAOMybatis implements RentDAOInterface {
 	public List<RentDTO> selectByMemId(String member_id) {
 		return sqlSession.selectList(namespace+"selectByMemId", member_id);
 	}
+
 }

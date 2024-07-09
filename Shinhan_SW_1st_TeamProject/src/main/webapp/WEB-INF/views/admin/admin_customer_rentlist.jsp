@@ -28,12 +28,14 @@
                         	<th>아이디</th>
                         	<th>이름</th>
                         	<th>연락처</th>
-                            <th>대여 코드</th>
-                            <th>대여 시작 날짜</th>
-                            <th>대여 종료 날짜</th>
-                            <th>상품 이름</th>
+                        	<th>상품 이미지</th>
+                        	<th>상품 명</th>
+                            <th>대여 ID</th>
+                            <th>대여 시작 일</th>
+                            <th>대여 마감 일</th>
+                            <th>대여 가격</th>
                             <th>수량</th>
-                            <th>가격</th>
+                            <th>대여 총 가격</th>
                             <th>대여 상태</th>
                         </tr>
                     </thead>
@@ -52,7 +54,7 @@
             $.ajax({
                 url: 'admin_customer_search_rentlist',
                 type: 'GET',
-                data: { searchKeyword: searchRentList },
+                data: { searchRentKeyword: searchRentList },
                 success: function(response) {
                 	console.log(response);
                 	var output = "";
@@ -63,12 +65,14 @@
                     			<td>\${rent.member_id}</td>
                     			<td>\${rent.member_name}</td>
                     			<td>\${rent.phone}</td>
+                    			<td>\${rent.img_id}</td>
+                    			<td>\${rent.prod_name}</td>
                     			<td>\${rent.rental_code}</td>
                     			<td>\${rent.rent_start_date}</td>
                     			<td>\${rent.rent_end_date}</td>
-                    			<td>\${rent.prod_name}</td>
-                    			<td>\${rent.rent_num}</td>
                     			<td>\${rent.rent_product_price}</td>
+                    			<td>\${rent.rent_num}</td>
+                    			<td>\${rent.total_rent_price}</td>
                     			<td>\${rent.rent_state}</td>
                     		</tr>
                     	`;

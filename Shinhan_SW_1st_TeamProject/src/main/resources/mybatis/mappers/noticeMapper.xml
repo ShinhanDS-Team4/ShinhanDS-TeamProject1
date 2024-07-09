@@ -17,9 +17,8 @@
 	</select>
 
 	<insert id="noticeInsert" parameterType="noticeVO">
-		INSERT
-		INTO NOTICE(not_id, not_title, not_content, not_date)
-		VALUES(#{not_id}, #{not_title}, #{not_content}, #{not_date})
+		INSERT INTO NOTICE (not_id, not_title, not_content, not_date)
+    	VALUES (notice_seq.NEXTVAL, #{not_title}, #{not_content}, #{not_date})
 	</insert>
 
 	<update id="noticeUpdate" parameterType="noticeVO">
