@@ -75,6 +75,22 @@
 		"prod_id" = #{prod_id}
 	</delete>
 	
+	<select id="selectAllByCtgWhenRcmd" parameterType="int" resultType="prodVO">
+	<![CDATA[
+	SELECT *
+	FROM PROD
+	JOIN
+		(SELECT CATEGORY_ID
+		FROM CATEGORY 
+		WHERE #{category_id}<CATEGORY_ID 
+		AND CATEGORY_ID< #{category_id} + POWER(10, 8-2*( SELECT CATEGORY_DEPTH
+													FROM CATEGORY
+													WHERE CATEGORY_ID = #{category_id}))
+		AND is_lowest=1) CTG
+	USING(CATEGORY_ID)
+	]]>
+	</select>
+	
 	<select id="selectAllProdByCurCtg" parameterType="map" resultType="map">
 		<![CDATA[
 		SELECT 
