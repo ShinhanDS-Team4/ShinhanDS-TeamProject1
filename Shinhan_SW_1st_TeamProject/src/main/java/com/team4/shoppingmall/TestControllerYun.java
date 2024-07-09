@@ -145,12 +145,11 @@ public class TestControllerYun {
 		}
 	}
 
-	@GetMapping("/orderlist")
+	@GetMapping("/orderlist.do")
 	public String test3(Model model, HttpServletRequest request) {
 		HttpSession session = request.getSession();
-		//MemberDTO mem = (MemberDTO)session.getAttribute("member"); 
-		//String member_id = mem.getMember_id();  
-		String member_id = "Member002";
+		MemberDTO mem = (MemberDTO)session.getAttribute("member"); 
+		String member_id = mem.getMember_id();
 		
 	    System.out.println("/customer/orderlist.jsp");
 
