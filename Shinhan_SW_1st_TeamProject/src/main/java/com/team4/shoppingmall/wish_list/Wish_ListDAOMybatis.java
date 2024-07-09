@@ -43,14 +43,6 @@ public class Wish_ListDAOMybatis implements Wish_ListDAOInterface {
 	public int wish_listUpdate(Wish_ListDTO wish_list) {
 		return sqlSession.update(namespace+"wish_listUpdate", wish_list);
 	}
-
-	@Override
-	public int wish_listDelete1(String member_id, Integer prod_id) {
-		Map<String, Object> map = new HashMap<>();
-		map.put("member_id", member_id);
-		map.put("prod_id", prod_id);
-		return sqlSession.delete(namespace+"wish_listDelete1", map);
-	}
 	
 	@Override
 	public int wish_listDelete(Wish_ListDTO wishDelete) {
@@ -58,7 +50,28 @@ public class Wish_ListDAOMybatis implements Wish_ListDAOInterface {
 	}
 	
 	@Override
-	public List<Wish_ListDTO> selectAll(String memberId) {
-		return sqlSession.selectList(namespace+"selectAll", memberId);
+	public List<Wish_ListDTO> selectAll(String customerId) {
+		return sqlSession.selectList(namespace+"selectAll", customerId);
+	}
+
+	@Override
+	public int selectWish(String customerId, String prod_id) {
+		Map<String, Object> wish_Insert = new HashMap<>();
+		wish_Insert.put("member_id", customerId);
+		wish_Insert.put("prod_id", prod_id);		
+		return sqlSession.insert(namespace+"selectWish", wish_Insert);
+	}
+	
+	@Override
+	public int selectDelete(String customerId, String prod_id) {
+		Map<String, Object> wish_Delete = new HashMap<>();
+		wish_Delete.put("member_id", customerId);
+		wish_Delete.put("prod_id", prod_id);
+		return sqlSession.delete(namespace+"selectDelete", wish_Delete);
+	}
+	
+	@Override
+	public int wishAllDelete(String customerId) {
+		return sqlSession.delete(namespace+"wishAllDelete", customerId);
 	}
 }

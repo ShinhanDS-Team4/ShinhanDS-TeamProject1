@@ -47,8 +47,8 @@ public class Addr_ListDAOMybatis implements Addr_ListDAOInterface{
 	}
 
 	// 기존 is_master_addr 값을 N으로 업데이트
-	public int updateMasterAddrToN() {
-		return sqlSession.update(namespace+"updateMasterAddrToN");
+	public int updateMasterAddrToN(String member_id) {
+		return sqlSession.update(namespace+"updateMasterAddrToN", member_id);
 	};
 	//나의 주소 개수 
 	public int countAddresses(String member_id){

@@ -132,6 +132,9 @@
 			imgContainer.classList.add("prdImgFile");
 			var img = document.createElement("img");
 			img.setAttribute("src", event.target.result);
+			
+			img.style.width = '300px';
+			img.style.height = '400px';
 			imgContainer.appendChild(img);
 
 			fileItem.appendChild(imgContainer);
@@ -471,5 +474,6 @@
 			</div>
 		</aside> --%>
 	</main>
+	<%@ include file="../common/footer.jsp"%>
 </body>
 </html>

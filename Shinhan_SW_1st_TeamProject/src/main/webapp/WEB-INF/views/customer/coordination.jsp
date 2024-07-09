@@ -18,7 +18,7 @@
 <body>
  	<%@ include file="../common/header.jsp" %>
       <div class="container inner">
-	 	  <h1 class="main-title">🗨️"AI로 만나는 완벽한 스타일, 나만의 코디 메이트!"</h1>
+	 	  <h1 class="main-title">🗨️AI로 만나는 완벽한 스타일, 나만의 코디 메이트</h1>
 	 	  <p>지금 바로 AI 옷 코디 추천 서비스를 체험해보세요! 당신의 옷장이 새롭게 변신할 것입니다.</p>
 	      <div class="container-wrapper">
 				<!-- 광고문구 -->
@@ -90,11 +90,13 @@
  	<script type="text/javascript">
  	$(function () {
  		$('#recommendBtn').on('click', function() {
+
  	        var prod_id = $('#prod_id').val(); // 카트 ID 값을 가져옴
  	        
 
  	        location.href = "${path}/customer/recommend.do?prod_id=" + prod_id;
  	    });
+
 	});
  	</script>
 </body>

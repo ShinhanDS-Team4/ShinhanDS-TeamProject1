@@ -196,7 +196,7 @@
 							<th>마지막 접속일</th>
 							<th>성별</th>							
 							<th>생성 날짜</th>
-							<th colspan="2">수정 / 삭제</th>
+							<th colspan="2"> 상세보기 / 삭제</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -214,7 +214,7 @@
 									<td>${seller.gender}</td>
 									<td>${seller.create_date}</td>
 									<td colspan="2">
-										<button class="btn btn-sm" onclick="location.href='admin_seller_info?member_id=${seller.member_id}'">자세히 보기</button>
+										<button class="btn btn-sm" onclick="location.href='admin_seller_info?member_id=${seller.member_id}'">상세 보기</button>
 										<button class="btn btn-sm" onclick="location.href='admin_seller_delete?returnUrl=adminPage&member_id=${seller.member_id}'">삭제</button>
 									</td>
 								</tr>
