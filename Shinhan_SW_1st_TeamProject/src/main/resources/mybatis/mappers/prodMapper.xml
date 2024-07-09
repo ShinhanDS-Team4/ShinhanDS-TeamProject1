@@ -489,6 +489,7 @@
                 po.opt_name,
                 po.opt_value,
                 m.member_id,
+                sps.stock,
                 SUM(NVL(SPS.total, 0)) AS total_sales
             FROM
                 PROD P
@@ -511,7 +512,8 @@
                 po.opt_id,
                 po.opt_name,
                 po.opt_value,
-                m.member_id
+                m.member_id,
+                sps.stock
             HAVING
                 SUM(NVL(SPS.total, 0)) > 0
             ORDER BY
@@ -579,7 +581,7 @@
 	
 	<select id="searchSellerByProd" resultType="SellerProdVO"
 		parameterType="string">
-		SELECT
+		SELECT DISTINCT
 		m.member_id,
 		m.member_name,
 		m.email,

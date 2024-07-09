@@ -28,9 +28,8 @@
 	</select>
 
 	<insert id="eventInsert" parameterType="eventVO">
-		INSERT
-		INTO EVENT(event_id, event_title, event_content, event_img_url, event_date)
-		VALUES(#{event_id}, #{event_title}, #{event_content}, #{event_img_url}, #{event_date})
+		INSERT INTO EVENT (event_id, event_title, event_content, event_img_url, event_date)
+    	VALUES (event_seq.NEXTVAL, #{event_title}, #{event_content}, #{event_img_url}, #{event_date})
 	</insert>
 
 	<update id="eventUpdate" parameterType="eventVO">

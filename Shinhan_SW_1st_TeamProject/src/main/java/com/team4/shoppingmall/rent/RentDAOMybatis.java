@@ -102,4 +102,5 @@ public class RentDAOMybatis implements RentDAOInterface {
 	public List<SellerRentDTO> searchCustomerByRent(String searchKeyword) {
 		return sqlSession.selectList(namespace+"searchCustomerByRent", searchKeyword);
 	}
+	
 }

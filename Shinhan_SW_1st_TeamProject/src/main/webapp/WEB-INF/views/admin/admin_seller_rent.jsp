@@ -33,7 +33,10 @@
                             <th>상품명</th>
                             <th>상품 설명</th>
                             <th>가격</th>
-                            <th>재고</th>                        
+                            <th>대여 가능 재고</th>
+                            <th>판매자 명</th>
+                            <th>브랜드</th>                        
+                            <th>연락처</th>                        
                             <th>삭제</th>
                         </tr>
                     </thead>
@@ -44,8 +47,11 @@
                             <td><img src="${rent.img_id}" alt="Product ${rent.img_id}" style="width: 50px;"></td>
                             <td>${rent.prod_name}</td>
                             <td>${rent.prod_desc}</td>
-                            <td>${rent.prod_price}</td>
+                            <td>${rent.rent_product_price}</td>
                             <td>${rent.stock}</td>
+                            <td>${rent.member_name}</td>
+                            <td>${rent.brand}</td>
+                            <td>${rent.phone}</td>
                             <td><button class="btn btn-sm btn-danger" onclick="deleteProduct(${rent.prod_id})">삭제</button></td>
                         </tr>                
                         </c:forEach>
