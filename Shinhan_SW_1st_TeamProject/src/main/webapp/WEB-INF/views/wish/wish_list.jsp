@@ -9,13 +9,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>위시 리스트</title>
+<script src="${path}/resources/js/jquery-3.7.1.min.js"></script>
 <link
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
 	rel="stylesheet">
 <%-- 헤더,푸터 css --%>
 <link rel="stylesheet" href="${path}/resources/css/header_footer.css">
 <%-- jquery 연결 --%>
-<script src="${path}/resources/js/jquery-3.7.1.min.js"></script>
 
 <style>
 body {
@@ -116,7 +116,7 @@ h1 {
 }
 
 .btn-group .btn-danger {
-	background-color: #ff4d4d;
+	background-color: #000000;
 	color: white;
 }
 
@@ -125,12 +125,12 @@ h1 {
 }
 
 .btn-group .btn-secondary {
-	background-color: #6c757d;
+	background-color: #000000;
 	color: white;
 }
 
 .btn-group .btn-secondary:hover {
-	background-color: #5a6268;
+	background-color: #ff1a1a;
 }
 
 .no-items {
@@ -155,112 +155,117 @@ h1 {
 			</div>
 		</div>
 
-		<c:choose>
-			<c:when test="${fn:length(wishItems) > 0}">
-				<c:forEach var="item" items="${wishItems}">
-					<div class="list-item" id="wishList">
-						<div class="checkbox-container">
-							<input type="checkbox" class="item-checkbox"
-								value="${item.prod_id}">
-						</div>
-						<a href="${path}/productDetail.do?prod_id=${item.prod_id}"> <img
-							src="${item.img_id}" alt="Product Image">
-						</a>
-						<div class="list-item-details">
-							<div>
-								<a href="${path}/productDetail.do?prod_id=${item.prod_id}">
-									<strong>상품명:</strong> <c:out value="${item.prod_name}" />
-								</a>
-							</div>
-							<div>
-								<strong>옵션:</strong>
-								<c:out value="${item.opt_name} ${item.opt_value}" />
-							</div>
-							<div>
-								<strong>가격:</strong>
-								<c:out value="${item.prod_price}" />
-								원
-							</div>
-						</div>
-						<div class="list-item-price">
-							<c:out value="${item.prod_price}" />
-							원
-						</div>
-						<div class="list-item-remove" data-id="${item.prod_id}">&times;</div>
-					</div>
-				</c:forEach>
-			</c:when>
-			<c:otherwise>
-				<div class="no-items">위시 리스트에 항목이 없습니다.</div>
-			</c:otherwise>
-		</c:choose>
+		<div class="table-container">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>선택</th>
+                        <th>이미지</th>
+                        <th>상품명</th>
+                        <th>옵션</th>
+                        <th>가격</th>
+                        <th>삭제</th>
+                    </tr>
+                </thead>
+                <tbody id="wishList">
+                    <c:choose>
+                        <c:when test="${fn:length(wishItems) > 0}">
+                            <c:forEach var="item" items="${wishItems}">
+                                <tr data-id="${item.prod_id}">
+                                    <td>
+                                        <input type="checkbox" class="item-checkbox" value="${item.prod_id}">
+                                    </td>
+                                    <td>
+                                        <a href="${path}/productDetail.do?prod_id=${item.prod_id}">
+                                            <img src="${item.img_id}" alt="Product Image" width="80" height="80" style="object-fit: cover; border-radius: 5px;">
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="${path}/productDetail.do?prod_id=${item.prod_id}">
+                                            <strong>상품명:</strong> <c:out value="${item.prod_name}" />
+                                        </a>
+                                    </td>
+                                    <td><strong>옵션:</strong> <c:out value="${item.opt_name} ${item.opt_value}" /></td>
+                                    <td><strong>가격:</strong> <c:out value="${item.prod_price}" /> 원</td>
+                                    <td class="list-item-remove" data-id="${item.prod_id}" style="cursor: pointer; color: #dc3545;">&times;</td>
+                                </tr>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <tr>
+                                <td colspan="6" class="text-center">위시 리스트에 항목이 없습니다.</td>
+                            </tr>
+                        </c:otherwise>
+                    </c:choose>
+                </tbody>
+            </table>
+        </div>
 
-		<div class="btn-group">
-			<button class="btn btn-primary btn-purchase">주문하기</button>
-			<button class="btn btn-primary btn-purchase">대여하기</button>
-		</div>
+		<!-- <div class="btn-group">
+            <button class="btn btn-primary btn-purchase">주문하기</button>
+            <button class="btn btn-primary btn-purchase">대여하기</button>
+        </div> -->
 	</div>
 
-	<script>
-	$(document).ready(function() {
-	    // 전체 선택 체크박스 클릭 이벤트
-	    $('#selectAll').click(function() {
-	        $('.item-checkbox').prop('checked', this.checked);
-	    });
+	<script src="${path}/resources/js/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // 전체 선택 체크박스 클릭 이벤트
+            $('#selectAll').click(function() {
+                $('.item-checkbox').prop('checked', this.checked);
+            });
 
-	    // 선택 삭제 버튼 클릭 이벤트
-	    $('#deleteSelected').click(function() {
-	        var selectedItems = [];
-	        $('.item-checkbox:checked').each(function() {
-	            selectedItems.push($(this).val());
-	        });
+            // 선택 삭제 버튼 클릭 이벤트
+            $('#deleteSelected').click(function() {
+                var selectedItems = [];
+                $('.item-checkbox:checked').each(function() {
+                    selectedItems.push($(this).val());
+                });
 
-	        if (selectedItems.length > 0) {
-	            deleteItems(selectedItems);
-	        }
-	    });
+                if (selectedItems.length > 0) {
+                    deleteItems(selectedItems);
+                }
+            });
 
-	    // 전체 삭제 버튼 클릭 이벤트
-	    $('#deleteAll').click(function() {
-	        var allItems = [];
-	        $('.item-checkbox').each(function() {
-	            allItems.push($(this).val());
-	        });
+            // 전체 삭제 버튼 클릭 이벤트
+            $('#deleteAll').click(function() {
+                var allItems = [];
+                $('.item-checkbox').each(function() {
+                    allItems.push($(this).val());
+                });
 
-	        if (allItems.length > 0) {
-	        	deleteItems(allItems);
-	        }
-	    });
+                if (allItems.length > 0) {
+                    deleteItems(allItems);
+                }
+            });
 
-	    // 개별 삭제 버튼 클릭 이벤트
-	    $('.list-item-remove').click(function() {
-	        const itemId = $(this).data('id');
-	        deleteItems([itemId]);
-	    });
-debugger
-	    function deleteItems(itemIds) {
-	        console.log(itemIds);
-	        $.ajax({
-	            url: 'wishDeletet.do',
-	            type: 'POST',
-	            traditional: true,
-	            data: { ids: itemIds },
-	            success: function(response) {
-	                // 성공적으로 삭제된 경우, 해당 항목을 UI에서 제거합니다.
-	                itemIds.forEach(id => {
-	                    $(`[data-id="${id}"]`).closest('.list-item').remove();
-	                });
-	                if ($('.list-item').length === 0) {
-	                    $('.container').append('<div class="no-items">위시 리스트에 항목이 없습니다.</div>');
-	                }
-	            },
-	            error: function() {
-	                alert('항목을 삭제하는 동안 오류가 발생했습니다.');
-	            }
-	        });
-	    }	    
+            // 개별 삭제 버튼 클릭 이벤트
+            $('.list-item-remove').click(function() {
+                const itemId = $(this).data('id');
+                deleteItems([itemId]);
+            });
 
-	});
+            function deleteItems(itemIds) {
+                console.log(itemIds);
+                $.ajax({
+                    url: 'wishDeletet.do',
+                    type: 'POST',
+                    data: { ids: itemIds },
+                    traditional: true,
+                    success: function(response) {
+                        // 성공적으로 삭제된 경우, 해당 항목을 UI에서 제거합니다.
+                        console.log(response);
+                        itemIds.forEach(id => {
+                        	//console.log($(`[data-id="\${id}"]`));
+                            $(`[data-id="\${id}"]`).remove();
+                        });                        
+                    },
+                    error: function() {
+                        alert('항목을 삭제하는 동안 오류가 발생했습니다.');
+                    }
+                });
+            }
+        });
     </script>
 	<%@ include file="../common/footer.jsp"%>
 </body>
