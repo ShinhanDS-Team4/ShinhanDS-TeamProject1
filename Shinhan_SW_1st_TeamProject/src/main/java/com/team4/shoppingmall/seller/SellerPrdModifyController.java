@@ -224,7 +224,7 @@ public class SellerPrdModifyController {
 				// ���� ��ǻ���� ���丮�� ���� ����
 				try {
 					// ���ϸ��� '��ǰ��_�Ǹ���ID_descimage_x'(x�� sequence)
-					String filename = prod_id + "_image_" + descfileIndex + ".png";
+					String filename = prod_id + "_descimage_" + descfileIndex + ".png";
 					Path filePath = Paths.get(descIMG_uploadDir).resolve(filename);
 					Files.createDirectories(filePath.getParent()); // ���丮�� �������� ������ ����
 					Files.write(filePath, descfile.getBytes()); // ���� ����
