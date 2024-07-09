@@ -245,23 +245,6 @@ public class CoordinationController {
         model.addAttribute("selected", mapper.get(this_category_id));
         model.addAttribute("gender", gender);
 
-                                    Model model
-                                    //,@RequestParam("cart_id") Integer cart_id
-                                    ){
-
-		
-        // session
-        MemberDTO member = (MemberDTO)session.getAttribute("member");
-        String member_id = member.getMember_id();
-        
-         //cart_id 읽어오기 (테스트용)
-        Integer cart_id = 4;
-
-        // 1. cart_id에 해당하는 상품 이름과 img_id(이미지파일이름) 조회
-        Map<String,Object> prodInfoByCartId = cartService.sellCartProdByCart_id(member_id, cart_id);
-        model.addAttribute("prodInfoByCartId", prodInfoByCartId);
-        System.out.println("prodInfoByCartId"+ prodInfoByCartId);
-
 
         return "customer/recommend"; 
     }
