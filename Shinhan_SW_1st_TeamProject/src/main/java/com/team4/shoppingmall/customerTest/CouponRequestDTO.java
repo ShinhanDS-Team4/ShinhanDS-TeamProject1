@@ -13,5 +13,6 @@ import lombok.ToString;
 @Getter@Setter@ToString
 public class CouponRequestDTO {
 	int couponid;
+	String customerid;
 	int orderPrice;
 }

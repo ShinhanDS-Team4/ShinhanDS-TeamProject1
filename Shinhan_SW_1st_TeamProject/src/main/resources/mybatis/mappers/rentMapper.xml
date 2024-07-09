@@ -108,39 +108,39 @@
 	<select id="selectById2" parameterType="int"
 		resultType="rent_selectVO">
 		SELECT P.prod_name,
-		M.brand,
-		SPS.opt_id1,
-		SPS.opt_id2,
-		SPS.opt_id3,
-		SPS.opt_id4,
-		SPS.opt_id5,
-		RD.rent_product_price,
-		PI.img_id,
-		RD.rent_state,
-		RD.rentdetail_id,
-		SPS.prod_id,
-		RD.rent_num
+			M.brand,
+			SPS.opt_id1,
+			SPS.opt_id2,
+			SPS.opt_id3,
+			SPS.opt_id4,
+			SPS.opt_id5,
+			RD.rent_product_price,
+			PI.img_id,
+			RD.rent_state,
+			RD.rentdetail_id,
+			SPS.prod_id,
+			RD.rent_num,
+			R.rental_code
 		FROM
-		RENT R
+			RENT R
 		JOIN
-		RENT_DETAIL RD ON R.rental_code = RD.rental_code
+			RENT_DETAIL RD ON R.rental_code = RD.rental_code
 		JOIN
-		RENT_PROD_STOCK
-		SPS ON RD.r_stock_id = SPS.r_stock_id
+			RENT_PROD_STOCK
+			SPS ON RD.r_stock_id = SPS.r_stock_id
 		JOIN
-		PROD P ON SPS.prod_id =
-		P.prod_id
+			PROD P ON SPS.prod_id =
+			P.prod_id
 		JOIN
-		MEMBER M ON P.member_id = M.member_id
+			MEMBER M ON P.member_id = M.member_id
 		JOIN
-		(SELECT prod_id,
-		img_id
-		FROM PROD_IMAGE
-		WHERE img_id = CONCAT(prod_id, '_mainimage_1'))
-		PI ON P.prod_id =
-		PI.prod_id
-		where
-		r.rental_code = #{aa}
+			(SELECT prod_id,
+					img_id
+			FROM PROD_IMAGE
+			WHERE img_id = CONCAT(prod_id, '_mainimage_1.jpg'))
+			PI ON P.prod_id = PI.prod_id
+				where
+				r.rental_code = #{aa}
 	</select>
 
 	<!-- rentlist.jsp에서, 대여취소 -->
@@ -165,7 +165,7 @@
 		UPDATE
 		RENT_DETAIL
 		SET
-		rent_state = 'returned'
+		rent_state = '반납완료'
 		WHERE
 		rentdetail_id = #{aa}
 	</update>

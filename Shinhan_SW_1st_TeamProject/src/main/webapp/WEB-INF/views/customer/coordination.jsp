@@ -18,7 +18,7 @@
 <body>
  	<%@ include file="../common/header.jsp" %>
       <div class="container inner">
-	 	  <h1 class="main-title">🗨️"AI로 만나는 완벽한 스타일, 나만의 코디 메이트!"</h1>
+	 	  <h1 class="main-title">🗨️AI로 만나는 완벽한 스타일, 나만의 코디 메이트</h1>
 	 	  <p>지금 바로 AI 옷 코디 추천 서비스를 체험해보세요! 당신의 옷장이 새롭게 변신할 것입니다.</p>
 	      <div class="container-wrapper">
 				<!-- 광고문구 -->
@@ -69,11 +69,12 @@
 				                                </td>
 				                                <td>
 				                                    <p class="product-name">${cartProduct.PROD_NAME}</p>
+				                                    <input id="cartId" type="hidden" value="${cartProduct.CART_ID}" />
 				                                </td>
 				                                <td>${cartProduct.CART_AMOUNT}(개)</td>
 				                                <td>${cartProduct.PROD_PRICE}(원)</td>
 				                                <td>
-				                                    <button type="button">추천버튼</button>
+				                                    <button id="recommendBtn" type="button">추천버튼</button>
 				                                </td>
 				                            </tr>
 				                        </tbody>
@@ -86,5 +87,36 @@
 	       </div>
       </div>
  	<%@ include file="../common/footer.jsp" %>
+ 	<script type="text/javascript">
+ 	$(function () {
+ 		$('#recommendBtn').on('click', function() {
+ 			
+ 			console.log("추천 버튼 클릭");
+ 		
+ 	        var cart_id = $('#cartId').val(); // 카트 ID 값을 가져옴
+ 	        console.log(cart_id);
+		/* 동작 수정
+ 	       $.ajax({
+ 	            url: "${path}/prod/recommend.do",
+ 	            type: 'POST',
+ 	            data: JSON.stringify({ cart_id: cart_id }), // 데이터를 JSON 형식으로 전송
+ 	            contentType: "application/json;charset=utf-8",
+ 	            success: function(response) {
+ 	                if (response.status === 'success') {
+ 	                    alert("이동");
+ 	                    // 추천 상품 페이지로 이동
+ 	                    location.href = "${path}/customer/recommend.do?cart_id=" + response.cart_id;
+ 	                } else {
+ 	                    alert("이동 실패");
+ 	                }
+ 	            },
+ 	            error: function(error) {
+ 	                alert("Error: " + error);
+ 	            }
+ 	        });
+		*/
+ 		});
+	});
+ 	</script>
 </body>
 </html>
