@@ -48,7 +48,7 @@ public class SellerRentDTO {
 	Integer rentdetail_id;
 	Integer rent_product_price;
 	Integer rent_num;
-	String rent_state;  //대여상태
+	String rent_state;
 	
 	String r_stock_id;
 	Integer stock;

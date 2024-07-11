@@ -32,7 +32,10 @@
                             <th>상품명</th>
                             <th>상품 설명</th>
                             <th>가격</th>
-                            <th>재고</th>                        
+                            <th>상품 재고</th>
+                            <th>판매자 명</th>
+                            <th>브랜드</th>                        
+                            <th>연락처</th>                         
                             <th>Delete</th>
                         </tr>
                     </thead>
@@ -45,6 +48,9 @@
                             <td>${product.prod_desc}</td>
                             <td>${product.prod_price}</td>
                             <td>${product.stock}</td>
+                            <td>${product.member_name}</td>
+                            <td>${product.brand}</td>
+                            <td>${product.phone}</td>
                             <td><button class="btn btn-sm btn-danger" onclick="deleteProduct(${product.prod_id})">삭제</button></td>
                         </tr>                
                         </c:forEach>

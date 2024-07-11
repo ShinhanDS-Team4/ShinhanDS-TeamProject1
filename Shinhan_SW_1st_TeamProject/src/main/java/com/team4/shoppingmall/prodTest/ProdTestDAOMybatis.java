@@ -23,27 +23,27 @@ public class ProdTestDAOMybatis implements ProdDAOTestInterface {
 	}
 	
 	@Override
-	public ProdTestDTO selectByProdId(String prod_id) {
+	public ProdDTO selectByProdId(String prod_id) {
 		return sqlSession.selectOne(namespace+"selectByProdId", prod_id);
 	}
 	
 	@Override
-	public List<ProdTestDTO> selectByMemberId(String member_id) {
+	public List<ProdDTO> selectByMemberId(String member_id) {
 		return sqlSession.selectList(namespace+"selectByMemberId", member_id);
 	}
 
 	@Override
-	public List<ProdTestDTO> selectAll() {
+	public List<ProdDTO> selectAll() {
 		return sqlSession.selectList(namespace+"selectAll");
 	}
 
 	@Override
-	public int prodInsert(ProdTestDTO prod) {
+	public int prodInsert(ProdDTO prod) {
 		return sqlSession.insert(namespace+"prodInsert", prod);
 	}
 
 	@Override
-	public int prodUpdate(ProdTestDTO prod) {
+	public int prodUpdate(ProdDTO prod) {
 		return sqlSession.update(namespace+"prodUpdate", prod);
 	}
 
@@ -95,5 +95,10 @@ public class ProdTestDAOMybatis implements ProdDAOTestInterface {
 	@Override
 	public Integer searchNumsByBrndAndPrc(Map<String, Object> schInfo) {
 		return sqlSession.selectOne(namespace+"searchNumsByBrndAndPrc", schInfo);
+	}
+	
+	@Override
+	public List<ProdDTO> selectAllByCtgWhenRcmd(Integer category_id) {
+		return sqlSession.selectList(namespace+"selectAllByCtgWhenRcmd", category_id);
 	}
 }

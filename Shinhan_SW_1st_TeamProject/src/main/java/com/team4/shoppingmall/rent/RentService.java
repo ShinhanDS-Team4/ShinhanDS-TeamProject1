@@ -135,4 +135,8 @@ public class RentService {
 		return rentDAO.findMaxRentID();
 	}
 
+	public List<RentDTO> selectByMemId(String member_id) {
+		return rentDAO.selectByMemId(member_id);
+	}
+
 }

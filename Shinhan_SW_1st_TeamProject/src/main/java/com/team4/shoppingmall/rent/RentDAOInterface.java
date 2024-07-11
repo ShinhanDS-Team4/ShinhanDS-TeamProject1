@@ -53,6 +53,8 @@ public interface RentDAOInterface {
 	public List<SellerRentDTO> searchCustomerByRent(String searchKeyword);
 
 	public int findMaxRentID();
+
+	public List<RentDTO> selectByMemId(String member_id);
 	
 }
 

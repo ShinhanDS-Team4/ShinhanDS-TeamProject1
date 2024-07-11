@@ -221,15 +221,15 @@ public class AdminController {
 		
 	// 판매자 상품 조회 페이지
 	@GetMapping("admin_seller_prod")
-	public String adminsellerdetail(Model model, String member_id) {
-		List<SellerProdDTO> allProdList = pService.allProd();
-		System.out.println(allProdList);
-		model.addAttribute("products", allProdList);
+	public String adminsellerdetail() {
+		//List<SellerProdDTO> allProdList = pService.allProd();
+		//System.out.println(allProdList);
+		//model.addAttribute("products", allProdList);
 
-		if (member_id != null && !member_id.isEmpty()) {
-	        model.addAttribute("searchType", member_id);
-	        return "search_seller_product_brand";
-	    }
+		//if (member_id != null && !member_id.isEmpty()) {
+	    //    model.addAttribute("searchType", member_id);
+	    //    return "search_seller_product_brand";
+	    //}
 		return "admin/admin_seller_prod";
 	}
 
@@ -245,9 +245,9 @@ public class AdminController {
 	// 판매자 대여 조회 페이지
 	@GetMapping("admin_seller_rent")
 	public String adminsellerrent(Model model, String member_id) {
-		List<SellerRentDTO> allRentList = rService.AllRent();
-		System.out.println(allRentList);
-		model.addAttribute("rents", allRentList);
+		//List<SellerRentDTO> allRentList = rService.AllRent();
+		//System.out.println(allRentList);
+		//model.addAttribute("rents", allRentList);
 		return "admin/admin_seller_rent";
 	}
 	
@@ -345,13 +345,12 @@ public class AdminController {
 	
 	// 고객 대여 조회
 	@GetMapping("admin_customer_search_rentlist")
-	public @ResponseBody List<SellerRentDTO> admincustomersearchrentlist(Model model, String searchKeyword) {
-		System.out.println(searchKeyword);
-		List<SellerRentDTO> rentList = rService.searchCustomerByRent(searchKeyword);
-		System.out.println(rentList);		
-		return rentList;
-	}
-	
+	public @ResponseBody List<SellerRentDTO> admincustomersearchrentlist(Model model, String searchRentKeyword) {
+		System.out.println(searchRentKeyword);
+		List<SellerRentDTO> rentDetailList = rService.searchCustomerByRent(searchRentKeyword);
+		System.out.println(rentDetailList);		
+		return rentDetailList;
+	}	
 	
 	// 고객 정보 조회
 	@GetMapping("admin_customer_info")

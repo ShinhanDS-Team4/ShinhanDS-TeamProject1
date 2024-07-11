@@ -47,7 +47,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: 'refund',
+                    url: 'refund.do',
                     data: { orderId: orderId },
                     success: function (response) {
                         if (response === 'success') {
@@ -55,7 +55,7 @@
                             showRefundCompletePopup();
                             setTimeout(function() {
                                 location.reload();
-                            }, 2000); // 2초 후 페이지 새로고침
+                            }, 2000);  
                         }
                     },
                     error: function (error) {

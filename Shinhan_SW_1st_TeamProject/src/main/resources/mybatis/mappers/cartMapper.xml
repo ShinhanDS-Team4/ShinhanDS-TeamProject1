@@ -8,7 +8,8 @@
 		SELECT
 		    c.cart_id,
 		    p.prod_name,
-		    pi.img_id
+		    pi.img_id,
+		    pi.prod_id
 		FROM
 		    CART c
 		LEFT JOIN
@@ -57,6 +58,7 @@
 		    c.member_id,
 		    p.prod_name,
 		    p.prod_price,
+		    p.prod_id,
 		    sps.s_stock_id,
 		    rps.r_stock_id,
 		    o1.opt_name AS opt_name1,
