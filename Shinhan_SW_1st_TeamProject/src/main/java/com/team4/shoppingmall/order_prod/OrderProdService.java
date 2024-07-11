@@ -117,6 +117,9 @@ public class OrderProdService {
 		return orderprodDAO.selectByMemId(member_id);
 	}
 	
+	public int findMaxOrderID() {
+		return orderprodDAO.findMaxOrderID();
+	}
 	
 
 }

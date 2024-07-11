@@ -60,7 +60,7 @@
 		INSERT
 		INTO RENT_DETAIL(rentdetail_id, rent_product_price, rent_num, r_stock_id, rental_code, rent_state)
 		VALUES(
-			rent_detail_sequence.nextval, 
+			#{rentdetail_id}, 
 			#{rent_product_price}, 
 			#{rent_num}, 
 			#{r_stock_id}, 
@@ -102,4 +102,9 @@
 		FROM RENT_DETAIL
 		WHERE rental_code = #{rental_code}
 	</delete>
+	
+	<select id = "findMaxRentDetailID" resultType="int">
+		SELECT MAX(rentdetail_id) AS max_rentdetail_id
+		FROM RENT_DETAIL
+	</select>
 </mapper>

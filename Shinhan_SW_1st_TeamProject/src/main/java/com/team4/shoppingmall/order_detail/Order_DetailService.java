@@ -53,4 +53,8 @@ public class Order_DetailService {
 	public int orderDetailDelByOrderID(int order_id) {
 		return order_DetailDAO.orderDetailDelByOrderID(order_id);
 	}
+	
+	public int findMaxOrderDetailID() {
+		return order_DetailDAO.findMaxOrderDetailID();
+	}
 }

@@ -58,5 +58,9 @@ public class RentDetailService {
 	public int rentDetailDelByRentCode(Integer rental_code) {
 		return rentDetailDAO.rentDetailDelByRentCode(rental_code);
 	}
+	
+	public int findMaxRentDetailID() {
+		return rentDetailDAO.findMaxRentDetailID();
+	}
 
 }
