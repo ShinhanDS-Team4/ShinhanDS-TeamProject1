@@ -70,5 +70,11 @@ public class RentDetailDAOMybatis implements RentDetailDAOInterface {
 	public int rentDetailDelByRentCode(Integer rental_code) {
 		return sqlSession.delete(namespace+"rentDetailDelByRentCode", rental_code);
 	}
+
+	@Override
+	public int findMaxRentDetailID() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace+"findMaxRentDetailID");
+	}
 }
 

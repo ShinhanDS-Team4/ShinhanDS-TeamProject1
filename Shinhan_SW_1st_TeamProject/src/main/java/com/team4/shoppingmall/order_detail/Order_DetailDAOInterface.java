@@ -34,4 +34,8 @@ public interface Order_DetailDAOInterface {
 
 	public int orderDetailDelByOrderID(int order_id);
 
+	public int findMaxOrderDetailID();
+	
+	
+
 }

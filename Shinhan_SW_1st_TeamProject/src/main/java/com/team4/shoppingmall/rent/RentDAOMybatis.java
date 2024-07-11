@@ -104,8 +104,12 @@ public class RentDAOMybatis implements RentDAOInterface {
 	}
 
 	@Override
+	public int findMaxRentID() {
+		return sqlSession.selectOne(namespace+"findMaxRentID");
+	}
+
+  @Override
 	public List<RentDTO> selectByMemId(String member_id) {
 		return sqlSession.selectList(namespace+"selectByMemId", member_id);
 	}
-
 }

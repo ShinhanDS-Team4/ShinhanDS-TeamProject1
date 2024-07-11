@@ -117,6 +117,8 @@ public class CartController {
 	@ResponseBody
 	public OrderProdDTO createOrder(@RequestBody  List<Integer> cartIds, HttpSession session) {
 		
+		System.out.println("장바구니목록:"+cartIds);
+		
 		MemberDTO mem = (MemberDTO)session.getAttribute("member");
 		String customerID = mem.getMember_id();
 		
@@ -127,11 +129,22 @@ public class CartController {
 		// LocalDate로 현재 날짜를 받아와 SQL.Date로 전환
 		Date sqlDate = Date.valueOf(localDate);
 		
-		//대여 항목과 주문 항목의 최대값을 각각 가져오기
-		int maxOrder_id = orderprodDAO.sequenceOrderId()+1;
+		//주문 항목의 최대값을 가져와서 1 더하기
+		int maxOrder_id = orderProdService.findMaxOrderID()+1;
 		
 		//총 구매가
 		int orderTotal_price = 0;
+		
+		OrderProdDTO orderProdDTO = new OrderProdDTO();
+		orderProdDTO.setOrder_id(maxOrder_id);
+		orderProdDTO.setOrder_date(sqlDate);
+		orderProdDTO.setMember_id(customerID);
+		orderProdDTO.setTotal_price(orderTotal_price);
+		orderProdDTO.setAddr_num(addr_ListDTO.getAddr_num());//주소를 대표주소로 설정
+		
+		int orderInsertResult = orderprodDAO.orderprodInsert(orderProdDTO);
+		
+		System.out.println("주문DTO:"+orderProdDTO);
 		
 		//각 장바구니 ID에 대한 반복문 처리
 		for(Integer cartId : cartIds) {
@@ -149,8 +162,13 @@ public class CartController {
 				
 				//해당 재고에 대한 판매 상세 객체 생성
 				Order_DetailDTO order_DetailDTO = new Order_DetailDTO();
+				
+				int maxOrderDetailID = order_DetailService.findMaxOrderDetailID();
+				maxOrderDetailID+=1;
+				
+				order_DetailDTO.setOrderdetail_id(maxOrderDetailID);
 				order_DetailDTO.setOrder_num(amount);
-				order_DetailDTO.setOrder_id(maxOrder_id);
+				order_DetailDTO.setOrder_id(orderProdDTO.getOrder_id());
 				order_DetailDTO.setOrder_product_price(prodDTO.getProd_price());
 				order_DetailDTO.setS_stock_id(s_stock_ID);
 				
@@ -163,14 +181,7 @@ public class CartController {
 			int cartDeleteResult = cartService.cartDelete(cartId);//주문상세 생성 완료 후 해당 장바구니 삭제
 		}
 		
-		OrderProdDTO orderProdDTO = new OrderProdDTO();
-		orderProdDTO.setOrder_id(maxOrder_id);
-		orderProdDTO.setOrder_date(sqlDate);
-		orderProdDTO.setMember_id(customerID);
-		orderProdDTO.setTotal_price(orderTotal_price);
-		orderProdDTO.setAddr_num(addr_ListDTO.getAddr_num());//주소를 대표주소로 설정
 		
-		int orderInsertResult = orderprodDAO.orderprodInsert(orderProdDTO);
 		
 		return orderProdDTO;
 	}
@@ -193,11 +204,20 @@ public class CartController {
 		// 7일 뒤의 날짜를 SQL Date로 전환
 		Date sqlFutureDate = Date.valueOf(futureDate);
 		
-		//대여 항목과 주문 항목의 최대값을 각각 가져와서 1 더하기
-		int maxRent_id = rentprodDAO.searchRentId()+1;
+		//대여 항목 최대값을 가져와서 1 더하기
+		int maxRent_id = rentService.findMaxRentID()+1;
 		
 		//총 구매가
 		int rentTotal_price = 0;
+		
+		RentDTO rentDTO = new RentDTO();
+		rentDTO.setRental_code(maxRent_id);
+		rentDTO.setRent_start_date(sqlDate);
+		rentDTO.setRent_end_date(sqlFutureDate);
+		rentDTO.setMember_id(customerID);
+		rentDTO.setTotal_rent_price(rentTotal_price);
+		
+		int rentInsertResult = rentprodDAO.rentInsert(rentDTO);
 		
 		//각 장바구니 ID에 대한 반복문 처리
 		for(Integer cartId : cartIds) {
@@ -215,8 +235,13 @@ public class CartController {
 				
 				//해당 재고에 대한 대여 상세 객체 생성
 				RentDetailDTO rentDetailDTO = new RentDetailDTO();
+				
+				int maxRentDetailID = rentDetailService.findMaxRentDetailID();
+				maxRentDetailID+=1;
+				
+				rentDetailDTO.setRentdetail_id(maxRentDetailID);
 				rentDetailDTO.setRent_num(amount);
-				rentDetailDTO.setRental_code(maxRent_id);
+				rentDetailDTO.setRental_code(rentDTO.getRental_code());
 				rentDetailDTO.setRent_product_price(prodDTO.getProd_price());
 				rentDetailDTO.setR_stock_id(r_stock_ID);
 				
@@ -229,14 +254,7 @@ public class CartController {
 			int cartDeleteResult = cartService.cartDelete(cartId);//대여상세 생성 완료 후 해당 장바구니 삭제
 		}
 		
-		RentDTO rentDTO = new RentDTO();
-		rentDTO.setRental_code(maxRent_id);
-		rentDTO.setRent_start_date(sqlDate);
-		rentDTO.setRent_end_date(sqlFutureDate);
-		rentDTO.setMember_id(customerID);
-		rentDTO.setTotal_rent_price(rentTotal_price);
 		
-		int rentInsertResult = rentprodDAO.rentInsert(rentDTO);
 		
 		return rentDTO;
 			

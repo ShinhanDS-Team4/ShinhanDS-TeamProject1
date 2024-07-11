@@ -90,6 +90,11 @@ public class OrderProdDAOMybatis implements OrderProdDAOInterface {
 	@Override
 	public List<OrderProdDTO> selectByMemId(String member_id) {
 		return sqlSession.selectList(namespace+"selectByMemId", member_id);
+	}
+
+	@Override
+	public int findMaxOrderID() {
+		return sqlSession.selectOne(namespace+"findMaxOrderID");
 	} 
 	
 	
