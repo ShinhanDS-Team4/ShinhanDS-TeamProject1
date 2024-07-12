@@ -18,7 +18,7 @@
 		SELECT DISTINCT M.brand, p.prod_name
 		FROM MEMBER M
 		JOIN PROD P ON M.member_id = P.member_id
-		 JOIN RENT_PROD_STOCK RPS ON P.prod_id = RPS.prod_id
+		JOIN RENT_PROD_STOCK RPS ON P.prod_id = RPS.prod_id
 		JOIN RENT_DETAIL RD ON RPS.r_stock_id = RD.r_stock_id
 		WHERE RD.RENTAL_CODE = #{rental_code}
 	</select>

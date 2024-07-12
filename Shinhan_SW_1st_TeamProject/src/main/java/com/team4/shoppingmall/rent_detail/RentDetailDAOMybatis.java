@@ -17,8 +17,8 @@ public class RentDetailDAOMybatis implements RentDetailDAOInterface {
 	String namespace = "com.saren.rent_detail."; //수정
 	
 	//대여주문상품 브랜드,이름
-	public Map<String,String> getRentOrderProdBrand(int rental_code){
-		return sqlSession.selectOne(namespace+"getRentOrderProdBrand", rental_code);
+	public List<Map<String,String>> getRentOrderProdBrand(int rental_code){
+		return sqlSession.selectList(namespace+"getRentOrderProdBrand", rental_code);
 	};
 
 	// 대여상세 상세
