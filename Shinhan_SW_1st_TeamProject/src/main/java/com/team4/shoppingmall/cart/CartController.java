@@ -139,12 +139,8 @@ public class CartController {
 		orderProdDTO.setOrder_id(maxOrder_id);
 		orderProdDTO.setOrder_date(sqlDate);
 		orderProdDTO.setMember_id(customerID);
-		orderProdDTO.setTotal_price(orderTotal_price);
 		orderProdDTO.setAddr_num(addr_ListDTO.getAddr_num());//주소를 대표주소로 설정
-		
-		int orderInsertResult = orderprodDAO.orderprodInsertForCart(orderProdDTO);
-		
-		System.out.println("주문DTO:"+orderProdDTO);
+	
 		
 		//각 장바구니 ID에 대한 반복문 처리
 		for(Integer cartId : cartIds) {
@@ -171,9 +167,11 @@ public class CartController {
 				order_DetailDTO.setOrder_id(orderProdDTO.getOrder_id());
 				order_DetailDTO.setOrder_product_price(prodDTO.getProd_price());
 				order_DetailDTO.setS_stock_id(s_stock_ID);
-				
+
 				int price = amount * prodDTO.getProd_price();
 				orderTotal_price += price;
+				
+				System.out.println("주문상세DTO:"+order_DetailDTO);
 				
 				int ordDetailInsertResult = order_DetailService.orderDetailforCartiInsert(order_DetailDTO);
 			}
@@ -181,6 +179,11 @@ public class CartController {
 			int cartDeleteResult = cartService.cartDelete(cartId);//주문상세 생성 완료 후 해당 장바구니 삭제
 		}
 		
+		orderProdDTO.setTotal_price(orderTotal_price); // 총 가격
+		
+		int orderInsertResult = orderprodDAO.orderprodInsertForCart(orderProdDTO);
+		
+		System.out.println("주문DTO:"+orderProdDTO);
 		
 		
 		return orderProdDTO;
@@ -215,9 +218,7 @@ public class CartController {
 		rentDTO.setRent_start_date(sqlDate);
 		rentDTO.setRent_end_date(sqlFutureDate);
 		rentDTO.setMember_id(customerID);
-		rentDTO.setTotal_rent_price(rentTotal_price);
-		
-		int rentInsertResult = rentprodDAO.rentInsertForCart(rentDTO);
+	
 		
 		//각 장바구니 ID에 대한 반복문 처리
 		for(Integer cartId : cartIds) {
@@ -255,6 +256,9 @@ public class CartController {
 		}
 		
 		
+		rentDTO.setTotal_rent_price(rentTotal_price);
+		
+		int rentInsertResult = rentprodDAO.rentInsertForCart(rentDTO);
 		
 		return rentDTO;
 			

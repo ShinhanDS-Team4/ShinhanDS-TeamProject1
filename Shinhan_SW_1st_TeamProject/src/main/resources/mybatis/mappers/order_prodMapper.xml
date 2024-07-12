@@ -111,11 +111,16 @@
 	<!-- 장바구니에서 주문 생성할 때 쓰기 위함 -->
 	<insert id="orderprodInsertForCart" parameterType="com.team4.shoppingmall.order_prod.OrderProdDTO">
 		INSERT INTO ORDER_PROD (order_id, order_date, member_id, addr_num, total_price)
-		#{order_id}, SYSDATE, #{member_id}, addr_num, #{total_price}
+		SELECT #{order_id}, SYSDATE, #{member_id}, addr_num, #{total_price}
 		FROM addr_list 
 		WHERE member_id = #{member_id} AND IS_MASTER_ADDR = 'Y'
 	</insert>
-	
+	<!-- 
+	INSERT INTO ORDER_PROD (order_id, order_date, member_id, addr_num, total_price)
+		#{order_id}, SYSDATE, #{member_id}, addr_num, #{total_price}
+		FROM addr_list 
+		WHERE member_id = #{member_id} AND IS_MASTER_ADDR = 'Y'
+	 -->
 	<select id="sequenceOrderId" resultType="int">
 		SELECT last_number-1 FROM user_sequences WHERE sequence_name = 'ORDER_PROD_SEQUENCE' 
 	</select>

@@ -220,15 +220,14 @@ function applyCoupon() {
 					</tr>
 				</thead>
 				<tbody>
-					<c:set var="prodName" value="${rentBrandandProdName['PROD_NAME']}" />
-					<c:set var="brand" value="${rentBrandandProdName['BRAND']}" />
+					<c:forEach var="rentBrandProd" items="${rentBrandandProdName}">
 					<c:forEach var="rentDetail" items="${rentDetailList}">
 						<tr>
 							<td>
 								<p>${rentDetail.rental_code}</p>
 							</td>
 							<td>
-								<p>(${brand}) ${prodName}</p>
+								<p>(${rentBrandProd.BRAND}) ${rentBrandProd.PROD_NAME}</p>
 							</td>
 							<td>
 								<p>
@@ -249,6 +248,7 @@ function applyCoupon() {
 								</p>
 							</td>
 						</tr>
+					</c:forEach>
 					</c:forEach>
 				</tbody>
 			</table>

@@ -263,8 +263,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:set var="prodName" value="${brandandProdName['PROD_NAME']}" />
-					<c:set var="brand" value="${brandandProdName['BRAND']}" />
+					<c:forEach var="brandProd" items="${brandandProdName}">
 					<c:forEach var="orderDetail" items="${orderDetailList}">
 						<tr>
 							<!-- 주문번호 -->
@@ -275,7 +274,7 @@
                         	
                         	<!-- 브랜드와 상품명 -->
 							<td>
-								<p>(${brand}) ${prodName}</p>
+								<p>(${brandProd.BRAND}) ${brandProd.PROD_NAME}</p>
 							</td>
 							
 							<!-- 가격 -->
@@ -302,6 +301,7 @@
 								</p>
 							</td>
 						</tr>
+					</c:forEach>
 					</c:forEach>
 				</tbody>
 			</table>

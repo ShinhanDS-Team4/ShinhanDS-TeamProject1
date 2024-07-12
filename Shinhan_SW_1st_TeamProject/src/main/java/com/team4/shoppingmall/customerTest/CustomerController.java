@@ -120,8 +120,8 @@ public class CustomerController {
 		// 고객이 가지고 있는 회원등급, 포인트를 가져오기
 		CustomerDTO customerDTO = customerService.selectById(customerID);
 
-		// 주문 구매 상품 브랜드,이름 가져오기
-		Map<String, String> brandandProdName = orderDetailService.getOrderProdBrand(orderID);
+		// 주문 구매 상품 브랜드,이름 가져오기 (수정)
+		List<Map<String,String>> brandandProdName = orderDetailService.getOrderProdBrand(orderID);
 		model.addAttribute("brandandProdName", brandandProdName);
 		System.out.println(brandandProdName);
 
@@ -161,7 +161,7 @@ public class CustomerController {
 		CustomerDTO customerDTO = customerService.selectById(customerID);
 
 		// 대여주문 구매 상품 브랜드,이름 가져오기
-		Map<String, String> rentBrandandProdName = rentDetailService.getRentOrderProdBrand(rentalCode);
+		List<Map<String,String>> rentBrandandProdName = rentDetailService.getRentOrderProdBrand(rentalCode);
 		model.addAttribute("rentBrandandProdName", rentBrandandProdName);
 		System.out.println(rentBrandandProdName);
 
