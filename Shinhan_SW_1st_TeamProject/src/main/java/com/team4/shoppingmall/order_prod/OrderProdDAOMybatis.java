@@ -95,6 +95,11 @@ public class OrderProdDAOMybatis implements OrderProdDAOInterface {
 	@Override
 	public int findMaxOrderID() {
 		return sqlSession.selectOne(namespace+"findMaxOrderID");
+	}
+
+	@Override
+	public int orderprodInsertForCart(OrderProdDTO orderprod) {
+		return sqlSession.insert(namespace+"orderprodInsertForCart", orderprod);
 	} 
 	
 	

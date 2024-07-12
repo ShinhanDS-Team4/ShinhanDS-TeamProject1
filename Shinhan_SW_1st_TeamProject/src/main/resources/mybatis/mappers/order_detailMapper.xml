@@ -40,6 +40,22 @@
 		ORDER_DETAIL(orderdetail_id, order_product_price, order_num, order_id,
 		s_stock_id, order_state)
 		VALUES(
+		order_detail_sequence.nextval,
+		#{order_product_price},
+		#{order_num},
+		ORDER_PROD_SEQUENCE.currval,
+		#{s_stock_id},
+		'결제대기'
+		)
+	</insert>
+	
+	<!-- 장바구니에 여러 개 들어있을 때 주문상세 생성 - 결제대기상태 (주문상태 칼럼 추가) -->
+	<insert id="orderDetailforCartiInsert" parameterType="order_detailVO">
+		INSERT
+		INTO
+		ORDER_DETAIL(orderdetail_id, order_product_price, order_num, order_id,
+		s_stock_id, order_state)
+		VALUES(
 		#{orderdetail_id},
 		#{order_product_price},
 		#{order_num},

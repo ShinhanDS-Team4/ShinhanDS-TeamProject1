@@ -33,5 +33,7 @@ public interface RentDetailDAOInterface {
 	public int rentDetailDelByRentCode(Integer rental_code);
 
 	public int findMaxRentDetailID();
+
+	public int rentDetailforCartInsert(RentDetailDTO rentdetail);
 	
 }

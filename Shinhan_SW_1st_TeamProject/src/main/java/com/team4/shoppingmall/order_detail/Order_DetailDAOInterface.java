@@ -35,6 +35,8 @@ public interface Order_DetailDAOInterface {
 	public int orderDetailDelByOrderID(int order_id);
 
 	public int findMaxOrderDetailID();
+
+	public int orderDetailforCartiInsert(Order_DetailDTO order_detail);
 	
 	
 

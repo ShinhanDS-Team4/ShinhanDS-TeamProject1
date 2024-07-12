@@ -76,5 +76,11 @@ public class RentDetailDAOMybatis implements RentDetailDAOInterface {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(namespace+"findMaxRentDetailID");
 	}
+
+	@Override
+	public int rentDetailforCartInsert(RentDetailDTO rentdetail) {
+		// TODO Auto-generated method stub
+		return sqlSession.insert(namespace+"rentDetailforCartInsert", rentdetail);
+	}
 }
 

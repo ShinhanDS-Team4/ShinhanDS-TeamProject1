@@ -79,6 +79,10 @@ public class RentService {
 		return rental_code;
 
 	};
+	
+	public int rentInsertForCart(RentDTO rentDTO) {
+		return rentDAO.rentInsertForCart(rentDTO);
+	}
 
 	// 대여상태 수정
 	public int rentUpdate(Integer rental_code) {

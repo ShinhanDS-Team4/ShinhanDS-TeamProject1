@@ -142,7 +142,7 @@ public class CartController {
 		orderProdDTO.setTotal_price(orderTotal_price);
 		orderProdDTO.setAddr_num(addr_ListDTO.getAddr_num());//주소를 대표주소로 설정
 		
-		int orderInsertResult = orderprodDAO.orderprodInsert(orderProdDTO);
+		int orderInsertResult = orderprodDAO.orderprodInsertForCart(orderProdDTO);
 		
 		System.out.println("주문DTO:"+orderProdDTO);
 		
@@ -175,7 +175,7 @@ public class CartController {
 				int price = amount * prodDTO.getProd_price();
 				orderTotal_price += price;
 				
-				int ordDetailInsertResult = order_DetailService.orderDetailInsert(order_DetailDTO);
+				int ordDetailInsertResult = order_DetailService.orderDetailforCartiInsert(order_DetailDTO);
 			}
 			
 			int cartDeleteResult = cartService.cartDelete(cartId);//주문상세 생성 완료 후 해당 장바구니 삭제
@@ -217,7 +217,7 @@ public class CartController {
 		rentDTO.setMember_id(customerID);
 		rentDTO.setTotal_rent_price(rentTotal_price);
 		
-		int rentInsertResult = rentprodDAO.rentInsert(rentDTO);
+		int rentInsertResult = rentprodDAO.rentInsertForCart(rentDTO);
 		
 		//각 장바구니 ID에 대한 반복문 처리
 		for(Integer cartId : cartIds) {
@@ -248,7 +248,7 @@ public class CartController {
 				int price = amount * prodDTO.getProd_price();
 				rentTotal_price += price;
 				
-				int rentDetailInsertResult = rentDetailService.rentDetailInsert(rentDetailDTO);
+				int rentDetailInsertResult = rentDetailService.rentDetailforCartInsert(rentDetailDTO);
 			}
 			
 			int cartDeleteResult = cartService.cartDelete(cartId);//대여상세 생성 완료 후 해당 장바구니 삭제

@@ -63,4 +63,7 @@ public class RentDetailService {
 		return rentDetailDAO.findMaxRentDetailID();
 	}
 
+	public int rentDetailforCartInsert(RentDetailDTO rentdetail) {
+		return rentDetailDAO.rentDetailforCartInsert(rentdetail);
+	}
 }

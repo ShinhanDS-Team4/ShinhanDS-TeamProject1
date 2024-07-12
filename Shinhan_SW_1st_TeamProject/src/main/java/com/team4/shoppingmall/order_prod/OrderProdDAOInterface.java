@@ -46,5 +46,7 @@ public interface OrderProdDAOInterface {
 
 	public int findMaxOrderID();
 
+	public int orderprodInsertForCart(OrderProdDTO orderprod);
+
 	
 }

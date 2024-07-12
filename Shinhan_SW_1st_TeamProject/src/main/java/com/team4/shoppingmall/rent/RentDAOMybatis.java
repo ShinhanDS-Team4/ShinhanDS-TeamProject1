@@ -112,4 +112,10 @@ public class RentDAOMybatis implements RentDAOInterface {
 	public List<RentDTO> selectByMemId(String member_id) {
 		return sqlSession.selectList(namespace+"selectByMemId", member_id);
 	}
+
+@Override
+public int rentInsertForCart(RentDTO rentDTO) {
+	// TODO Auto-generated method stub
+	return sqlSession.insert(namespace+"rentInsertForCart", rentDTO);
+}
 }

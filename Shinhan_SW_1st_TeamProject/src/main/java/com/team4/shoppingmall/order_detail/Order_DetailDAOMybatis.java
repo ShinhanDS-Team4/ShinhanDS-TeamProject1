@@ -68,12 +68,19 @@ public class Order_DetailDAOMybatis implements Order_DetailDAOInterface{
 		return sqlSession.selectList(namespace+"searchCustomerOrderList", searchOrderList);
 	}	
 
+	@Override
 	public int orderDetailDelByOrderID(int order_id) {
 		return sqlSession.delete(namespace+"orderDetailDelByOrderID", order_id);
 	}
 	
+	@Override
 	public int findMaxOrderDetailID() {
 		return sqlSession.selectOne(namespace+"findMaxOrderDetailID");
+	}
+
+	@Override
+	public int orderDetailforCartiInsert(Order_DetailDTO order_detail) {
+		return sqlSession.insert(namespace+"orderDetailforCartiInsert", order_detail);
 	}
 	
 }

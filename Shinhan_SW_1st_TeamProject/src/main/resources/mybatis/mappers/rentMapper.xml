@@ -81,6 +81,20 @@
 			SELECT rent_sequence.CURRVAL FROM DUAL
 		</selectKey>
 	</insert>
+	
+	<!-- 장바구니에서 대여하기 버튼을 눌렀을 때 -->
+	<insert id="rentInsertForCart" parameterType="rentVO">
+		INSERT
+		INTO RENT(rental_code, rent_start_date, rent_end_date,
+		member_id, total_rent_price)
+		VALUES(
+		#{rental_code},
+		#{rent_start_date},
+		#{rent_end_date},
+		#{member_id},
+		#{total_rent_price}
+		)
+	</insert>
 
 	<!-- 대여상태 수정 -->
 	<update id="memberUpdate" parameterType="rentVO">

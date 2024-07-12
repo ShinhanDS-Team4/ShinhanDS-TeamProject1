@@ -33,6 +33,10 @@ public class Order_DetailService {
 	public int orderDetailInsert(Order_DetailDTO order_detail) {
 		return order_DetailDAO.orderDetailInsert(order_detail);
 	}
+	
+	public int orderDetailforCartiInsert(Order_DetailDTO order_detail) {
+		return order_DetailDAO.orderDetailforCartiInsert(order_detail);
+	}
 
 	public int orderDetailUpdate(Order_DetailDTO order_detail) {
 		return order_DetailDAO.orderDetailUpdate(order_detail);

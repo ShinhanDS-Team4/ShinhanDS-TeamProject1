@@ -121,5 +121,8 @@ public class OrderProdService {
 		return orderprodDAO.findMaxOrderID();
 	}
 	
+	public int orderprodInsertForCart(OrderProdDTO orderprod) {
+		return orderprodDAO.orderprodInsertForCart(orderprod);
+	}
 
 }

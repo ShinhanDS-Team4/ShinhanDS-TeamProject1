@@ -60,6 +60,20 @@
 		INSERT
 		INTO RENT_DETAIL(rentdetail_id, rent_product_price, rent_num, r_stock_id, rental_code, rent_state)
 		VALUES(
+			rent_detail_sequence.nextval, 
+			#{rent_product_price}, 
+			#{rent_num}, 
+			#{r_stock_id}, 
+			#{rental_code},
+			'대여신청완료'
+		)
+	</insert>
+	
+	<!-- 장바구니에 여러 개 들어있을 때 대여상세 생성 (시퀀스 사용, 주문상태 칼럼 추가) -->
+	<insert id="rentDetailforCartInsert" parameterType="com.team4.shoppingmall.rent_detail.RentDetailDTO">
+		INSERT
+		INTO RENT_DETAIL(rentdetail_id, rent_product_price, rent_num, r_stock_id, rental_code, rent_state)
+		VALUES(
 			#{rentdetail_id}, 
 			#{rent_product_price}, 
 			#{rent_num}, 
