@@ -28,43 +28,43 @@
 		 	   		<div class="content box0">  <%-- 장바구니 아이템 --%>
 		 	   			<span>아우터</span>
 		 	   		     <div class="imgbox" id="outer">
-							<img src="/saren/ProdImgFile/main/${prods.outer.prod_id}_image_1.jpg" alt="사진" onclick="location.href='${path}/prod/prod_detail/prod_id=${prods.outer.prod_id}'"/>
+							<img src="/saren/ProdImgFile/main/${prods.outer.prod_id}_image_1.jpg" alt="사진" onclick="location.href='${path}/prod/product_detail?prod_id=${prods.outer.prod_id}'"/>
 		 	   		     </div>
 					</div>
 		 	   		<div class="content box1">  <%-- 추천 아이템 --%>
 		 	   			<span>재킷/베스트</span>
 		 	   			 <div class="imgbox" id="jacket">
-							<img src="/saren/ProdImgFile/main/${prods.jacket.prod_id}_image_1.jpg" alt="추천사진 예시" onclick="location.href='${path}/prod/prod_detail/prod_id=${prods.jacket.prod_id}'"  />
+							<img src="/saren/ProdImgFile/main/${prods.jacket.prod_id}_image_1.jpg" alt="추천사진 예시" onclick="location.href='${path}/prod/product_detail?prod_id=${prods.jacket.prod_id}'"  />
 		 	   		     </div>
 		 	   		</div>
 		 	   		<div class="content box2">
 		 	   			<span>니트</span>
 		 	   			<div class="imgbox" id="neat">
-							<img alt="" src="/saren/ProdImgFile/main/${prods.neat.prod_id}_image_1.jpg" onclick="location.href='${path}/prod/prod_detail/prod_id=${prods.neat.prod_id}'" />
+							<img alt="" src="/saren/ProdImgFile/main/${prods.neat.prod_id}_image_1.jpg" onclick="location.href='${path}/prod/product_detail?prod_id=${prods.neat.prod_id}'" />
 		 	   		    </div>
 		 	   		</div>
 		 	   		<div class="content box3">
 		 	   			<span>셔츠/블라우스</span>
 						<div class="imgbox" id="shirt">
-							<img alt="" src="/saren/ProdImgFile/main/${prods.shirt.prod_id}_image_1.jpg"  onclick="location.href='${path}/prod/prod_detail/prod_id=${prods.shirt.prod_id}'"/>
+							<img alt="" src="/saren/ProdImgFile/main/${prods.shirt.prod_id}_image_1.jpg"  onclick="location.href='${path}/prod/product_detail?prod_id=${prods.shirt.prod_id}'"/>
 		 	   		    </div>
 					</div>
 		 	   		<div class="content box4">
 		 	   			<span>티셔츠</span>
 		 	   			<div class="imgbox" id="tshirt">
-							<img alt="" src="/saren/ProdImgFile/main/${prods.tshirt.prod_id}_image_1.jpg"  onclick="location.href='${path}/prod/prod_detail/prod_id=${prods.tshirt.prod_id}'"/>
+							<img alt="" src="/saren/ProdImgFile/main/${prods.tshirt.prod_id}_image_1.jpg"  onclick="location.href='${path}/prod/product_detail?prod_id=${prods.tshirt.prod_id}'"/>
 		 	   		    </div>
 		 	   		</div>
 		 	   		<div class="content box5">
 		 	   			<span>팬츠</span>
 						<div class="imgbox" id="pants">
-							<img alt="" src="/saren/ProdImgFile/main/${prods.pants.prod_id}_image_1.jpg"  onclick="location.href='${path}/prod/prod_detail/prod_id=${prods.pants.prod_id}'"/>
+							<img alt="" src="/saren/ProdImgFile/main/${prods.pants.prod_id}_image_1.jpg"  onclick="location.href='${path}/prod/product_detail?prod_id=${prods.pants.prod_id}'"/>
 		 	   		    </div>
 					</div>
 		 	   		<div class="content box6">
 		 	   			<span>스커트</span>
 						<div class="imgbox" id="skirt">
-							<img alt="" src="/saren/ProdImgFile/main/${prods.skirt.prod_id}_image_1.jpg"  onclick="location.href='${path}/prod/prod_detail/prod_id=${prods.skirt.prod_id}'"/>
+							<img alt="" src="/saren/ProdImgFile/main/${prods.skirt.prod_id}_image_1.jpg"  onclick="location.href='${path}/prod/product_detail?prod_id=${prods.skirt.prod_id}'"/>
 		 	   		    </div>
 					</div>
 		 	   </div>

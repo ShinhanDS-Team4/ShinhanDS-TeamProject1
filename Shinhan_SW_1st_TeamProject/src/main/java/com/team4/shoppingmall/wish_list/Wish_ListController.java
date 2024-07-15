@@ -28,9 +28,6 @@ public class Wish_ListController {
 	@GetMapping("wishList.do")
 	public String wishSelectAll(Model model, HttpSession session) {
 		MemberDTO mDto = (MemberDTO) session.getAttribute("member");
-		if (mDto == null) {
-			return "redirect:/member_test/login.do"; // 로그인 페이지로 리디렉션
-		}
 		System.out.println(mDto);
 
 		String customerId = mDto.getMember_id();

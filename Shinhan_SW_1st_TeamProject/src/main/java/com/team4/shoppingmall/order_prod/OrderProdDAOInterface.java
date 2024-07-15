@@ -28,7 +28,7 @@ public interface OrderProdDAOInterface {
 	
 
 	// orderlist.jsp�� ����� �ǸŻ�ǰ ������(�귣���, ��ǰ��, �ɼ�, �뿩����, �̹���URL)
-	public List<OrderProdDetailDTO> selectById2(int orderId);
+	public List<OrderProdDetailDTO> selectById2(String orderId);
 
 	public List<Prod_OptionDTO> selectOptions();
 

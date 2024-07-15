@@ -53,6 +53,7 @@ public interface RentDAOInterface {
 	public List<SellerRentDTO> searchCustomerByRent(String searchKeyword);
 
 	public List<RentDTO> selectByMemId(String member_id);
+ 
 	
 }
 

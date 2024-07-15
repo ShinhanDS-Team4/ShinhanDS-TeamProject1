@@ -34,7 +34,6 @@ import com.team4.shoppingmall.member.MemberService;
 import com.team4.shoppingmall.order_prod.OrderProdService;
 import com.team4.shoppingmall.prod.ProdDTO;
 import com.team4.shoppingmall.prod.ProdService;
-import com.team4.shoppingmall.prodTest.ProdTestDTO;
 import com.team4.shoppingmall.prodTest.ProdTestService;
 import com.team4.shoppingmall.prod_image.Prod_ImageService;
 import com.team4.shoppingmall.prod_option.Prod_OptionService;
