@@ -283,21 +283,6 @@ function f_search() {
 </div>
 
 <div class="header">
-
-    <!-- <div class="search-container">        
-        <div class="input-group">
-            <select class="form-control" name="searchType" id="searchType" style="max-width: 150px;">
-                <option value="member_id">아이디 검색</option>
-                <option value="member_name">이름 검색</option>
-                <option value="member_brand">브랜드 검색</option>
-            </select>
-            <input type="text" class="form-control-search-box" name="keyword" id="keyword" placeholder="검색어를 입력하세요">
-            <div class="input-group-append">
-                <input class="btn btn-primary" type="button" onclick="f_search()" value="검색">
-            </div>
-        </div>        
-    </div> -->
-    
     <div id="searchResults" class="search-results"></div>
     <div class="account">
         <button class="account-name">${aDto.admin_name}</button>
