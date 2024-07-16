@@ -97,7 +97,7 @@
 
                                 <div class="product-detail">
                                     <div class="product-detail-box">
-                                        <img src="http://localhost:9090/saren/ProdImgFile/main/${detail.img_id}.png" alt="상품 이미지">
+                                        <img src="http://localhost:9090/saren/ProdImgFile/main/${detail.img_id}" alt="상품 이미지">
                                         <div class="product-info">
                                             <p>${detail.brand}</p>
                                             <h3>${detail.prod_name}</h3>
