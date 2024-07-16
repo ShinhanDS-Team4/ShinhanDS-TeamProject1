@@ -36,8 +36,8 @@ public class RentDAOMybatis implements RentDAOInterface {
 
 	// 대여목록
 	@Override
-	public List<RentDTO> selectAll() {
-		return sqlSession.selectList(namespace + "selectAll");
+	public List<RentDTO> selectAll(String member_id) {
+		return sqlSession.selectList(namespace + "selectAll", member_id);
 	}
 
 	// 대여하기
@@ -55,8 +55,8 @@ public class RentDAOMybatis implements RentDAOInterface {
 
 	// rentlist.jsp�� ����� ��ǰ��, �귣��, �ɼ�, ��ǰ����, �̹���URL
 	@Override
-	public List<RentSelectDTO> selectById2(int rental_code) {
-		return sqlSession.selectList(namespace+"selectById2", rental_code); 
+	public List<RentSelectDTO> selectById2(String member_id) {
+		return sqlSession.selectList(namespace+"selectById2", member_id); 
 	}
 	
 

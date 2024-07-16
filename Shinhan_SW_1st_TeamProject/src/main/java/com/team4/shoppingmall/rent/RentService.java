@@ -43,8 +43,8 @@ public class RentService {
 
 
 	// 대여목록
-	public List<RentDTO> selectAll() {
-		return rentDAO.selectAll();
+	public List<RentDTO> selectAll(String member_id) {
+		return rentDAO.selectAll(member_id);
 	}
 	
 	@Transactional
@@ -92,8 +92,8 @@ public class RentService {
 //
 
 	// rentlist.jsp�� ����� �뿩��ǰ ������
-	public List<RentSelectDTO> selectById2(int rental_code) { 
-		return rentDAO.selectById2(rental_code);
+	public List<RentSelectDTO> selectById2(String member_id) { 
+		return rentDAO.selectById2(member_id);
 	}
 
 	// rentlist.jsp����, �󼼻�ǰ �ɼ� ��½�, ��� �ɼ� ��������

@@ -91,8 +91,8 @@ public class OrderProdService {
 	}
 	
 	// orderlist.jsp�� ����� ��ǰ��, �귣��, �ɼ�, ��ǰ����, �̹���URL
-	public List<OrderProdDetailDTO> selectById2(int orderId) {
-        return orderprodDAO.selectById2(orderId);
+	public List<OrderProdDetailDTO> selectById2(String member_id) {
+        return orderprodDAO.selectById2(member_id);
     }
 
 
