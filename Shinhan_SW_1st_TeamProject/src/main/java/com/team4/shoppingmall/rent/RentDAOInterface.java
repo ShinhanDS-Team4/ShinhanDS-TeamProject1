@@ -18,7 +18,7 @@ public interface RentDAOInterface {
 	public RentDTO selectById(Integer rental_code);
 	
 	// 대여목록
-	public List<RentDTO> selectAll();
+	public List<RentDTO> selectAll(String member_id);
 		
 	// 대여하기
 	public int rentInsert(RentDTO rent);
@@ -31,7 +31,7 @@ public interface RentDAOInterface {
 
 
 	// rentlist.jsp에 출력할 대여상품 상세정보(브랜드명, 상품명, 옵션, 대여가격, 이미지URL)
-	public List<RentSelectDTO> selectById2(int rental_code);
+	public List<RentSelectDTO> selectById2(String member_id);
 
 	// rentlist.jsp에서, 상세상품 옵션 출력시, 모든 옵션 가져오기
 	public List<RentProdStockDTO> selectOptions();

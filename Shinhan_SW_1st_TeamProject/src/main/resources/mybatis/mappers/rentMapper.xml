@@ -53,9 +53,10 @@
 	</select>
 
 	<!-- 대여목록 -->
-	<select id="selectAll" resultType="rentVO">
+	<select id="selectAll" parameterType="string" resultType="rentVO">
 		SELECT *
 		FROM RENT
+		WHERE member_id = #{aa}
 	</select>
 	<!-- 멤버별 대여목록 -->
 	<select id="selectByMemId" resultType="rentVO">
@@ -124,48 +125,47 @@
 		FROM PROD_OPTION
 	</select>
 
-	<!-- orderlist.jsp에 출력할 대여상품 상세정보 -->
-	<select id="selectById2" parameterType="int"
-		resultType="rent_selectVO">
-		SELECT P.prod_name,
-		M.brand,
-		SPS.opt_id1,
-		SPS.opt_id2,
-		SPS.opt_id3,
-		SPS.opt_id4,
-		SPS.opt_id5,
-		RD.rent_product_price,
-		PI.img_id,
-		RD.rent_state,
-		RD.rentdetail_id,
-		SPS.prod_id,
-		RD.rent_num,
-		R.rental_code
-		FROM
-		RENT R
-		JOIN
-		RENT_DETAIL RD ON R.rental_code = RD.rental_code
-		JOIN
-		RENT_PROD_STOCK
-		SPS ON RD.r_stock_id = SPS.r_stock_id
-		JOIN
-		PROD P ON
-		SPS.prod_id =
-		P.prod_id
-		JOIN
-		MEMBER M ON P.member_id = M.member_id
-		JOIN
-		(SELECT prod_id,
-		img_id
-		FROM PROD_IMAGE
-		WHERE img_id = CONCAT(prod_id,
-		'_mainimage_1.jpg'))
-		PI ON P.prod_id = PI.prod_id
-		where
-		r.rental_code =
-		#{aa}
-  </select>
-  		
+	<!-- orderlist.jsp에 출력할 대여상품 상세정보 --> 
+	<select id="selectById2" parameterType="string" resultType="rent_selectVO">
+		SELECT 
+		    p.prod_name, 
+		    m.brand, 
+		    rps.opt_id1, 
+		    rps.opt_id2, 
+		    rps.opt_id3, 
+		    rps.opt_id4, 
+		    rps.opt_id5, 
+		    rd.rent_product_price, 
+		    pi.img_id, 
+		    rd.rent_state, 
+		    rd.rentdetail_id, 
+		    p.prod_id, 
+		    rd.rent_num, 
+		    r.rental_code
+		FROM 
+		    RENT r
+		JOIN 
+		    RENT_DETAIL rd ON r.rental_code = rd.rental_code
+		JOIN 
+		    RENT_PROD_STOCK rps ON rd.r_stock_id = rps.r_stock_id
+		JOIN 
+		    PROD p ON p.prod_id = rps.prod_id
+		JOIN 
+		    MEMBER m ON p.member_id = m.member_id
+		LEFT OUTER JOIN 
+		    (
+		        SELECT img_id, prod_id 
+		        FROM (
+		            SELECT img_id, prod_id, ROW_NUMBER() OVER (PARTITION BY prod_id ORDER BY img_id) AS rn 
+		            FROM PROD_IMAGE
+		        ) pi 
+		        WHERE pi.rn = 1
+		    ) pi ON p.prod_id = pi.prod_id
+		WHERE 
+		    r.member_id = #{member_id}
+
+	</select>
+
 	<!-- rentlist.jsp에서, 대여취소 -->
 	<update id="cancelRent" parameterType="int">
 		UPDATE
