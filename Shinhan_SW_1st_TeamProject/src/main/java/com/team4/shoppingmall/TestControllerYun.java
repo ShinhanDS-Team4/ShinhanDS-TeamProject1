@@ -50,7 +50,7 @@ public class TestControllerYun {
 
 	@GetMapping("/productlist.do")
 	public String test1(Model model, HttpServletRequest request) {
-		System.out.println("/customer/productlist.jsp"); // ��� ��ǰ���
+		System.out.println("/customer/productlist.jsp"); //       ǰ   
 		List<Map<String, Object>> prodAllOrders = prodService.selectAll2();
 		System.out.println(prodAllOrders);
 		model.addAttribute("prodAllOrders", prodAllOrders);
@@ -59,18 +59,18 @@ public class TestControllerYun {
 	}
 
 	/*
-	 * // ��ǰ���
+	 * //   ǰ   
 	 * 
 	 * @GetMapping("/productlist.do") public String
 	 * productList(@RequestParam("category_id") int categoryId,
 	 * 
 	 * @RequestParam("category_name") String categoryName, Model model) {
-	 * System.out.println("ī�װ�ID: " + categoryId);
-	 * System.out.println("/customer/productlist.jsp"); // ���õ� ī�װ��� ��ǰ ���
+	 * System.out.println("ī װ ID: " + categoryId);
+	 * System.out.println("/customer/productlist.jsp"); //    õ  ī װ      ǰ    
 	 * List<Map<String, Object>> prodAllOrders =
-	 * prodService.selectByCategory(categoryId); System.out.println("���õ� ī�װ� ��ǰ���"
+	 * prodService.selectByCategory(categoryId); System.out.println("   õ  ī װ    ǰ   "
 	 * + prodAllOrders); model.addAttribute("prodAllOrders", prodAllOrders);
-	 * model.addAttribute("categoryName", categoryName); // ī�װ� �̸� �߰�
+	 * model.addAttribute("categoryName", categoryName); // ī װ   ̸   ߰ 
 	 * 
 	 * return "customer/productlist"; }
 	 */
@@ -78,13 +78,13 @@ public class TestControllerYun {
 	@GetMapping("/rentlist.do")
 	public String test2(Model model, HttpServletRequest request) {
 		HttpSession session = request.getSession();
-		MemberDTO mem = (MemberDTO)session.getAttribute("member"); 
+		MemberDTO mem = (MemberDTO)session.getAttribute("member");  
 		String member_id = mem.getMember_id();   
 		System.out.println("멤버아이디: " + member_id);
 	    System.out.println("/customer/rentlist.jsp");
 	
 	    // 모든 렌트 정보 가져오기
-	    List<RentDTO> rentAllOrders = rentService.selectAll(member_id);
+	    List<RentDTO> rentAllOrders = rentService.selectAll(member_id); 
 	    System.out.println("전체 렌트 목록: " + rentAllOrders);
 	
 	    // 렌트 상세 정보를 담을 Map
@@ -110,13 +110,13 @@ public class TestControllerYun {
 
 
 
-	// �뿩���
+	//  뿩   
 	@PostMapping("/cancelRent.do")
 	@ResponseBody
 	public String cancelRent(@RequestParam("rentalCode") int rentalCode, HttpServletResponse response) { 
-		System.out.println("�뿩��û(�ֹ���ȣ): " + rentalCode);
+		System.out.println(" 뿩  û( ֹ   ȣ): " + rentalCode);
 		
-		// �Ǹ��ڿ��� ��û������?
+		//  Ǹ  ڿ      û      ?
 		
 		int cancelSuccess = rentService.cancelRent(rentalCode);
 		String message = "";
@@ -133,7 +133,7 @@ public class TestControllerYun {
 	@PostMapping("/returnRent.do")
 	@ResponseBody
 	public String returnRent(int rentalCode, HttpServletResponse response) {
-		System.out.println("대여코드: " + rentalCode);
+		System.out.println("반납컨트롤러 대여코드: " + rentalCode);
 
 		int returnSuccess = rentService.returnRent(rentalCode);
 		System.out.println("반납여부: "+ returnSuccess);
@@ -151,10 +151,10 @@ public class TestControllerYun {
 
 	@GetMapping("/orderlist.do")
 	public String test3(Model model, HttpServletRequest request) {
-		HttpSession session = request.getSession();
+		HttpSession session = request.getSession(); 
 		MemberDTO mem = (MemberDTO)session.getAttribute("member"); 
 		String member_id = mem.getMember_id();   
-		System.out.println("멤버아이디: " + member_id);
+		System.out.println("멤버아이디: " + member_id); 
 		
 	    System.out.println("/customer/orderlist.jsp");
 
@@ -201,12 +201,10 @@ public class TestControllerYun {
 	
 	@PostMapping("/refund.do")
 	@ResponseBody
-	public String processRefund(int orderId, HttpServletResponse response) throws IOException {
-		System.out.println("환불컨트롤러 orderId: " + orderId);
-
-		// �Ǹ��ڿ��� ȯ�ҿ�û ������
+	public String processRefund(int orderId, HttpServletResponse response) throws IOException { 
 
 		int refundSuccess = orderProdService.orderRefund(orderId); 
+		System.out.println(orderId);
 		String message = "";
 
 		if (refundSuccess > 0) { 

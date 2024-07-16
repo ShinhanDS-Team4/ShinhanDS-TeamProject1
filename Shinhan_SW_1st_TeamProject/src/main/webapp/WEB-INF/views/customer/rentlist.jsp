@@ -11,8 +11,8 @@
 	href="${path}/resources/css/header_footer.css">
 <meta charset="UTF-8">
 <title>대여내역</title>
-<style>
-.header-inner { 
+<style> 
+.header-inner {   
 	
 }
 
@@ -435,8 +435,8 @@ footer {
 										</c:choose>
 									</div>
 								</div>
-								<span class="order-status"> <c:choose>
-										<c:when test="${detail.rent_state == '결제완료'}">결제완료</c:when>
+								<span class="order-status"> <c:choose> 
+										<c:when test="${detail.rent_state == '결제완료'}">결제완료</c:when> 
 										<c:when test="${detail.rent_state == '대여신청완료'}">대여신청완료</c:when>
 										<c:when test="${detail.rent_state == '대여취소'}">대여취소</c:when>
 										<c:when test="${detail.rent_state == '대여중'}">대여중</c:when>

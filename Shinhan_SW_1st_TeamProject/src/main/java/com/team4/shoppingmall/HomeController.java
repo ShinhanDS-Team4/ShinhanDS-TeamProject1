@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.servlet.http.HttpSession;
 
@@ -72,8 +73,9 @@ public class HomeController {
 		if(member != null) {
 			coupon.setMember_id(member.getMember_id()); 
 		} else {
-			message = "로그인이 필요합니다."; 
-		} 
+		    // coupon이 null인 경우의 처리
+		    message = "쿠폰을 찾을 수 없습니다.";
+		}
 
 		model.addAttribute("message", message);
 		model.addAttribute("coupon", coupon);

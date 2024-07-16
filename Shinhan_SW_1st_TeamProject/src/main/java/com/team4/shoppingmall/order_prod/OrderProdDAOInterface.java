@@ -44,5 +44,9 @@ public interface OrderProdDAOInterface {
 
 	public List<OrderProdDTO> selectByMemId(String member_id);
 
+	public int findMaxOrderID();
+
+	public int orderprodInsertForCart(OrderProdDTO orderprod);
+
 	
 }

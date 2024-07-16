@@ -15,7 +15,7 @@ public class Order_DetailService {
 	Order_DetailDAOInterface order_DetailDAO;
 	
 	//주문상품 브랜드,이름
-	public Map<String,String> getOrderProdBrand(int order_id){
+	public List<Map<String,String>> getOrderProdBrand(int order_id){
 		return order_DetailDAO.getOrderProdBrand(order_id);
 	};
 	public List<Order_DetailDTO> selectByOrder_Id(int order_id) {
@@ -32,6 +32,10 @@ public class Order_DetailService {
 
 	public int orderDetailInsert(Order_DetailDTO order_detail) {
 		return order_DetailDAO.orderDetailInsert(order_detail);
+	}
+	
+	public int orderDetailforCartiInsert(Order_DetailDTO order_detail) {
+		return order_DetailDAO.orderDetailforCartiInsert(order_detail);
 	}
 
 	public int orderDetailUpdate(Order_DetailDTO order_detail) {
@@ -52,5 +56,9 @@ public class Order_DetailService {
 
 	public int orderDetailDelByOrderID(int order_id) {
 		return order_DetailDAO.orderDetailDelByOrderID(order_id);
+	}
+	
+	public int findMaxOrderDetailID() {
+		return order_DetailDAO.findMaxOrderDetailID();
 	}
 }

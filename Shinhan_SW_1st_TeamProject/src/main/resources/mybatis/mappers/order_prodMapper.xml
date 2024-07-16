@@ -19,35 +19,35 @@
 	<select id="orderProductById" parameterType="string"
 		resultType="map">
 		SELECT
-		    op.order_id,
-		    p.prod_name, 
-		    op.total_price, 
-		    od.order_num,
-		    od.order_product_price,
-		    od.order_id,
-		    op.order_date,
-		    pi.img_id,
-		    od.order_state
-		FROM 
-		    order_prod op
-		JOIN 
-		    order_detail od ON op.order_id = od.order_id
-		JOIN 
-		    SELL_PROD_STOCK sps ON od.s_stock_id = sps.s_stock_id
-		JOIN 
-		    PROD p ON p.prod_id = sps.prod_id
-		JOIN (
-		    SELECT img_id, prod_id
-		    FROM (
-		        SELECT img_id, prod_id,
-		               ROW_NUMBER() OVER (PARTITION BY prod_id ORDER BY img_id) AS rn
-		        FROM PROD_IMAGE
-		    ) pi
-		    WHERE pi.rn = 1
-		) pi ON p.prod_id = pi.prod_id
-		WHERE 
-		    op.member_id = #{member_id}
-		AND od.order_state = '결제완료'
+            op.order_id,
+            p.prod_name, 
+            op.total_price, 
+            od.order_num,
+            od.order_product_price,
+            od.order_id,
+            op.order_date,
+            pi.img_id,
+            od.order_state
+        FROM 
+            order_prod op
+        JOIN 
+            order_detail od ON op.order_id = od.order_id
+        JOIN 
+            SELL_PROD_STOCK sps ON od.s_stock_id = sps.s_stock_id
+        JOIN 
+            PROD p ON p.prod_id = sps.prod_id
+        LEFT OUTER JOIN (
+            SELECT img_id, prod_id
+            FROM (
+                SELECT img_id, prod_id,
+                       ROW_NUMBER() OVER (PARTITION BY prod_id ORDER BY img_id) AS rn
+                FROM PROD_IMAGE
+            ) pi
+            WHERE pi.rn = 1
+        ) pi ON p.prod_id = pi.prod_id
+        WHERE 
+            op.member_id = #{member_id}
+        AND od.order_state = '결제완료'
 	</select>
 	<!--  
 	<select id="selectById2" parameterType="int" 
@@ -103,11 +103,24 @@
 	-->
 	<insert id="orderprodInsert" parameterType="com.team4.shoppingmall.order_prod.OrderProdDTO">
 		INSERT INTO ORDER_PROD (order_id, order_date, member_id, addr_num, total_price)
-		SELECT ORDER_PROD_SEQUENCE.NEXTVAL, sysdate, #{member_id}, addr_num, #{total_price}
+		SELECT ORDER_PROD_SEQUENCE.NEXTVAL, SYSDATE, #{member_id}, addr_num, #{total_price}
 		FROM addr_list 
 		WHERE member_id = #{member_id} AND IS_MASTER_ADDR = 'Y'
 	</insert>
 	
+	<!-- 장바구니에서 주문 생성할 때 쓰기 위함 -->
+	<insert id="orderprodInsertForCart" parameterType="com.team4.shoppingmall.order_prod.OrderProdDTO">
+		INSERT INTO ORDER_PROD (order_id, order_date, member_id, addr_num, total_price)
+		SELECT #{order_id}, SYSDATE, #{member_id}, addr_num, #{total_price}
+		FROM addr_list 
+		WHERE member_id = #{member_id} AND IS_MASTER_ADDR = 'Y'
+	</insert>
+	<!-- 
+	INSERT INTO ORDER_PROD (order_id, order_date, member_id, addr_num, total_price)
+		#{order_id}, SYSDATE, #{member_id}, addr_num, #{total_price}
+		FROM addr_list 
+		WHERE member_id = #{member_id} AND IS_MASTER_ADDR = 'Y'
+	 -->
 	<select id="sequenceOrderId" resultType="int">
 		SELECT last_number-1 FROM user_sequences WHERE sequence_name = 'ORDER_PROD_SEQUENCE' 
 	</select>
@@ -137,7 +150,7 @@
     </select>
 
 
-	<!-- orderlist.jsp에 출력할 상품명, 브랜드, 옵션, 상품가격, 이미지URL -->
+	<!-- orderlist.jsp에 출력할 상품명, 브랜드, 옵션, 상품가격, 이미지URL --> 
 	<select id="selectById2" parameterType="string" resultType="order_prod_detailVO"> 
 		SELECT 
     p.prod_name, 
@@ -210,5 +223,10 @@ WHERE
 		FROM ORDER_PROD
 		WHERE order_id = #{order_id}
 	</delete>
+	
+	<select id="findMaxOrderID" resultType="int">
+		SELECT MAX(order_id) AS max_order_id
+		FROM ORDER_PROD
+	</select>
 	
 </mapper>

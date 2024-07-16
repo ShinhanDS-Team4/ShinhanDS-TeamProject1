@@ -120,8 +120,8 @@ public class CustomerController {
 		// 고객이 가지고 있는 회원등급, 포인트를 가져오기
 		CustomerDTO customerDTO = customerService.selectById(customerID);
 
-		// 주문 구매 상품 브랜드,이름 가져오기
-		Map<String, String> brandandProdName = orderDetailService.getOrderProdBrand(orderID);
+		// 주문 구매 상품 브랜드,이름 가져오기 (수정)
+		List<Map<String,String>> brandandProdName = orderDetailService.getOrderProdBrand(orderID);
 		model.addAttribute("brandandProdName", brandandProdName);
 		System.out.println(brandandProdName);
 
@@ -161,7 +161,7 @@ public class CustomerController {
 		CustomerDTO customerDTO = customerService.selectById(customerID);
 
 		// 대여주문 구매 상품 브랜드,이름 가져오기
-		Map<String, String> rentBrandandProdName = rentDetailService.getRentOrderProdBrand(rentalCode);
+		List<Map<String,String>> rentBrandandProdName = rentDetailService.getRentOrderProdBrand(rentalCode);
 		model.addAttribute("rentBrandandProdName", rentBrandandProdName);
 		System.out.println(rentBrandandProdName);
 
@@ -439,15 +439,15 @@ public class CustomerController {
 		// 등급별 포인트 계산 후 적립
 		double rate = 0.0;
 
-		if ("Family".equals(member_level)) {
+		if ("FAMILY".equals(member_level)) {
 			rate = 0.001;
-		} else if ("Bronze".equals(member_level)) {
+		} else if ("BRONZE".equals(member_level)) {
 			rate = 0.005;
-		} else if ("Silver".equals(member_level)) {
+		} else if ("SILVER".equals(member_level)) {
 			rate = 0.01;
-		} else if ("Gold".equals(member_level)) {
+		} else if ("GOLD".equals(member_level)) {
 			rate = 0.015;
-		} else if ("Platinum".equals(member_level)) {
+		} else if ("PLATINUM".equals(member_level)) {
 			rate = 0.02;
 		}
 
@@ -457,15 +457,15 @@ public class CustomerController {
 
 		// 고객의 누적 구매액에 따라 등급 변경
 		if (accum_amount >= 1000000) {
-			customerDTO.setMember_level("Platinum");
+			customerDTO.setMember_level("PLATINUM");
 		} else if (accum_amount >= 600000 && accum_amount < 1000000) {
-			customerDTO.setMember_level("Gold");
+			customerDTO.setMember_level("GOLD");
 		} else if (accum_amount >= 300000 && accum_amount < 600000) {
-			customerDTO.setMember_level("Silver");
+			customerDTO.setMember_level("SILVER");
 		} else if (accum_amount >= 100000 && accum_amount < 300000) {
-			customerDTO.setMember_level("Bronze");
+			customerDTO.setMember_level("BRONZE");
 		} else {
-			customerDTO.setMember_level("Family");
+			customerDTO.setMember_level("FAMILY");
 		}
 
 		int customerUpdate = customerService.customerUpdate(customerDTO);

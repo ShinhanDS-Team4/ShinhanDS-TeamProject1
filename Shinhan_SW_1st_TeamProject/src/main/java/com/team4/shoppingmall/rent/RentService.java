@@ -79,6 +79,10 @@ public class RentService {
 		return rental_code;
 
 	};
+	
+	public int rentInsertForCart(RentDTO rentDTO) {
+		return rentDAO.rentInsertForCart(rentDTO);
+	}
 
 	// 대여상태 수정
 	public int rentUpdate(Integer rental_code) {
@@ -129,6 +133,14 @@ public class RentService {
 
 	public List<SellerRentDTO> searchCustomerByRent(String searchKeyword) {
 		return rentDAO.searchCustomerByRent(searchKeyword);
+	}
+	
+	public int findMaxRentID() {
+		return rentDAO.findMaxRentID();
+	}
+
+	public List<RentDTO> selectByMemId(String member_id) {
+		return rentDAO.selectByMemId(member_id);
 	}
 
 }

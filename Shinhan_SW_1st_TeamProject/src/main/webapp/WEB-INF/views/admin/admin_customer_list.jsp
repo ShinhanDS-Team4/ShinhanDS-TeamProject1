@@ -32,6 +32,9 @@
                             <th>생년월일</th>
                             <th>마지막 접속일</th>
                             <th>성별</th>
+                            <th>누적 주문 금액</th>
+                            <th>회원등급</th>
+                            <th>포인트</th>
                         </tr>
                     </thead>
                     <tbody id="customerList">
@@ -44,6 +47,9 @@
                             <td>${customer.birth_date}</td>
                             <td>${customer.last_access}</td>
                             <td>${customer.gender}</td>                           
+                            <td>${customer.accum_amount}</td>                           
+                            <td>${customer.member_level}</td>                           
+                            <td>${customer.point}</td>                           
                         </tr>                
                         </c:forEach>
                         <c:if test="${empty customers}">

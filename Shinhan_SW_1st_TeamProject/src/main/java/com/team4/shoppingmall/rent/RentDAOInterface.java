@@ -51,6 +51,12 @@ public interface RentDAOInterface {
 	public List<SellerRentDTO> searchSellerByRent(String searchType);
 
 	public List<SellerRentDTO> searchCustomerByRent(String searchKeyword);
+
+	public int findMaxRentID();
+
+	public List<RentDTO> selectByMemId(String member_id);
+
+	public int rentInsertForCart(RentDTO rentDTO);
 	
 }
 

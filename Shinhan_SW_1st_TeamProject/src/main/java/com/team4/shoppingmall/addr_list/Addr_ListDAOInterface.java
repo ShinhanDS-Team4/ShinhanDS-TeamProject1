@@ -22,7 +22,7 @@ public interface Addr_ListDAOInterface {
 	public int addressDelete(int addr_num);
 
 	// 기존 is_master_addr 값을 N으로 업데이트
-	public int updateMasterAddrToN();
+	public int updateMasterAddrToN(String member_id);
 	//나의 주소 개수 
 	public int countAddresses(String member_id);
 	

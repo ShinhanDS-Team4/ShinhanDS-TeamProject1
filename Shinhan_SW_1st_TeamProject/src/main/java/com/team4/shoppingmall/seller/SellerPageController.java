@@ -135,12 +135,9 @@ public class SellerPageController {
 		
 		// 판매 상품 리스트
 		model1.addAttribute("stockSList", seller_Prod_StockService.findSellStockList(sellerID));
-
-		System.out.println("�뙋留ㅼ긽�뭹 由ъ뒪�듃 遺덈윭�샂");
-		// ���뿬 �긽�뭹 由ъ뒪�듃
+		
+		// 대여 상품 리스트
 		model2.addAttribute("stockRList", rentProdStockService.findRentStockList(sellerID));
-
-		System.out.println("���뿬�긽�뭹 由ъ뒪�듃 遺덈윭�샂");
 
 		return "/seller/sellerPrdList";
 	}
@@ -197,12 +194,12 @@ public class SellerPageController {
 		return "Delete Success";
 	}
 
-	// 대여 주문 항목 일괄처리
+	// 대여 상세 항목 일괄처리
 	@PostMapping("/updateRentStatus")
 	@ResponseBody
 	public String updateRentStatus(@RequestBody OrderUpdateReqDTO request) {
 		List<Integer> rentDetailIds = request.getOrderDetailIds();
-		System.out.println("���뿬 �씪愿꾩쿂由� ���긽 紐⑸줉:" + rentDetailIds);
+		System.out.println("대여상세ID목록:" + rentDetailIds);
 
 		String status = request.getStatus();
 
@@ -218,7 +215,7 @@ public class SellerPageController {
 		return "Update Success";
 	}
 
-	// 대여 주문 항목 일괄삭제
+	// 대여 상세 항목 일괄삭제
 	@PostMapping("/deleteRentDetails")
 	@ResponseBody
 	public String deleteRentDetails(@RequestBody OrderUpdateReqDTO request) {

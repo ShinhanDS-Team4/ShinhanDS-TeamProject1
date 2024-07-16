@@ -17,8 +17,8 @@ public class RentDetailDAOMybatis implements RentDetailDAOInterface {
 	String namespace = "com.saren.rent_detail."; //수정
 	
 	//대여주문상품 브랜드,이름
-	public Map<String,String> getRentOrderProdBrand(int rental_code){
-		return sqlSession.selectOne(namespace+"getRentOrderProdBrand", rental_code);
+	public List<Map<String,String>> getRentOrderProdBrand(int rental_code){
+		return sqlSession.selectList(namespace+"getRentOrderProdBrand", rental_code);
 	};
 
 	// 대여상세 상세
@@ -69,6 +69,18 @@ public class RentDetailDAOMybatis implements RentDetailDAOInterface {
 	@Override
 	public int rentDetailDelByRentCode(Integer rental_code) {
 		return sqlSession.delete(namespace+"rentDetailDelByRentCode", rental_code);
+	}
+
+	@Override
+	public int findMaxRentDetailID() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace+"findMaxRentDetailID");
+	}
+
+	@Override
+	public int rentDetailforCartInsert(RentDetailDTO rentdetail) {
+		// TODO Auto-generated method stub
+		return sqlSession.insert(namespace+"rentDetailforCartInsert", rentdetail);
 	}
 }
 

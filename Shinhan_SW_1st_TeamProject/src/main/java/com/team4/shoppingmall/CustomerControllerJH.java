@@ -133,7 +133,7 @@ public class CustomerControllerJH {
 		addr_list.setIs_master_addr(is_master_addr);
 		addr_list.setSub_address(sub_address);
 
-		int result = addrService.addressInsert(addr_list);
+		int result = addrService.addressInsert(addr_list, member_id);
 
 		System.out.println(result);
 
@@ -173,11 +173,12 @@ public class CustomerControllerJH {
 		String addr_numstr = addrData.get("addr_num");
 		int addr_num = Integer.parseInt(addr_numstr);
 		System.out.println(addr_num);
+		MemberDTO mem = (MemberDTO)session.getAttribute("member");
 
 		//기존에 Y인 주소는 N으로 업데이트
 		//클릭한 addr_num의 주소 Y로 업데이트
 		//서비스에서 트랜잭션널 처리
-		int result = addrService.updateMasterAddrToY(addr_num);
+		int result = addrService.updateMasterAddrToY(addr_num, mem.getMember_id());
 		
 	
 		return result ;

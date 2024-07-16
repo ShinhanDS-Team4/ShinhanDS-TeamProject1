@@ -165,45 +165,66 @@
 }
 .content {
 	position: absolute;
-    width: 39%; /* container 안에 들어가도록 조정 */
-	height: 100%;
+    width: 29%; /* container 안에 들어가도록 조정 */
+	height: 90%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	padding: 20px;
-    box-sizing: border-box;
+	padding: 0px;
     background-color: #fff;
     transition: z-index 0.3s, transform 0.3s; 
     box-shadow: 1px 1px 10px 1px rgba(0, 0, 0, 0.2);
 }
+
+.content span {
+	top: 105%;
+	position: absolute;
+}
+
 .box0 {
-	z-index: 4;
+	z-index: 7;
 	top: 0;
-	left: 0;
+	left: -20%;
 }
 .box1 {
-	z-index: 3;
+	z-index: 6;
 	top: 0;
-	left: 20%;
+	left: -2%;
 }
 .box2 {
-	z-index: 2;
+	z-index: 5;
 	top: 0;
-	left: 40%;
+	left: 16%;
 }
 .box3 {
+	z-index: 4;
+	top: 0;
+	left: 34%;
+}
+.box4 {
+	z-index: 3;
+	top: 0;
+	left: 52%;
+}
+.box5 {
+	z-index: 2;
+	top: 0;
+	left: 70%;
+}
+.box6 {
 	z-index: 1;
 	top: 0;
-	left: 60%;
+	left: 90%;
 }
 .imgbox{
-	width: 400px;
+	width: 100%;
     height: 100%;
     background-color: aliceblue; /*확인용*/
-    /* border: 1px solid #111; */  /*확인용*/
+    border: 4px double #513AE4;  /*확인용*/
 }
 .imgbox>img{
 	width: 100%;
     height: 100%;
+    cursor: pointer;
 }
 

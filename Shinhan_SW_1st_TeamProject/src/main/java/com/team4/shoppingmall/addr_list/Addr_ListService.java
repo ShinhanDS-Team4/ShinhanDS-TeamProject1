@@ -27,10 +27,10 @@ public class Addr_ListService {
 	}
 
 	@Transactional
-	public int addressInsert(Addr_ListDTO addr_list) {
+	public int addressInsert(Addr_ListDTO addr_list, String member_id) {
 		
 		// 기존 is_master_addr 값을 N으로 업데이트
-		int updateToNresult = addr_ListDAOMybatis.updateMasterAddrToN();
+		int updateToNresult = addr_ListDAOMybatis.updateMasterAddrToN(member_id);
 		
 		// 새로운 주소 삽입
         int result = addr_ListDAOMybatis.addressInsert(addr_list);
@@ -53,10 +53,10 @@ public class Addr_ListService {
 	
 	//주소id에 해당하는 주소를 대표'Y'로 설정
 	@Transactional
-	public int updateMasterAddrToY(int addr_num) {
+	public int updateMasterAddrToY(int addr_num, String member_id) {
 		
 		// 기존 is_master_addr 값을 N으로 업데이트
-		int updateToNresult = addr_ListDAOMybatis.updateMasterAddrToN();
+		int updateToNresult = addr_ListDAOMybatis.updateMasterAddrToN(member_id);
 				
 		//대표 주소'Y'로 업데이트
 		int result = addr_ListDAOMybatis.updateMasterAddrToY(addr_num);

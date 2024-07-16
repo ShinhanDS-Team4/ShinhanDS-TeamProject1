@@ -6,7 +6,7 @@ import java.util.Map;
 public interface RentDetailDAOInterface {
 	
 	//대여주문상품 브랜드,이름
-	public Map<String,String> getRentOrderProdBrand(int rental_code);
+	public List<Map<String,String>> getRentOrderProdBrand(int rental_code);
 		
 	// 대여상세 상세
 	public RentDetailDTO selectById(Integer rentdetail_id);
@@ -31,5 +31,9 @@ public interface RentDetailDAOInterface {
 	public List<RentDetailDTO> selectByRental_code(int rental_code);
 
 	public int rentDetailDelByRentCode(Integer rental_code);
+
+	public int findMaxRentDetailID();
+
+	public int rentDetailforCartInsert(RentDetailDTO rentdetail);
 	
 }

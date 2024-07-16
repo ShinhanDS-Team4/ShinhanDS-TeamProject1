@@ -117,6 +117,12 @@ public class OrderProdService {
 		return orderprodDAO.selectByMemId(member_id);
 	}
 	
+	public int findMaxOrderID() {
+		return orderprodDAO.findMaxOrderID();
+	}
 	
+	public int orderprodInsertForCart(OrderProdDTO orderprod) {
+		return orderprodDAO.orderprodInsertForCart(orderprod);
+	}
 
 }

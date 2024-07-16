@@ -10,7 +10,7 @@ import com.team4.shoppingmall.order_prod.OrderProdDetailDTO;
 public interface Order_DetailDAOInterface {
 
 	//주문상품 브랜드,이름
-	public Map<String,String> getOrderProdBrand(int order_id);
+	public List<Map<String,String>> getOrderProdBrand(int order_id);
 	
 	public List<Order_DetailDTO> selectByOrder_Id(int order_id);
 	
@@ -33,5 +33,11 @@ public interface Order_DetailDAOInterface {
 	public List<Map<String, Object>> searchCustomerOrderList(String searchOrderList);
 
 	public int orderDetailDelByOrderID(int order_id);
+
+	public int findMaxOrderDetailID();
+
+	public int orderDetailforCartiInsert(Order_DetailDTO order_detail);
+	
+	
 
 }

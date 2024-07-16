@@ -18,7 +18,7 @@
 		SELECT DISTINCT M.brand, p.prod_name
 		FROM MEMBER M
 		JOIN PROD P ON M.member_id = P.member_id
-		 JOIN RENT_PROD_STOCK RPS ON P.prod_id = RPS.prod_id
+		JOIN RENT_PROD_STOCK RPS ON P.prod_id = RPS.prod_id
 		JOIN RENT_DETAIL RD ON RPS.r_stock_id = RD.r_stock_id
 		WHERE RD.RENTAL_CODE = #{rental_code}
 	</select>
@@ -68,6 +68,20 @@
 			'대여신청완료'
 		)
 	</insert>
+	
+	<!-- 장바구니에 여러 개 들어있을 때 대여상세 생성 (시퀀스 사용, 주문상태 칼럼 추가) -->
+	<insert id="rentDetailforCartInsert" parameterType="com.team4.shoppingmall.rent_detail.RentDetailDTO">
+		INSERT
+		INTO RENT_DETAIL(rentdetail_id, rent_product_price, rent_num, r_stock_id, rental_code, rent_state)
+		VALUES(
+			#{rentdetail_id}, 
+			#{rent_product_price}, 
+			#{rent_num}, 
+			#{r_stock_id}, 
+			#{rental_code},
+			'대여신청완료'
+		)
+	</insert>
 
 	<!-- 대여상세 수정 -->
 	<update id="rentDetailUpdate" parameterType="rent_detailVO">
@@ -102,4 +116,9 @@
 		FROM RENT_DETAIL
 		WHERE rental_code = #{rental_code}
 	</delete>
+	
+	<select id = "findMaxRentDetailID" resultType="int">
+		SELECT MAX(rentdetail_id) AS max_rentdetail_id
+		FROM RENT_DETAIL
+	</select>
 </mapper>

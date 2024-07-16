@@ -18,8 +18,8 @@ public class Order_DetailDAOMybatis implements Order_DetailDAOInterface{
 	String namespace = "com.saren.order_detail.";
 	
 	//주문상품 브랜드,이름
-	public Map<String,String> getOrderProdBrand(int order_id){
-		return sqlSession.selectOne(namespace+"getOrderProdBrand", order_id);
+	public List<Map<String,String>> getOrderProdBrand(int order_id){
+		return sqlSession.selectList(namespace+"getOrderProdBrand", order_id);
 	};
 	
 	@Override
@@ -68,8 +68,19 @@ public class Order_DetailDAOMybatis implements Order_DetailDAOInterface{
 		return sqlSession.selectList(namespace+"searchCustomerOrderList", searchOrderList);
 	}	
 
+	@Override
 	public int orderDetailDelByOrderID(int order_id) {
 		return sqlSession.delete(namespace+"orderDetailDelByOrderID", order_id);
+	}
+	
+	@Override
+	public int findMaxOrderDetailID() {
+		return sqlSession.selectOne(namespace+"findMaxOrderDetailID");
+	}
+
+	@Override
+	public int orderDetailforCartiInsert(Order_DetailDTO order_detail) {
+		return sqlSession.insert(namespace+"orderDetailforCartiInsert", order_detail);
 	}
 	
 }

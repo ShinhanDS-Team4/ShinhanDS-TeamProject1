@@ -13,24 +13,26 @@
 		member_id = #{member_id}
 	</select>
 
-	<!-- 로그인 회원 정보 수정용 비밀번호 체크  -->
+	<!-- 로그인 회원 정보 수정용 비밀번호 체크 -->
 	<select id="memberCheckByPw" parameterType="memberVO"
 		resultType="memberVO">
 		SELECT *
 		FROM MEMBER
 		WHERE member_pw = #{member_pw}
-		and member_id = #{member_id}
-	</select> 
-  
-	<!-- 로그인 회원 정보 수정용 비밀번호 체크2  -->
+		and
+		member_id = #{member_id}
+	</select>
+
+	<!-- 로그인 회원 정보 수정용 비밀번호 체크2 -->
 	<select id="memberCheckByPw2" parameterType="memberVO"
 		resultType="memberVO">
 		SELECT *
 		FROM MEMBER
 		WHERE member_pw = #{member_pw}
-		and member_id = #{member_id}
-	</select> 
-  
+		and
+		member_id = #{member_id}
+	</select>
+
 	<!-- 회원 정보 검색 -->
 	<select id="selectById" parameterType="string"
 		resultType="memberVO">
@@ -90,12 +92,13 @@
 	<!-- 구매자 회원 정보 수정 -->
 	<update id="myInfoUpdate" parameterType="memberVO">
 		UPDATE MEMBER
-		SET 
-		member_id = #{member_id}, 
+		SET
+		member_id = #{member_id},
 		member_pw = #{member_pw},
 		email = #{email},
 		phone = #{phone}
-		WHERE member_id = #{member_id}
+		WHERE member_id =
+		#{member_id}
 	</update>
 
 	<update id="memberUpdate" parameterType="memberVO">
@@ -108,13 +111,13 @@
 		last_access = #{last_access}, member_type =
 		#{member_type},
 		member_pw = #{member_pw},
-		member_name = #{member_name}, 
+		member_name = #{member_name},
 		email = #{email},
-		phone = #{phone}, 
-		brand = #{brand}, 
+		phone = #{phone},
+		brand = #{brand},
 		birth_date = #{birth_date},
-		last_access = #{last_access}, 
-		member_type = #{member_type}, 
+		last_access = #{last_access},
+		member_type = #{member_type},
 		gender = #{gender}
 		WHERE member_id = #{member_id}
 	</update>
@@ -268,54 +271,57 @@
 		#{member_id} and member_type = 2
 	</update>
 
-	<select id="selectByAllCustomer" resultType="MemberCustomerVO">		
-    SELECT
-        m.member_id,
-        m.member_pw,
-        m.member_name,
-        m.email,
-        m.phone,
-        m.brand,
-        m.birth_date,
-        m.last_access,
-        m.member_type,
-        m.gender,
-        m.seller_authority,
-        m.create_date,
-        c.point,
-        c.member_level,
-        c.accum_amount,
-        a.addr_num,
-        a.zipcode,
-        a.main_address,
-        a.detail_address,
-        a.is_master_addr,
-        a.sub_address,
-        cp.coupon_id,
-        cp.coupon_name,
-        cp.discount_rate,
-        cp.quantity
-    FROM
-        member m
-        JOIN customer c ON m.member_id = c.member_id
-        LEFT JOIN addr_list a ON m.member_id = a.member_id
-        LEFT JOIN coupon cp ON m.member_id = cp.member_id
-    WHERE
-        m.member_type = 1
-    ORDER BY
-        m.member_id
+	<select id="selectByAllCustomer" resultType="MemberCustomerVO">
+		SELECT
+		m.member_id,
+		m.member_pw,
+		m.member_name,
+		m.email,
+		m.phone,
+		m.brand,
+		m.birth_date,
+		m.last_access,
+		m.member_type,
+		m.gender,
+		m.seller_authority,
+		m.create_date,
+		c.point,
+		c.member_level,
+		c.accum_amount,
+		a.addr_num,
+		a.zipcode,
+		a.main_address,
+		a.detail_address,
+		a.is_master_addr,
+		a.sub_address,
+		cp.coupon_id,
+		cp.coupon_name,
+		cp.discount_rate,
+		cp.quantity
+		FROM
+		member m
+		JOIN customer c ON m.member_id = c.member_id
+		LEFT JOIN addr_list a ON m.member_id = a.member_id
+		LEFT JOIN coupon cp ON m.member_id = cp.member_id
+		WHERE
+		m.member_type = 1
+		ORDER BY
+		m.member_id
 	</select>
 
-	<select id="selectBySeller_access" parameterType="string" resultType="memberVO">
-		SELECT * from member 
-		where member_type = 2 
+	<select id="selectBySeller_access" parameterType="string"
+		resultType="memberVO">
+		SELECT * from member
+		where member_type = 2
 		and seller_authority = 'Y'
-		AND member_id LIKE '%' || #{searchCustomer} || '%'
+		AND member_id LIKE '%' || #{searchCustomer} ||
+		'%'
 		OR member_name LIKE '%' || #{searchCustomer} || '%'
-		OR email LIKE '%' || #{searchCustomer} || '%'
+		OR email LIKE
+		'%' || #{searchCustomer} || '%'
 		ORDER BY member_id
 	</select>
-	
+
 	<select id="searchByCustomer" parameterType="String"
 		resultType="MemberCustomerVO">
 		SELECT
@@ -343,28 +349,25 @@
 		cp.coupon_id,
 		cp.coupon_name,
 		cp.discount_rate,
-		cp.quantity,
-		cp.coupon_state
+		cp.quantity
 		FROM
 		member m
-		JOIN customer
-		c ON m.member_id = c.member_id
-		LEFT JOIN addr_list a ON m.member_id =
-		a.member_id
+		JOIN customer c ON m.member_id = c.member_id
+		LEFT JOIN addr_list a ON m.member_id = a.member_id
 		LEFT JOIN coupon cp ON m.member_id = cp.member_id
 		WHERE
 		m.member_type = 1
-		AND m.member_id LIKE '%' ||
-		#{searchCustomer} || '%'
-		OR m.member_name LIKE '%' || #{searchCustomer}
-		|| '%'
-		OR m.email LIKE
-		'%' || #{searchCustomer} || '%'
+		AND (
+		m.member_id LIKE '%' || #{searchCustomer} || '%'
+		OR m.member_name LIKE '%' || #{searchCustomer} || '%'
+		OR m.email LIKE '%' || #{searchCustomer} || '%'
+		)
 		ORDER BY
 		m.member_id
 	</select>
 
-	<select id="customerByInfo" parameterType="string" resultType="MemberCustomerVO">
+	<select id="customerByInfo" parameterType="string"
+		resultType="MemberCustomerVO">
 		SELECT
 		m.member_id,
 		m.member_pw,
@@ -390,8 +393,7 @@
 		cu.coupon_id,
 		cu.coupon_name,
 		cu.discount_rate,
-		cu.quantity,
-		cu.coupon_state
+		cu.quantity
 		FROM
 		member m
 		LEFT JOIN customer c ON m.member_id = c.member_id
@@ -400,5 +402,5 @@
 		WHERE
 		m.member_id = #{member_id}
 	</select>
-	
+
 </mapper>

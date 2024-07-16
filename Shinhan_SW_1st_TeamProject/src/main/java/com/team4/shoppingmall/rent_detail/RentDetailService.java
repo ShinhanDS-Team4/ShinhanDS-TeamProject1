@@ -13,7 +13,7 @@ public class RentDetailService {
 	RentDetailDAOInterface rentDetailDAO;
 	
 	//대여주문상품 브랜드,이름
-	public Map<String,String> getRentOrderProdBrand(int rental_code){
+	public List<Map<String,String>> getRentOrderProdBrand(int rental_code){
 		return rentDetailDAO.getRentOrderProdBrand(rental_code);
 	};
 	
@@ -58,5 +58,12 @@ public class RentDetailService {
 	public int rentDetailDelByRentCode(Integer rental_code) {
 		return rentDetailDAO.rentDetailDelByRentCode(rental_code);
 	}
+	
+	public int findMaxRentDetailID() {
+		return rentDetailDAO.findMaxRentDetailID();
+	}
 
+	public int rentDetailforCartInsert(RentDetailDTO rentdetail) {
+		return rentDetailDAO.rentDetailforCartInsert(rentdetail);
+	}
 }

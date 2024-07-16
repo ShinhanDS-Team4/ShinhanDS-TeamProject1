@@ -1,18 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<c:set var="path" value="${pageContext.servletContext.contextPath}" />
-	<title>관리자 페이지</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+	rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<c:set var="path" value="${pageContext.servletContext.contextPath}" />
+<title>관리자 페이지</title>
 
-	<script>
+<script>
 	document.addEventListener('DOMContentLoaded', function() {
 	    var ctxVisitors = document.getElementById('visitorsChart').getContext('2d');
 		 // 현재 연도와 월을 가져오기
@@ -133,8 +136,9 @@
 						<div class="card-body">
 							<h5 class="card-title">총 가입 판매자 수</h5>
 							<h6 class="card-subtitle mb-2 text-muted">${seller_total}명</h6>
-							<p class="card-text">${seller_monthly_increaseRate} increase </p>
-							<p class="card-text">${seller_monthly_increase_rate}% increase</p>
+							<p class="card-text">${seller_monthly_increaseRate}increase</p>
+							<p class="card-text">${seller_monthly_increase_rate}%
+								increase</p>
 						</div>
 					</div>
 				</div>
@@ -143,8 +147,10 @@
 						<div class="card-body">
 							<h5 class="card-title">총 가입 고객 수</h5>
 							<h6 class="card-subtitle mb-2 text-muted">${customer_total}명</h6>
-							<p class="card-text">${customer_monthly_increaseRate} increase </p>
-							<p class="card-text">${customer_monthly_increase_rate}% increase</p>
+							<p class="card-text">${customer_monthly_increaseRate}
+								increase</p>
+							<p class="card-text">${customer_monthly_increase_rate}%
+								increase</p>
 						</div>
 					</div>
 				</div>
@@ -153,7 +159,8 @@
 						<div class="card-body">
 							<h5 class="card-title">총 수익금액</h5>
 							<h6 class="card-subtitle mb-2 text-muted">${total_money_amount}원</h6>
-							<p class="card-text">${total_money_amount_increase_rate}% increase</p>
+							<p class="card-text">${total_money_amount_increase_rate}%
+								increase</p>
 						</div>
 					</div>
 				</div>
@@ -190,13 +197,13 @@
 							<th>판매자 아이디</th>
 							<th>판매자 명</th>
 							<th>이메일</th>
-							<th>H.P</th>							
+							<th>H.P</th>
 							<th>Brand</th>
 							<th>생년월일</th>
 							<th>마지막 접속일</th>
-							<th>성별</th>							
+							<th>성별</th>
 							<th>생성 날짜</th>
-							<th colspan="2">수정 / 삭제</th>
+							<th colspan="2">상세보기 / 삭제</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -204,18 +211,22 @@
 						<c:forEach var="seller" items="${sellers}" varStatus="status">
 							<c:if test="${status.count <= 5}">
 								<tr>
-									<td><a href="admin_seller_prod?member_id=${seller.member_id}">${seller.member_id}</a></td>
-									<td>${seller.member_name}</td>									
-									<td>${seller.email}</td>									
-									<td>${seller.phone}</td>									
-									<td>${seller.brand}</td>									
-									<td>${seller.birth_date}</td>									
-									<td>${seller.last_access}</td>									
+									<td><a
+										href="search_seller_product_brand?member_id=${seller.member_id}">${seller.member_id}</a></td>
+									<td>${seller.member_name}</td>
+									<td>${seller.email}</td>
+									<td>${seller.phone}</td>
+									<td>${seller.brand}</td>
+									<td>${seller.birth_date}</td>
+									<td>${seller.last_access}</td>
 									<td>${seller.gender}</td>
 									<td>${seller.create_date}</td>
 									<td colspan="2">
-										<button class="btn btn-sm" onclick="location.href='admin_seller_info?member_id=${seller.member_id}'">자세히 보기</button>
-										<button class="btn btn-sm" onclick="location.href='admin_seller_delete?returnUrl=adminPage&member_id=${seller.member_id}'">삭제</button>
+										<button class="btn btn-sm"
+											onclick="location.href='admin_seller_info?member_id=${seller.member_id}'">상세
+											보기</button>
+										<button class="btn btn-sm"
+											onclick="location.href='admin_seller_delete?returnUrl=adminPage&member_id=${seller.member_id}'">삭제</button>
 									</td>
 								</tr>
 							</c:if>
@@ -226,7 +237,7 @@
 							</tr>
 						</c:if>
 					</tbody>
-				</table>				
+				</table>
 			</div>
 
 			<div class="card">
@@ -240,24 +251,41 @@
 								<th>상품사진</th>
 								<th>상품명</th>
 								<th>상품 설명</th>
-								<th>가격</th>								
+								<th>가격</th>
 								<th>옵션</th>
 								<th>재고</th>
-								<th>등록일</th>								
+								<th>등록일</th>
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="topproduct" items="${topProducts}">
+							<c:set var="previousSales" value="-1" />
+							<c:set var="rank" value="0" />
+							<c:set var="displayRank" value="0" />
+							<c:forEach var="topproduct" items="${topProducts}"
+								varStatus="status">
+								<c:choose>
+									<c:when test="${topproduct.TOTAL_SALES != previousSales}">
+										<c:set var="displayRank" value="${rank + 1}" />
+									</c:when>
+								</c:choose>
 								<tr>
-									<td></td>
-									<td>${topproduct.TOTAL}</td>
+									<td>${displayRank}</td>
+									<!-- 동적인 순위 표시 -->
+									<td>${topproduct.TOTAL_SALES}</td>
 									<td><a href="admin_seller_prod?id=${topproduct.MEMBER_ID}">
-									<img src="${topproduct.IMG_ID}" alt="${topproduct.PROD_NAME}" style="width: 50px;"></a></td>
-									<td><a href="admin_seller_prod?id=${topproduct.MEMBER_ID}">${topproduct.PROD_NAME}</a></td>
+											<img src="${topproduct.IMG_ID}" alt="${topproduct.PROD_NAME}"
+											style="width: 50px;">
+									</a></td>
+									<td><a href="admin_seller_prod?id=${topproduct.MEMBER_ID}">${topproduct.PROD_NAME}</a>
+									</td>
 									<td>${topproduct.PROD_DESC}</td>
 									<td>${topproduct.PROD_PRICE}</td>
-									<td>${topproduct.OPT_VALUE}</td>									
+									<td>${topproduct.OPT_VALUE}</td>
+									<td>${topproduct.STOCK}</td>
+									<td>${fn:substring(topproduct.PROD_ADDED_DATE, 0, 10)}</td>
 								</tr>
+								<c:set var="rank" value="${displayRank}" />
+								<c:set var="previousSales" value="${topproduct.TOTAL_SALES}" />
 							</c:forEach>
 							<c:if test="${empty topProducts}">
 								<tr>
@@ -265,11 +293,11 @@
 								</tr>
 							</c:if>
 						</tbody>
-					</table>					
+					</table>
 				</div>
 			</div>
 
 		</div>
-	</div>	
+	</div>
 </body>
 </html>

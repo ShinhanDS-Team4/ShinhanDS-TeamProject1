@@ -6,16 +6,19 @@
 <mapper namespace="com.saren.order_detail">
 
 	<!-- 주문상품 브랜드,이름 -->
-	<select id="getOrderProdBrand" parameterType="int" 
-			resultType="map">
+	<select id="getOrderProdBrand" parameterType="int"
+		resultType="map">
 		SELECT DISTINCT M.brand, p.prod_name
 		FROM MEMBER M
-		JOIN PROD P ON M.member_id = P.member_id
-		JOIN SELL_PROD_STOCK S ON P.prod_id = S.prod_id
+		JOIN PROD
+		P ON M.member_id = P.member_id
+		JOIN SELL_PROD_STOCK S ON P.prod_id =
+		S.prod_id
 		JOIN ORDER_DETAIL O ON S.s_stock_id = O.s_stock_id
-		WHERE O.order_id = #{order_id}
+		WHERE
+		O.order_id = #{order_id}
 	</select>
-	
+
 	<select id="selectAll" resultType="order_detailVO">
 		SELECT *
 		FROM ORDER_DETAIL
@@ -38,6 +41,22 @@
 		s_stock_id, order_state)
 		VALUES(
 		order_detail_sequence.nextval,
+		#{order_product_price},
+		#{order_num},
+		ORDER_PROD_SEQUENCE.currval,
+		#{s_stock_id},
+		'결제대기'
+		)
+	</insert>
+	
+	<!-- 장바구니에 여러 개 들어있을 때 주문상세 생성 - 결제대기상태 (주문상태 칼럼 추가) -->
+	<insert id="orderDetailforCartiInsert" parameterType="order_detailVO">
+		INSERT
+		INTO
+		ORDER_DETAIL(orderdetail_id, order_product_price, order_num, order_id,
+		s_stock_id, order_state)
+		VALUES(
+		#{orderdetail_id},
 		#{order_product_price},
 		#{order_num},
 		#{order_id},
@@ -69,9 +88,11 @@
 		UPDATE ORDER_DETAIL
 		SET
 		orderdetail_id = #{orderdetail_id},
-		order_product_price = #{order_product_price},
+		order_product_price =
+		#{order_product_price},
 		order_num = #{order_num},
-		order_id = #{order_id},
+		order_id =
+		#{order_id},
 		s_stock_id = #{s_stock_id},
 		order_state = #{order_state}
 		WHERE orderdetail_id = #{orderdetail_id}
@@ -90,8 +111,8 @@
 		ORDER_DETAIL
 		WHERE orderdetail_id = #{orderdetail_id}
 	</delete>
-	
-	<delete id="orderDetailDelByOrderID" parameterType = "int">
+
+	<delete id="orderDetailDelByOrderID" parameterType="int">
 		DELETE
 		FROM
 		ORDER_DETAIL
@@ -122,11 +143,10 @@
 		a.detail_address,
 		a.is_master_addr,
 		a.sub_address,
-		cu.coupon_id,
-		cu.coupon_name,
-		cu.discount_rate,
-		cu.quantity,
-		cu.coupon_state,
+		cp.coupon_id,
+		cp.coupon_name,
+		cp.discount_rate,
+		cp.quantity,
 		o.order_id,
 		o.order_date,
 		o.total_price,
@@ -144,7 +164,7 @@
 		od.order_product_price,
 		od.order_num,
 		od.order_state,
-		(od.order_product_price - (od.order_product_price * (cu.discount_rate / 100))) AS
+		(od.order_product_price - (od.order_product_price * (cp.discount_rate / 100))) AS
 		discounted_price
 		FROM
 		member m
@@ -152,16 +172,20 @@
 		JOIN order_prod o ON m.member_id = o.member_id
 		JOIN addr_list a ON o.addr_num = a.addr_num
 		JOIN order_detail od ON o.order_id = od.order_id
-		JOIN seller_prod_stock sps ON od.s_stock_id = sps.s_stock_id
+		JOIN sell_prod_stock sps ON od.s_stock_id = sps.s_stock_id
 		JOIN prod p ON sps.prod_id = p.prod_id
 		JOIN category c ON p.category_id = c.category_id
-		LEFT JOIN coupon cu ON m.member_id = cu.member_id AND cu.coupon_state =
-		'VALID'
-		WHERE 
-    	m.member_type = 1
-    	AND m.member_id = #{aa}
+		LEFT JOIN coupon cp ON m.member_id = cp.member_id
+		WHERE
+		m.member_type = 1
+		AND m.member_id = #{member_id}
 		ORDER BY
 		m.member_id, o.order_date
+	</select>
+	
+	<select id = "findMaxOrderDetailID" resultType="int">
+		SELECT MAX(orderdetail_id) AS max_orderdetail_id
+		FROM ORDER_DETAIL
 	</select>
 
 </mapper>

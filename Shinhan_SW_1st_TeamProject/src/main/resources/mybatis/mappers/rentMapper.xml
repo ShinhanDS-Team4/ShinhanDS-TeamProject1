@@ -58,6 +58,12 @@
 		FROM RENT
 		WHERE member_id = #{aa}
 	</select>
+	<!-- 멤버별 대여목록 -->
+	<select id="selectByMemId" resultType="rentVO">
+		SELECT *
+		FROM RENT
+		WHERE MEMBER_ID = #{aa}
+	</select>
 
 	<!-- 대여하기 (주문상태 칼럼 삭제) -->
 	<insert id="rentInsert" parameterType="rentVO">
@@ -76,13 +82,27 @@
 			SELECT rent_sequence.CURRVAL FROM DUAL
 		</selectKey>
 	</insert>
+	
+	<!-- 장바구니에서 대여하기 버튼을 눌렀을 때 -->
+	<insert id="rentInsertForCart" parameterType="rentVO">
+		INSERT
+		INTO RENT(rental_code, rent_start_date, rent_end_date,
+		member_id, total_rent_price)
+		VALUES(
+		#{rental_code},
+		#{rent_start_date},
+		#{rent_end_date},
+		#{member_id},
+		#{total_rent_price}
+		)
+	</insert>
 
 	<!-- 대여상태 수정 -->
 	<update id="memberUpdate" parameterType="rentVO">
 		UPDATE RENT
 		SET
-		"rent_state" = #{rent_state}
-		WHERE "rental_code" = #{rental_code}
+		rent_state = #{rent_state}
+		WHERE rental_code = #{rental_code}
 	</update>
 
 	<!--대여 수정 -->
@@ -105,7 +125,7 @@
 		FROM PROD_OPTION
 	</select>
 
-	<!-- orderlist.jsp에 출력할 대여상품 상세정보 -->
+	<!-- orderlist.jsp에 출력할 대여상품 상세정보 --> 
 	<select id="selectById2" parameterType="string" resultType="rent_selectVO">
 		SELECT 
 		    p.prod_name, 
@@ -156,11 +176,12 @@
 		WHERE
 		rental_code = #{aa}
 	</update>
-	
+
 	<delete id="rentprodDelete" parameterType="int">
 		DELETE
 		FROM RENT
-		WHERE rental_code = #{rental_code}
+		WHERE
+		rental_code = #{rental_code}
 	</delete>
 
 	<!-- rentlist.jsp에서, 반납 -->
@@ -299,6 +320,7 @@
 		</if>
 		ORDER BY p.prod_id
 	</select>
+  
 	<select id="searchSellerByRent" resultType="SellerRentVO"
 		parameterType="string">
 		SELECT DISTINCT
@@ -343,82 +365,90 @@
 		FROM
 		MEMBER m
 		JOIN PROD p ON m.member_id = p.member_id
-		LEFT JOIN PROD_IMAGE pi ON p.prod_id = pi.prod_id
-		JOIN RENT_PROD_STOCK rps ON p.prod_id = rps.prod_id
+		LEFT JOIN PROD_IMAGE
+		pi ON p.prod_id = pi.prod_id
+		JOIN RENT_PROD_STOCK rps ON p.prod_id =
+		rps.prod_id
 		JOIN RENT_DETAIL rd ON rps.r_stock_id = rd.r_stock_id
-		JOIN RENT r ON rd.rental_code = r.rental_code
-		LEFT JOIN PROD_OPTION ro ON rps.opt_id1 = ro.opt_id
+		JOIN
+		RENT r ON rd.rental_code = r.rental_code
+		LEFT JOIN PROD_OPTION ro ON
+		rps.opt_id1 = ro.opt_id
 		WHERE
 		m.member_type = 2
 		<if test="searchType != null and searchType != ''">
 			AND (
 			m.member_id = #{searchType}
-			OR m.member_name = #{searchType}
+			OR m.member_name =
+			#{searchType}
 			OR m.brand = #{searchType}
 			OR p.prod_name = #{searchType}
 			)
 		</if>
 		ORDER BY p.prod_id
 	</select>
-		
+
 	<select id="searchCustomerByRent" resultType="SellerRentVO"
-		parameterType="string">
+		parameterType="map">
 		SELECT DISTINCT
-        m.member_id,
-        m.member_name,
-        m.email,
-        m.phone,
-        m.brand,
-        m.birth_date,
-        m.last_access,
-        m.member_type,
-        m.gender,
-        m.seller_authority,
-        m.create_date,
-        p.prod_id,
-        p.prod_name,
-        p.prod_desc,
-        p.prod_price,
-        p.prod_added_date,
-        p.category_id,
-        pi.img_id,
-        pi.img_type,
-        rps.r_stock_id,
-        rps.stock,
-        rps.total,
-        rps.opt_id1,
-        rps.opt_id2,
-        rps.opt_id3,
-        rps.opt_id4,
-        rps.opt_id5,
-        ro.opt_id,
-        ro.opt_name,
-        ro.opt_value,
-        r.rental_code,
-        r.rent_start_date,
-        r.rent_end_date,
-        r.total_rent_price,
-        rd.rentdetail_id,
-        rd.rent_product_price,
-        rd.rent_num,
-        rd.rent_state
-    FROM
-        MEMBER m
-        JOIN PROD p ON m.member_id = p.member_id
-        LEFT JOIN PROD_IMAGE pi ON p.prod_id = pi.prod_id
-        JOIN RENT_PROD_STOCK rps ON p.prod_id = rps.prod_id
-        JOIN RENT_DETAIL rd ON rps.r_stock_id = rd.r_stock_id
-        JOIN RENT r ON rd.rental_code = r.rental_code
-        LEFT JOIN PROD_OPTION ro ON rps.opt_id1 = ro.opt_id
-    WHERE
-        m.member_type = 1
-        <if test="searchKeyword != null and searchKeyword != ''">
-            AND (
-                m.member_id = #{searchKeyword}
-                OR m.member_name = #{searchKeyword}            
-                OR p.prod_name = #{searchKeyword}
-            )
-        </if>
-    ORDER BY p.prod_id
+		m.member_id,
+		m.member_name,
+		m.email,
+		m.phone,
+		m.brand,
+		m.birth_date,
+		m.last_access,
+		m.member_type,
+		m.gender,
+		m.seller_authority,
+		m.create_date,
+		p.prod_id,
+		p.prod_name,
+		p.prod_desc,
+		p.prod_price,
+		p.prod_added_date,
+		p.category_id,
+		pi.img_id,
+		pi.img_type,
+		rps.r_stock_id,
+		rps.stock,
+		rps.total,
+		rps.opt_id1,
+		rps.opt_id2,
+		rps.opt_id3,
+		rps.opt_id4,
+		rps.opt_id5,
+		ro.opt_name,
+		ro.opt_value,
+		r.rental_code,
+		r.rent_start_date,
+		r.rent_end_date,
+		r.total_rent_price,
+		rd.rentdetail_id,
+		rd.rent_product_price,
+		rd.rent_num,
+		rd.rent_state
+		FROM
+		MEMBER m
+		JOIN RENT r ON m.member_id = r.member_id
+		JOIN RENT_DETAIL rd ON r.rental_code = rd.rental_code
+		JOIN RENT_PROD_STOCK rps ON rd.r_stock_id = rps.r_stock_id
+		JOIN PROD p ON rps.prod_id = p.prod_id
+		LEFT JOIN PROD_IMAGE pi ON p.prod_id = pi.prod_id
+		LEFT JOIN PROD_OPTION ro ON rps.opt_id1 = ro.opt_id OR rps.opt_id2 =
+		ro.opt_id
+		OR rps.opt_id3 = ro.opt_id OR rps.opt_id4 = ro.opt_id
+		OR rps.opt_id5 = ro.opt_id
+		WHERE
+		m.member_type = 1
+		and m.member_id = #{member_id}
+		ORDER BY
+		p.prod_id
 	</select>
+	
+	<select id="findMaxRentID" resultType="int">
+		SELECT MAX(rental_code) AS max_rental_code
+		FROM RENT
+	</select>
+
 </mapper>
