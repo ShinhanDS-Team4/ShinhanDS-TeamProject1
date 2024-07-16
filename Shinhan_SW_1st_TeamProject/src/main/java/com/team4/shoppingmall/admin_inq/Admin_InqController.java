@@ -50,7 +50,7 @@ public class Admin_InqController {
 	//���� ���� ����
 	@GetMapping("/writeqna.do")
 	public String writeqna() {
-		return "board/admin_InqQPopup";
+		return "board/buyer_InqQPopup";
 	}
 	
 	@PostMapping("/writeqna.do")
