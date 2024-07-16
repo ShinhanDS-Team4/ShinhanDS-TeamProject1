@@ -151,7 +151,7 @@
 
 
 	<!-- orderlist.jsp에 출력할 상품명, 브랜드, 옵션, 상품가격, 이미지URL --> 
-	<select id="selectById2" parameterType="string" resultType="order_prod_detailVO"> 
+	<select id="selectById2" parameterType="string" resultType="order_prod_detailVO">  
 		SELECT
             op.order_id,
             p.prod_name, 
@@ -181,7 +181,6 @@
         ) pi ON p.prod_id = pi.prod_id
         WHERE 
             op.member_id = #{aa}
-
 	</select>
 
 	<!-- orderlist.jsp에서, 주문취소 -->
