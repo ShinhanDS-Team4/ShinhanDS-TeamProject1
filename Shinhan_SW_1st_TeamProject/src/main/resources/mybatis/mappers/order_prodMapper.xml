@@ -152,42 +152,35 @@
 
 	<!-- orderlist.jsp에 출력할 상품명, 브랜드, 옵션, 상품가격, 이미지URL --> 
 	<select id="selectById2" parameterType="string" resultType="order_prod_detailVO"> 
-		SELECT 
-    p.prod_name, 
-    m.brand, 
-    rps.opt_id1, 
-    rps.opt_id2, 
-    rps.opt_id3, 
-    rps.opt_id4, 
-    rps.opt_id5, 
-    rd.rent_product_price, 
-    pi.img_id, 
-    rd.rent_state, 
-    rd.rentdetail_id, 
-    p.prod_id, 
-    rd.rent_num, 
-    r.rental_code
-FROM 
-    RENT r
-JOIN 
-    RENT_DETAIL rd ON r.rental_code = rd.rental_code
-JOIN 
-    RENT_PROD_STOCK rps ON rd.r_stock_id = rps.r_stock_id
-JOIN 
-    PROD p ON p.prod_id = rps.prod_id
-JOIN 
-    MEMBER m ON p.member_id = m.member_id
-LEFT OUTER JOIN 
-    (
-        SELECT img_id, prod_id 
-        FROM (
-            SELECT img_id, prod_id, ROW_NUMBER() OVER (PARTITION BY prod_id ORDER BY img_id) AS rn 
-            FROM PROD_IMAGE
-        ) pi 
-        WHERE pi.rn = 1
-    ) pi ON p.prod_id = pi.prod_id
-WHERE 
-    r.member_id = #{member_id};
+		SELECT
+            op.order_id,
+            p.prod_name, 
+            op.total_price, 
+            od.order_num,
+            od.order_product_price,
+            od.order_id,
+            op.order_date,
+            pi.img_id,
+            od.order_state
+        FROM 
+            order_prod op
+        JOIN 
+            order_detail od ON op.order_id = od.order_id
+        JOIN 
+            SELL_PROD_STOCK sps ON od.s_stock_id = sps.s_stock_id
+        JOIN 
+            PROD p ON p.prod_id = sps.prod_id
+        LEFT OUTER JOIN (
+            SELECT img_id, prod_id
+            FROM (
+                SELECT img_id, prod_id,
+                       ROW_NUMBER() OVER (PARTITION BY prod_id ORDER BY img_id) AS rn
+                FROM PROD_IMAGE
+            ) pi
+            WHERE pi.rn = 1
+        ) pi ON p.prod_id = pi.prod_id
+        WHERE 
+            op.member_id = #{aa}
 
 	</select>
 

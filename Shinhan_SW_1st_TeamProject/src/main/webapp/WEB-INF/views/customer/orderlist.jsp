@@ -129,7 +129,7 @@
                                     </div>
                                     <span class="order-status">
                                         <c:choose>
-                                            <c:when test="${detail.order_state == '결제대기'}">문의 필요</c:when>
+                                            <c:when test="${detail.order_state == '결제대기'}">결제 대기</c:when>
                                             <c:when test="${detail.order_state == '결제완료'}">결제 완료</c:when>
                                             <c:when test="${detail.order_state == '주문취소'}">취소 완료</c:when>
                                             <c:when test="${detail.order_state == '배송준비중'}">배송 준비중</c:when>
