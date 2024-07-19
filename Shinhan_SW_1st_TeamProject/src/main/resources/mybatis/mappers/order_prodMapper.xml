@@ -150,43 +150,37 @@
     </select>
 
 
-	<!-- orderlist.jsp에 출력할 상품명, 브랜드, 옵션, 상품가격, 이미지URL -->
-	<select id="selectById2" parameterType="int" resultType="order_prod_detailVO"> 
+	<!-- orderlist.jsp에 출력할 상품명, 브랜드, 옵션, 상품가격, 이미지URL --> 
+	<select id="selectById2" parameterType="string" resultType="order_prod_detailVO">  
 		SELECT
-		    op.order_id,
-		    p.prod_name, 
-		    m.brand,
-		    sps.opt_id1,
-		    sps.opt_id2,
-		    sps.opt_id3,
-		    sps.opt_id4,
-		    sps.opt_id5,
-		    od.order_product_price,
-		    pi.img_id,
-		    od.order_state,
-		    p.prod_id,
-		    od.order_num
-		FROM 
-		    order_prod op
-		JOIN 
-		    order_detail od ON op.order_id = od.order_id
-		JOIN 
-		    SELL_PROD_STOCK sps ON od.s_stock_id = sps.s_stock_id
-		JOIN 
-		    PROD p ON p.prod_id = sps.prod_id
-		JOIN
-		    MEMBER m ON p.member_id = m.member_id
-		LEFT OUTER JOIN (
-		    SELECT img_id, prod_id
-		    FROM (
-		        SELECT img_id, prod_id,
-		               ROW_NUMBER() OVER (PARTITION BY prod_id ORDER BY img_id) AS rn
-		        FROM PROD_IMAGE
-		    ) pi
-		    WHERE pi.rn = 1
-		) pi ON p.prod_id = pi.prod_id
-		WHERE 
-		    op.member_id = 'testid'
+            op.order_id,
+            p.prod_name, 
+            op.total_price, 
+            od.order_num,
+            od.order_product_price,
+            od.order_id,
+            op.order_date,
+            pi.img_id,
+            od.order_state
+        FROM 
+            order_prod op
+        JOIN 
+            order_detail od ON op.order_id = od.order_id
+        JOIN 
+            SELL_PROD_STOCK sps ON od.s_stock_id = sps.s_stock_id
+        JOIN 
+            PROD p ON p.prod_id = sps.prod_id
+        LEFT OUTER JOIN (
+            SELECT img_id, prod_id
+            FROM (
+                SELECT img_id, prod_id,
+                       ROW_NUMBER() OVER (PARTITION BY prod_id ORDER BY img_id) AS rn
+                FROM PROD_IMAGE
+            ) pi
+            WHERE pi.rn = 1
+        ) pi ON p.prod_id = pi.prod_id
+        WHERE 
+            op.member_id = #{aa}
 	</select>
 
 	<!-- orderlist.jsp에서, 주문취소 -->

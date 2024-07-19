@@ -78,11 +78,13 @@ public class TestControllerYun {
 	@GetMapping("/rentlist.do")
 	public String test2(Model model, HttpServletRequest request) {
 		HttpSession session = request.getSession();
-		MemberDTO mem = (MemberDTO)session.getAttribute("member"); 
-		String member_id = mem.getMember_id();  
+		MemberDTO mem = (MemberDTO)session.getAttribute("member");  
+		String member_id = mem.getMember_id();   
+		System.out.println("멤버아이디: " + member_id);
+	    System.out.println("/customer/rentlist.jsp");
 	
 	    // 모든 렌트 정보 가져오기
-	    List<RentDTO> rentAllOrders = rentService.selectByMemId(member_id);
+	    List<RentDTO> rentAllOrders = rentService.selectAll(member_id); 
 	    System.out.println("전체 렌트 목록: " + rentAllOrders);
 	
 	    // 렌트 상세 정보를 담을 Map
@@ -91,7 +93,7 @@ public class TestControllerYun {
 	    // 각 렌트에 대한 상세 정보 가져오기
 	    for (RentDTO rent : rentAllOrders) {
 	        int rental_code = rent.getRental_code();
-	        List<RentSelectDTO> rentDetails = rentService.selectById2(rental_code);
+	        List<RentSelectDTO> rentDetails = rentService.selectById2(member_id);
 	        rentDetailsMap.put(rental_code, rentDetails);
 	    }
 	    System.out.println("렌트 상세 정보 목록: " + rentDetailsMap);
@@ -149,9 +151,10 @@ public class TestControllerYun {
 
 	@GetMapping("/orderlist.do")
 	public String test3(Model model, HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		MemberDTO mem = (MemberDTO)session.getAttribute("member");  
-		String member_id = mem.getMember_id(); 
+		HttpSession session = request.getSession(); 
+		MemberDTO mem = (MemberDTO)session.getAttribute("member"); 
+		String member_id = mem.getMember_id();   
+		System.out.println("멤버아이디: " + member_id); 
 		
 	    System.out.println("/customer/orderlist.jsp");
 
@@ -165,7 +168,7 @@ public class TestControllerYun {
 	    // 각 주문에 대한 상세 정보 가져오기
 	    for (OrderProdDTO order : allorders) {
 	        int orderId = order.getOrder_id();
-	        List<OrderProdDetailDTO> orderDetails = orderProdService.selectById2(orderId);
+	        List<OrderProdDetailDTO> orderDetails = orderProdService.selectById2(member_id);
 	        orderDetailsMap.put(orderId, orderDetails);
 	    }
 	    System.out.println("주문 상세 정보 목록: " + orderDetailsMap);

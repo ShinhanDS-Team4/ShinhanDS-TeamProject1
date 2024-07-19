@@ -218,7 +218,9 @@
 						                <c:forEach items="${myAllOrders}" var="order" varStatus="status">
 					                        <tr>
 					                        	<td>${order.ORDER_ID}</td>
-					                            <td style="background-color:powderblue;"><img src="/saren/ProdImgFile/main/${order.IMG_ID}" alt="${order.IMG_ID}" width="100"></td>
+
+					                            <td style="background-color:powderblue;"><img src="http://localhost:9090/saren/ProdImgFile/main/${order.IMG_ID}" alt="${order.IMG_ID}" width="100"></td>
+
 					                            <td class="product-info">
 					                                <strong>[${order.ORDER_STATE}]</strong><br>
 					                                <p>${order.PROD_NAME} (${order.ORDER_NUM}개)</p>

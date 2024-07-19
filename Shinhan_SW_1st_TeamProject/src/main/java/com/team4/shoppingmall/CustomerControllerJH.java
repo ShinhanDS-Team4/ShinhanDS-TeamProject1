@@ -66,12 +66,13 @@ public class CustomerControllerJH {
 		//2.나의 주문 내역 (결제 완료된 주문)
 	    //List<OrderProdDTO> myAllOrders = orderProdService.orderProductById(member_id);
 		List<Map<String,Object>> myAllOrders = orderProdService.orderProductById(member_id);
+
 	 
 		for (Map<String, Object> order : myAllOrders) {
 	        System.out.println(order);
 	    }
 		model.addAttribute("myAllOrders", myAllOrders);
-	    model.addAttribute("orderCount", myAllOrders.size());
+    model.addAttribute("orderCount", myAllOrders.size());
 	    
 	
 	    System.out.println("!!전체 주문 목록: " + myAllOrders);

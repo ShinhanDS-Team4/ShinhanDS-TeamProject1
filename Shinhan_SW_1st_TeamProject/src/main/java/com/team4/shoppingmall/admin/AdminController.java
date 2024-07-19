@@ -221,15 +221,15 @@ public class AdminController {
 		
 	// 판매자 상품 조회 페이지
 	@GetMapping("admin_seller_prod")
-	public String adminsellerdetail() {
-		//List<SellerProdDTO> allProdList = pService.allProd();
-		//System.out.println(allProdList);
-		//model.addAttribute("products", allProdList);
+	public String adminsellerdetail(Model model, String member_id) {
+		List<SellerProdDTO> allProdList = pService.allProd();
+		System.out.println(allProdList);
+		model.addAttribute("products", allProdList);
 
-		//if (member_id != null && !member_id.isEmpty()) {
-	    //    model.addAttribute("searchType", member_id);
-	    //    return "search_seller_product_brand";
-	    //}
+		if (member_id != null && !member_id.isEmpty()) {
+	        model.addAttribute("searchType", member_id);
+	        return "search_seller_product_brand";
+	    }
 		return "admin/admin_seller_prod";
 	}
 
@@ -391,6 +391,7 @@ public class AdminController {
 	    return "admin/admin_faq_insert";
 	}
     
+	// 관리자 문의 수정
 	@PostMapping("admin_faq_reply_update")
 	@ResponseBody
 	public String adminFaqUpdate(Admin_InqDTO reply_update) {
@@ -399,6 +400,7 @@ public class AdminController {
 		return "admin/admin_faq_reply_update";
 	}
 	
+	// 관리자 문의 삭제
 	@PostMapping("admin_faq_reply_delete")
 	@ResponseBody
 	public String adminFaqDelete(@RequestParam Integer admin_inq_id) {
@@ -414,6 +416,7 @@ public class AdminController {
 		return "admin/admin_notice_list";
 	}
 	
+	// 관리자 공지 검색
 	@GetMapping("admin_notice_search")
 	public String adminnoticesearch(Model model, String search_notice) {
 		System.out.println(search_notice);
@@ -423,17 +426,14 @@ public class AdminController {
 		return "admin/admin_notice_search_result";
 	}
 	
+	// 관리자 공지 상세
 	@GetMapping("admin_notice_detail")
 	@ResponseBody
 	public NoticeDTO adminnoticeselect(Model model, Integer not_id) {		
 		return nService.selectById(not_id);
 	}
 	
-	@GetMapping("admin_notice_create")
-	public String adminnoticecreate(NoticeDTO nDTO) {				
-		return "admin/admin_notice_insert";
-	}
-	
+	// 관리자 공지 등록
 	@PostMapping("admin_notice_insert")
 	@ResponseBody
 	public String adminnoticeinsert(NoticeDTO nDTO) {
@@ -442,6 +442,7 @@ public class AdminController {
 	    return "admin/admin_event_insert";		
 	}
 	
+	// 관리자 공지 수정
 	@PostMapping("admin_notice_update")
 	@ResponseBody
 	public String adminnoticeupdate(NoticeDTO nDTO) {
@@ -450,6 +451,7 @@ public class AdminController {
 		return "admin/admin_notice_update";
 	}
 	
+	// 관리자 공지 삭제
 	@PostMapping("admin_notice_delete")
 	@ResponseBody
 	public String adminnoticedelete(Integer not_id) {
@@ -465,6 +467,7 @@ public class AdminController {
 		return "admin/admin_event_list";
 	}
 	
+	// 관리자 이벤트 검색
 	@GetMapping("admin_event_search")
 	public String admineventsearch(Model model, String searchEvent) {
 		List<EventDTO> eDto = evService.selectBySearch(searchEvent);
@@ -473,16 +476,14 @@ public class AdminController {
 		return "admin/admin_event_search_result";
 	}
 	
+	// 관리자 이벤트 상세
 	@GetMapping("admin_event_detail")
 	@ResponseBody
 	public EventDTO admineventselect(Model model, @RequestParam Integer event_id) {
 		return evService.selectById(event_id);
 	}
-	@GetMapping("admin_event_create")
-	public String admineventcreate(EventDTO evDto) {
-		return "admin/admin_event_insert";
-	}
 	
+	// 관리자 이벤트 등록
 	@PostMapping("admin_event_insert")
 	@ResponseBody
 	public String admineventinsert(EventDTO evDto) {
@@ -491,6 +492,7 @@ public class AdminController {
 		return "admin/admin_event_insert";
 	}
 	
+	// 관리자 이벤트 수정
 	@PostMapping("admin_event_update")
 	@ResponseBody
 	public String admineventupdate(EventDTO evDto) {
@@ -499,6 +501,7 @@ public class AdminController {
 		return "admin/admin_event_update";
 	}
 	
+	// 관리자 이벤트 삭제
 	@PostMapping("admin_event_delete")
 	@ResponseBody
 	public String admineventdelete(Integer event_id) {
@@ -507,11 +510,4 @@ public class AdminController {
 		return "admin/admin_event_delete";
 	}	
 	
-	// 아직 해야할 부분
-	// 검색창
-	@GetMapping("search_results")
-	public @ResponseBody List<MemberDTO> searchResults(String searchType, String keyword) {
-		List<MemberDTO> members = mService.searchMembers(searchType, keyword);
-		return members;
-	}
 }

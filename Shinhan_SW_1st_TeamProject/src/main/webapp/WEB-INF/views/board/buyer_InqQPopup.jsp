@@ -18,7 +18,7 @@
 			data:$("#registerAQ").serialize(),
 			type:'POST',
 			success: function(responseData){
-				alert(responseData);
+				alert("성공적으로 문의가 등록되었습니다.")
 				window.close();
 			},error:function(responseData){
 				alert("실패");
@@ -109,18 +109,14 @@ h1 {
 					<label>회원ID</label>
 					<input type="text" name="member_id" id="member_id" value="${member.member_id}" />
 				</div>
-				<div>
-					<label>상품ID</label>
-					<input type="text" name="prod_id" id="prod_id" value="예시티셔츠" />
-				</div>
 			</div>
 			<div class="input-group">
 				<label for="subject">제목</label>
-				<input type="text" id="seller_inq_title" name="seller_inq_title"/>
+				<input type="text" id="admin_inq_title" name="admin_inq_title"/>
 			</div>
 			<div class="input-group">
 				<label for="content">내용작성</label>
-				<textarea id="buyer_inq_content" rows="10" name="seller_inq_content"></textarea>
+				<textarea id="admin_inq_content" rows="10" name="admin_inq_content"></textarea>
 			</div>
 			<div class="buttons">
 				<button type="button" onclick="submitForm()">등록</button>

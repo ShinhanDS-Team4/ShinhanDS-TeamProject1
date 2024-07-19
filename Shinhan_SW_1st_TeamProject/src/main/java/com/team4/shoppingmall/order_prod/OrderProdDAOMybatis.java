@@ -55,8 +55,8 @@ public class OrderProdDAOMybatis implements OrderProdDAOInterface {
 
 
 	@Override
-	public List<OrderProdDetailDTO> selectById2(int order_id) { 
-        return sqlSession.selectList(namespace + "selectById2", order_id);
+	public List<OrderProdDetailDTO> selectById2(String member_id) { 
+        return sqlSession.selectList(namespace + "selectById2", member_id);
     } 
 	
 	@Override
