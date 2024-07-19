@@ -105,9 +105,9 @@ public class CustomerController {
 		// 주문 데이터 가져오기
 		OrderProdDTO orderProdDTO = orderProdService.selectById(orderID);
 
-		// 주문에 포함되어 있는 주문 상세 목록들을 가져오기
+		// 주문에 포함되어 있는 주문 상세 목록들을 가져오기 (mapper수정)
 		List<Order_DetailDTO> orderDetailList = orderDetailService.selectByOrder_Id(orderID);
-
+		System.out.println("orderDetailList="+orderDetailList);
 		// 주문을 한 고객의 정보 가져오기
 		MemberDTO memberDTO = memberService.selectById(customerID);
 
@@ -148,9 +148,6 @@ public class CustomerController {
 		// 대여 정보 가져오기
 		RentDTO rentDTO = rentService.selectById(rentalCode);
 
-		// 대여가 가지고 있는 상세 대여 정보 목록 가져오기
-		List<RentDetailDTO> rentDetailList = rentDetailService.selectByRental_code(rentalCode);
-
 		// 대여를 한 고객의 정보 가져오기
 		MemberDTO memberDTO = memberService.selectById(customerID);
 
@@ -159,12 +156,15 @@ public class CustomerController {
 
 		// 고객이 가지고 있는 회원등급, 포인트를 가져오기
 		CustomerDTO customerDTO = customerService.selectById(customerID);
+		
+		// 대여가 가지고 있는 상세 대여 정보 목록 가져오기 (mapper수정)
+		List<RentDetailDTO> rentDetailList = rentDetailService.selectByRental_code(rentalCode);
 
 		// 대여주문 구매 상품 브랜드,이름 가져오기
 		List<Map<String,String>> rentBrandandProdName = rentDetailService.getRentOrderProdBrand(rentalCode);
-		model.addAttribute("rentBrandandProdName", rentBrandandProdName);
-		System.out.println(rentBrandandProdName);
+		System.out.println("rentBrandandProdName:"+rentBrandandProdName);
 
+		model.addAttribute("rentBrandandProdName", rentBrandandProdName);
 		model1.addAttribute("rentInfo", rentDTO);
 		model2.addAttribute("rentDetailList", rentDetailList);
 		model3.addAttribute("memberInfo", memberDTO);

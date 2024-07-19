@@ -8,7 +8,7 @@
 	<!-- 주문상품 브랜드,이름 -->
 	<select id="getOrderProdBrand" parameterType="int"
 		resultType="map">
-		SELECT DISTINCT M.brand, p.prod_name
+		SELECT DISTINCT M.brand, p.prod_name, p.prod_id
 		FROM MEMBER M
 		JOIN PROD
 		P ON M.member_id = P.member_id
@@ -65,12 +65,19 @@
 		)
 	</insert>
 
-	<!-- 주문 ID 단위로 주문 상세 데이터 목록 가져오기 -->
-	<select id="selectByOrder_Id" parameterType="int"
+	<!-- 주문 ID 단위로 주문 상세 데이터 목록 가져오기 (수정0719) -->
+	<!-- <select id="selectByOrder_Id" parameterType="int"
 		resultType="order_detailVO">
 		SELECT *
 		FROM ORDER_DETAIL
 		WHERE order_id=#{order_id}
+	</select> -->
+	<select id="selectByOrder_Id" parameterType="int"
+		resultType="order_detailVO">
+		SELECT OD.*, SPS.PROD_ID
+		FROM ORDER_DETAIL OD
+        JOIN SELL_PROD_STOCK SPS ON(OD.S_STOCK_ID = SPS.S_STOCK_ID)
+		WHERE order_id = #{order_id}
 	</select>
 
 	<!-- 판매자ID 단위로 주문 상세 데이터 목록 가져오기 -->

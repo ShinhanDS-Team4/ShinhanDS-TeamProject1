@@ -15,7 +15,7 @@
  	
 	<!-- 대여주문상품 브랜드,이름 -->
 	<select id="getRentOrderProdBrand" parameterType="int" resultType="map">
-		SELECT DISTINCT M.brand, p.prod_name
+		SELECT DISTINCT M.brand, p.prod_name, p.prod_id
 		FROM MEMBER M
 		JOIN PROD P ON M.member_id = P.member_id
 		JOIN RENT_PROD_STOCK RPS ON P.prod_id = RPS.prod_id
@@ -37,13 +37,20 @@
 		FROM RENT_DETAIL
 	</select>
 	
-	<!-- 대여ID 기준으로 대여 상세 목록 -->
-	<select id="selectByRental_code" parameterType="int" resultType="rent_detailVO">
+	<!-- 대여ID 기준으로 대여 상세 목록 (수정) -->
+	<!-- <select id="selectByRental_code" parameterType="int" resultType="rent_detailVO">
 		SELECT *
 		FROM RENT_DETAIL
 		WHERE rental_code=#{rental_code}
+	</select> -->
+	<select id="selectByRental_code" parameterType="int" resultType="rent_detailVO">
+		SELECT RD.* , RPS.PROD_ID
+		FROM RENT_DETAIL RD
+        JOIN RENT_PROD_STOCK RPS ON (RD.R_STOCK_ID = RPS.R_STOCK_ID)
+		WHERE RD.rental_code = #{rental_code}
 	</select>
-
+	
+	
 	<!-- 판매자ID 단위로 대여 상세 데이터 목록 가져오기 -->
 	<select id="selectBySellerID" parameterType="string"
 		resultType="rent_detailVO">
