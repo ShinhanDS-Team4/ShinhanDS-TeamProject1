@@ -201,19 +201,7 @@ public class ProdTestController {
 								//,@RequestBody Map<String, Object> request 
 	) throws JsonProcessingException {
 		
-		//나중에 삭제하기
 
-		//prod_id = "여성 원피스_199-81-22245";
-		//prod_id = "여성 원피스_199-81-22245"; //사진연결
-		//prod_id = "논아이론 사틴 솔리드 드레스 셔츠 - 화이트_199-81-22242"; //판매에 있고 ,대여재고없는상품 test
-
-
-		//prod_id = "[대여상품]원피스 - 화이트_222-81-77709"; //대여재고만 있는 상품	
-		//prod_id = "세일러 셔츠-스카이블루_199-81-22361";
-		//prod_id = "자수 미니 원피스 - 화이트_199-81-21909"; //둘다 있는 상품
-		//prod_id = "SRN000000002230";
-
-		
 		//상품의 정보와 옵션 조회
 		//옵션명과 값 전부 조회
 		ArrayList<Object> prod_Options = (ArrayList<Object>) prod_OptionTestService.selectAllOptionsByProdId(prod_id);
@@ -282,9 +270,6 @@ public class ProdTestController {
 		System.out.println("imgIdList" + imgIdList);
 		
 		//메인 사진들 조회
-//		List<Map<String,Object>> mainImgIdList = imageService.prodMainImgInfoByProdId(prod_id); 
-//		model.addAttribute("mainImgIdList", mainImgIdList);
-		
 		File file;
 		String img_id = (String) prod_detail_info.get("prod_id");
 		Map<String, String> temp;
@@ -300,9 +285,6 @@ public class ProdTestController {
 		model.addAttribute("mainImgIdList", mainImgIdList);
 		
 		//상품 정보 사진 조회
-//		List<Map<String,Object>> subImgIdList = imageService.prodSubImgInfoByProdId(prod_id); 
-//		model.addAttribute("subImgIdList", subImgIdList);
-		
 		List<Map<String, String>> subImgIdList = new ArrayList<Map<String,String>>();
 		for(int i=1;i<=8;i++) {
 			file = new File("C:\\uploaded_files\\desc/"+img_id+"_desc_image_"+i+".jpg");
@@ -418,7 +400,7 @@ public class ProdTestController {
         System.out.println("prod_id=" + prod_id);
         
         
-        //재고 체크 (프론트에서 체크 했는데 백도 나중에 추가)
+        //재고 체크
     	if(prodVO.getS_stock_id() == null || prodVO == null) {
     		  return response;  
 		}

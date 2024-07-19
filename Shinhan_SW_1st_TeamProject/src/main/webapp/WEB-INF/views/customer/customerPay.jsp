@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <c:set var="path" value="${pageContext.servletContext.contextPath}" />
 <!DOCTYPE html>
 <html>
@@ -263,7 +264,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="brandProd" items="${brandandProdName}">
+					<%-- <c:forEach var="brandProd" items="${brandandProdName}">
 					<c:forEach var="orderDetail" items="${orderDetailList}">
 						<tr>
 							<!-- 주문번호 -->
@@ -302,7 +303,51 @@
 							</td>
 						</tr>
 					</c:forEach>
-					</c:forEach>
+					</c:forEach> --%>
+					  <c:forEach var="orderDetail" items="${orderDetailList}">
+				        <c:set var="prodIdFromStockId" value="${fn:substringBefore(orderDetail.s_stock_id, '_')}" />
+				        <c:set var="isMatched" value="false" />
+				        <c:forEach var="brandProd" items="${brandandProdName}">
+				            <c:if test="${prodIdFromStockId == brandProd.PROD_ID and not isMatched}">
+				                <tr>
+				                    <!-- 주문번호 -->
+				                    <td>
+				                        <p>${orderDetail.order_id}</p>
+				                    </td>
+				
+				                    <!-- 브랜드와 상품명 -->
+				                    <td>
+				                        <p>(${brandProd.BRAND}) ${brandProd.PROD_NAME}</p>
+				                    </td>
+				
+				                    <!-- 가격 -->
+				                    <td>
+				                        <p>
+				                            <fmt:formatNumber value="${orderDetail.order_product_price}"
+				                                type="number" groupingUsed="true" />
+				                            (원)
+				                        </p>
+				                    </td>
+				
+				                    <!-- 구매 수량 -->
+				                    <td>
+				                        <p>${orderDetail.order_num}(개)</p>
+				                    </td>
+				
+				                    <!-- 최종가 -->
+				                    <td>
+				                        <p>
+				                            <fmt:formatNumber
+				                                value="${orderDetail.order_product_price * orderDetail.order_num}"
+				                                type="number" groupingUsed="true" />
+				                            (원)
+				                        </p>
+				                    </td>
+				                </tr>
+				                <c:set var="isMatched" value="true" />
+				            </c:if>
+				        </c:forEach>
+				    </c:forEach>
 				</tbody>
 			</table>
 		</div>

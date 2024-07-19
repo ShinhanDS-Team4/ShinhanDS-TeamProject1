@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <c:set var="path" value="${pageContext.servletContext.contextPath}" />
 <!DOCTYPE html>
 <html>
@@ -175,7 +176,7 @@ function applyCoupon() {
 			var coupon_id = parseInt($('#selectedCoupon').val());
 			var point = parseInt($('#pointWillUse').text());
 			var finalPrice = parseInt($('#finalPrice').text());
-
+debugger
 			IMP.request_pay({
 				pg : "html5_inicis", // 등록된 pg사 (적용된 pg사는 KG이니시스)
 			pay_method : "card",
@@ -196,7 +197,7 @@ function applyCoupon() {
 							"&finalPrice="+ encodeURIComponent(finalPrice);
 					} else {
 						var msg = '결제에 실패하였습니다.';
-						msg += '에러내용 : '+ rsp.error_msg;
+						msg += '에러내용 : '+ response.error_msg;
 						}
 				alert(msg);
 				});
@@ -220,36 +221,52 @@ function applyCoupon() {
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="rentBrandProd" items="${rentBrandandProdName}">
-					<c:forEach var="rentDetail" items="${rentDetailList}">
-						<tr>
-							<td>
-								<p>${rentDetail.rental_code}</p>
-							</td>
-							<td>
-								<p>(${rentBrandProd.BRAND}) ${rentBrandProd.PROD_NAME}</p>
-							</td>
-							<td>
-								<p>
-									<fmt:formatNumber value="${rentDetail.rent_product_price}"
-										type="number" groupingUsed="true" />
-									(원)
-								</p>
-							</td>
-							<td>
-								<p>${rentDetail.rent_num}(개)</p>
-							</td>
-							<td>
-								<p>
-									<fmt:formatNumber
-										value="${rentDetail.rent_product_price * rentDetail.rent_num}"
-										type="number" groupingUsed="true" />
-									(원)
-								</p>
-							</td>
-						</tr>
-					</c:forEach>
-					</c:forEach>
+			       <c:forEach var="rentDetail" items="${rentDetailList}">
+				        <c:set var="prodIdFromStockId" value="${fn:substringBefore(rentDetail.r_stock_id, '_RENT_')}" />
+				        <c:set var="matched" value="false" />
+				        <c:forEach var="rentBrandProd" items="${rentBrandandProdName}">
+				            <c:choose>
+				                <c:when test="${prodIdFromStockId == rentBrandProd.PROD_ID and not matched}">
+				                    <tr>
+				                        <%-- 대여 코드 --%>
+				                        <td>
+				                            <p>${rentDetail.rental_code}</p>
+				                        </td>
+				
+				                        <%-- 브랜드와 상품명 --%>
+				                        <td>
+				                            <p>(${rentBrandProd.BRAND}) ${rentBrandProd.PROD_NAME}</p>
+				                        </td>
+				
+				                        <%-- 가격 --%>
+				                        <td>
+				                            <p>
+				                                <fmt:formatNumber value="${rentDetail.rent_product_price}"
+				                                    type="number" groupingUsed="true" />
+				                                (원)
+				                            </p>
+				                        </td>
+				
+				                        <%-- 대여 수량 --%>
+				                        <td>
+				                            <p>${rentDetail.rent_num}(개)</p>
+				                        </td>
+				
+				                        <%-- 최종가 --%>
+				                        <td>
+				                            <p>
+				                                <fmt:formatNumber
+				                                    value="${rentDetail.rent_product_price * rentDetail.rent_num}"
+				                                    type="number" groupingUsed="true" />
+				                                (원)
+				                            </p>
+				                        </td>
+				                    </tr>
+				                    <c:set var="matched" value="true" />
+				                </c:when>
+				            </c:choose>
+				        </c:forEach>
+				    </c:forEach>
 				</tbody>
 			</table>
 		</div>
